@@ -17,6 +17,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 7. Know why Rust features are the way they are
 
 The course outline can be found [here](./COURSE.md).
+You can find instructions on the installation of used tools [here](./INSTALLATION.md)
 
 ## About the project
 
