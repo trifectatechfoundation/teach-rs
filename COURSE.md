@@ -56,8 +56,6 @@ At the end of the course, the student is able to:
     - Functions
     - Pattern matching
     - Loops
-    - Comments
-    - Casing conventions
     - ...
 - **Structure of a Rust application**
     - imports
@@ -96,9 +94,11 @@ At the end of the course, the student is able to:
     - test 
     - security
     - bench (Criterion)
-- **Rust Nightly**
+- **Rust versions**
     - Release cycle
+    - stable vs beta vs nightly
     - Unstable features
+    - editions
 - **More resources:**
     - TRPL
     - cheats.rs
@@ -141,26 +141,51 @@ At the end of the course, the student is able to:
     - PartialEq/Eq/Add/Mul/Div/Sub/PartialOrd/Ord
     - Drop
 - **Generics, trait objects, object safety, const generics**
+    - Static vs dynamic dispatch
+    - when to use generics vs trait objects
 - **Orphan rule**
-- **Macros**
+
 
 **Exercises**
 *TBD*
 
 
 ### B - Application programming
-- **Structure of a Rust project**
+This module is about learning to write actual Rust applications. At the end of this module, the student is able to:
+  - Set up a Rust application and library crate
+  - Add dependencies to a crate
+  - Use the Rust module system to divide a program into logical parts
+  - Write applications that follow the Rust API guidelines
+  - Set up Rust tests and benchmarks
+  - Work with some commonly used crates for logging, argument parsing, deserialization, and testing (Exercise)
+  - Use various methods to improve compile time (Exercise)
+
+**Topics**
 - **Setting up a Rust crate, bin vs lib**
-- **Error handling: enum/anyhow/thiserror**
+  - Commands
+  - Cargo.toml entries
+- **Structure of a Rust project**
+  - Module system
+  - Unit tests/integration tests/benchmarks
+  - Examples
+  - Multiple binaries
+  - Cargo workspaces
 - **[Rust API guidelines](https://rust-lang.github.io/api-guidelines/about.html)**
-- **Selecting dependencies**
+    - (doc) Comments
+    - Casing conventions
 - **Widely used crates: logging/argparse/(de)serialization/testing**
-- **Build scripts**
-- **Conditional compilation, features**
-- **Improving build time**
 
 **Exercises**
-*TBD*
+- Set up a custom project that
+  - Acts both as a library and a binary crate
+  - Contains some examples
+  - Is divided up into modules
+  - Has unit tests, integration tests, and benchmarks
+  - Uses dependencies for argument parsing, logging, serialization, and benchmarking
+  - Has doc comments according to the Rust API guidelines
+- Generate documentation with `cargo doc`
+- Find and try various methods to improve the project build time, comparing the improvements with `cargo build --timings`
+
 
 ### C - Multitasking
 - **Atomic types**
@@ -178,6 +203,7 @@ At the end of the course, the student is able to:
 - **Typestate**
 - **Builder**
 - **Composition over inheritance**
+- **Error handling: enum/anyhow/thiserror**
 - **Anti patterns**
 - **Cool patterns from std**
     - https://www.reddit.com/r/rust/comments/x1mo16/is_there_any_part_of_the_standard_library_that/
@@ -207,6 +233,7 @@ At the end of the course, the student is able to:
 - **Drop check, ManuallyDrop**
 - **Type memory layout**
 - **MIRI**
+- [Unsafe code guidelines](https://rust-lang.github.io/unsafe-code-guidelines/introduction.html)
 
 **Exercises**
 *TBD*

@@ -1,0 +1,15 @@
+[package]
+name = "ex-b"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tracing = "0.1.37"
+tracing-subscriber = {workspace = true}
+# my_local_dependency = { path = "../path/to/my_local_dependency" }
+# my_git_dependency = { git = "<Git SSH or HTTPS url>", rev="<commit hash or tag>", branch = "<branch>" }
+
+[[example]]
+name = "my_example"

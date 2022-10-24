@@ -3,7 +3,7 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: Rust workshop slides
+info: "Rust - X: Y"
 drawings:
   persist: false
 fonts:
@@ -86,6 +86,13 @@ url: http://your-interactive-mindmap-url-here
 <!-- insert URL to live mindmap in slide option `url` -->
 
 ---
+layout: cover
+---
+#  Module X
+[The name of this module]
+<!-- Start lecture content here -->
+
+---
 layout: default
 ---
 # Content overview
@@ -93,13 +100,6 @@ layout: default
 - Types from std
 <!-- Give an overview of the subjects covered in this lecture -->
 <!-- Incorporate any breaks as well -->
-
----
-layout: cover
----
-#  Module X
-[The name of this module]
-<!-- Start lecture content here -->
 
 ---
 layout: default

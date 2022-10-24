@@ -3,7 +3,7 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: Rust workshop slides
+info: "Rust 101: Course intro"
 drawings:
   persist: false
 fonts:
