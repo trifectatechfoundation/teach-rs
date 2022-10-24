@@ -16,7 +16,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 6. Ability to judge whether Rust fits project requirements
 7. Know why Rust features are the way they are
 
-The course outline can be found [here](./COURSE.md).
+The course outline, along with more elaborate learning objectives, can be found [here](./COURSE.md).
 You can find instructions on the installation of used tools [here](./INSTALLATION.md)
 
 ## About the project
