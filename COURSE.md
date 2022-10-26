@@ -109,7 +109,7 @@ At the end of the course, the student is able to:
 *TBD*
 
 
-#### A3 - Advanced Syntax, Ownership, references
+#### A3 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
     - Types: /String/Vec/Box/Option/Result
     - Impl blocks
@@ -253,16 +253,12 @@ This module is about learning to write actual Rust applications. At the end of t
 *TBD*
 
 
-### H - Optional
-- **Rust on embedded**
-- ****
-
-
 ### P Final project
 
 #### Ideas
 - **Scientific programming**
     - nalgebra
+    - polars
 - **Game development: ggez, bevy**
     - https://www.arewegameyet.com/
 - **GUI application**
