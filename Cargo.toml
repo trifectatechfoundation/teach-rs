@@ -1,0 +1,4 @@
+[workspace]
+members = [
+    "exercises/0-intro",
+]
