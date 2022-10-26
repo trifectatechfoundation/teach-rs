@@ -4,7 +4,7 @@ This course is divided into separate modules, detailed below. Module A1-A4 are i
 
 ## Learning objectives
 At the end of the course, the student is able to:
-- Describe the problems Rust aims to solve, and how (A1)
+- Describe the problems Rust aims to solve, why, and how (A1)
 - Identify the design goals of Rust (A1)
 - Decide whether or not Rust is a good fit for a project given requirements (A1)
 - Describe how Rust impacts professional contexts (A1)
