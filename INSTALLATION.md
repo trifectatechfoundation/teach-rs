@@ -23,26 +23,13 @@ Using Rustup, you can install Rust toolchains and components. More info:
 - <https://rust-lang.github.io/rustup>
 - <https://doc.rust-lang.org/cargo>
 
-## Rustfmt
-To avoid discussions, Rust provides its own formatting tool, `rustfmt`. You can install it using Rustup with the following command:
+## Rustfmt and Clippy
+To avoid discussions, Rust provides its own formatting tool, Rustfmt. We'll also be using Clippy, a collection of lints to analyze your code, that catches common mistakes for you. You'll notice that Rusts Clippy can be a very helpful companion. Both Rustfmt and Clippy are installed by Rustup by default.
+
+To run Rustfmt on your project, execute:
 
 ```bash
-rustup component add rustfmt
-```
-
-To run `rustfmt` on your project, execute:
-
-```
 cargo fmt
-```
-
-More info: <https://github.com/rust-lang/rustfmt>
-
-## Clippy
-We'll also be using Clippy, a collection of lints to analyze your code, that catches common mistakes for you. You'll notice that Rusts Clippy can be a very helpful companion. To install, run:
-
-```bash
-rustup component add clippy
 ```
 
 To run clippy:
@@ -51,7 +38,9 @@ To run clippy:
 cargo clippy
 ```
 
-More info: <https://github.com/rust-lang/rust-clippy>
+More info:
+- Rustfmt: <https://github.com/rust-lang/rustfmt>
+- Clippy: <https://github.com/rust-lang/rust-clippy>
 
 ## Visual Studio Code
 During the course, we will use Visual Studio Code (vscode) to write code in. Of course, you're free to use your favorite editor, but if you encounter problems, you can't rely on support from us. Also, we'll use vscode to allow for remote collaboration and mentoring during tutorial sessions.
@@ -75,7 +64,11 @@ We will use Git as version control tool. If you haven't installed Git already, y
 More info: https://www.youtube.com/playlist?list=PLg7s6cbtAD15G8lNyoaYDuKZSKyJrgwB-
 
 ## Course code
-Now that everything is installed, you can clone the source code repository. The repository can be found here: <!-- TODO INSERT REPO URL AND CLONE INSTRUCTIONS -->
+Now that everything is installed, you can clone the source code repository. The repository can be found here: <https://github.com/tweedegolf/101-rs>.
+
+To clone the repository, you'll need an account on GitHub. Make sure you have one, it will serve you well, even outside this course.
+
+Instructions on cloning the repository can be found here: <https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls>
 
 # Trying it out
 Now that you've got the code on your machine, navigate to it using your favorite terminal and run:
