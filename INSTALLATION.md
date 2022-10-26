@@ -23,26 +23,13 @@ Using Rustup, you can install Rust toolchains and components. More info:
 - <https://rust-lang.github.io/rustup>
 - <https://doc.rust-lang.org/cargo>
 
-## Rustfmt
-To avoid discussions, Rust provides its own formatting tool, `rustfmt`. You can install it using Rustup with the following command:
+## Rustfmt and Clippy
+To avoid discussions, Rust provides its own formatting tool, Rustfmt. We'll also be using Clippy, a collection of lints to analyze your code, that catches common mistakes for you. You'll notice that Rusts Clippy can be a very helpful companion. Both Rustfmt and Clippy are installed by Rustup by default.
+
+To run Rustfmt on your project, execute:
 
 ```bash
-rustup component add rustfmt
-```
-
-To run `rustfmt` on your project, execute:
-
-```
 cargo fmt
-```
-
-More info: <https://github.com/rust-lang/rustfmt>
-
-## Clippy
-We'll also be using Clippy, a collection of lints to analyze your code, that catches common mistakes for you. You'll notice that Rusts Clippy can be a very helpful companion. To install, run:
-
-```bash
-rustup component add clippy
 ```
 
 To run clippy:
@@ -51,7 +38,9 @@ To run clippy:
 cargo clippy
 ```
 
-More info: <https://github.com/rust-lang/rust-clippy>
+More info:
+- Rustfmt: <https://github.com/rust-lang/rustfmt>
+- Clippy: <https://github.com/rust-lang/rust-clippy>
 
 ## Visual Studio Code
 During the course, we will use Visual Studio Code (vscode) to write code in. Of course, you're free to use your favorite editor, but if you encounter problems, you can't rely on support from us. Also, we'll use vscode to allow for remote collaboration and mentoring during tutorial sessions.
