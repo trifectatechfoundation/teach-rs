@@ -64,7 +64,11 @@ We will use Git as version control tool. If you haven't installed Git already, y
 More info: https://www.youtube.com/playlist?list=PLg7s6cbtAD15G8lNyoaYDuKZSKyJrgwB-
 
 ## Course code
-Now that everything is installed, you can clone the source code repository. The repository can be found here: <!-- TODO INSERT REPO URL AND CLONE INSTRUCTIONS -->
+Now that everything is installed, you can clone the source code repository. The repository can be found here: <https://github.com/tweedegolf/101-rs>.
+
+To clone the repository, you'll need an account on GitHub. Make sure you have one, it will serve you well, even outside this course.
+
+Instructions on cloning the repository can be found here: <https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls>
 
 # Trying it out
 Now that you've got the code on your machine, navigate to it using your favorite terminal and run:
