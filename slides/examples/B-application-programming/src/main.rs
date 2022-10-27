@@ -1,5 +1,5 @@
 // import an item from this crate, called `b`
-use ex_b::add;
+use example_b::add;
 // import an item from the `tracing` dependency
 use tracing::info;
 

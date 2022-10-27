@@ -1,9 +1,6 @@
 [workspace]
 members = [
     "exercises/0-intro",
+    "exercises/B1-my-serde-app",
     "slides/examples/B-application-programming",
 ]
-
-[workspace.dependencies]
-tracing = "0.1.37"
-tracing-subscriber = "0.3.16"

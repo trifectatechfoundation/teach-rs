@@ -1,3 +1,7 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+#![allow(unused_mut)]
 // Points to ./some_mod.rs
 mod some_mod;
 // Points to ./another_mod/mod.rs

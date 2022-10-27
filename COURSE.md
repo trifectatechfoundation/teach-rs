@@ -176,7 +176,7 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Widely used crates: logging/argparse/(de)serialization/testing**
 
 **Exercises**
-- Set up a custom project that
+- Set up a custom project that:
   - Acts both as a library and a binary crate
   - Contains some examples
   - Is divided up into modules
