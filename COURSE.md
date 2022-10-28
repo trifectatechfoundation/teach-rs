@@ -122,8 +122,6 @@ At the end of the course, the student is able to:
 - **Lifetime annotation, elision**
     - Why needed
     - Syntax
-- **Helpful types**
-    - Cell/RefCell/Rc
 
 **Exercises**
 *TBD*
@@ -192,8 +190,8 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Multithreading: Send/Sync/Channel....**
 - **How the borrow checker helps us**
 - **Smart pointers, std::sync**
-- **Async: mechanics/Future/pin/runtimes**
-- **Tokio runtime deep dive**
+- **Helpful types**
+    - Cell/RefCell/Rc/Mutex
 
 **Exercises**
 *TBD*
