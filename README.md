@@ -1,6 +1,6 @@
 # Rust 101 
 
-Rust 101 is university course for computer science students, introducing the Rust Programming Language. The course assumes intermediate C/C++ knowledge.
+Rust 101 is a university course for computer science students, introducing the Rust Programming Language. The course assumes intermediate C/C++ knowledge.
 
 Why? Have a look at our [slides](./intro-101-rs.pdf) introducing the course.
 
