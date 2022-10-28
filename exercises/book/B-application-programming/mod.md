@@ -5,7 +5,7 @@
 
 Open `exercises/B1-my-serde-app/src/main.rs`. In there, you'll find some Rust code we will do this exercise with.
 
-We used `todo!()` macros to mark places where you should put code to make the program run. Look at link:https://docs.rs/serde_json/latest/serde_json/#functions[`serde_json`] api for help.
+We used `todo!()` macros to mark places where you should put code to make the program run. Look at the [`serde_json`](https://docs.rs/serde_json/latest/serde_json/#functions) api for help.
 
 > **Hint**  
 > Serde comes with two traits: `Serializable` and `Deserializable`. These traits can be `derive` d for your `struct` or `enum` types. Other `serde-*` crates use these traits to convert our data type from and to corresponding representation (`serde-json` to JSON, `serde-yaml` to YAML, etc.).
@@ -32,7 +32,7 @@ In this exercise, you will create a Rust crate that adheres to the guidelines th
 
 *This exercise should be done in groups of 2 people*
 
-### B.2 A Setting up
+### B.2.A Setting up
 Create a new project using `cargo new --name quizzer`. Make sure it acts as both a binary and a library. That means there will be both a `src/lib.rs` and a `src/bin/quizzer/main.rs` file in your crate, where `quizzer` is the name of the binary:
 
 ```bash
@@ -73,7 +73,7 @@ serde_json = "1.0.87"
 
 For `clap` and `serde`, the non-standard `derive` feature of each these crates is enabled. For `clap`, it allows us to derive the `Parser` trait, which greatly simplifies creating a CLI. The `derive` feaure from `serde` allows us to derive the `Serialize` and `Deserialize` traits on any struct we wish to serialize or deserialize using `serde` and its backends, in our case `serde_json`.
 
-### B.2 B Quizzer
+### B.2.B Quizzer
 This exercise is about both design and finding information. You'll have to figure out s model to represent your quiz questions, as well as a means to store them into a JSON file, and load them yourself. Also, you will have to find out how to parse the program arguments.
 
 We will use the project we just set up to write a quiz game creator and player. You may add other dependencies as needed. It has the following functional requirements:
@@ -87,3 +87,37 @@ We will use the project we just set up to write a quiz game creator and player. 
  - Logical units of your crate are divided up into modules.
 
 Before you start coding, make sure you've listed all open questions and found answers to them. You're also encouraged to draw a simple diagram of the module structure of your application, annotating each module with its responsibilities.
+
+## B.3 FizzBuzz
+In this exercise, you will practise writing a unit test, and use Rusts benchmarking functionality to help you optimize a [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) app. Tou will need [`cargo-criterion`](https://bheisler.github.io/criterion.rs/book/cargo_criterion/cargo_criterion.html), a tool that runs benchmarks and creates nice reports. You can install it by running
+
+```bash
+cargo install cargo-criterion --version=1.1.0
+```
+
+### B.3.A Testing Fizz Buzz
+Open `exercises/B3-fizzbuzz/src/lib.rs`. Create a unit test that verifies the correctness of the `fizz_buzz` function. You can use the [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) macro to inculde `exercises/B3-fizzbuzz/fizzbuzz.out` as a `&str`. Each line of `fizzbuzz.out` contains the expected output of the `fizz_buzz` function given the line number as input. You can run the test with
+
+```bash
+cargo test
+```
+
+By default, Rusts test harness captures all output and discards it, If you like to debug your test code using print statements, you can run
+
+```bash
+cargo test -- --nocapture
+```
+
+to prevent the harness from capturing output.
+
+
+### B.3.B Benchmarking Fizz Buzz
+You'll probably have noticed the `fizz_buzz` implementation is not very optimized. We will use `criterion` to help us benchmark `fizz_buzz`. To run a benchmark, run the following command when in the `exercises/B3-fizzbuzz/` directory:
+
+```bash
+cargo criterion
+```
+
+This command will run the benchmarks, and report some statistics to your terminal. It also generates HTML reports including graphs that you can find under `target/criterion/reports`. For instance, `target/criterion/reports/index.html` is a summary of all benchmark. Open it with your browser and have a look.
+
+Your job is to do some optimization of the `fizz_buzz` function, and use `cargo-criterion` to measure the impact of your changes. Don't be afraid to change the signature of `fizz_buzz`, if, for instance, you want to minimize the number of allications done by this function. However, make sure that the function is able to correctly produce the output. How fast can you FizzBuzz?

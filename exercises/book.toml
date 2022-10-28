@@ -7,4 +7,4 @@ language = "en"
 multilingual = false
 
 [build]
-build-dir = "target/book"
+build-dir = "../target/book"
