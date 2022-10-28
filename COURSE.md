@@ -32,6 +32,15 @@ At the end of the course, the student is able to:
 
 ### A - Introduction to Rust
 #### A1 - Language basics
+This module introduces the first basic concepts of Rust. It motivates why the Rust language exists, and what students gain from learning it. After completing this module, the student is able to:
+- Describe the problems the Rust programming language aims to solve
+- Describe the design goals of Rust
+- Decide whether Rust is a fitting technology to write a particular application in, given requirements
+- Solve basic owership-related compiler errors
+- Write Rust programs using basic syntax and operators
+- Use basic methods to convert between types
+- Explain panic behaviour of a Rust application and identify some panicking operations.
+
 - **'Why' of Rust language**
     - Problems Rust intends to solve
     - The fields it operates in
@@ -60,7 +69,6 @@ At the end of the course, the student is able to:
 - **Structure of a Rust application**
     - imports
     - main function
-    - modules
 - **Conversions**
     - casting/`as` and pitfalls
     -`.into()`, `.try_into()` `T::from()`, `T::try_from()`, but not yet the traits they originate from
