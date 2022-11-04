@@ -3,6 +3,7 @@
 This course is divided into separate modules, detailed below. Module A1-A4 are introductory, and contain what's needed to learn about the contents of the other modules. Therefore, you're advised to teach modules A1-A4 at the start of the course, but you can pick and mix the other modules.
 
 ## Learning objectives
+
 At the end of the course, the student is able to:
 - Describe the problems Rust aims to solve, why, and how (A1)
 - Identify the design goals of Rust (A1)
@@ -311,18 +312,19 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 - (60m) Work on exercises in small groups
 
 
-## Course schedule
-| Week | Date | Module | Notes                                     |
-| ---- | ---- | ------ | ----------------------------------------- |
-| 1    |      | 0, A1  | Course intro                              |
-| 2    |      | A2, A3 |                                           |
-| 3    |      | A4     |                                           |
-| 4    |      | B      |                                           |
-| 5    |      | C      |                                           |
-| 6    |      | D      | Project proposal reminder                 |
-| 7    |      | E      | Deadline project proposal                 |
-| 8    |      | F      | Project proposal resubmission             |
-| 9    |      | G      | Start final project                       |
-| 10   |      | P      |                                           |
-| 11   |      | P      |                                           |
-| 12   |      | P      | Final project submission and presentation |
+## Course topics & schedule
+
+| Week | Module | Topic                    | Notes               |
+| ---- | ------ | ------------------------ | --------------------|
+| 1    | 0, <br />A1  | Course intro <br />Language basics |                     |
+| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                     |
+| 3    | A4     | Traits and generics      |                     |
+| 4    | B      | Application programming  |                     |
+| 5    | C      | Multitasking             |                     |
+| 6    | D      | Idiomatic Rust patterns  | Project proposal reminder |
+| 7    | E      | Rust for web             | Deadline project proposal |
+| 8    | F      | Safe Unsafe Rust         | Project proposal resubmission |
+| 9    | G      | FFI and Dynamic modules  |                     |
+| 10   | P      | Final project            |                     |
+| 11   | P      | Final project            |                     |
+| 12   | P      | Final project submission and presentation |    |
