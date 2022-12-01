@@ -104,7 +104,7 @@ layout: default
 layout: default
 ---
 # Lecture format
-- Interactivity in lectures and totorials
+- Interactivity in lectures and tutorials
 - Activate prior knowledge
 - Room for discussion
 - Quiz questions

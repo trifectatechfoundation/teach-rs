@@ -792,7 +792,9 @@ There are two mechanisms at play here, generally known as the stack and the heap
 memory from being used is by removing it from the top of the stack and the
 only way to add is to put it on top of the stack.
 * Somehow, as with a lot of CS stuff, we like to turn things around and think
-of stacks growing down instead of up in the real world.
+of stacks growing down instead of up in the real world. That is because they are
+at the end of the virtual memory address range. So if the stack grows, the stack
+pointer (to the current stack frame) is decreased.
 -->
 
 ---
@@ -829,8 +831,8 @@ There are two mechanisms at play here, generally known as the stack and the heap
 </div>
 
 <!--
-* We create a new part of the stack every time we enter a function, meanwhile
-we have a small special bit of memory where the current top of the stack is
+* We create a new part of the stack, called stack frame, every time we enter a function, meanwhile
+we have a small special bit of memory, register, where the current top of the stack is
 recorded.
 -->
 
@@ -900,6 +902,8 @@ frame be?
 </style>
 
 <!--
+BvG: stack frames are not static in size. See the PUSH x86 assembly instruction as a counter example (used when there are not enough registers).
+
 * You can definitely do a lot with just a stack, but really there are some
 scenarios that aren't possible, or can only be done very inefficient when
 we can only ever push and pop from the top of the stack.
@@ -915,8 +919,11 @@ worry about cleaning them up, there are no pointers.
 
 # The Heap
 
+If the lifetime of some data needs to outlive a certain scope, it can not be placed on the stack.
+We need another construct: the heap.
+
 It's all in the name, the heap is just one big pile of memory for you to store
-stuff in, but what part of the heap is in use? What part is available?
+stuff in. But what part of the heap is in use? What part is available?
 
 * Data comes in all shapes and sizes
 * When a new piece of data comes in we need to find a place in the heap that
@@ -1061,11 +1068,13 @@ them somewhere else.
 # Ownership
 
 - There is always ever only one owner of a value
-- Once the owner gets removed from the stack, any associated values on the
+- Once the owner goes out of scope (and is removed from the stack), any associated values on the
   heap will be cleaned up as well
 - Rust has *move semantics* for non-copy types
 
 <!--
+BvG: what about Arc/Rc types? Only if the last one goes out of scope, the heap memory is freed (in the text above, that could imply there are multiple 'owners'). Might be better to state: 'every variable', or 'every stack value'.
+
 * What we've just seen is the Rust ownership system in action.
 * In Rust, every part of memory in use always has an owner variable. That
 variable must always be the only owner, there can't be multiple owners.
@@ -1467,14 +1476,16 @@ layout: default
 * We have seen how Rust gives compile errors when you do not correctly manage
 your memory
 * Using this we can say, with confidence, that our code does not have any of
-these kinds bugs
-* Use after free
-* Double free
-* Null pointer dereference
-* Buffer overflows (with slices)
-* Race conditions
+these kinds bugs:
+  * Use after free
+  * Double free
+  * Null pointer dereference
+  * Buffer overflows (with slices)
+  * Race conditions
 
 <!--
+BvG: I would skip race conditions, too complicated for this stage.
+
 * With all this machinery setup we can prevent whole classes of bugs, they
 simply cannot happen because programs that would contain those bugs would
 not compile

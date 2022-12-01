@@ -715,6 +715,10 @@ layout: default
 
 ## *More in exercises*
 
+<!-- BvG: unclear why this slide is in here. Leaving it out does not change the overall story. Probably should mention
+  that `cargo bench` is often used in project to get an idea of the performance.
+-->
+
 ---
 layout: default
 ---
