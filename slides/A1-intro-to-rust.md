@@ -1460,8 +1460,9 @@ callee ownership to something we created.
 -->
 
 ---
-
-# So far
+layout: default
+---
+# Summary
 
 * We have seen how Rust gives compile errors when you do not correctly manage
 your memory
@@ -1478,39 +1479,3 @@ these kinds bugs
 simply cannot happen because programs that would contain those bugs would
 not compile
 -->
-
-
----
-layout: default
----
-# Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
-
----
-layout: default
----
-# Practicalities
-<!-- Use this slide to announce any organizational information -->
-
----
-layout: end
----
-<!-- Below are example slides you can use -->
-
----
-layout: playground
----
-# Code example
-
-```rust
-fn main() {
-    println!("Hello world!");
-}
-```
-    <!-- Slide for code examples with a link to Rust playground -->
-
----
-layout: iframe
-url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&code=fn%20main()%20%7B%0A%20%20println!(%22Hello%20world!%22)%3B%0A%7D
----
-<!-- Iframe slide containing Rust playground -->

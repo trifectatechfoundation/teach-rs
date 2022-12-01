@@ -25,8 +25,7 @@ fn main() -> anyhow::Result<()> {
     };
     println!("deserialized = {:?}", post);
 
-    let post_json: String =
-        todo!("use `serde_json` to convert `post` to a string");
+    let post_json: String = todo!("use `serde_json` to convert `post` to a string");
     println!("serialized = {:?}", post_json);
 
     Ok(())
