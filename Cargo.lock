@@ -188,7 +188,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "exercise-b1"
+name = "exercise-b-1"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -197,7 +197,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "exercise-b3"
+name = "exercise-b-3"
 version = "0.1.0"
 dependencies = [
  "criterion",
