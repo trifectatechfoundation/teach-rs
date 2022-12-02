@@ -36,18 +36,14 @@ Optionally quickly introduce yourself, add photo
 layout: default
 ---
 # Last time...
-- Ownership model
-- Move semantics
-<!-- Recap on content from last time that current subject builds on -->
+- [TODO: add last module's topics]
 
----
-layout: section
----
-# Quick questions
+*Any questions?*
 
-Any questions on last time's subject?
-<!-- Keep it short. Any longer explanations can be deferred to tutorial -->
-
+<!--
+- Recap on content from last time that current subject builds on
+- Keep it short. Any longer explanations can be deferred to tutorial
+-->
 ---
 layout: section
 ---
