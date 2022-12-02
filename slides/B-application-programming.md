@@ -66,7 +66,9 @@ layout: default
 Learn how to use Rust for writing high quality bigger applications
 
 <!--
-Introduce today's subject
+- Introduce today's subject
+- The module is about actually *using* Rust. You're not going to  be productive writing Rust applications
+if you've only been introduced to the Rust syntax. Starting with this module, we will put it into practise.
 -->
 
 ---
@@ -80,8 +82,6 @@ layout: default
 - Create a nice API
 - Test and benchmark your code
 - Use common crates (tutorial)
-- Improve compile time (tutorial)
-
 
 ---
 layout: section
@@ -128,10 +128,10 @@ layout: default
 
 # Terminology
 
-- **Namespace:** Space a Rust item is defined in
-- **Crate:** A package containin Rust source code. Library or binary.
-- **Module:** Logical part of crate, public or private visibility
-- **Workspace:** Set of related crates
+- **Namespace:** Space a Rust item is defined in.
+- **Crate:** A package containing Rust source code. Library or binary.
+- **Module:** Logical part of crate. Public or private visibility.
+- **Workspace:** Set of related crates.
 
 ---
 layout: default
@@ -153,7 +153,11 @@ $ tree my-first-app
 
 *Pass `--lib` instead of `--bin` to create a library*
 
+<!--
+- The way you set up a crate is by running `cargo-new`. You can pass it a name, and indicate whether you want to set up a library or an application.
 
+- This  will generate a `Cargo.toml` file as well as a demo  source file.
+-->
 ---
 layout: default
 ---
@@ -175,6 +179,13 @@ edition = "2021"
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 ```
+
+<!--
+- By default, dependencies are pulled from crates.io
+- In order to add a dependency, you can use `cargo add`
+- Pass it the names of the dependencies you'd like to use
+- `cargo add` will add the dependencies to your `Cargo.toml` file, making it available for your code to use.
+-->
 
 ---
 layout: default
@@ -208,6 +219,11 @@ fn main() {
 
 ```
 
+<!--
+- To refer to an item from a dependency, you'll either have to import it, or qualify it.
+- Importing an item is done with the `use` keyword like on the top of this file. You can now use the imported item without further qualification
+- Qualifying a path is done using the `::` namespace separator
+-->
 
 ---
 layout: default
