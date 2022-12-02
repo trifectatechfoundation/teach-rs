@@ -1,0 +1,12 @@
+.slidev-code {
+  white-space: pre-wrap;
+}
+
+.slidev-code-line-numbers .no-line-numbers .slidev-code code .line::before {
+  display: none;
+}
+
+a.playground {
+  display: inline-block;
+  margin-bottom: 10px;
+}
