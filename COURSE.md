@@ -32,6 +32,15 @@ At the end of the course, the student is able to:
 
 ### A - Introduction to Rust
 #### A1 - Language basics
+This module introduces the first basic concepts of Rust. It motivates why the Rust language exists, and what students gain from learning it. After completing this module, the student is able to:
+- Describe the problems the Rust programming language aims to solve
+- Describe the design goals of Rust
+- Decide whether Rust is a fitting technology to write a particular application in, given requirements
+- Solve basic owership-related compiler errors
+- Write Rust programs using basic syntax and operators
+- Use casts to convert between primitive types
+- Describe some numeric type casting pitfalls
+
 - **'Why' of Rust language**
     - Problems Rust intends to solve
     - The fields it operates in
@@ -42,32 +51,22 @@ At the end of the course, the student is able to:
     - Where Rust really shines
     - Where Rust maturity lacks
     - What Rust wasn't designed for
+- **Basic syntax and operators**
+    - main entrypoint
+    - Primitive types, tuples, arrays
+    - Control flow
+    - Scopes, blocks
+    - Statements vs expressions
+    - Functions
+    - Loops
+- **Conversions**
+    - casting/`as` and pitfalls
 - **Introduction to ownership**
     - Clones vs copies
     - Move semantics
     - Value ownership
     - Types of references
     - Borrowing rules
-- **basic syntax and operators**
-    - Types: primitives/struct/enum/union/slice
-    - Control flow
-    - Scopes, blocks, statics
-    - Expressions
-    - Functions
-    - Pattern matching
-    - Loops
-    - ...
-- **Structure of a Rust application**
-    - imports
-    - main function
-    - modules
-- **Conversions**
-    - casting/`as` and pitfalls
-    -`.into()`, `.try_into()` `T::from()`, `T::try_from()`, but not yet the traits they originate from
-- **Panicking: explicit/unwrap/overflow**
-    - What happens on panic
-    - `no_panic`
-    - When panicking is OK, and when it's not
 
 **Exercises**
 *TBD*
@@ -111,17 +110,23 @@ At the end of the course, the student is able to:
 
 #### A3 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
-    - Types: /String/Vec/Box/Option/Result
+    - Types: struct/enum/union/slice/String/Vec/Box/Option/Result
     - Impl blocks
     - Coercion
     - Closures
+    - Statics
+    - Pattern matching
 - **Pointers vs references, reference meta**
-- **Copy, clone, moves**
 - **Ownership, borrowing, lifetimes**
+    - Lifetime annotations
     - NLL: https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html#non-lexical-lifetimes
 - **Lifetime annotation, elision**
     - Why needed
     - Syntax
+- **Panicking: explicit/unwrap/overflow**
+    - What happens on panic
+    - `no_panic`
+    - When panicking is OK, and when it's not
 
 **Exercises**
 *TBD*
@@ -129,7 +134,7 @@ At the end of the course, the student is able to:
 #### A4 - Traits and generics
 - **Traits**
 - **Commonly used traits from std**
-    - Into/From/TryFrom/TryInto (referring to A1)
+    - Into/From/TryFrom/TryInto, compared to `as` from A1
     - Copy/Clone
     - Debug/Display
     - Iterator/IntoIter/FromIter
@@ -334,18 +339,19 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 - (60m) Work on exercises in small groups
 
 
-## Course schedule
-| Week | Date | Module | Notes                                     |
-| ---- | ---- | ------ | ----------------------------------------- |
-| 1    |      | 0, A1  | Course intro                              |
-| 2    |      | A2, A3 |                                           |
-| 3    |      | A4     |                                           |
-| 4    |      | B      |                                           |
-| 5    |      | C      |                                           |
-| 6    |      | D      | Project proposal reminder                 |
-| 7    |      | E      | Deadline project proposal                 |
-| 8    |      | F      | Project proposal resubmission             |
-| 9    |      | G      | Start final project                       |
-| 10   |      | P      |                                           |
-| 11   |      | P      |                                           |
-| 12   |      | P      | Final project submission and presentation |
+## Course topics & schedule
+
+| Week | Module       | Topic                                                           | Notes                         |
+| ---- | ------------ | --------------------------------------------------------------- | ----------------------------- |
+| 1    | 0, <br />A1  | Course intro <br />Language basics                              |                               |
+| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                               |
+| 3    | A4           | Traits and generics                                             |                               |
+| 4    | B            | Application programming                                         |                               |
+| 5    | C            | Multitasking                                                    |                               |
+| 6    | D            | Idiomatic Rust patterns                                         | Project proposal reminder     |
+| 7    | E            | Rust for web                                                    | Deadline project proposal     |
+| 8    | F            | Safe Unsafe Rust                                                | Project proposal resubmission |
+| 9    | G            | FFI and Dynamic modules                                         |                               |
+| 10   | P            | Final project                                                   |                               |
+| 11   | P            | Final project                                                   |                               |
+| 12   | P            | Final project submission and presentation                       |                               |
