@@ -4,7 +4,6 @@
     "build-0": "slidev build lectures/0-intro.md",
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export lectures/0-intro.md",
-
     "dev-format-lecture": "slidev format-lecture.md",
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
