@@ -97,24 +97,24 @@ layout: default
 
 - their address is not `NULL`
 - their address is well-aligned for type `T`
-- they point into memory belonging to the process 
+- they point into memory belonging to the process
 
 These guarantees make rust memory safe
 
 ---
 layout: default
 ---
-# The borrow checker 
+# The borrow checker
 
 The borrow + type checker ensures that these conditions are met, but the borrow checker is conservative...
 
 ---
 layout: default
 ---
-# fail-proof borrow checker 
+# fail-proof borrow checker
 
 ```rust
-fn borrow_checker<P>(program: P) -> bool { 
+fn borrow_checker<P>(program: P) -> bool {
     false
 }
 ```
@@ -157,7 +157,7 @@ let reference: &u8 = unsafe {
 - unsafe functions
 
 ```rust
-unsafe function foobar() { 
+unsafe function foobar() {
     ...
 }
 ```
@@ -182,14 +182,55 @@ let reference: &u8 = unsafe {
 ---
 layout: default
 ---
-# So Rust is just as bad as C? 
+# So Rust is just as bad as C?
 
-- if memory safety can be broken, how is rust any better than C? 
+- if memory safety can be broken, how is rust any better than C?
 
 ---
 layout: default
 ---
-# Using libc functions 
+
+# `transmute`
+
+e.g. bitcast a `i64` into a `f64`:
+
+```rust
+std::mem::transmute::<i64, f64>(42i64)
+```
+
+there are still checks! `transmute` errors when the size does not correspond
+
+```
+error[E0512]: cannot transmute between types of different sizes, or dependently-sized types
+ --> src/main.rs:2:12
+  |
+2 |   unsafe { std::mem::transmute::<i64, f32>(42i64) };
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: source type: `i64` (64 bits)
+  = note: target type: `f32` (32 bits)
+```
+
+---
+layout: default
+---
+
+# `transmute`
+
+Only some bit patterns are valid for a type. Creating an invalid bit pattern is UB!
+
+Only `0b0000_0000` and `0b0000_0001` are valid `bool` bit patterns. This is instant UB:
+
+```rust
+std::mem::transmute::<u8, bool>(2u8)
+```
+
+In general the memory representation of rust values is explicitly undefined. Bitcasting is therefore very unsafe!
+
+---
+layout: default
+---
+# Using libc functions
 
 ```rust
 // pub unsafe extern "C" fn getpid() -> pid_t
@@ -202,7 +243,7 @@ println!("My pid is {}", unsafe { libc::getpid() });
 ---
 layout: default
 ---
-# Using libc functions 
+# Using libc functions
 
 ```rust
 // pub fn id() -> u32
@@ -254,6 +295,14 @@ unsafe fn vperilps(mut current: __m128, mask: (i32, i32, i32, i32)) -> __m128 {
     current
 }
 ```
+
+---
+layout: default
+---
+
+# Example: recreate `RocResult`
+
+
 
 ---
 layout: default
