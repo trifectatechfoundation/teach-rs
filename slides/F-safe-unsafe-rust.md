@@ -93,7 +93,7 @@ layout: default
 ---
 layout: default
 ---
-# References `&T` and `&mut T` guarantee that
+# Rust guarantees that references are valid
 
 - their address is not `NULL`
 - their address is well-aligned for type `T`
@@ -106,7 +106,20 @@ layout: default
 ---
 # The borrow checker
 
-The borrow + type checker ensures that these conditions are met, but the borrow checker is conservative...
+The borrow + type checker ensures that these conditions are met
+
+- We want a 100% guarantee that when the compiler says 👍
+that really means our program is correct
+
+
+- An analysis that is wrong in 1 out of 100 cases is worthless
+
+---
+layout: default
+---
+# The borrow checker is conservative
+
+- "if it is not a hell yes, it's a no"
 
 ---
 layout: default
@@ -135,16 +148,26 @@ layout: default
 
 There are (many) **useful** programs that the rust borrow checker does not accept
 
-- interacting with the hardware/OS
 - interacting with other languages (FFI)
+- interacting with the OS/hardware
 - optimization
 
 ---
 layout: default
 ---
-# Unsafe
+# Unsafe, morally
 
-- unsafe blocks
+In rust "unsafe" means "I, the programmer, am responsible for checking the correctness of this code"
+
+The type and borrow checker are still in fully effect. But we can use types like raw pointers on which the conditions that the type/borrow checker places are less strict.
+
+---
+layout: default
+---
+# Unsafe in code
+
+
+- unsafe blocks: "programmer must check the rules"
 
 ```rust
 // BAD!
@@ -154,7 +177,8 @@ let reference: &u8 = unsafe {
     &*ptr
 };
 ```
-- unsafe functions
+
+- unsafe functions: "programmer must check the preconditions"
 
 ```rust
 unsafe function foobar() {
@@ -165,7 +189,88 @@ unsafe function foobar() {
 ---
 layout: default
 ---
-# Undefined Behavior
+# Undefined Behavior & Optimizations
+
+```rust
+// std::hint::unreachable_unchecked
+pub const unsafe fn unreachable_unchecked() -> !
+```
+
+- `unsafe fn`: to call this function, the programmer has to check the preconditions
+- returns "never", the type of an infinite loop (diverging computation)
+
+---
+layout: default
+---
+# Undefined Behavior & Optimizations
+
+```rust {all|2}
+if expensive_pure_computation() == 0 {
+    println!("hello there");
+    unsafe { std::hint::unreachable_unchecked() }
+} else {
+    different_computation()
+}
+```
+
+- that print is unreachable if the rest of the branch is unreachable
+
+---
+layout: default
+---
+# Undefined Behavior & Optimizations
+
+```rust {all|2}
+if expensive_pure_computation() == 0 {
+    unsafe { std::hint::unreachable_unchecked() }
+} else {
+    different_computation()
+}
+```
+
+- actually the whole branch is unreachable
+
+---
+layout: default
+---
+# Undefined Behavior & Optimizations
+
+```rust
+expensive_pure_computation() == 0;
+different_computation()
+```
+
+- actually that whole condition does not need to be computed
+
+---
+layout: default
+---
+# Undefined Behavior & Optimizations
+
+```rust {all|2}
+if expensive_pure_computation() == 0 {
+    println!("hello there");
+    unsafe { std::hint::unreachable_unchecked() }
+} else {
+    different_computation()
+}
+```
+
+becomes just
+
+```rust
+different_computation()
+```
+
+- but if the condition turns out to be reachable, behavior is confusing
+
+
+---
+layout: default
+---
+# Undefined Behavior & Optimizations
+
+- misusing `unreachable_unchecked` is very explicit. There are many more subtle ways to introduce UB
 
 ```rust
 // BAD!
@@ -176,15 +281,8 @@ let reference: &u8 = unsafe {
 };
 ```
 
-- compilers make assumptions
-- when broken, the behavior of the program is undefined
-- safe rust has no UB
----
-layout: default
----
-# So Rust is just as bad as C?
+- the rust compiler assumes that references are valid, so this snippet contains UB!
 
-- if memory safety can be broken, how is rust any better than C?
 
 ---
 layout: default
@@ -225,7 +323,23 @@ Only `0b0000_0000` and `0b0000_0001` are valid `bool` bit patterns. This is inst
 std::mem::transmute::<u8, bool>(2u8)
 ```
 
-In general the memory representation of rust values is explicitly undefined. Bitcasting is therefore very unsafe!
+The memory representation of rust values is explicitly undefined! Bitcasting is therefore very unsafe!
+
+---
+layout: default
+---
+# So Rust is just as bad as C?
+
+- if memory safety can be broken, how is rust any better than C?
+
+---
+layout: default
+---
+# Examples
+
+- interacting with other languages (FFI)
+- interacting with the OS/hardware
+- optimization
 
 ---
 layout: default
@@ -300,9 +414,154 @@ unsafe fn vperilps(mut current: __m128, mask: (i32, i32, i32, i32)) -> __m128 {
 layout: default
 ---
 
-# Example: recreate `RocResult`
+# Example: Memory consumption of linked lists
 
+```rust
+enum LinkedList {
+    Nil,
+    Cons(u64, Box<LinkedList>),
+}
 
+use LinkedList::*;
+
+impl LinkedList {
+    fn range(range: Range<u64>) -> Self {
+        let mut list = Nil;
+        for value in range.rev() {
+            list = Cons(value, Box::new(list));
+        }
+
+        list
+    }
+
+    fn sum(&self) -> u64 {
+        match self {
+            Nil => 0,
+            Cons(first, rest) => first + rest.sum(),
+        }
+    }
+}
+```
+
+---
+layout: default
+---
+
+# Example: Memory consumption of linked lists
+
+```rust {all|20|all}
+enum LinkedList {
+    Nil,
+    Cons(u64, Box<LinkedList>),
+}
+
+// could be represented as
+
+struct LinkedList {
+    tag: LinkedListTag,
+    payload: LinkedListUnion,
+}
+
+enum LinkedListTag {
+    Nil = 0,
+    Cons = 1,
+}
+
+union LinkedListUnion {
+    nil: (),
+    cons: (u64, std::mem::ManuallyDrop<Box<LinkedList>>),
+}
+```
+
+---
+layout: default
+---
+
+# Example: Memory consumption of linked lists
+
+- what is the memory layout of this type?
+
+```rust {all}
+struct LinkedList {
+    tag: LinkedListTag,
+    payload: LinkedListUnion,
+}
+
+enum LinkedListTag {
+    Nil = 0,
+    Cons = 1,
+}
+
+union LinkedListUnion {
+    nil: (),
+    cons: (u64, std::mem::ManuallyDrop<Box<LinkedList>>),
+}
+```
+
+- field order
+- alignment
+- size
+
+---
+layout: default
+---
+
+# Example: Memory consumption of linked lists
+
+```rust {all|1-6|10|11-14|19-24|all}
+struct LinkedList(*const Node);
+
+struct Node {
+    first: u64,
+    rest: LinkedList,
+}
+
+impl LinkedList {
+    fn range(range: Range<u64>) -> Self {
+        let mut list = LinkedList(std::ptr::null());
+        for value in range.rev() {
+            let node = Node { first: value, rest: list };
+            list = LinkedList(Box::into_raw(Box::new(node)));
+        }
+
+        list
+    }
+
+    fn sum(&self) -> u64 {
+        if self.0.is_null() { 0 } else {
+            let node = unsafe { std::ptr::read(self.0) };
+            node.first + node.rest.sum()
+        }
+    }
+}
+```
+
+---
+layout: default
+---
+
+# Example: Memory consumption of linked lists
+
+```rust
+struct LinkedList(Option<Box<Node>>);
+
+struct Node {
+    first: u64,
+    rest: LinkedList,
+}
+
+impl LinkedList {
+    fn range(range: Range<u64>) -> Self {
+        todo!()
+    }
+
+    fn sum(&self) -> u64 {
+        todo!()
+    }
+}
+```
+
+### Question: what is the memory layout of LinkedList. What is the size?
 
 ---
 layout: default

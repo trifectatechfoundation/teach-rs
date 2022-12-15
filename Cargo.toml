@@ -25,3 +25,7 @@ members = [
     "slides/examples/B-application-programming",
     "slides/examples/E-async-web",
 ]
+
+exclude = [
+    "exercises/book"
+]
