@@ -3,7 +3,7 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - B: Application programming"
+info: 'Rust - B: Application programming'
 drawings:
   persist: false
 fonts:
@@ -11,10 +11,11 @@ fonts:
 layout: cover
 title: 'Rust - B: Application programming'
 ---
+
 # Rust programming
 Module B: Application programming
 <!-- Start with welcome, students entering -->
-<!-- TODO add subject code -->
+
 
 ---
 layout: three-slots
@@ -63,7 +64,7 @@ layout: default
 
 # In this module
 
-Learn how to use Rust for writing high quality bigger applications
+Learn how to use Rust for writing high quality applications
 
 <!--
 - Introduce today's subject
@@ -128,10 +129,18 @@ layout: default
 
 # Terminology
 
-- **Namespace:** Space a Rust item is defined in.
 - **Crate:** A package containing Rust source code. Library or binary.
-- **Module:** Logical part of crate. Public or private visibility.
+- **Module:** Logical part of crate, containing items.
 - **Workspace:** Set of related crates.
+
+<!--
+Let's get started with some terminology involving Rust application structure.
+
+- A Module is a container in which items are defined, such as types, traits and functions.
+- In Rust, packages of source code are called 'crates'. They can define a library, or binary, or even both. Crates contain modules
+- Then there are workspaces, bundles of related crates that may or may not share dependencies. For example, you may split a large application into several crates. Those crates can still be loosely connected using a workspace. This helps avoiding issues with dependency versions and may improve build times.
+
+-->
 
 ---
 layout: default
@@ -155,13 +164,14 @@ $ tree my-first-app
 
 <!--
 - The way you set up a crate is by running `cargo-new`. You can pass it a name, and indicate whether you want to set up a library or an application.
-
 - This  will generate a `Cargo.toml` file as well as a demo  source file.
+- To create a library crate, pass `--lib` insted of `--bin`
+
 -->
 ---
 layout: default
 ---
-# Adding a dependency
+# Adding a crate as dependency
 
 To add a dependency from crates.io:
 ```bash {all|1|3-13|11-13}
@@ -181,9 +191,9 @@ tracing-subscriber = "0.3.16"
 ```
 
 <!--
-- By default, dependencies are pulled from crates.io
-- In order to add a dependency, you can use `cargo add`
-- Pass it the names of the dependencies you'd like to use
+- In Rust, adding crates as dependencies is made easy using Cargo. That way, you can import all kinds of libraries that help you with developing your application.
+- By default, dependencies are pulled from crates.io, Rusts global crate registry.
+- In order to add a dependency to your project, you can use `cargo add`. Pass it the names of the dependencies you'd like to use.
 - `cargo add` will add the dependencies to your `Cargo.toml` file, making it available for your code to use.
 -->
 
@@ -195,7 +205,7 @@ layout: default
 
 Dependencies from Cargo.toml can be:
   - imported with a `use`
-  - qualified directly using namespace separator `::`
+  - qualified directly using path separator `::`
 
 ```rust {all|3-4,16-17|7-10}
 // Import an item from this crate, called `my_first_app`
@@ -222,7 +232,8 @@ fn main() {
 <!--
 - To refer to an item from a dependency, you'll either have to import it, or qualify it.
 - Importing an item is done with the `use` keyword like on the top of this file. You can now use the imported item without further qualification
-- Qualifying a path is done using the `::` namespace separator
+- Qualifying a path is done using the `::` path separator
+- Which method of referring to an item depends on how readable it makes your code in a certain context.
 -->
 
 ---
@@ -242,6 +253,12 @@ my_local_dependency = { path = "../path/to/my_local_dependency" }
 my_git_dependency = { git = "<Git SSH or HTTPS url>", rev="<commit hash or tag>", branch = "<branch>" }
 ```
 
+<!--
+ - Other sources Cargo can pull dependencies from are your local file system or Git.
+ - To specify a dependency that lives on your file system, use the `path` key.
+ - Dependencies from Git can be included using the `git` key, with which you specify a Git URL. Use `rev`, `branch` or `tag` to further specify a version.
+-->
+
 ---
 layout: default
 ---
@@ -249,25 +266,28 @@ layout: default
 # Modules
 
 - Logical part of a crate
-- Collection of items:
-  - functions
-  - structs
-  - `impl` blocks
-  - other modules
-- Specific visibility
+- Public or private visibility
 - Defined in blocks or files
 
 *Mod structure `!=` file structure*
 
+<!--
+- Rust crates are split up into several modules, which help you keep your code organized.
+- Modules may have public or private visibility.
+- These modules can defined in blocks, or in separate files. Note that the module file structure may not correspond to the module structure!
+
+Let's take a look at how defining modules work.
+
+-->
 
 ---
 layout: default
 ---
 # Module block
-```rust {all|1-3,20|4-6,13|8-12|15-19}
+```rust {all|1-3,20|4-6,13|8-12,18|15-19}
 // Public module
 // Accessible from outside
-pub mod my_mod {
+pub mod my_pub_mod {
     // Private module
     // Only accessible from parent module
     mod private_mod {
@@ -282,10 +302,18 @@ pub mod my_mod {
     // Private struct
     // Only accessible from current and child modules
     struct PrivStruct {
-        public: private_mod::PubStruct,
+        field: private_mod::PubStruct,
     }
 }
 ```
+
+<!--
+Here's an example containing some modules defined with module blocks, using the `mod` keyword and braces.
+- The outer module, `my_pub_mod`, can be accessed from ancestor modules. It is decorated with the `pub` keyword.
+- It contains a private mod: `my_private_mod`. Note the absence of the `pub` keyword. This module is only visible for the module it is defined in.
+- The struct `PubStruct` that is defined in `my_private_mod` is visible from wherever `my_private_mod` is, and can thus be referred to from `my_pub_mod`
+- `PrivStruct` is only accessible from current and child modules.
+-->
 
 ---
 layout: default
@@ -307,6 +335,11 @@ $ tree src
 └── some_mod.rs
 ```
 
+<!--
+Apart from blocks, modules can be defined in separate files.
+- You can either create a file `some_mod.rs` directly,
+- Or keep related modules together in a seprate directory. Of the modules defined in the directory, `mod.rs` is the parent.
+-->
 
 ---
 layout: default
@@ -315,6 +348,7 @@ layout: default
 # Module files
 
 Mod structure defined in other modules:
+
 
 **lib.rs**
 ```rust {all|1-2|3-4|5-6}
@@ -325,6 +359,20 @@ mod another_mod;
 // Imports an item defined in ./another_mod/mod.rs
 use another_mod::Item;
 ```
+
+```bash
+$ tree src
+.
+├── another_mod
+│   └── mod.rs
+├── lib.rs
+├── main.rs
+└── some_mod.rs
+```
+
+<!--
+And here's how you declare the module structure.
+-->
 
 ---
 layout: default
@@ -338,74 +386,34 @@ layout: default
 
 *If your file gets unwieldy, move code to new module file*
 
----
-layout: default
----
-# Multiple binaries & examples
-
-- Binary entries: to `./src/bin/`
-- Examples: `./examples/`
-
-*Add entry to Cargo.toml for each example*
-
-```bash {all|6,9-10|4-5}
-$ tree
-.
-├── Cargo.toml
-├── examples
-│   └── my_example.rs
-└── src
-    ├── another_mod
-    │   └── mod.rs
-    ├── bin
-    │   └── my_app.rs
-    ├── lib.rs
-    ├── main.rs
-    └── some_mod.rs
-$ cat Cargo.toml
-# -snip-
-[[example]]
-name = "do_stuff"
-```
+<!--
+How to decide whether to declare modules in files or blocks? That again depends on context. Make your code readable and your intent clear.
+-->
 
 ---
 layout: default
 ---
 
-# Binaries vs examples
+# Binaries and examples
 
 - Use multiple binaries if you are creating
   - multiple similar executables 
-  - with the same dependencies
+  - that share code
 - Create examples to show users how to use your library
 
-*Define a lib.rs as root module to organize shared code*
-
-
----
-layout: default
----
-# Workspaces
-Bundle crates together
-- Further organize code
-- Allow less dependencies for uses
-
-```bash
-$ cat Cargo.toml
-[workspace]
-# Provide paths to directory the crates
-# Cargo.toml files reside in
-members = [
-    "path/to/my_first_app",
-    "path/to/my_second_app",
-]
-```
+<!--
+- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share siginificant parts of code.
+- If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
+-->
 
 ---
 layout: section
 ---
 # Creating a nice API
 
+<!--
+    A big part of developing a larger project is to define a nice, readable API that clarifies intent. Let's have a look at some guidelines Rust specifies in order to make crates useful for others or even future you.
+-->
 ---
 layout: two-cols
 ---
@@ -413,12 +421,17 @@ layout: two-cols
 # Rust API guidelines
 
 - Defined by Rust project
-- [Checklist](https://rust-lang.github.io/api-guidelines/checklist.html)
-
-**Read the checklist, use in final project and exercises!**
+- [Checklist available](https://rust-lang.github.io/api-guidelines/checklist.html) (Link in exercises)
 
 ::right::
-<img src="images/B-api-guidelines.png" style="margin-top: 20%; margin-left:5%;max-width: 100%; max-height: 90%;">
+<img src="/images/B-api-guidelines.png" style="margin-top: 20%; margin-left:5%;max-width: 100%; max-height: 90%;">
+
+
+**Read the checklist, use it!**
+
+<!--
+To improve consistency between crates, Rust defines a whole lot of guidelines. There's even a checklist available. In this section, we'll focus on some guidelines. However, make sure to use the checklist for all code you write in exercises!
+-->
 
 ---
 layout: default
@@ -431,7 +444,14 @@ Make your API
 - Flexible
 - Obvious
 
-**Next: Some low-hanging fruits**
+**Next up: Some low-hanging fruits**
+
+<!--
+In general, you want to make your API unsurprising, flexible and obvious.
+- An unsurprising API uses patterns that are broadly used, allowing the user to guess how the interface is structured.
+- Flexible APIs are suitable for many applications, and only as restrictive as they inherently need to be.
+- Make your API obvious to enable users to quickly understand rules of your library.
+-->
 
 ---
 layout: section
@@ -439,19 +459,43 @@ layout: section
 Make your API
 # Unsurprising
 
+<!--
+So, how to make your API unsurprising?
+-->
 ---
 layout: default
 ---
+# Naming your methods
 
-# Casing conventions
-From [API guidelines](https://rust-lang.github.io/api-guidelines/naming.html#c-case):
-| **Item**                                             | **Convention**                                                 |
-| ---------------------------------------------------- | -------------------------------------------------------------- |
-| Modules, Functions, Methods, Macros, Local variables | `snake_case`                                                   |
-| Types, Traits, Enum variants                         | `UpperCamelCase`                                               |
-| Statics, Constants                                   | `SCREAMING_SNAKE_CASE`                                         |
-| Type parameters                                      | concise `UpperCamelCase`, usually single uppercase letter: `T` |
-| Lifetimes                                            | short lowercase, usually a single letter: `'a`, `'de`, `'src`  |
+```rust {all|7-10|12-15}
+pub struct S {
+    first: First,
+    second: Second,
+}
+
+impl S {
+    // Not get_first.
+    pub fn first(&self) -> &First {
+        &self.first
+    }
+
+    // Not get_first_mut, get_mut_first, or mut_first.
+    pub fn first_mut(&mut self) -> &mut First {
+        &mut self.first
+    }
+}
+```
+
+Other example: conversion methods `as_`, `to_`, `into_`, name depends on:
+- Runtime cost 
+- Owned &harr; borrowed
+
+
+<!--
+An easy way of making your API unsurprising is by adhering to naming conventions.
+- For example, the guidelines specify a naming convention for getters. Note that getter names do not start with 'get', and that the mutable getter ends with 'mut'.
+- Another example is the way conversion methods are named, based on their runtime cost and wheter the conversion is between refences, owned values, or from reference to owned and vice-versa. 
+-->
 
 ---
 layout: two-cols
@@ -480,12 +524,18 @@ layout: two-cols
 - `serde::Serialize`
 - `serde::Deserialize`
 
+<!--
+Here's a list of common traits to implement or derive automatically, making your types more useful to others
+-->
 
 ---
 layout: section
 ---
 Make your API
 # Flexible
+<!--
+Now, let's take a look at some ways to make your API flexible
+-->
 
 ---
 layout: default
@@ -505,13 +555,19 @@ pub fn add_generic<O, T: std::ops::Add<Output = O>>(x: T, y: T) -> O {
 }
 ```
 
+<!--
+An great way to lift restrictions on your API is to write your functions in terms of traits. That is, use generics to desribe what exactly is needed to perform a certain action.
+- In this example, the first function only accepts `u32`, whereas there are many other numeric types for which addition makes sense.
+- The second example, though, accepts anything for which the `Add` trait is implemented. It is even generic over the addition output.
+-->
+
 ---
 layout: default
 ---
 
 # Accept borrowed data if possible
 
-- User decides data storage location (heap vs. stack)
+- User decides whether calling function should own the data
 - Avoids unecessary moves
 - Exception: non-big array `Copy` types
 
@@ -532,11 +588,21 @@ pub fn manipulate_large_struct_borrowed(large: &mut LargeStruct) {
 }
 ```
 
+<!--
+An even neater way to make your API flexible is by allowing the user to decide whether the data that is passed to your function is owned by the calling function or not. This is done by accepting borrowed data wherever possible. This avoids unnecessary moves. An exception to this guideline is for `Copy` types, as they are cheap to clone. 
+- The first function in the example moves the `LargeStruct` into its own scope, and then moves it out again. That may be costly and requires ownership from calling function!
+- The second function merely borrows the `LargeStruct`, which is cheap and flexible.
+-->
+
 ---
 layout: section
 ---
 Make your API
 # Obvious
+
+<!--
+Lastly, we'll make our APIs obvious
+-->
 
 ---
 layout: two-cols
@@ -568,7 +634,16 @@ pub struct MyDocumentedStruct {
 $ cargo doc --open
 ```
 ::right::
-<img src="images/B-rustdoc.png" style="margin-left:5%;max-width: 100%; max-height: 90%;">
+<img src="/images/B-rustdoc.png" style="margin-left:5%;max-width: 100%; max-height: 90%;">
+
+<!--
+Lots of respect for authors of good documentation! If you find writing documentation hard, keep in mind that you may be writing this for your future self.
+
+- A doc comment in Rust starts with three forward-slashes
+- You can add code examples, which can even be tested automatically to ensure they're not out of date after a refactor.
+- Using `cargo doc --open`, you can render documentation locally and open it in your browser. Here's how it looks: [see image]
+
+-->
 
 ---
 layout: default
@@ -580,7 +655,7 @@ Make the type system work for you!
 
 ```rust {all|1-3,14,15,17|5-12,14,16,17}
 fn enable_led(enabled: bool) {
-    todo!()
+    todo!("Enable it")
 }
 
 enum LedState {
@@ -589,7 +664,7 @@ enum LedState {
 }
 
 fn set_led_state(state: LedState) {
-    todo!()
+    todo!("Enable it")
 }
 
 fn do_stuff_with_led() {
@@ -598,11 +673,26 @@ fn do_stuff_with_led() {
 }
 ```
 
+<!--
+Rusts type system is awesome. Use it to you advantage by enbedding semantics into your types.
+- As an example, the `enable_led` method takes a `bool`. The calling code does not express intent as much as it could.
+- The `set_led_state`, however, takes a `LedState` variant, which clearly expresses what the developer was trying to do.
+-->
+
 ---
 layout: quote
 ---
 
 # Use Clippy and Rustfmt for all your projects!
+
+```bash
+$ cargo clippy
+$ cargo fmt
+```
+
+<!--
+Use Clippy and Rustfmt to help adhering to the guidelines
+-->
 
 ---
 layout: section
@@ -679,8 +769,9 @@ mod tests {
 }
 ```
 
-<!-- Q: Why should `test_swap_oob` panic? -->
-
+<!--
+Q: Why should `test_swap_oob` panic?
+-->
 
 ---
 layout: default
@@ -716,7 +807,7 @@ layout: default
 
 # Benchmarks
 
-- Test performance of code
+- Test *performance* of code (vs. correctness)
 - Runs a tests many times, yield average execution time
 
 *Good benchmarking is Hard*

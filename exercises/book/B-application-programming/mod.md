@@ -1,4 +1,6 @@
 # Module B - Application programming
+*Code written in this exercise has to adhere to the Rust API Guidelines. [A checklist can be found here.](https://rust-lang.github.io/api-guidelines/checklist.html)*
+
 
 ## B.1 Serializing and deserializing of `String`s with `serde`
 *This exercise is adapted from the [serde_lifetimes exercise](https://github.com/ferrous-systems/teaching-material/blob/main/assignments/serde-lifetimes.adoc) by Ferrous Systems*
@@ -7,10 +9,12 @@ Open `exercises/B1-my-serde-app/src/main.rs`. In there, you'll find some Rust co
 
 We used `todo!()` macros to mark places where you should put code to make the program run. Look at the [`serde_json`](https://docs.rs/serde_json/latest/serde_json/#functions) api for help.
 
-> **Hint**  
-> Serde comes with two traits: `Serializable` and `Deserializable`. These traits can be `derive` d for your `struct` or `enum` types. Other `serde-*` crates use these traits to convert our data type from and to corresponding representation (`serde-json` to JSON, `serde-yaml` to YAML, etc.).
+<details>
+    <summary><b>Hint</b></summary>
+Serde comes with two traits: `Serializable` and `Deserializable`. These traits can be `derive` d for your `struct` or `enum` types. Other `serde-*` crates use these traits to convert our data type from and to corresponding representation (`serde-json` to JSON, `serde-yaml` to YAML, etc.).
+</details>
 
-> ***How come `main` returns an `anyhow::Result<()>`?***  
+> ***How come `main` returns an `anyhow::Result<()>`?***
 > By having `main` return a result, we can bubble errors up all the way to runtime. You can find more information about it in [Rust By Example](https://doc.rust-lang.org/rust-by-example/error/result.html#using-result-in-main). The `anyhow::Result` is a more flexible type of `Result`, which allows for easy conversion of error types.
 
 > ***What is that `r#"...` thing?***  
