@@ -1,5 +1,6 @@
 # Summary
 
+- [0 - Installation](./0-install/mod.md)
 - [A - Introduction to Rust]()
   - [A1 - Language basics]()
   - [A2 - Ecosystem and tools]()
