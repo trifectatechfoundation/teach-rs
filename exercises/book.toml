@@ -1,0 +1,10 @@
+[book]
+authors = ["Henk Oordt"]
+title = "Rust 101 - Exercises"
+
+src = "book"
+language = "en"
+multilingual = false
+
+[build]
+build-dir = "../target/book"

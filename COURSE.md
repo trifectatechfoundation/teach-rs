@@ -32,6 +32,15 @@ At the end of the course, the student is able to:
 
 ### A - Introduction to Rust
 #### A1 - Language basics
+This module introduces the first basic concepts of Rust. It motivates why the Rust language exists, and what students gain from learning it. After completing this module, the student is able to:
+- Describe the problems the Rust programming language aims to solve
+- Describe the design goals of Rust
+- Decide whether Rust is a fitting technology to write a particular application in, given requirements
+- Solve basic owership-related compiler errors
+- Write Rust programs using basic syntax and operators
+- Use casts to convert between primitive types
+- Describe some numeric type casting pitfalls
+
 - **'Why' of Rust language**
     - Problems Rust intends to solve
     - The fields it operates in
@@ -42,34 +51,22 @@ At the end of the course, the student is able to:
     - Where Rust really shines
     - Where Rust maturity lacks
     - What Rust wasn't designed for
+- **Basic syntax and operators**
+    - main entrypoint
+    - Primitive types, tuples, arrays
+    - Control flow
+    - Scopes, blocks
+    - Statements vs expressions
+    - Functions
+    - Loops
+- **Conversions**
+    - casting/`as` and pitfalls
 - **Introduction to ownership**
     - Clones vs copies
     - Move semantics
     - Value ownership
     - Types of references
     - Borrowing rules
-- **basic syntax and operators**
-    - Types: primitives/struct/enum/union/slice
-    - Control flow
-    - Scopes, blocks, statics
-    - Expressions
-    - Functions
-    - Pattern matching
-    - Loops
-    - Comments
-    - Casing conventions
-    - ...
-- **Structure of a Rust application**
-    - imports
-    - main function
-    - modules
-- **Conversions**
-    - casting/`as` and pitfalls
-    -`.into()`, `.try_into()` `T::from()`, `T::try_from()`, but not yet the traits they originate from
-- **Panicking: explicit/unwrap/overflow**
-    - What happens on panic
-    - `no_panic`
-    - When panicking is OK, and when it's not
 
 **Exercises**
 *TBD*
@@ -96,9 +93,11 @@ At the end of the course, the student is able to:
     - test 
     - security
     - bench (Criterion)
-- **Rust Nightly**
+- **Rust versions**
     - Release cycle
+    - stable vs beta vs nightly
     - Unstable features
+    - editions
 - **More resources:**
     - TRPL
     - cheats.rs
@@ -109,19 +108,25 @@ At the end of the course, the student is able to:
 *TBD*
 
 
-#### A3 - Advanced Syntax, Ownership, references
+#### A3 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
-    - Types: /String/Vec/Box/Option/Result
+    - Types: struct/enum/union/slice/String/Vec/Box/Option/Result
     - Impl blocks
     - Coercion
     - Closures
+    - Statics
+    - Pattern matching
 - **Pointers vs references, reference meta**
-- **Copy, clone, moves**
 - **Ownership, borrowing, lifetimes**
+    - Lifetime annotations
     - NLL: https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html#non-lexical-lifetimes
 - **Lifetime annotation, elision**
     - Why needed
     - Syntax
+- **Panicking: explicit/unwrap/overflow**
+    - What happens on panic
+    - `no_panic`
+    - When panicking is OK, and when it's not
 
 **Exercises**
 *TBD*
@@ -129,7 +134,7 @@ At the end of the course, the student is able to:
 #### A4 - Traits and generics
 - **Traits**
 - **Commonly used traits from std**
-    - Into/From/TryFrom/TryInto (referring to A1)
+    - Into/From/TryFrom/TryInto, compared to `as` from A1
     - Copy/Clone
     - Debug/Display
     - Iterator/IntoIter/FromIter
@@ -139,26 +144,51 @@ At the end of the course, the student is able to:
     - PartialEq/Eq/Add/Mul/Div/Sub/PartialOrd/Ord
     - Drop
 - **Generics, trait objects, object safety, const generics**
+    - Static vs dynamic dispatch
+    - when to use generics vs trait objects
 - **Orphan rule**
-- **Macros**
+
 
 **Exercises**
 *TBD*
 
 
 ### B - Application programming
-- **Structure of a Rust project**
+This module is about learning to write actual Rust applications. At the end of this module, the student is able to:
+  - Set up a Rust application and library crate
+  - Add dependencies to a crate
+  - Use the Rust module system to divide a program into logical parts
+  - Write applications that follow the Rust API guidelines
+  - Set up Rust tests and benchmarks
+  - Work with some commonly used crates for logging, argument parsing, deserialization, and testing (Exercise)
+  - Use various methods to improve compile time (Exercise)
+
+**Topics**
 - **Setting up a Rust crate, bin vs lib**
-- **Error handling: enum/anyhow/thiserror**
+  - Commands
+  - Cargo.toml entries
+- **Structure of a Rust project**
+  - Module system
+  - Unit tests/integration tests/benchmarks
+  - Examples
+  - Multiple binaries
+  - Cargo workspaces
 - **[Rust API guidelines](https://rust-lang.github.io/api-guidelines/about.html)**
-- **Selecting dependencies**
+    - (doc) Comments
+    - Casing conventions
 - **Widely used crates: logging/argparse/(de)serialization/testing**
-- **Build scripts**
-- **Conditional compilation, features**
-- **Improving build time**
 
 **Exercises**
-*TBD*
+- Set up a custom project that:
+  - Acts both as a library and a binary crate
+  - Contains some examples
+  - Is divided up into modules
+  - Has unit tests, integration tests, and benchmarks
+  - Uses dependencies for argument parsing, logging, serialization, and benchmarking
+  - Has doc comments according to the Rust API guidelines
+- Generate documentation with `cargo doc`
+- Find and try various methods to improve the project build time, comparing the improvements with `cargo build --timings`
+
 
 ### C - Multitasking
 - **Atomic types**
@@ -176,6 +206,7 @@ At the end of the course, the student is able to:
 - **Typestate**
 - **Builder**
 - **Composition over inheritance**
+- **Error handling: enum/anyhow/thiserror**
 - **Anti patterns**
 - **Cool patterns from std**
     - https://www.reddit.com/r/rust/comments/x1mo16/is_there_any_part_of_the_standard_library_that/
@@ -205,6 +236,7 @@ At the end of the course, the student is able to:
 - **Drop check, ManuallyDrop**
 - **Type memory layout**
 - **MIRI**
+- [Unsafe code guidelines](https://rust-lang.github.io/unsafe-code-guidelines/introduction.html)
 
 **Exercises**
 *TBD*
@@ -224,16 +256,12 @@ At the end of the course, the student is able to:
 *TBD*
 
 
-### H - Optional
-- **Rust on embedded**
-- ****
-
-
 ### P Final project
 
 #### Ideas
 - **Scientific programming**
     - nalgebra
+    - polars
 - **Game development: ggez, bevy**
     - https://www.arewegameyet.com/
 - **GUI application**
@@ -311,18 +339,19 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 - (60m) Work on exercises in small groups
 
 
-## Course schedule
-| Week | Date | Module | Notes                                     |
-| ---- | ---- | ------ | ----------------------------------------- |
-| 1    |      | 0, A1  | Course intro                              |
-| 2    |      | A2, A3 |                                           |
-| 3    |      | A4     |                                           |
-| 4    |      | B      |                                           |
-| 5    |      | C      |                                           |
-| 6    |      | D      | Project proposal reminder                 |
-| 7    |      | E      | Deadline project proposal                 |
-| 8    |      | F      | Project proposal resubmission             |
-| 9    |      | G      | Start final project                       |
-| 10   |      | P      |                                           |
-| 11   |      | P      |                                           |
-| 12   |      | P      | Final project submission and presentation |
+## Course topics & schedule
+
+| Week | Module       | Topic                                                           | Notes                         |
+| ---- | ------------ | --------------------------------------------------------------- | ----------------------------- |
+| 1    | 0, <br />A1  | Course intro <br />Language basics                              |                               |
+| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                               |
+| 3    | A4           | Traits and generics                                             |                               |
+| 4    | B            | Application programming                                         |                               |
+| 5    | C            | Multitasking                                                    |                               |
+| 6    | D            | Idiomatic Rust patterns                                         | Project proposal reminder     |
+| 7    | E            | Rust for web                                                    | Deadline project proposal     |
+| 8    | F            | Safe Unsafe Rust                                                | Project proposal resubmission |
+| 9    | G            | FFI and Dynamic modules                                         |                               |
+| 10   | P            | Final project                                                   |                               |
+| 11   | P            | Final project                                                   |                               |
+| 12   | P            | Final project submission and presentation                       |                               |

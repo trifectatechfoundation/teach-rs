@@ -3,7 +3,7 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: Rust workshop slides
+info: "Rust - X: Y"
 drawings:
   persist: false
 fonts:
@@ -34,15 +34,13 @@ layout: default
 # Last time...
 - Ownership model
 - Move semantics
-<!-- Recap on content from last time that current subject builds on -->
 
----
-layout: section
----
-# Quick questions
+*Any questions?*
 
-Any questions on last time's subject?
-<!-- Keep it short. Any longer explanations can be deferred to tutorial -->
+<!--
+- Recap on content from last time that current subject builds on
+- Keep it short. Any longer explanations can be deferred to tutorial
+-->
 
 ---
 layout: section
@@ -86,6 +84,13 @@ url: http://your-interactive-mindmap-url-here
 <!-- insert URL to live mindmap in slide option `url` -->
 
 ---
+layout: cover
+---
+#  Module X
+[The name of this module]
+<!-- Start lecture content here -->
+
+---
 layout: default
 ---
 # Content overview
@@ -93,13 +98,6 @@ layout: default
 - Types from std
 <!-- Give an overview of the subjects covered in this lecture -->
 <!-- Incorporate any breaks as well -->
-
----
-layout: cover
----
-#  Module X
-[The name of this module]
-<!-- Start lecture content here -->
 
 ---
 layout: default
