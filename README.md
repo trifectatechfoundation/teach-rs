@@ -6,6 +6,8 @@ Why? Have a look at our [slides](./intro-101-rs.pdf) introducing the course.
 
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
 
+The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
+
 *Currently highly in flux, and incomplete, but feedback is welcome!*
 
 ## High-level goals
