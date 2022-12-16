@@ -68,8 +68,8 @@ Learn how to use Rust for writing high quality applications
 
 <!--
 - Introduce today's subject
-- The module is about actually *using* Rust. You're not going to  be productive writing Rust applications
-if you've only been introduced to the Rust syntax. Starting with this module, we will put it into practise.
+- The module is about actually *using* Rust. You're not going to be productive writing real-world Rust applications
+if you've only been introduced to the Rust syntax or have been implementing some common algorithms (although, of course, that does help). Starting with this module, we will put your Rust knowlegde into practise.
 -->
 
 ---
@@ -699,6 +699,10 @@ layout: section
 ---
 # Testing your crate
 
+<!--
+Next up: testing your crate. In bigger projects, automatic testing is key if you want to keep bugs away. In this section we will discuss some Rust functionalities that will help you test your application.
+-->
+
 ---
 layout: default
 ---
@@ -711,6 +715,14 @@ layout: default
 - Performance
   - Benchmarks
 
+<!--
+Automatic testing can help you verify the correctness of your code, as well as test performance. 
+- A common of testing correctness are by setting up unit tests, which test a small piece of functionality, a unit.
+- If you want to test the correctness of interaction between those units, you can set up integration test.
+- However, if you want to test performance, you can use benchmarking.
+Let's go over how Rust supports these various testing methods.
+-->
+
 ---
 layout: default
 ---
@@ -718,8 +730,8 @@ layout: default
 # Unit tests
 
 - Tests a single function or method
+- Live in child module
 - Can test private code
-- Defined in same module as test subject
 
 To run:
 
@@ -733,6 +745,12 @@ test tests::test_swap_oob - should panic ... ok
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 [..]
 ```
+
+<!--
+- Unit tests are great for testing behavior of a single function or method. 
+- In Rust, they live in child modules, allowing them to access private functionality
+- Once set up, a `cargo test` is sufficient to build and run the tests
+-->
 
 ---
 layout: full
@@ -755,7 +773,7 @@ mod tests {
     #[test] 
     fn test_swap_items() {
         let mut array = [0, 1, 2, 3, 4, 5];
-        slice_swap_items(&mut array, 1, 4);
+        slice_swap_items(&mut array[..], 1, 4);
         assert_eq!(array, [0, 4, 2, 3, 1, 5]);
     }
 
@@ -764,12 +782,19 @@ mod tests {
     #[should_panic] 
     fn test_swap_oob() {
         let mut array = [0, 1, 2, 3, 4, 5];
-        slice_swap_items(&mut array, 1, 6);
+        slice_swap_items(&mut array[..], 1, 6);
     }
 }
 ```
 
 <!--
+Here's an example of a function being tested. 
+-`slice_swap_items` takes a mutable slice, as well as two indices, and swaps the items at those indices.
+- Below, we've defined a module called `tests`, which is decorated with the `#[cfg(test)]` attribute. This attribute makes sure the module is only compiled when running tests.
+- Inside the `tests` module, we've defined two tests and imported the `slice_swap_items` function from the parent module. The first test, `test_swap_items`, sets up a slice, passes it to `slice_swap_items` along with two indices.
+- `test_swap_items` uses the `assert_eq!` macro to compare the affected array with an expected array. This `assert_eq!` macro panics on inequality, making the test fail if the outcome is not as expected.
+- The second test, `test_swap_oob` is decorated with the `#[should_panic]` macro, meaning this test should only pass if it panics.
+
 Q: Why should `test_swap_oob` panic?
 -->
 
@@ -779,7 +804,7 @@ layout: default
 
 # Integration tests
 
-- Tests crate's public interface
+- Tests crate public API
 - Run with `cargo test`
 - Defined in `tests` folder:
 
@@ -801,6 +826,11 @@ $ tree
     └── integration_test.rs
 ```
 
+<!-- 
+To test your application from the outside, you can set up integration tests. These integration tests test your crates public interface and are also executed by running `cargo test`.
+- They are defined in a separate folder, called `tests`
+-->
+
 ---
 layout: default
 ---
@@ -810,13 +840,19 @@ layout: default
 - Test *performance* of code (vs. correctness)
 - Runs a tests many times, yield average execution time
 
-*Good benchmarking is Hard*
+*Good benchmarking is **Hard***
 
 - Beware of optimizations
 - Beware of initialization overhead
 - Be sure your benchmark is representative
 
 ## *More in exercises*
+
+<!--
+Lastly, we'll briefly look at benchmarks, which test code performance instead of correctness. Basically, a test is run many, many times, and statistics about the execution time are gathered and reported.
+- Note that good benchmarking is hard. You have to make sure tested parts of your code are not optimized away when they shouldn't be. Also, be aware of overhead. But most of all: make sure you benchmark is representative depending on the intended use of your code.
+- We'll go a bit deeper into benchmarking in the exercises
+-->
 
 ---
 layout: default
