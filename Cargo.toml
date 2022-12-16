@@ -1,4 +1,7 @@
 [workspace]
 members = [
     "exercises/0-intro",
+    "exercises/B1-my-serde-app",
+    "exercises/B3-fizzbuzz",
+    "slides/examples/B-application-programming",
 ]

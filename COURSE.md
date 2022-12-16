@@ -341,17 +341,17 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 
 ## Course topics & schedule
 
-| Week | Module | Topic                    | Notes               |
-| ---- | ------ | ------------------------ | --------------------|
-| 1    | 0, <br />A1  | Course intro <br />Language basics |                     |
-| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                     |
-| 3    | A4     | Traits and generics      |                     |
-| 4    | B      | Application programming  |                     |
-| 5    | C      | Multitasking             |                     |
-| 6    | D      | Idiomatic Rust patterns  | Project proposal reminder |
-| 7    | E      | Rust for web             | Deadline project proposal |
-| 8    | F      | Safe Unsafe Rust         | Project proposal resubmission |
-| 9    | G      | FFI and Dynamic modules  |                     |
-| 10   | P      | Final project            |                     |
-| 11   | P      | Final project            |                     |
-| 12   | P      | Final project submission and presentation |    |
+| Week | Module       | Topic                                                           | Notes                         |
+| ---- | ------------ | --------------------------------------------------------------- | ----------------------------- |
+| 1    | 0, <br />A1  | Course intro <br />Language basics                              |                               |
+| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                               |
+| 3    | A4           | Traits and generics                                             |                               |
+| 4    | B            | Application programming                                         |                               |
+| 5    | C            | Multitasking                                                    |                               |
+| 6    | D            | Idiomatic Rust patterns                                         | Project proposal reminder     |
+| 7    | E            | Rust for web                                                    | Deadline project proposal     |
+| 8    | F            | Safe Unsafe Rust                                                | Project proposal resubmission |
+| 9    | G            | FFI and Dynamic modules                                         |                               |
+| 10   | P            | Final project                                                   |                               |
+| 11   | P            | Final project                                                   |                               |
+| 12   | P            | Final project submission and presentation                       |                               |

@@ -4,3 +4,4 @@ dist
 /*.pdf
 tmp/
 yarn-error.log
+*/**/target

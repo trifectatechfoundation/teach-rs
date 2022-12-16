@@ -1,0 +1,14 @@
+# Summary
+
+- [A - Introduction to Rust]()
+  - [A1 - Language basics]()
+  - [A2 - Ecosystem and tools]()
+  - [A3 - Advanced Syntax, Ownership, references]()
+  - [A4 - Traits and generics]()
+- [B - Application programming](./B-application-programming/mod.md)
+- [C - Multitasking]()
+- [D - Idiomatic Rust patterns]()
+- [E - Rust for web]()
+- [F - Safe Unsafe Rust]()
+- [G - FFI and Dynamic modules]()
+- [P Final project]()
