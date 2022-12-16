@@ -93,7 +93,7 @@ We will use the project we just set up to write a quiz game creator and player. 
 Before you start coding, make sure you've listed all open questions and found answers to them. You're also encouraged to draw a simple diagram of the module structure of your application, annotating each module with its responsibilities.
 
 ## B.3 FizzBuzz
-In this exercise, you will practise writing a unit test, and use Rusts benchmarking functionality to help you optimize a [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) app. Tou will need [`cargo-criterion`](https://bheisler.github.io/criterion.rs/book/cargo_criterion/cargo_criterion.html), a tool that runs benchmarks and creates nice reports. You can install it by running
+In this exercise, you will practise writing a unit test, and use Rusts benchmarking functionality to help you optimize a [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) app. You will need [`cargo-criterion`](https://bheisler.github.io/criterion.rs/book/cargo_criterion/cargo_criterion.html), a tool that runs benchmarks and creates nice reports. You can install it by running
 
 ```bash
 cargo install cargo-criterion --version=1.1.0
