@@ -50,7 +50,7 @@ You can find instructions on the installation of used tools [here](./INSTALLATIO
 
 Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirity or by using bits and pieces to create your custom course.
 
-The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl).
+The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl). It is a not-for-profit project, where the only requirement is that the cost of our work is covered.
 
 ### Other contributors
 
@@ -62,8 +62,8 @@ We're very happy with the support in developing the course material, by:
 
 ### Our sponsors
 
-The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. 
+The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
-We are in search of further funding for our project. Contact us if your interested.
+We are in search of further funding for our project. Contact us if your interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work.
 
 
