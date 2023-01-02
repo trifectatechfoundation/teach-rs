@@ -2,7 +2,7 @@
 
 Rust 101 is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
-Why? Have a look at our [slides](./intro-101-rs.pdf) introducing the course.
+Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/80/rust-101-open-source-university-course) introducing the course.
 
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
 
@@ -44,7 +44,7 @@ When used in full 12-week format, the schedule is:
 The course assumes intermediate C/C++ knowledge.
 
 The course outline, along with more elaborate learning objectives, can be found [here](./COURSE.md).
-You can find instructions on the installation of used tools [here](./INSTALLATION.md)
+You can find instructions on the installation of used tools [here](./INSTALLATION.md).
 
 ## About the project
 
