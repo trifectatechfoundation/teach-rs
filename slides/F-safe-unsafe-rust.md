@@ -567,6 +567,17 @@ impl LinkedList {
 layout: default
 ---
 
+# Exercises
+
+- implement `Drop` for the pointer-based `LinkedList`
+- Implement a process forwarding program using `std::process::Command`
+- Implement a process forwarding program using `execve`
+
+
+---
+layout: default
+---
+
 # Summary
 <!-- Very quickly go over the learning objectives and how they were covered -->
 
