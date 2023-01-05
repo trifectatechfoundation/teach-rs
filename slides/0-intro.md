@@ -21,7 +21,7 @@ to build reliable and efficient software.
 layout: three-slots
 ---
 
-# Who are we?
+# Who am I?
 
 ::left::
 ## Henk Oordt
@@ -30,18 +30,9 @@ layout: three-slots
 
 - Embedded software engineer
 - Rust for Embedded/IoT
-- Main contact
+- Rust-lang trainer
 
 ::right::
-
-## Ruben Nijveld
-
-![Photo Ruben](https://tweedegolf.nl/images/ruben-square-200px.jpg)
-
-- Software engineer
-- Uses Rust since X
-- NTP, Sudo in Rust
-- Introduced Rust to TG
 
 <style>
 h2 {
