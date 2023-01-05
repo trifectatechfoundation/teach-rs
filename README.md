@@ -1,5 +1,7 @@
 # Rust 101 
 
+![Rust 101](https://tweedegolf.nl/images/rust-101-logo.jpg)
+
 Rust 101 is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
 Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/80/rust-101-open-source-university-course) introducing the course.
@@ -9,6 +11,8 @@ This repo will contain everything that's needed to organize the course: slides, 
 The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
 
 *Currently highly in flux, and incomplete, but feedback is welcome!*
+
+
 
 ## High-level goals
 
