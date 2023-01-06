@@ -161,7 +161,6 @@ This module is about learning to write actual Rust applications. At the end of t
   - Write applications that follow the Rust API guidelines
   - Set up Rust tests and benchmarks
   - Work with some commonly used crates for logging, argument parsing, deserialization, and testing (Exercise)
-  - Use various methods to improve compile time (Exercise)
 
 **Topics**
 - **Setting up a Rust crate, bin vs lib**
@@ -169,7 +168,7 @@ This module is about learning to write actual Rust applications. At the end of t
   - Cargo.toml entries
 - **Structure of a Rust project**
   - Module system
-  - Unit tests/integration tests/benchmarks
+  - Unit tests - integration tests - benchmarks
   - Examples
   - Multiple binaries
   - Cargo workspaces
@@ -179,15 +178,13 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Widely used crates: logging/argparse/(de)serialization/testing**
 
 **Exercises**
+- Introduction to Serde
 - Set up a custom project that:
   - Acts both as a library and a binary crate
-  - Contains some examples
   - Is divided up into modules
-  - Has unit tests, integration tests, and benchmarks
-  - Uses dependencies for argument parsing, logging, serialization, and benchmarking
+  - Uses dependencies for argument parsing, logging, and (de)serialization
   - Has doc comments according to the Rust API guidelines
-- Generate documentation with `cargo doc`
-- Find and try various methods to improve the project build time, comparing the improvements with `cargo build --timings`
+- Benchmark an application using Criterion
 
 
 ### C - Multitasking
