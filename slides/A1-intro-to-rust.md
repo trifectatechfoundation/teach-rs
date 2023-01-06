@@ -1207,10 +1207,12 @@ layout: default
 ---
 # Summary
 
-* TODO
-<!--
+* TODO on why Rust
+* Loads of syntax
+* Values are owned by variables
+* Values may be moved to new owners or copied
+* Some typse may be explicitly `Clone`d
 
-* With all this machinery setup we can prevent whole classes of bugs, they
-simply cannot happen because programs that would contain those bugs would
-not compile
--->
+---
+layout: end
+---
