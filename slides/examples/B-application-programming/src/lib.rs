@@ -66,7 +66,7 @@ pub struct MyDocumentedStruct {
 
 /// Public module
 /// Accessible from outside
-pub mod my_mod {
+pub mod my_pub_mod {
     /// Private module
     /// Only accessible from parent module
     mod private_mod {
@@ -81,7 +81,7 @@ pub mod my_mod {
     /// Private struct
     /// Only accessible from current and child modules
     struct PrivStruct {
-        public: private_mod::PubStruct,
+        field: private_mod::PubStruct,
     }
 }
 

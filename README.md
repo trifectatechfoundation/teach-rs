@@ -2,9 +2,11 @@
 
 Rust 101 is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
-Why? Have a look at our [slides](./intro-101-rs.pdf) introducing the course.
+Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/80/rust-101-open-source-university-course) introducing the course.
 
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
+
+The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
 
 *Currently highly in flux, and incomplete, but feedback is welcome!*
 
@@ -42,13 +44,13 @@ When used in full 12-week format, the schedule is:
 The course assumes intermediate C/C++ knowledge.
 
 The course outline, along with more elaborate learning objectives, can be found [here](./COURSE.md).
-You can find instructions on the installation of used tools [here](./INSTALLATION.md)
+You can find instructions on the installation of used tools [here](./INSTALLATION.md).
 
 ## About the project
 
 Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirity or by using bits and pieces to create your custom course.
 
-The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl).
+The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl). It is a not-for-profit project, where the only requirement is that the cost of our work is covered.
 
 ### Other contributors
 
@@ -60,8 +62,8 @@ We're very happy with the support in developing the course material, by:
 
 ### Our sponsors
 
-The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. 
+The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
-We are in search of further funding for our project. Contact us if your interested.
+We are in search of further funding for our project. Contact us if your interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work.
 
 
