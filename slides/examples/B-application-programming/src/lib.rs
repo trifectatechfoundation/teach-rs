@@ -38,7 +38,7 @@ fn enable_led(enabled: bool) {
 
 enum LedState {
     Enabled,
-    Disabled
+    Disabled,
 }
 
 fn set_led_state(state: LedState) {
@@ -49,7 +49,6 @@ fn do_stuff_with_led() {
     enable_led(true);
     set_led_state(LedState::Enabled)
 }
-
 
 /// A well-documented struct.
 /// ```rust
@@ -99,7 +98,7 @@ mod tests {
     use crate::slice_swap_items;
 
     // Mark function as test
-    #[test] 
+    #[test]
     fn test_swap_items() {
         let mut array = [0, 1, 2, 3, 4, 5];
         slice_swap_items(&mut array, 1, 4);
@@ -108,7 +107,7 @@ mod tests {
 
     #[test]
     // This should panic due to out-of-bounds access
-    #[should_panic] 
+    #[should_panic]
     fn test_swap_oob() {
         let mut array = [0, 1, 2, 3, 4, 5];
         slice_swap_items(&mut array, 1, 6);

@@ -5,7 +5,7 @@
 ## B.1 Serializing and deserializing of `String`s with `serde`
 *This exercise is adapted from the [serde_lifetimes exercise](https://github.com/ferrous-systems/teaching-material/blob/main/assignments/serde-lifetimes.adoc) by Ferrous Systems*
 
-Open `exercises/B1-my-serde-app/src/main.rs`. In there, you'll find some Rust code we will do this exercise with.
+Open `exercises/B/1-my-serde-app/src/main.rs`. In there, you'll find some Rust code we will do this exercise with.
 
 We used `todo!()` macros to mark places where you should put code to make the program run. Look at the [`serde_json`](https://docs.rs/serde_json/latest/serde_json/#functions) api for help.
 
@@ -78,7 +78,7 @@ serde_json = "1.0.87"
 For `clap` and `serde`, the non-standard `derive` feature of each these crates is enabled. For `clap`, it allows us to derive the `Parser` trait, which greatly simplifies creating a CLI. The `derive` feaure from `serde` allows us to derive the `Serialize` and `Deserialize` traits on any struct we wish to serialize or deserialize using `serde` and its backends, in our case `serde_json`.
 
 ### B.2.B Quizzer
-This exercise is about both design and finding information. You'll have to figure out s model to represent your quiz questions, as well as a means to store them into a JSON file, and load them yourself. Also, you will have to find out how to parse the program arguments.
+This exercise is about both design and finding information. You'll have to figure out a model to represent your quiz questions, as well as a means to store them into a JSON file, and load them yourself. Also, you will have to find out how to parse the program arguments.
 
 We will use the project we just set up to write a quiz game creator and player. You may add other dependencies as needed. It has the following functional requirements:
  - It runs as a command-line tool in your terminal.
@@ -100,7 +100,7 @@ cargo install cargo-criterion --version=1.1.0
 ```
 
 ### B.3.A Testing Fizz Buzz
-Open `exercises/B3-fizzbuzz/src/lib.rs`. Create a unit test that verifies the correctness of the `fizz_buzz` function. You can use the [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) macro to inculde `exercises/B3-fizzbuzz/fizzbuzz.out` as a `&str`. Each line of `fizzbuzz.out` contains the expected output of the `fizz_buzz` function given the line number as input. You can run the test with
+Open `exercises/B3-fizzbuzz/src/lib.rs`. Create a unit test that verifies the correctness of the `fizz_buzz` function. You can use the [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) macro to inculde `exercises/B/3-fizzbuzz/fizzbuzz.out` as a `&str`. Each line of `fizzbuzz.out` contains the expected output of the `fizz_buzz` function given the line number as input. You can run the test with
 
 ```bash
 cargo test
@@ -116,7 +116,7 @@ to prevent the harness from capturing output.
 
 
 ### B.3.B Benchmarking Fizz Buzz
-You'll probably have noticed the `fizz_buzz` implementation is not very optimized. We will use `criterion` to help us benchmark `fizz_buzz`. To run a benchmark, run the following command when in the `exercises/B3-fizzbuzz/` directory:
+You'll probably have noticed the `fizz_buzz` implementation is not very optimized. We will use `criterion` to help us benchmark `fizz_buzz`. To run a benchmark, run the following command when in the `exercises/B/3-fizzbuzz/` directory:
 
 ```bash
 cargo criterion

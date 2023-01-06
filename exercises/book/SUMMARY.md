@@ -2,7 +2,7 @@
 
 - [0 - Installation](./0-install/mod.md)
 - [A - Introduction to Rust]()
-  - [A1 - Language basics]()
+  - [A1 - Language basics](./A1-language-basics/mod.md)
   - [A2 - Ecosystem and tools]()
   - [A3 - Advanced Syntax, Ownership, references]()
   - [A4 - Traits and generics]()

@@ -487,7 +487,7 @@ impl S {
 ```
 
 Other example: conversion methods `as_`, `to_`, `into_`, name depends on:
-- Runtime cost 
+- Runtime cost
 - Owned &harr; borrowed
 
 
@@ -747,7 +747,7 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 ```
 
 <!--
-- Unit tests are great for testing behavior of a single function or method. 
+- Unit tests are great for testing behavior of a single function or method.
 - In Rust, they live in child modules, allowing them to access private functionality
 - Once set up, a `cargo test` is sufficient to build and run the tests
 -->
@@ -788,7 +788,7 @@ mod tests {
 ```
 
 <!--
-Here's an example of a function being tested. 
+Here's an example of a function being tested.
 -`slice_swap_items` takes a mutable slice, as well as two indices, and swaps the items at those indices.
 - Below, we've defined a module called `tests`, which is decorated with the `#[cfg(test)]` attribute. This attribute makes sure the module is only compiled when running tests.
 - Inside the `tests` module, we've defined two tests and imported the `slice_swap_items` function from the parent module. The first test, `test_swap_items`, sets up a slice, passes it to `slice_swap_items` along with two indices.
@@ -826,7 +826,7 @@ $ tree
     └── integration_test.rs
 ```
 
-<!-- 
+<!--
 To test your application from the outside, you can set up integration tests. These integration tests test your crates public interface and are also executed by running `cargo test`.
 - They are defined in a separate folder, called `tests`
 -->
