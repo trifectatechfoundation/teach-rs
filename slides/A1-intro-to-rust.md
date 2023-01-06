@@ -3,18 +3,18 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A1: Introduction to Rust"
+info: "Rust - A1: Language basics"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust - A1: Introduction to Rust"
+title: "Rust - A1: Language basics"
 ---
 
 # Rust programming
 
-Module X: description
+Module A1: Language basics
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -879,14 +879,13 @@ differently sized blocks of memory scattered across the heap.
 # Stack limitations
 
 The stack has limitations though, because it only grows as a result of a
-function call [^1].
+function call.
 
-* A stack frame size must be known at compile time.
+* Size of items on stack frame must be known at compile time
 * If I don't know the size of a variable upfront: What size should my stack
 frame be?
 * How can I handle arbitrary user input efficiently?
 
-[^1]: Not every function call creates a stack frame, but we are speaking generally here
 <style>
     .footnotes-sep {
         margin-top: 45px;
@@ -902,8 +901,6 @@ frame be?
 </style>
 
 <!--
-BvG: stack frames are not static in size. See the PUSH x86 assembly instruction as a counter example (used when there are not enough registers).
-
 * You can definitely do a lot with just a stack, but really there are some
 scenarios that aren't possible, or can only be done very inefficient when
 we can only ever push and pop from the top of the stack.
@@ -1067,14 +1064,12 @@ them somewhere else.
 
 # Ownership
 
-- There is always ever only one owner of a value
+- There is always ever only one owner of a stack value
 - Once the owner goes out of scope (and is removed from the stack), any associated values on the
   heap will be cleaned up as well
-- Rust has *move semantics* for non-copy types
+- Rust transfers ownership for non-copy types: *move semantics* 
 
 <!--
-BvG: what about Arc/Rc types? Only if the last one goes out of scope, the heap memory is freed (in the text above, that could imply there are multiple 'owners'). Might be better to state: 'every variable', or 'every stack value'.
-
 * What we've just seen is the Rust ownership system in action.
 * In Rust, every part of memory in use always has an owner variable. That
 variable must always be the only owner, there can't be multiple owners.
@@ -1208,285 +1203,16 @@ because it gets destroyed almost immediately after creation
 -->
 
 ---
-
-# Borrowing
-- We can make an analogy with real life: if somebody owns something you can
-borrow it from them, but eventually you have to give it back
-- If a value is borrowed, it is not moved and the ownership stays with the
-original owner
-- To borrow in Rust, we create a *reference*
-
-```rust {all|3|7|all}
-fn main() {
-    let x = String::from("hello");
-    let len = get_length(&x);
-    println!("{}: {}", x, len);
-}
-
-fn get_length(arg: &String) -> usize {
-    arg.len()
-}
-```
-
-<!--
-* Having just a single owner may seem limiting, which is why Rust allows owners
-to borrow their contents to someone else. Taken from the real life comparison.
-* You can create a borrow by creating a reference, with the ampersand.
--->
-
----
-
-# References (immutable)
-
-```rust
-fn main() {
-    let s = String::from("hello");
-    change(&s);
-    println!("{}", s);
-}
-
-fn change(some_string: &String) {
-    some_string.push_str(", world");
-}
-```
-
-<v-click>
-
-<div class="no-line-numbers">
-
-```text
-Compiling playground v0.0.1 (/playground)
-error[E0596]: cannot borrow `*some_string` as mutable, as it is behind a `&` reference
---> src/main.rs:8:5
-  |
-7 | fn change(some_string: &String) {
-  |                        ------- help: consider changing this to be a mutable reference: `&mut String`
-8 |     some_string.push_str(", world");
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `some_string` is a `&` reference, so the data it refers to cannot be borrowed as mutable
-
-For more information about this error, try `rustc --explain E0596`.
-error: could not compile `playground` due to previous error
-```
-
-</div>
-
-</v-click>
-
-<!--
-* Note how we cannot modify the referenced value through an immutable reference
-* When you borrow my book, I want you to return it in the original state,
-and not with all your notes writen in it, unless I give you explicit
-permission to do so.
--->
-
----
-
-# References (mutable)
-
-```rust
-fn main() {
-    let mut s = String::from("hello");
-    change(&mut s);
-    println!("{}", s);
-}
-
-fn change(some_string: &mut String) {
-    some_string.push_str(", world");
-}
-```
-
-<v-click>
-
-<div class="no-line-numbers">
-
-```text
-Compiling playground v0.0.1 (/playground)
-Finished dev [unoptimized + debuginfo] target(s) in 2.55s
-Running `target/debug/playground`
-hello, world
-```
-
-</div>
-
-</v-click>
-
-<!--
-* We can use a mutable reference here to allow us to modify a borrowed value
--->
-
----
-
-<img src="/images/A1-me-i-need.png" class="float-right w-70 pl-2" />
-
-# Borrowing rules
-
-- You may only ever have one mutable reference at the same time
-- You may have any number of immutable references at the same time as long as
-  there is no mutable reference
-- References cannot *live* longer than their owners
-- A reference will always at all times point to a valid value
-
-<v-click>
-
-Why? Because we no longer have to think about the nasty details of manual
-memory management and we can focus on actual application logic.
-
-</v-click>
-
-<!--
-- There are some rules for borrowing, because people sometimes forget to bring
-back their borrowed items, the same goes for programmers writing Rust programs
-- The Rust compiler enforces these rules using a part of the compiler called
-the borrow checker.
-- The important and small set of rules is: [rules, see slide]
-- By living we mean that a reference must go out of scope before or at exactly
-the same time as the original variable the reference was borrowed from
-- What happens if we follow these rules is a little bit of magic: with these
-and with the ownership systems we can actually manage heap memory without
-ever having to write a single line of code for it. And all that without
-having to use a garbage collector or other high level language feature.
--->
-
----
-
-# Reference example
-
-```rust
-fn main() {
-    let mut s = String::from("hello");
-    let s1 = &s;
-    let s2 = &s;
-    let s3 = &mut s;
-    println!("{} - {} - {}", s1, s2, s3);
-}
-```
-
-<v-click>
-
-<div class="no-line-numbers">
-
-```text
-Compiling playground v0.0.1 (/playground)
-error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
---> src/main.rs:5:14
-  |
-3 |     let s1 = &s;
-  |              -- immutable borrow occurs here
-4 |     let s2 = &s;
-5 |     let s3 = &mut s;
-  |              ^^^^^^ mutable borrow occurs here
-6 |     println!("{} - {} - {}", s1, s2, s3);
-  |                              -- immutable borrow later used here
-```
-
-</div>
-
-</v-click>
-
-<!--
-* Here we see an example of how the compiler enforces that there may only
-be one mutable reference, but only as long as there is no immutable reference
-at the same time.
--->
-
----
-
-# Returning references
-
-You can return references, but the value borrowed from must exist at least as
-long
-
-```rust
-fn give_me_a_ref() -> &String {
-    let s = String::from("Hello, world!");
-    &s
-}
-```
-
-<v-click>
-
-<div class="no-line-numbers">
-
-```md {8}
-Compiling playground v0.0.1 (/playground)
-error[E0106]: missing lifetime specifier
---> src/lib.rs:1:23
-    |
-  1 | fn give_me_a_ref() -> &String {
-    |                       ^ expected named lifetime parameter
-    |
-    = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
-    help: consider using the `'static` lifetime
-    |
-  1 | fn give_me_a_ref() -> &'static String {
-    |                       ~~~~~~~~
-```
-
-</div>
-
-</v-click>
-
-<!--
-* People at this stage in their Rust discovery often think that all
-these rules are really limiting, but they only help you discover bugs. Take
-a look at this example. If you would write this in C or C++, what would the
-pointer that you returned even point at, and when can we clean that data up?
-Or did we just create a possible memory leak? How do we communicate to the
-callee that it is their job to clean up the associated memory? Rust won't
-allow you to compile this program until you specify what you really meant to
-do.
--->
-
----
-
-# Returning references
-
-You can return references, but the value borrowed from must exist at least as
-long
-
-```rust
-fn give_me_a_ref(input: &(String, i32)) -> &String {
-    &input.0
-}
-```
-
-<v-click>
-
-```rust
-fn give_me_a_value() -> String {
-    let s = String::from("Hello, world!");
-    s
-}
-```
-
-</v-click>
-
-<!--
-* We could for example have meant that we got a reference as an input
-parameter and we wanted to extract part of that input
-* Or maybe we didn't want to return a reference after all, but give the
-callee ownership to something we created.
--->
-
----
 layout: default
 ---
 # Summary
 
-* We have seen how Rust gives compile errors when you do not correctly manage
-your memory
-* Using this we can say, with confidence, that our code does not have any of
-these kinds bugs:
-  * Use after free
-  * Double free
-  * Null pointer dereference
-  * Buffer overflows (with slices)
-  * Race conditions
+* TODO on why Rust
+* Loads of syntax
+* Values are owned by variables
+* Values may be moved to new owners or copied
+* Some typse may be explicitly `Clone`d
 
-<!--
-BvG: I would skip race conditions, too complicated for this stage.
-
-* With all this machinery setup we can prevent whole classes of bugs, they
-simply cannot happen because programs that would contain those bugs would
-not compile
--->
+---
+layout: end
+---
