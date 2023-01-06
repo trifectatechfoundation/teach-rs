@@ -36,11 +36,10 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 - Describe the problems the Rust programming language aims to solve
 - Describe the design goals of Rust
 - Decide whether Rust is a fitting technology to write a particular application in, given requirements
-- Solve basic owership-related compiler errors
+- Solve basic compiler errors related to move semantics
 - Write Rust programs using basic syntax and operators
-- Use casts to convert between primitive types
-- Describe some numeric type casting pitfalls
 
+**Topics**
 - **'Why' of Rust language**
     - Problems Rust intends to solve
     - The fields it operates in
@@ -59,17 +58,14 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Statements vs expressions
     - Functions
     - Loops
-- **Conversions**
-    - casting/`as` and pitfalls
-- **Introduction to ownership**
+- **Introduction to move semantics**
     - Clones vs copies
-    - Move semantics
     - Value ownership
-    - Types of references
-    - Borrowing rules
+    - Move semantics
 
 **Exercises**
-*TBD*
+- Basic syntax problems
+- Basic problems on move semantics
 
 
 #### A2 - Ecosystem and tools
@@ -116,8 +112,11 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Closures
     - Statics
     - Pattern matching
+    - casting/`as` and pitfalls
 - **Pointers vs references, reference meta**
 - **Ownership, borrowing, lifetimes**
+    - Types of references
+    - Borrowing rules
     - Lifetime annotations
     - NLL: https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html#non-lexical-lifetimes
 - **Lifetime annotation, elision**

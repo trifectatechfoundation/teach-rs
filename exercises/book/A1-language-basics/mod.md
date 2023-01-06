@@ -16,11 +16,11 @@ cargo test --bin 01
 ```
 Make sure all tests pass!
 
-## A1.2 Ownership and borrowing
+## A1.2 Move semantics
 *This exercise is adapted from the [move semantics exercise](https://github.com/rust-lang/rustlings/tree/main/exercises/move_semantics) from Rustlings*
 
 
-This exercise enables you to practise with ownership borrowing. It works similar to exercise `A1.1`. To get started, `exercises/A1/2-ownership` in your editor and run
+This exercise enables you to practise with move semantics. It works similarly to exercise `A1.1`. To get started, `exercises/A1/2-move-semantics` in your editor and run
 ```bash
 cargo run --bin 01
 ```
