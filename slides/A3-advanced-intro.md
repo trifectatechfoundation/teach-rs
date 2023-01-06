@@ -163,7 +163,246 @@ fn main() {
 
 ---
 
-# One more thing...
+# Pattern matching
+To extract data from enums we can use pattern matching using the
+`if let [pattern] = [value]` statement
+
+```rust
+fn accept_ipv4(ip: IpAddress) {
+  if let IpAddress::Ipv4(a, b, _, _) = ip {
+    println!("Accepted, first octet is {} and second is {}", a, b);
+  }
+}
+```
+
+* `a` and `b` introduce local variables within the body of the if that contain
+  the values of those fields
+* The underscore (`_`) can be used to accept any value
+
+---
+
+# Match
+But pattern matching is very powerful if combined with the match statement
+
+```rust
+fn accept_home(ip: IpAddress) {
+  match ip {
+    IpAddress::Ipv4(127, 0, 0, 1) => {
+      println!("You are home!");
+    },
+    IpAddress::Ipv6(0, 0, 0, 0, 0, 0, 0, 1) => {
+      println!("You are in your new home!");
+    },
+    _ => {
+      println!("You are not home");
+    },
+}
+```
+
+* Every part of the match is called an arm
+* A match is exhaustive, which means that all values must be handled by one of
+  the match arms
+* You can use a catch-all `_` arm to catch any remaining cases if there are any
+  left
+
+---
+
+# Match as an expression
+The match statement can even be used as an expression
+
+```rust
+fn get_first_byte(ip: IpAddress) {
+  let first_byte = match ip {
+    IpAddress::Ipv4(a, _, _, _) => a,
+    IpAddress::Ipv6(a, _, _, _, _, _, _, _) => a / 256 as u8,
+  };
+  println!("The first byte was: {}", first_byte);
+}
+```
+
+* The match arms can return a value, but their types have to match
+* Note how here we do not need a catch all `_` arm because all cases have
+  already been handled by the two arms
+
+---
+
+# Generics
+Enums become even more powerful if we introduce a little of generics
+
+```rust
+struct PointFloat(f64, f64);
+struct PointInt(i64, i64);
+```
+
+We are repeating ourselves here, what if we could write a datastructure for
+both of these cases?
+
+<v-click>
+
+```rust
+struct Point<T>(T, T);
+
+fn main() {
+  let float_point: Point<f64> = Point(10.0, 10.0);
+  let int_point: Point<i64> = Point(10, 10);
+}
+```
+
+Generics are much more powerful, but this is all we need for now
+
+</v-click>
+
+<!--
+* The upper case letter between the angled brackets introduces a generic type
+  parameter.
+* We can now use that generic type variable we introduced as a type name
+* Then at the point of using the type we can specify which actual type we
+  want to use
+* Generics are much more powerful, but this is enough for now
+-->
+
+---
+
+# Option
+A quick look into the basic enums available in the standard library
+
+* Rust does not have null, but you can still define variables that optionally
+  do not have a value
+* For this you can use the `Option<T>` enum
+
+```rust
+enum Option<T> {
+  Some(T),
+  None,
+}
+
+fn main() {
+  let some_int = Some(42);
+  let no_string: Option<String> = None;
+}
+```
+
+<!--
+* Note how Rust can infer the type of `some_int`, but we have to specify what
+  the type of the Option is in the None case, because it cannot possibly know
+  what kind of values you could put in that Option
+* Also not that for normal enums we have to import the variants, but Option
+  is so common that the variants are available by default without needing to
+  prefix them with `Option::`
+-->
+
+---
+
+# Result
+Another really powerful enum is the result, to understand the usage of this
+enum we have to think about error handling
+
+```rust
+fn divide(x: i64, y: i64) -> i64 {
+  if y == 0 {
+    // what to do now?
+  } else {
+    x / y
+  }
+}
+```
+
+---
+
+# Result
+Another really powerful enum is the result, to understand the usage of this
+enum we have to think about error handling
+
+```rust
+fn divide(x: i64, y: i64) -> Option<i64> {
+  if y == 0 {
+    None
+  } else {
+    Some(x / y)
+  }
+}
+```
+
+---
+
+# Result
+Another really powerful enum is the result, to understand the usage of this
+enum we have to think about error handling
+
+```rust
+enum Result<T, E> {
+  Ok(T),
+  Err(E),
+}
+
+enum DivideError {
+  DivisionByZero,
+  CannotDivideOne,
+}
+
+fn divide(x: i64, y: i64) -> Result<i64, DivideError> {
+  if x == 1 {
+    Err(DivideError::CannotDivideOne)
+  } else if y == 0 {
+    Err(DivideError::DivisionByZero)
+  } else {
+    Ok(x / y)
+  }
+}
+```
+
+---
+
+# Result and the try operator
+Results are so common that there is a special operator associated with them, the
+try operator
+
+```rust
+fn can_fail() -> Result<i64, Error> {
+  let intermediate_result = match some_failable_operation() {
+    Ok(ir) => ir,
+    Err(e) => return Err(e);
+  };
+
+  match some_secondary_operation(intermediate_result) {
+    Ok(sec) => Ok(sec * 2),
+    Err(e) => Err(e),
+  }
+}
+```
+
+<v-click>
+
+Look how this function changes if we use the try operator
+
+```rust
+fn can_fail() -> Result<i64, Error> {
+  let intermediate_result = some_failable_operation()?;
+  Ok(some_secondary_operation(intermediate_result)?)
+}
+```
+
+</v-click>
+
+---
+
+# Result and the try operator
+
+```rust
+fn can_fail() -> Result<i64, Error> {
+  let intermediate_result = some_failable_operation()?;
+  Ok(some_secondary_operation(intermediate_result)?)
+}
+```
+
+* The try operator does an implicit match, if there is an error, that error
+  is then immediately returned and the function returns early
+* If the result is `Ok()` then the value is extracted and we can continue right
+  away
+
+---
+
+# Lifetimes
 We've now discussed all ways we could store and structure our data in Rust
 
 * Combining our primitive types, our basic compounds, and by structuring data
@@ -208,3 +447,46 @@ fn main() {
 
 ```
 
+---
+
+# String literals
+
+---
+
+# Slices
+
+---
+
+# Vec(tor)
+
+---
+
+# Box
+
+---
+
+# Pointers
+
+---
+
+# Ownership
+
+---
+
+# Borrowing
+
+---
+
+# Lifetimes
+
+---
+
+# Lifetime annotations
+
+---
+
+# Panic, another kind of error
+
+---
+
+# When (not) to panic
