@@ -445,7 +445,7 @@ in UTF-16 context
 <!--
 - The final scalar type is the character, but it isn't often seen.
 - Note that it is not the same as u8 (a byte) in rust, and cannot be used
-interchangably.
+interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
 -->
