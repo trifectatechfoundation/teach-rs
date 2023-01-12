@@ -69,7 +69,7 @@ Learn how to use Rust for writing high quality applications
 <!--
 - Introduce today's subject
 - The module is about actually *using* Rust. You're not going to be productive writing real-world Rust applications
-if you've only been introduced to the Rust syntax or have been implementing some common algorithms (although, of course, that does help). Starting with this module, we will put your Rust knowlegde into practise.
+if you've only been introduced to the Rust syntax or have been implementing some common algorithms (although, of course, that does help). Starting with this module, we will put your Rust knowledge into practise.
 -->
 
 ---
@@ -165,7 +165,7 @@ $ tree my-first-app
 <!--
 - The way you set up a crate is by running `cargo-new`. You can pass it a name, and indicate whether you want to set up a library or an application.
 - This  will generate a `Cargo.toml` file as well as a demo  source file.
-- To create a library crate, pass `--lib` insted of `--bin`
+- To create a library crate, pass `--lib` instead of `--bin`
 
 -->
 ---
@@ -338,7 +338,7 @@ $ tree src
 <!--
 Apart from blocks, modules can be defined in separate files.
 - You can either create a file `some_mod.rs` directly,
-- Or keep related modules together in a seprate directory. Of the modules defined in the directory, `mod.rs` is the parent.
+- Or keep related modules together in a separate directory. Of the modules defined in the directory, `mod.rs` is the parent.
 -->
 
 ---
@@ -494,7 +494,7 @@ Other example: conversion methods `as_`, `to_`, `into_`, name depends on:
 <!--
 An easy way of making your API unsurprising is by adhering to naming conventions.
 - For example, the guidelines specify a naming convention for getters. Note that getter names do not start with 'get', and that the mutable getter ends with 'mut'.
-- Another example is the way conversion methods are named, based on their runtime cost and wheter the conversion is between refences, owned values, or from reference to owned and vice-versa. 
+- Another example is the way conversion methods are named, based on their runtime cost and whether the conversion is between references, owned values, or from reference to owned and vice-versa. 
 -->
 
 ---
@@ -504,7 +504,7 @@ layout: two-cols
 # Implement/derive common traits
 
 
-*As long as it makes sense* public types shoud implement:
+*As long as it makes sense* public types should implement:
 
 - `Copy`
 - `Clone`
@@ -556,7 +556,7 @@ pub fn add_generic<O, T: std::ops::Add<Output = O>>(x: T, y: T) -> O {
 ```
 
 <!--
-An great way to lift restrictions on your API is to write your functions in terms of traits. That is, use generics to desribe what exactly is needed to perform a certain action.
+An great way to lift restrictions on your API is to write your functions in terms of traits. That is, use generics to describe what exactly is needed to perform a certain action.
 - In this example, the first function only accepts `u32`, whereas there are many other numeric types for which addition makes sense.
 - The second example, though, accepts anything for which the `Add` trait is implemented. It is even generic over the addition output.
 -->
@@ -674,7 +674,7 @@ fn do_stuff_with_led() {
 ```
 
 <!--
-Rusts type system is awesome. Use it to you advantage by enbedding semantics into your types.
+Rusts type system is awesome. Use it to you advantage by embedding semantics into your types.
 - As an example, the `enable_led` method takes a `bool`. The calling code does not express intent as much as it could.
 - The `set_led_state`, however, takes a `LedState` variant, which clearly expresses what the developer was trying to do.
 -->

@@ -49,7 +49,7 @@ You can find the installation instructions here: <https://code.visualstudio.com/
 
 We will install some plugins as well. The first one is Rust-Analyzer. Installation instructions can be found here <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>. Rust-Analyzer provides a lot of help during development and in indispensable when getting started with Rust.
 
-Another plugin we'll install is Live Share. We will use the plugin to share screens and provide help during remote tutorial sessions. The extension pack also conains the Live Share Audio plugin, which allows for audio communication during share sessions. Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
+Another plugin we'll install is Live Share. We will use the plugin to share screens and provide help during remote tutorial sessions. The extension pack also contains the Live Share Audio plugin, which allows for audio communication during share sessions. Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
 
 The last plugin we'll use is CodeLLDB. This plugin enables debugging Rust code from within vscode. You can find instructions here: <https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb>.
 
