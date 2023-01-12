@@ -445,7 +445,7 @@ in UTF-16 context
 <!--
 - The final scalar type is the character, but it isn't often seen.
 - Note that it is not the same as u8 (a byte) in rust, and cannot be used
-interchangably.
+interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
 -->
@@ -625,7 +625,7 @@ let x = (let y = 10); // invalid
 - Note how `let` within a `let` is not allowed because of `let` being a statement,
 thus you may not declare multiple variables at the same time with the same
 value
-- `let` is a statement because ownership makes multiple assignements behave
+- `let` is a statement because ownership makes multiple assignments behave
 differently than many would expect, it is almost never what you want in
 Rust
 - It also makes sense if you think of all other declarations also being

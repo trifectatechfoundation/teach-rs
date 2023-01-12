@@ -52,7 +52,7 @@ You can find instructions on the installation of used tools [here](./INSTALLATIO
 
 ## About the project
 
-Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirity or by using bits and pieces to create your custom course.
+Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirety or by using bits and pieces to create your custom course.
 
 The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl). It is a not-for-profit project, where the only requirement is that the cost of our work is covered.
 

@@ -100,7 +100,7 @@ cargo install cargo-criterion --version=1.1.0
 ```
 
 ### B.3.A Testing Fizz Buzz
-Open `exercises/B3-fizzbuzz/src/lib.rs`. Create a unit test that verifies the correctness of the `fizz_buzz` function. You can use the [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) macro to inculde `exercises/B/3-fizzbuzz/fizzbuzz.out` as a `&str`. Each line of `fizzbuzz.out` contains the expected output of the `fizz_buzz` function given the line number as input. You can run the test with
+Open `exercises/B3-fizzbuzz/src/lib.rs`. Create a unit test that verifies the correctness of the `fizz_buzz` function. You can use the [`include_str`](https://doc.rust-lang.org/std/macro.include_str.html) macro to include `exercises/B/3-fizzbuzz/fizzbuzz.out` as a `&str`. Each line of `fizzbuzz.out` contains the expected output of the `fizz_buzz` function given the line number as input. You can run the test with
 
 ```bash
 cargo test
