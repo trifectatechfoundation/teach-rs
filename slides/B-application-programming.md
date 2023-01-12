@@ -568,7 +568,7 @@ layout: default
 # Accept borrowed data if possible
 
 - User decides whether calling function should own the data
-- Avoids unecessary moves
+- Avoids unnecessary moves
 - Exception: non-big array `Copy` types
 
 ```rust {all|6-9|11-14}
