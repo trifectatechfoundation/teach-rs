@@ -402,7 +402,7 @@ layout: default
 - Create examples to show users how to use your library
 
 <!--
-- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share siginificant parts of code.
+- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share significant parts of code.
 - If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
 -->
 
