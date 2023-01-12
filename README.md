@@ -48,7 +48,7 @@ When used in full 12-week format, the schedule is:
 The course assumes intermediate C/C++ knowledge.
 
 The course outline, along with more elaborate learning objectives, can be found [here](./COURSE.md).
-You can find instructions on the installation of used tools [here](./INSTALLATION.md).
+You can find instructions on the installation of used tools [here](./exercises/book/0-install/mod.md).
 
 ## About the project
 
