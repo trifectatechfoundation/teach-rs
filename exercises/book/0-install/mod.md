@@ -47,7 +47,7 @@ During the course, we will use Visual Studio Code (vscode) to write code in. Of 
 
 You can find the installation instructions here: <https://code.visualstudio.com/>.
 
-We will install some plugins as well. The first one is Rust-Analyzer. Installation instructions can be found here <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>. Rust-Analyzer provides a lot of help during development and in indispensible when getting started with Rust.
+We will install some plugins as well. The first one is Rust-Analyzer. Installation instructions can be found here <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>. Rust-Analyzer provides a lot of help during development and in indispensable when getting started with Rust.
 
 Another plugin we'll install is Live Share. We will use the plugin to share screens and provide help during remote tutorial sessions. The extension pack also conains the Live Share Audio plugin, which allows for audio communication during share sessions. Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
 
