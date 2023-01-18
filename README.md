@@ -66,6 +66,9 @@ We're very happy with support in developing the course material from:
 
 ### Our sponsors
 
+![Logo STU FIIT](./assets/STU_FIIT_logo_100.png)
+![Logo RF](./assets/Rust_Foundation_logo_100.png)
+
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
