@@ -117,7 +117,7 @@ layout: default
 
 - Languages like Zig, D and Nim can import C code
 - C and Rust do not agree on memory layout and calling convention
-- Idiomatic C is not idioatic Rust
+- Idiomatic C is not idiomatic Rust
 - So we fall back on the C ABI and the linker
 
 
@@ -147,7 +147,7 @@ extern "C" {
 }
 
 pub fn main () { 
-    unsafe { my_c_function() };
+    unsafe { my_c_function(42) };
 }
 ```
 
