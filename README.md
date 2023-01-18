@@ -10,7 +10,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 
 The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
 
-*Currently highly in flux, and incomplete, but feedback is welcome!*
+*Currently highly in flux, and incomplete, but feedback is welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/tweedegolf).*
 
 
 
@@ -58,7 +58,7 @@ The project is executed by Henk Oordt and others at [Tweede golf](https://tweede
 
 ### Other contributors
 
-We're very happy with the support in developing the course material, by:
+We're very happy with support in developing the course material from:
 
 - Bernard van Gastel, Radboud University
 - Florian Gilcher, Ferrous Systems
@@ -68,6 +68,10 @@ We're very happy with the support in developing the course material, by:
 
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
-We are in search of further funding for our project. Contact us if your interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work.
+In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+
+We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
+
+
 
 
