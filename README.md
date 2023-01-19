@@ -73,7 +73,7 @@ The initial sponsor of the project is the Faculty of Informatics and Information
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
 
-We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
+We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or monthly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
 
 
 
