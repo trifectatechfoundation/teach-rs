@@ -32,14 +32,6 @@ At the end of the course, the student is able to:
 
 ### A - Introduction to Rust
 #### A1 - Language basics
-This module introduces the first basic concepts of Rust. It motivates why the Rust language exists, and what students gain from learning it. After completing this module, the student is able to:
-- Describe the problems the Rust programming language aims to solve
-- Describe the design goals of Rust
-- Decide whether Rust is a fitting technology to write a particular application in, given requirements
-- Solve basic compiler errors related to move semantics
-- Write Rust programs using basic syntax and operators
-
-**Topics**
 - **'Why' of Rust language**
     - Problems Rust intends to solve
     - The fields it operates in
@@ -50,25 +42,38 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Where Rust really shines
     - Where Rust maturity lacks
     - What Rust wasn't designed for
-- **Basic syntax and operators**
-    - main entrypoint
-    - Primitive types, tuples, arrays
-    - Control flow
-    - Scopes, blocks
-    - Statements vs expressions
-    - Functions
-    - Loops
-- **Introduction to move semantics**
+- **Introduction to ownership**
     - Clones vs copies
-    - Value ownership
     - Move semantics
+    - Value ownership
+    - Types of references
+    - Borrowing rules
+- **basic syntax and operators**
+    - Types: primitives/struct/enum/union/slice
+    - Control flow
+    - Scopes, blocks, statics
+    - Expressions
+    - Functions
+    - Pattern matching
+    - Loops
+    - ...
+- **Structure of a Rust application**
+    - imports
+    - main function
+    - modules
+- **Conversions**
+    - casting/`as` and pitfalls
+    -`.into()`, `.try_into()` `T::from()`, `T::try_from()`, but not yet the traits they originate from
+- **Panicking: explicit/unwrap/overflow**
+    - What happens on panic
+    - `no_panic`
+    - When panicking is OK, and when it's not
 
 **Exercises**
-- Basic syntax problems
-- Basic problems on move semantics
+*TBD*
 
 
-#### A2 - Intermezzo - Ecosystem and tools
+#### A2 - Ecosystem and tools
 - **Cargo**
     - configuration
     - dependencies
@@ -86,7 +91,7 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Crates.io
 - **Widely used tools**
     - debug
-    - test
+    - test 
     - security
     - bench (Criterion)
 - **Rust versions**
@@ -104,44 +109,27 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 *TBD*
 
 
-#### A2 - Advanced Syntax, Ownership, References
+#### A3 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
-    - Types: struct/enum/slice/String/Vec/Box/Option/Result
+    - Types: /String/Vec/Box/Option/Result
     - Impl blocks
     - Coercion
     - Closures
-    - Statics
-    - Pattern matching
-    - casting/`as` and pitfalls
 - **Pointers vs references, reference meta**
+- **Copy, clone, moves**
 - **Ownership, borrowing, lifetimes**
-    - Types of references
-    - Borrowing rules
-    - Lifetime annotations
     - NLL: https://blog.rust-lang.org/2018/12/06/Rust-1.31-and-rust-2018.html#non-lexical-lifetimes
 - **Lifetime annotation, elision**
     - Why needed
     - Syntax
-- **Panicking: explicit/unwrap/overflow**
-    - What happens on panic
-    - `no_panic`
-    - When panicking is OK, and when it's not
 
 **Exercises**
 *TBD*
 
-#### A3 - Traits and generics
-This module introduces technologies to make your Rust code more versatile: *traits* and *generics*. After completing this module, the student is able to:
-- Describe the problems traits and generics solve
-- Use traits to describe functionality that is common beween types
-- Write functions and methods in terms of traits and bounds.
-- Use various common traits from the standard library
-- Use trait objects to implement dynamic dispatch
-- Decide when dynamic dispatch should be used over static dispatch
-
+#### A4 - Traits and generics
 - **Traits**
 - **Commonly used traits from std**
-    - Into/From/TryFrom/TryInto, compared to `as` from A1
+    - Into/From/TryFrom/TryInto (referring to A1)
     - Copy/Clone
     - Debug/Display
     - Iterator/IntoIter/FromIter
@@ -150,9 +138,10 @@ This module introduces technologies to make your Rust code more versatile: *trai
     - Deref/DerefMut
     - PartialEq/Eq/Add/Mul/Div/Sub/PartialOrd/Ord
     - Drop
+- **Generics, trait objects, object safety, const generics**
+    - Static vs dynamic dispatch
+    - when to use generics vs trait objects
 - **Orphan rule**
-- **Const generics**
-- **Lifetime annotations**
 
 
 **Exercises**
@@ -167,6 +156,7 @@ This module is about learning to write actual Rust applications. At the end of t
   - Write applications that follow the Rust API guidelines
   - Set up Rust tests and benchmarks
   - Work with some commonly used crates for logging, argument parsing, deserialization, and testing (Exercise)
+  - Use various methods to improve compile time (Exercise)
 
 **Topics**
 - **Setting up a Rust crate, bin vs lib**
@@ -174,7 +164,7 @@ This module is about learning to write actual Rust applications. At the end of t
   - Cargo.toml entries
 - **Structure of a Rust project**
   - Module system
-  - Unit tests - integration tests - benchmarks
+  - Unit tests/integration tests/benchmarks
   - Examples
   - Multiple binaries
   - Cargo workspaces
@@ -184,16 +174,20 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Widely used crates: logging/argparse/(de)serialization/testing**
 
 **Exercises**
-- Introduction to Serde
 - Set up a custom project that:
   - Acts both as a library and a binary crate
+  - Contains some examples
   - Is divided up into modules
-  - Uses dependencies for argument parsing, logging, and (de)serialization
+  - Has unit tests, integration tests, and benchmarks
+  - Uses dependencies for argument parsing, logging, serialization, and benchmarking
   - Has doc comments according to the Rust API guidelines
-- Benchmark an application using Criterion
+- Generate documentation with `cargo doc`
+- Find and try various methods to improve the project build time, comparing the improvements with `cargo build --timings`
 
 
 ### C - Multitasking
+- **Fearless concurrency**
+- **Rayon**
 - **Atomic types**
 - **Multithreading: Send/Sync/Channel....**
 - **How the borrow checker helps us**
@@ -229,7 +223,6 @@ This module is about learning to write actual Rust applications. At the end of t
 *TBD*
 
 ### F - Safe Unsafe Rust
-- **Union**
 - **Why safe vs unsafe**
 - **Undefined behavior**
 - **Unsafe keyword**
@@ -281,11 +274,9 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Some audio filtering and streaming software**
 - **Contribute to an open source project**
 - **SIMD**
-    - Uwuify: https://github.com/Daniel-Liu-c0deb0t/uwu
 - **Simple programming language**
     - https://craftinginterpreters.com/
     - Brainfuck interpreter/compiler
-    - https://strlen.com/false-language/
 
 #### Structure
 - Work in teams of 2
@@ -302,9 +293,9 @@ This module is about learning to write actual Rust applications. At the end of t
 
 ## Lecture format (90 minutes)
 ### Rationale
-During lectures, new content is provided to students. The idea is to keep engagement high using interaction an by extensively activating prior knowledge. We take some time for questions and discussion during the lecture and are aware of the facts that many concepts are outright confusing to beginners. During discussion, we encourage students to answer questions of fellow students. However, we actively make sure that discussions don't divert from the subject.
+During lectures, new content is provided to students. The idea is to keep engagement high using interaction an by extensively activating prior knowledge. We take some time for questions and discussion during the lecture and are aware of the facts that many concepts are outright confusing to beginners. During discussion, we encourage students to answer questions of fellow students. However, we actively make sure that discussions don't divert from the subject. 
 
-To activate prior knowledge, we start each lecture with a recap on the subject of the last lecture with quiz questions. Once that's done, we relate content of the current subject with content of prior lectures where possible.
+To activate prior knowledge, we start each lecture with a recap on the subject of the last lecture with quiz questions. Once that's done, we relate content of the current subject with content of prior lectures where possible. 
 
 We also relate content to other programming languages, taking into account the intermediate C++ knowledge students have. This can be done by asking questions such as 'How would you solve this problem in your favourite programming language'? However, as relating to
 
@@ -320,7 +311,7 @@ The lecture slides are available online, and contain links to the [Rust playgrou
 ### Schedule
  - (2m) Start with welcome, students entering
  - (10m) Recap on content from last time that current subject builds on
-     - (2m) Recap overview
+     - (2m) Recap overview 
      - (3m) Short round of questions
      - (5m) 1 set of quiz questions
  - (3m) Introduce lecture subject and learning objectives
@@ -345,19 +336,18 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 - (60m) Work on exercises in small groups
 
 
-## Course topics & schedule
-
-| Week | Module       | Topic                                                           | Notes                         |
-| ---- | ------------ | --------------------------------------------------------------- | ----------------------------- |
-| 1    | 0, <br />A1  | Course intro <br />Language basics                              |                               |
-| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                               |
-| 3    | A3           | Traits and generics                                             |                               |
-| 4    | B            | Application programming                                         |                               |
-| 5    | C            | Multitasking                                                    |                               |
-| 6    | D            | Idiomatic Rust patterns                                         | Project proposal reminder     |
-| 7    | E            | Rust for web                                                    | Deadline project proposal     |
-| 8    | F            | Safe Unsafe Rust                                                | Project proposal resubmission |
-| 9    | G            | FFI and Dynamic modules                                         |                               |
-| 10   | P            | Final project                                                   |                               |
-| 11   | P            | Final project                                                   |                               |
-| 12   | P            | Final project submission and presentation                       |                               |
+## Course schedule
+| Week | Date | Module | Notes                                     |
+| ---- | ---- | ------ | ----------------------------------------- |
+| 1    |      | 0, A1  | Course intro                              |
+| 2    |      | A2, A3 |                                           |
+| 3    |      | A4     |                                           |
+| 4    |      | B      |                                           |
+| 5    |      | C      |                                           |
+| 6    |      | D      | Project proposal reminder                 |
+| 7    |      | E      | Deadline project proposal                 |
+| 8    |      | F      | Project proposal resubmission             |
+| 9    |      | G      | Start final project                       |
+| 10   |      | P      |                                           |
+| 11   |      | P      |                                           |
+| 12   |      | P      | Final project submission and presentation |

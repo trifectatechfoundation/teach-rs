@@ -16,6 +16,17 @@ Module X: description
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
+
+<!-- NOTES:
+unsafe limits the number of lines where undefined behavior
+
+get_unsafe out of bounds: wat gebeurt er?
+
+existence is UB?
+
+linked list pointer version: implementeer `len()` en `is_empty()`, IntoIterator
+-->
+
 ---
 layout: three-slots
 ---
