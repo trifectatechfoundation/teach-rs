@@ -102,6 +102,10 @@ TODO
 <!-- Give an overview of the subjects covered in this lecture -->
 <!-- Incorporate any breaks as well -->
 
+---
+layout: section
+---
+# Introduction to traits
 
 ---
 layout: default
@@ -244,7 +248,7 @@ In English:
 layout: default
 ---
 
-# Static dispatch
+# Calling `trait` methods
 
 ```rust
 impl MyAdd for i32 {/* - snip - */}
@@ -265,23 +269,126 @@ fn main() {
 
 - Code is <em>monomorphized</em>
 - Two versions of `add_values` end up in binary
-- Very fast to run
+- Very fast to run (static dispatch)
 - Slow to compile and larger binary
 
 ---
 layout: default
 ---
 # Limitations of `MyAdd`
-What happens if we...
+What happens if...
 
-- Add other types?
-- Add separate types?
-- Addition yields another type?
+- We want to add other types?
+- We want to add separate types?
+- Addition yields a different type?
+
+---
+layout: default
+---
+# `std::ops::Add`
+The way `std` does it
+
+```rust{all|1|2-4}
+pub trait Add<Rhs = Self> {
+    type Output;
+
+    fn add(self, rhs: Rhs) -> Self::Output;
+}
+```
+
+- Trait itself is generic: allow adding separate types
+- Associated type: allow defining addition ouput on implementation
+
+
+---
+layout: default
+---
+# `impl std::ops::Add`
+
+```rust
+pub struct BigNumber(u64);
+
+impl std::ops::Add for BigNumber {
+  type Output = Self;
+  
+  fn add(self, rhs: Self) -> Self::Output {
+      BigNumber(self.0 + rhs.0)
+  }
+}
+
+fn main() {
+  let res = BigNumber(1) + BigNumber(2);
+}
+```
+
+What's the type of `res`?
+
+---
+layout: default
+---
+# `impl std::ops::Add` (2)
+
+```rust
+pub struct BigNumber(u64);
+
+impl std::ops::Add<u32> for BigNumber {
+  type Output = u128;
+  
+  fn add(self, rhs: Self) -> Self::Output {
+      (self.0 as u128) + (rhs as u128)
+  }
+}
+
+fn main() {
+  let res = BigNumber(1) + 3u32;
+}
+```
+
+What's the type of `res`?
+
+---
+layout: default
+---
+# Traits: Type Parameter vs. Associated Type
+
+### Type parameter (input type)
+*if trait can be implemented for many combinations of types*
+```rust
+// We can add both a u32 value and a u32 reference to a u32
+impl Add<u32> for u32 {/* */}
+impl Add<&u32> for u32 {/* */}
+```
+
+### Associated type (output type)
+*to define a type for a single implementation*
+```rust
+impl Add<u32> for u32 {
+  // Addition of two u32's is always u32
+  type Output = u32;
+}
+```
+
+---
+layout: section
+---
+# Common traits from `std`
+
+<!-- TODO --->
+
+
+---
+layout: section
+---
+# Dynamic dispatch
+
 
 ---
 layout: default
 ---
 # Summary
+- Traits describe functionality
+- Generics allow writing in terms of traits
+- Traits can be generic, too
 <!-- Very quickly go over the learning objectives and how they were covered -->
 
 ---
