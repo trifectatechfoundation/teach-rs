@@ -131,6 +131,14 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 *TBD*
 
 #### A4 - Traits and generics
+This module introduces technologies to make your Rust code more versatile: *traits* and *generics*. After completing this module, the student is able to:
+- Describe the problems traits and generics solve
+- Use traits to describe functionality that is common beween types
+- Write functions and methods in terms of traits and bounds.
+- Use various common traits from the standard library
+- Use trait objects to implement dynamic dispatch
+- Decide when dynamic dispatch should be used over static dispatch
+
 - **Traits**
 - **Commonly used traits from std**
     - Into/From/TryFrom/TryInto, compared to `as` from A1
