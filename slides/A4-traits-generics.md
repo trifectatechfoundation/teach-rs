@@ -369,17 +369,17 @@ impl Add<u32> for u32 {
 ```
 
 ---
-layout: section
+layout: default
 ---
-# Common traits from `std`
+# Orphan rule
 
-<!-- TODO --->
+*Coherence: There must be **at most one** implementation of a trait for any given type*
 
+Trait can be implemented for a type **iff**:
+- Either your crate defines the trait
+- Or your crate defines the type
 
----
-layout: section
----
-# Dynamic dispatch
+Or both, of course
 
 
 ---
@@ -390,6 +390,57 @@ layout: default
 - Generics allow writing in terms of traits
 - Traits can be generic, too
 <!-- Very quickly go over the learning objectives and how they were covered -->
+
+---
+layout: section
+---
+# Common traits from `std`
+
+---
+layout: default
+---
+
+# `Clone` & `Copy`
+```rust
+pub trait Clone: Sized {
+    fn clone(&self) -> Self;
+
+    fn clone_from(&mut self, source: &Self) {
+      *self = source.clone()
+    }
+}
+
+pub trait Copy: Clone { } // That's it!
+```
+
+- `trait A: B` == "Implementor of `A` must also implement `B`"
+- `Sized`: size known at compile-time
+- `clone_from` has default implementation
+- `Copy` is a 'marker trait'
+
+---
+layout: default
+---
+
+# `Into<T>` & `From<T>`
+```rust{all|1-3|5-7|9-14}
+pub trait From<T>: Sized {
+    fn from(value: T) -> Self;
+}
+
+pub trait Into<T>: Sized {
+    fn into(self) -> T;
+}
+
+impl <T, U> Into<U> for T
+  where U: From<T> { 
+    fn into(self) -> U {
+      U::from(self)
+    }
+}
+```
+
+*Prefer `From` over `Into` if orphan rule allows*
 
 ---
 layout: default
