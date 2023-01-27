@@ -109,23 +109,15 @@ layout: default
 # The problem
 
 ```rust
-fn max_u32(l: u32, r: u32) -> u32 { /* -snip- */ }
+fn add_u32(l: u32, r: u32) -> u32 { /* -snip- */ }
 
-fn max_i32(l: i32, r: i32) -> i32 { /* -snip- */ }
+fn add_i32(l: i32, r: i32) -> i32 { /* -snip- */ }
 
-fn max_f32(l: f32, r: f32) -> f32 { /* -snip- */ }
+fn add_f32(l: f32, r: f32) -> f32 { /* -snip- */ }
 
 /* ... */
 ```
-<v-click>
-<div>
-<br/>
-What happens if we...
 
-- Compare other types?
-- Compare separate types?
-</div>
-</v-click>
 <v-click>
 <div>
 <strong>We need generic code!</strong>
@@ -143,7 +135,7 @@ layout: default
 ---
 # Generic code
 ```rust
-fn max<T>(lhs: T, rhs: T) -> T { /* - snip - */}
+fn add<T>(lhs: T, rhs: T) -> T { /* - snip - */}
 
 fn log<T>(item: T) { /* - snip - */}
 ```
@@ -182,36 +174,109 @@ layout: default
 ---
 
 # `trait`
-
-- Describe what a type can do
-- Describe how a type does it
-
-```rust{all|1-3|5-18}
-trait Increment {
-    fn inc(&mut self) -> Result<(), String>;
+```rust
+trait MyAdd {
+    fn my_add(&self, other: &Self) -> Self;
 }
+```
 
-struct Counter { 
-    count: u32,
-}
+- Describe what the type can do
+- Describe how the type does it
 
-impl Increment for Counter {
-    fn inc(&mut self) -> Result<(), String> {
-        if self.count < 10 {
-            self.count += 1;
-            Ok(())
-        } else {
-            Err(format!("Count is already too high: {}", self.count))
-        }
+
+---
+layout: default
+---
+# `impl trait`
+```rust{all|1|2-8}
+impl MyAdd for u32 {
+    fn my_add(&self, other: &Self) -> Self {
+      *self + *other
     }
 }
-
 ```
 
 ---
 layout: default
 ---
+# Using a `trait`
 
+```rust{all|1-2|5-6}
+// Import the type and the trait
+use my_mod::{MyAdd}
+
+fn main() {
+  let left: u32 = 6;
+  let right: u32 = 8;
+  // Call trait method
+  let result = left.my_add(&right);
+  assert_eq!(result, 14)
+}
+```
+
+- Trait needs to be in scope
+- Call just like a method
+
+---
+layout: default
+---
+# Trait bounds
+
+```rust{all|1-3|7-10}
+fn add_values<T: MyAdd>(this: &T, other: &T) -> T {
+  this.my_add(other)
+}
+
+// Or
+
+fn add_values<T>(this: &T, other: &T) -> T 
+  where T: MyAdd {
+  this.my_add(other)
+}
+```
+
+Now we've got a useful generic function!
+
+In English:
+"For all types `T` that implement the `MyAdd` `trait`, we define..."
+
+---
+layout: default
+---
+
+# Static dispatch
+
+```rust
+impl MyAdd for i32 {/* - snip - */}
+impl MyAdd for f32 {/* - snip - */}
+
+fn add_values<T>(this: &T, other: &T) -> T 
+  where T: MyAdd {
+  this.my_add(other)
+}
+
+fn main() {
+  let sum_one = add_values(&6, &8);
+  assert_eq!(sum_one, 14);
+  let sum_two = add_values(&6.5, &7.5);
+  println!("Sum two: {}", sum_two); // 14
+}
+```
+
+- Code is <em>monomorphized</em>
+- Two versions of `add_values` end up in binary
+- Very fast to run
+- Slow to compile and larger binary
+
+---
+layout: default
+---
+# Limitations of `MyAdd`
+What happens if we...
+
+- Add other types?
+- Add separate types?
+- Addition yields another type?
 
 ---
 layout: default
