@@ -9,6 +9,10 @@
     "dev-A1": "slidev A1-intro-to-rust.md",
     "export-A1": "slidev export A1-intro-to-rust.md",
 
+    "build-A4": "slidev build A4-traits-generics.md",
+    "dev-A4": "slidev A4-traits-generics.md",
+    "export-A4": "slidev export A4-traits-generics.md",
+
     "build-B": "slidev build B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",
