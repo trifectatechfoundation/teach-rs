@@ -156,7 +156,9 @@ Or, in plain English:
 </v-click>
 <v-click>
 <div>
+<br/>
 Some open points:
+
 - What can we do with a `T`?
 - What should body be?
 </div>
@@ -170,8 +172,6 @@ We need to provide information to compiler:
 - Tell Rust what `T` can do
 - Tell Rust what `T` is accepted
 - Tell Rust how `T` implements functionality
-
-More bounds = more functionality inside = less flexibility outside
 
 ---
 layout: default
@@ -226,15 +226,16 @@ layout: default
 ---
 # Trait bounds
 
-```rust{all|1-3|7-10}
+```rust{all|1-3,5|5,7-10}
 fn add_values<T: MyAdd>(this: &T, other: &T) -> T {
   this.my_add(other)
 }
 
-// Or
+// Or, equivalently
 
 fn add_values<T>(this: &T, other: &T) -> T 
-  where T: MyAdd {
+  where T: MyAdd
+{
   this.my_add(other)
 }
 ```
@@ -242,7 +243,8 @@ fn add_values<T>(this: &T, other: &T) -> T
 Now we've got a useful generic function!
 
 In English:
-"For all types `T` that implement the `MyAdd` `trait`, we define..."
+
+*"For all types `T` that implement the `MyAdd` `trait`, we define..."*
 
 ---
 layout: default
@@ -255,7 +257,8 @@ impl MyAdd for i32 {/* - snip - */}
 impl MyAdd for f32 {/* - snip - */}
 
 fn add_values<T>(this: &T, other: &T) -> T 
-  where T: MyAdd {
+  where T: MyAdd
+{
   this.my_add(other)
 }
 
@@ -306,18 +309,20 @@ layout: default
 # `impl std::ops::Add`
 
 ```rust
+use std::ops::Add;
 pub struct BigNumber(u64);
 
-impl std::ops::Add for BigNumber {
+impl Add for BigNumber {
   type Output = Self;
-  
+
   fn add(self, rhs: Self) -> Self::Output {
       BigNumber(self.0 + rhs.0)
   }
 }
 
 fn main() {
-  let res = BigNumber(1) + BigNumber(2);
+  // Call `Add::add`
+  let res = BigNumber(1).add(BigNumber(2));
 }
 ```
 
@@ -399,8 +404,78 @@ layout: section
 ---
 layout: default
 ---
+# How Rust uses traits
 
-# `Clone` & `Copy`
+- Shared behavior (`Add<T>`)
+- Operator overloading
+
+```rust{all|13}
+use std::ops::Add;
+pub struct BigNumber(u64);
+
+impl Add for BigNumber {
+  type Output = Self;
+
+  fn add(self, rhs: Self) -> Self::Output {
+      BigNumber(self.0 + rhs.0)
+  }
+}
+
+fn main() {
+  // Now we can use `+` to add `BigNumber`s!
+  let res: BigNumber = BigNumber(1) + (BigNumber(2));
+}
+```
+---
+layout: default
+---
+# How Rust uses traits (2)
+
+- Marker traits
+
+```rust
+/// Types with a constant size known at compile time.
+/// [...]
+pub trait Sized { }
+```
+
+*`u32` is `Sized`*
+
+*Slice `[T]`, `str` is **not** `Sized`*
+
+*Slice reference `&[T]`, `&str` is `Sized`*
+
+
+---
+layout: default
+---
+# Default values: `std::default::Default`
+
+```rust
+pub trait Default: Sized {
+    fn default() -> Self;
+}
+
+#[derive(Default)] // Derive the trait
+struct MyCounter {
+  count: u32,
+}
+
+// Or, implement it
+impl Default for MyCounter {
+  fn default() -> Self {
+    MyCounter {
+      count: u32::default(), // == 0
+    }
+  }
+}
+```
+
+---
+layout: default
+---
+
+# Duplication: `std::clone::Clone` & `std::marker::Copy`
 ```rust
 pub trait Clone: Sized {
     fn clone(&self) -> Self;
@@ -413,16 +488,18 @@ pub trait Clone: Sized {
 pub trait Copy: Clone { } // That's it!
 ```
 
+- Both `Copy` and `Clone` can be `#[derive]`d
 - `trait A: B` == "Implementor of `A` must also implement `B`"
-- `Sized`: size known at compile-time
 - `clone_from` has default implementation
-- `Copy` is a 'marker trait'
+- `Copy` & `Sized ` are marker traits
+
+*Why should one implement `Copy`?*
 
 ---
 layout: default
 ---
 
-# `Into<T>` & `From<T>`
+# Conversion: `Into<T>` & `From<T>`
 ```rust{all|1-3|5-7|9-14}
 pub trait From<T>: Sized {
     fn from(value: T) -> Self;
@@ -433,15 +510,120 @@ pub trait Into<T>: Sized {
 }
 
 impl <T, U> Into<U> for T
-  where U: From<T> { 
+  where U: From<T>
+{
     fn into(self) -> U {
       U::from(self)
     }
 }
 ```
 
-*Prefer `From` over `Into` if orphan rule allows*
+*Prefer `From` over `Into` if orphan rule allows to*
 
+---
+layout: default
+---
+# Reference conversion: `AsRef<T>` & `AsMut<T>`
+
+```rust
+pub trait AsRef<T: ?Sized>
+{
+    fn as_ref(&self) -> &T;
+}
+
+pub trait AsMut<T: ?Sized>
+{
+    fn as_mut(&mut self) -> &mut T;
+}
+```
+
+- Provide flexibility to API users
+- `T` need not be `Sized`, e.g. slices `[T]` can implement `AsRef<T>`, `AsMut<T>`
+
+---
+layout: default
+---
+# Reference conversion: `AsRef<T>` & `AsMut<T>` (2)
+
+```rust{all|1-2|10-11|13-14}
+fn print_bytes<T: AsRef<[u8]>>(slice: T) {
+  let bytes: &[u8] = slice.as_ref();
+  for byte in bytes {
+    print!("{:02X}", byte);
+  }
+  println!();
+}
+
+fn main() {
+  let owned_bytes: Vec<u8> = vec![0xDE, 0xAD, 0xBE, 0xEF];
+  print_bytes(owned_bytes);
+
+  let byte_slice: [u8; 4] = [0xFE, 0xED, 0xC0, 0xDE];
+  print_bytes(byte_slice);
+}
+```
+
+*Have user of `print_bytes` choose between stack local `[u8; N]` and heap-allocated `Vec<u8>`*
+
+---
+layout: default
+---
+# Destruction: `std::ops::Drop`
+
+```rust
+pub trait Drop {
+    fn drop(&mut self);
+}
+```
+
+- Called when owner goes out of scope
+
+
+---
+layout: two-cols
+---
+# `std::ops::Drop`
+
+```rust{all|1-7|9-17|19-21}
+struct Inner;
+
+impl Drop for Inner {
+  fn drop(&mut self) {
+    println!("Dropped inner");
+  }
+}
+
+struct Outer {
+  inner: Inner,
+}
+
+impl Drop for Outer {
+  fn drop(&mut self) {
+    println!("Dropped outer");
+  }
+}
+
+fn main() {
+  drop(Outer { inner: Inner });
+}
+```
+::right::
+
+# &nbsp;
+<v-click>
+
+<div class="no-line-numbers">
+<br/>
+Output:
+```text
+Dropped outer
+Dropped inner
+```
+</div>
+
+- Runs *before* members are dropped
+- Signature `&mut` prevents dropping `self` in `drop`
+</v-click>
 ---
 layout: default
 ---
