@@ -159,15 +159,11 @@ layout: default
 use std::collections::HashMap;
 use rayon::prelude::*;
 
-fn inverse_document_frequency(documents: &[&str]) -> HashMap<&str, f32> {
-    // for each word, how often it occurs across all documents
-    let document_frequency = documents
+fn document_frequency(documents: &[&str]) -> HashMap<&str, usize> {
+    documents
         .par_iter()
         .map(|document| count_words(document))
         .reduce(HashMap::default, combine_documents);
-
-    // divide by the number of documents to get "rareness" score
-    let idf = todo!();
 }
 
 fn count_words(document: &str) -> HashMap<&str, usize> {
@@ -191,7 +187,7 @@ layout: default
 ```rust
 
 // for each word, how often it occurs across all documents
-let document_frequency = documents
+documents
     .par_iter()
     .map(|document| count_words(document))
     .reduce(HashMap::default, combine_documents);
@@ -235,7 +231,276 @@ fn f() {
 ```
 
 - Question: what is the output of this program?
-- Question: how is this different than data-parallel computation?
+
+---
+layout: default
+---
+
+# Expected output
+
+maybe 
+
+```
+Hello from another thread!
+This is my thread id: ThreadId(411)
+Hello from another thread!
+This is my thread id: ThreadId(412)
+Hello from the main thread.
+```
+
+or
+
+```
+Hello from another thread!
+This is my thread id: ThreadId(412)
+Hello from another thread!
+This is my thread id: ThreadId(411)
+Hello from the main thread.
+```
+
+---
+layout: default
+---
+
+# Expected output
+
+but most likely 
+
+```
+Hello from the main thread.
+```
+
+The process exits when the main thread is done!
+
+
+- `.join()` can be used to block the main thread until the child is done
+
+```rust
+fn main() {
+    let t1 = thread::spawn(f);
+    let t2 = thread::spawn(f);
+
+    println!("Hello from the main thread.");
+
+    t1.join().unwrap();
+    t2.join().unwrap();
+}
+```
+
+- `.join()` turns a panic in the thread into an `Err` 
+
+---
+layout: default
+---
+
+# Thread lifetime
+
+- a more typical example
+
+```rust
+let numbers = Vec::from_iter(0..=1000);
+
+let t = thread::spawn(move || {
+    let len = numbers.len();
+    let sum = numbers.iter().sum::<usize>();
+    sum / len
+});
+
+let average = t.join().unwrap();
+
+println!("average: {average}");
+```
+
+- `numbers` must be `move`d into the closure!
+
+---
+layout: default
+---
+
+# Thread lifetime
+
+- otherwise `numbers` might be dropped while the thread is still using it! 
+
+```rust
+let numbers = Vec::from_iter(0..=1000);
+
+let t = thread::spawn(|| {
+    let len = numbers.len();
+    let sum = numbers.iter().sum::<usize>();
+    sum / len
+});
+
+drop(numbers); // oh no
+
+let average = t.join().unwrap();
+
+println!("average: {average}");
+```
+
+---
+layout: default
+---
+
+# Thread lifetime: make it known
+
+- force the lifetime to be known by using scopes
+
+```rust
+let numbers = Vec::from_iter(0..=1000);
+
+let average = thread::scope(|s| {
+    s.spawn(|| {
+        let len = numbers.len();
+        let sum = numbers.iter().sum::<usize>();
+        sum / len
+    }).join().unwrap()
+});
+
+println!("average: {average:?}");
+```
+
+---
+layout: default
+---
+
+- of course, borrowing rules still apply 
+
+```rust
+let mut numbers = vec![1, 2, 3];
+
+thread::scope(|s| {
+    s.spawn(|| {
+        numbers.push(1);
+    });
+    s.spawn(|| {
+        numbers.push(2); // Error!
+    });
+});
+```
+
+```txt
+error[E0499]: cannot borrow `numbers` as mutable more than once at a time
+ --> example.rs:7:13
+  |
+4 |     s.spawn(|| {
+  |             -- first mutable borrow occurs here
+5 |         numbers.push(1);
+  |         ------- first borrow occurs due to use of `numbers` in closure
+  |
+7 |     s.spawn(|| {
+  |             ^^ second mutable borrow occurs here
+8 |         numbers.push(2);
+  |         ------- second borrow occurs due to use of `numbers` in closure
+```
+
+---
+layout: default
+---
+
+# Fearless concurrency
+
+- restrictions on multiple mutable borrows prevent data races: it is never the case that one thread is modifying data that another thread is looking at
+
+
+---
+layout: default
+---
+
+# Mutual Exclusion 
+
+- `Mutex` allows mutation of a `T` through a shared `&Mutex<T>` reference
+
+```rust
+use std::sync::Mutex;
+use std::thread;
+
+fn main() {
+    let n = Mutex::new(String::from("foo"));
+    thread::scope(|s| {
+        s.spawn(|| {
+            n.lock().unwrap().push_str("bar");
+        });
+
+        s.spawn(|| {
+            n.lock().unwrap().push_str("baz")
+        });
+    });
+    println!("{}", n.into_inner().unwrap());
+}
+```
+
+- threads lock the mutex, but there is no `unlock` ?!
+
+---
+layout: default
+---
+
+# Sharing ownership between threads 
+
+```rust
+impl<T> Mutex<T> {
+    pub fn lock(&self) -> LockResult<MutexGuard<'_, T>> { 
+        ...
+    }
+}
+```
+
+- Acquires a mutex, blocking the current thread until it is able to do so
+- Returns a `PoisonError` if a thread panicked while holding the lock
+- Returns a `MutexGuard`, proof to the type checker that we hold the lock
+- `MutexGuard<'_, T>` implements `DerefMut<Target = T>`, so we can use it like a mutable reference
+- dropping the `MutexGuard` unlocks the mutex
+
+---
+layout: default
+---
+
+# Sharing ownership between threads 
+
+- with `Arc`, ownership can be shared between threads
+
+```rust
+use std::sync::{Mutex, Arc};
+use std::thread;
+
+fn main() {
+    let n = Arc::new(Mutex::new(String::from("foo")));
+
+    thread::scope(|s| {
+        let n2 = n.clone();
+        s.spawn(|| {
+            n2.lock().unwrap().push_str("bar");
+        });
+
+        s.spawn(|| {
+            n.lock().unwrap().push_str("baz")
+        });
+    });
+
+    // n has moved and cannot be used here
+}
+```
+
+- `Arc` stands for "atomically reference counted"
+- useful for resolving lifetime issues 
+- `.clone()` is very cheap: it just increments the reference count
+
+---
+layout: default
+---
+
+# Reinventing the Mutex 
+
+- `Mutex` allows mutation through a shared `&T` reference
+
+```
+struct Mutex<T> {}
+
+impl<T> Mutex<T> { 
+    fn lock(&self) -> MutexGuard<'_, T> {
+    }
+}
+``` 
 
 ---
 layout: default
