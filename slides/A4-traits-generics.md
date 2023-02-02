@@ -205,7 +205,7 @@ layout: default
 ---
 # Using a `trait`
 
-```rust{all|1-2|5-6}
+```rust{all|1-2|5-6|7-9}
 // Import the type and the trait
 use my_mod::{MyAdd}
 
@@ -240,40 +240,9 @@ fn add_values<T>(this: &T, other: &T) -> T
 }
 ```
 
-Now we've got a useful generic function!
+Now we've got a *useful* generic function!
 
-In English:
-
-*"For all types `T` that implement the `MyAdd` `trait`, we define..."*
-
----
-layout: default
----
-
-# Calling `trait` methods
-
-```rust
-impl MyAdd for i32 {/* - snip - */}
-impl MyAdd for f32 {/* - snip - */}
-
-fn add_values<T>(this: &T, other: &T) -> T 
-  where T: MyAdd
-{
-  this.my_add(other)
-}
-
-fn main() {
-  let sum_one = add_values(&6, &8);
-  assert_eq!(sum_one, 14);
-  let sum_two = add_values(&6.5, &7.5);
-  println!("Sum two: {}", sum_two); // 14
-}
-```
-
-- Code is <em>monomorphized</em>
-- Two versions of `add_values` end up in binary
-- Very fast to run (static dispatch)
-- Slow to compile and larger binary
+English: *"For all types `T` that implement the `MyAdd` `trait`, we define..."*
 
 ---
 layout: default
@@ -465,7 +434,7 @@ struct MyCounter {
 impl Default for MyCounter {
   fn default() -> Self {
     MyCounter {
-      count: u32::default(), // == 0
+      count: 1, // If you feel so inclined
     }
   }
 }
@@ -624,6 +593,35 @@ Dropped inner
 - Runs *before* members are dropped
 - Signature `&mut` prevents dropping `self` in `drop`
 </v-click>
+
+---
+layout: default
+---
+
+# Compiling generic functions
+
+```rust
+impl MyAdd for i32 {/* - snip - */}
+impl MyAdd for f32 {/* - snip - */}
+
+fn add_values<T: MyAdd>(left: &T, right: &T) -> T
+{
+  left.my_add(right)
+}
+
+fn main() {
+  let sum_one = add_values(&6, &8);
+  assert_eq!(sum_one, 14);
+  let sum_two = add_values(&6.5, &7.5);
+  println!("Sum two: {}", sum_two); // 14
+}
+```
+
+Code is <em>monomorphized</em>:
+ - Two versions of `add_values` end up in binary
+ - Optimized separately and very fast to run (static dispatch)
+ - Slow to compile and larger binary
+
 ---
 layout: default
 ---
