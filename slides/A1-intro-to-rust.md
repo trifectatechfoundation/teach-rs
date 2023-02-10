@@ -320,9 +320,9 @@ fn main() {
 </v-click>
 
 <!--
-    - Use isize and usize mostly when working with indexing or other things
-    that need to have a specific size for your platform
-    -->
+- Use isize and usize mostly when working with indexing or other things
+that need to have a specific size for your platform
+-->
 
 ---
 
@@ -342,7 +342,7 @@ fn main() {
 - Rust uses f64 by default
 - Similar to integers you can append the type of float to indicate a specific
 literal type
-    -->
+-->
 
 ---
 
@@ -438,8 +438,6 @@ fn main() {
 ```
 
 - A character is a 32 bit unicode scalar value
-- Almost identical to a unicode code point, but excludes code points only valid
-in UTF-16 context
 - Very much unlike C/C++ where char is 8 bits
 
 <!--
@@ -448,6 +446,25 @@ in UTF-16 context
 interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
+-->
+
+---
+
+# Strings
+```rust
+    // Static literal string *slice*
+    let s1: &str = "Hello, 🌍!";
+```
+
+- Rust strings are UTF-8-encoded
+- Unlike C/C++: *Not null-terminated*
+- Cannot be indexed like C Strings
+- Actually many types of strings in Rust
+
+<!--
+- Rusts strings are complicated, because all strings are complicated
+- Rusts strings are UTF-8 encoded sequences. Not null terminated unlike C/C++
+- Literal strings are static by default, called string *slices*, being pointers to their start, accompanied with the length
 -->
 
 ---
@@ -1008,6 +1025,7 @@ Running `target/debug/playground`
 <v-click>
 
 ```rust
+// Create an owned, heap allocated string
 let s1 = String::from("hello");
 let s2 = s1;
 println!("{}, world!", s1);
