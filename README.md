@@ -66,12 +66,22 @@ We're very happy with support in developing the course material from:
 
 ### Our sponsors
 
+#### Founding sponsors
+
 ![Logo STU FIIT](./assets/STU_FIIT_logo_100_color.png)
 ![Logo RF](./assets/Rust_Foundation_logo_100_color.png)
 
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+
+#### Silver sponsors
+
+Thanks to our `Rust 101 Course Silver sponsor`'s!
+
+- [Gofore](https://gofore.com/en/)
+
+### Support Rust 101
 
 We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
 
