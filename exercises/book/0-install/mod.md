@@ -6,7 +6,7 @@ All of these tools are available for Linux, Mac and Windows users. We'll need th
 ## Rust and Cargo
 First we'll need `rustc`, the standard Rust compiler. `rustc` is generally not invoked directly, but through `cargo`, the Rust package manager. `rustup` takes care of installing `rustc` and `cargo`.
 
-This part is easy: go to <https://rustup.rs> and follow the instructions. Please make sure you're installing the default toolchain. Once done, run
+This part is easy: go to <https://rustup.rs> and follow the instructions. Please make sure you're installing the latest default toolchain. Once done, run
 
 ```bash
 rustc -V && cargo -V
@@ -15,8 +15,8 @@ rustc -V && cargo -V
 The output should be something like this:
 
 ```bash
-rustc 1.66.0 (69f9c33d7 2022-12-12)
-cargo 1.66.0 (d65d197ad 2022-11-15)
+rustc 1.67.1 (d5a82bbd2 2023-02-07)
+cargo 1.67.1 (8ecd4f20a 2023-01-10)
 ```
 
 Using Rustup, you can install Rust toolchains and components. More info: 
