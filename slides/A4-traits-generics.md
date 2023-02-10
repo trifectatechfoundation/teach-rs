@@ -345,6 +345,29 @@ impl Add<u32> for u32 {
 ---
 layout: default
 ---
+
+# `#[derive]` a `trait`
+
+```rust
+#[derive(Clone)]
+struct Dolly {
+  num_legs: u32,
+}
+
+fn main() {
+  let dolly = Dolly { num_legs: 4 };
+  let second_dolly = dolly.clone();
+  assert_eq!(dolly.num_legs, second_dolly.num_legs);
+}
+```
+
+- Some traits are trivial to implement
+- Derive to quickly implement a trait
+- For `Clone`: derived `impl` calls `clone` on each field 
+
+---
+layout: default
+---
 # Orphan rule
 
 *Coherence: There must be **at most one** implementation of a trait for any given type*

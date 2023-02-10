@@ -5,7 +5,7 @@
   - [A1 - Language basics](./A1-language-basics/mod.md)
   - [A2 - Ecosystem and tools]()
   - [A3 - Advanced Syntax, Ownership, references]()
-  - [A4 - Traits and generics]()
+  - [A4 - Traits and generics](./A4-traits-generics/mod.md)
 - [B - Application programming](./B-application-programming/mod.md)
 - [C - Multitasking]()
 - [D - Idiomatic Rust patterns]()
