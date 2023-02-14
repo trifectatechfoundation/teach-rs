@@ -58,19 +58,7 @@ layout: default
 layout: section
 ---
 
-# Mindmap
-
-What do you know already about this subject?
-
-## [Mindmap access code here]
-
-<!-- Quick mindmap, show mindmap access code -->
-
----
-layout: iframe
-url: http://your-interactive-mindmap-url-here
----
-<!-- insert URL to live mindmap in slide option `url` -->
+# Anyone have experience with Rust?
 
 ---
 layout: cover
@@ -87,7 +75,7 @@ layout: default
 
 # Content overview
 
-- Why and when Rust
+- Why learn Rust?
 - The ownership model
 - Basic Rust syntax
 
@@ -95,9 +83,16 @@ layout: default
 layout: section
 ---
 
-# Why and when Rust?
+# Why learn Rust?
 
-<!-- TODO add slides about why and when Rust -->
+## by Florian Gilcher
+
+---
+layout: default
+---
+# Why learn Rust?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l8Qk5Nh6qsg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 0 auto; "></iframe>
 
 ---
 layout: section
@@ -1225,7 +1220,6 @@ layout: default
 ---
 # Summary
 
-* TODO on why Rust
 * Loads of syntax
 * Values are owned by variables
 * Values may be moved to new owners or copied
@@ -1234,3 +1228,12 @@ layout: default
 ---
 layout: end
 ---
+
+
+---
+layout: default
+---
+# Practicalities
+
+- Follow installation instructions: https://101-rs.tweede.golf
+- Exercises A1 during tutorial
