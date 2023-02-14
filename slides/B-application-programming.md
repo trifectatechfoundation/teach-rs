@@ -89,7 +89,7 @@ Learn how to use Rust for writing high quality applications
 <!--
 - Introduce today's subject
 - The module is about actually *using* Rust. You're not going to be productive writing real-world Rust applications
-if you've only been introduced to the Rust syntax or have been implementing some common algorithms (although, of course, that does help). Starting with this module, we will put your Rust knowlegde into practise.
+if you've only been introduced to the Rust syntax or have been implementing some common algorithms (although, of course, that does help). Starting with this module, we will put your Rust knowledge into practise.
 -->
 
 ---
@@ -176,7 +176,7 @@ $ tree my-first-app
 <!--
 - The way you set up a crate is by running `cargo-new`. You can pass it a name, and indicate whether you want to set up a library or an application.
 - This  will generate a `Cargo.toml` file as well as a demo  source file.
-- To create a library crate, pass `--lib` insted of `--bin`
+- To create a library crate, pass `--lib` instead of `--bin`
 
 -->
 ---
@@ -349,7 +349,7 @@ $ tree src
 <!--
 Apart from blocks, modules can be defined in separate files.
 - You can either create a file `some_mod.rs` directly,
-- Or keep related modules together in a seprate directory. Of the modules defined in the directory, `mod.rs` is the parent.
+- Or keep related modules together in a separate directory. Of the modules defined in the directory, `mod.rs` is the parent.
 -->
 
 ---
@@ -413,7 +413,7 @@ layout: default
 - Create examples to show users how to use your library
 
 <!--
-- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share siginificant parts of code.
+- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share significant parts of code.
 - If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
 -->
 
@@ -498,14 +498,14 @@ impl S {
 ```
 
 Other example: conversion methods `as_`, `to_`, `into_`, name depends on:
-- Runtime cost 
+- Runtime cost
 - Owned &harr; borrowed
 
 
 <!--
 An easy way of making your API unsurprising is by adhering to naming conventions.
 - For example, the guidelines specify a naming convention for getters. Note that getter names do not start with 'get', and that the mutable getter ends with 'mut'.
-- Another example is the way conversion methods are named, based on their runtime cost and wheter the conversion is between refences, owned values, or from reference to owned and vice-versa. 
+- Another example is the way conversion methods are named, based on their runtime cost and whether the conversion is between references, owned values, or from reference to owned and vice-versa. 
 -->
 
 ---
@@ -515,7 +515,7 @@ layout: two-cols
 # Implement/derive common traits
 
 
-*As long as it makes sense* public types shoud implement:
+*As long as it makes sense* public types should implement:
 
 - `Copy`
 - `Clone`
@@ -567,7 +567,7 @@ pub fn add_generic<O, T: std::ops::Add<Output = O>>(x: T, y: T) -> O {
 ```
 
 <!--
-An great way to lift restrictions on your API is to write your functions in terms of traits. That is, use generics to desribe what exactly is needed to perform a certain action.
+An great way to lift restrictions on your API is to write your functions in terms of traits. That is, use generics to describe what exactly is needed to perform a certain action.
 - In this example, the first function only accepts `u32`, whereas there are many other numeric types for which addition makes sense.
 - The second example, though, accepts anything for which the `Add` trait is implemented. It is even generic over the addition output.
 -->
@@ -579,7 +579,7 @@ layout: default
 # Accept borrowed data if possible
 
 - User decides whether calling function should own the data
-- Avoids unecessary moves
+- Avoids unnecessary moves
 - Exception: non-big array `Copy` types
 
 ```rust {all|6-9|11-14}
@@ -685,7 +685,7 @@ fn do_stuff_with_led() {
 ```
 
 <!--
-Rusts type system is awesome. Use it to you advantage by enbedding semantics into your types.
+Rusts type system is awesome. Use it to you advantage by embedding semantics into your types.
 - As an example, the `enable_led` method takes a `bool`. The calling code does not express intent as much as it could.
 - The `set_led_state`, however, takes a `LedState` variant, which clearly expresses what the developer was trying to do.
 -->
@@ -758,7 +758,7 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 ```
 
 <!--
-- Unit tests are great for testing behavior of a single function or method. 
+- Unit tests are great for testing behavior of a single function or method.
 - In Rust, they live in child modules, allowing them to access private functionality
 - Once set up, a `cargo test` is sufficient to build and run the tests
 -->
@@ -799,7 +799,7 @@ mod tests {
 ```
 
 <!--
-Here's an example of a function being tested. 
+Here's an example of a function being tested.
 -`slice_swap_items` takes a mutable slice, as well as two indices, and swaps the items at those indices.
 - Below, we've defined a module called `tests`, which is decorated with the `#[cfg(test)]` attribute. This attribute makes sure the module is only compiled when running tests.
 - Inside the `tests` module, we've defined two tests and imported the `slice_swap_items` function from the parent module. The first test, `test_swap_items`, sets up a slice, passes it to `slice_swap_items` along with two indices.
@@ -837,7 +837,7 @@ $ tree
     └── integration_test.rs
 ```
 
-<!-- 
+<!--
 To test your application from the outside, you can set up integration tests. These integration tests test your crates public interface and are also executed by running `cargo test`.
 - They are defined in a separate folder, called `tests`
 -->

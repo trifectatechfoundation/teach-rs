@@ -5,6 +5,10 @@
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export 0-intro.md",
 
+    "build-A1": "slidev build A1-intro-to-rust.md",
+    "dev-A1": "slidev A1-intro-to-rust.md",
+    "export-A1": "slidev export A1-intro-to-rust.md",
+
     "build-B": "slidev build B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",

@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "rust-lang.rust-analyzer",
+        "ms-vsliveshare.vsliveshare",
+        "vadimcn.vscode-lldb"
+    ]
+}

@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
-use exercise_b3::fizz_buzz;
+use exercise_b_3::fizz_buzz;
 
 /// Benchmark [fizz_buzz] with several inputs
 /// 1 and 2, 16 and 113 are not divisible by 3 nor 5
