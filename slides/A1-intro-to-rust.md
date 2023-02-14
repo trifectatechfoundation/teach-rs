@@ -22,16 +22,33 @@ Module A1: Language basics
 layout: three-slots
 ---
 
-## Who am i?
+# Who are we?
 
 ::left::
 
-- Ferris
-- I Love Rust
+##  Henk Oordt
+- Embedded software engineer
+- 4 year Rust experience
+- Rust trainer
+- Main contact
 
 ::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
+<img src="https://tweedegolf.nl/images/henk.jpg" alt="Photo Henk" width="300" />
+
+---
+layout: three-slots
+---
+
+# Who are we?
+
+::left::
+
+##  Folkert de Vries
+- Embedded software engineer
+- Write compiler in spare time with Rust
+
+::right::
+<img src="https://tweedegolf.nl/images/folkert.jpg" alt="Photo Folkert" width="300" />
 
 ---
 layout: default
