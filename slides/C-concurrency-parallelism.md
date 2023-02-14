@@ -162,15 +162,18 @@ use rayon::prelude::*;
 fn document_frequency(documents: &[&str]) -> HashMap<&str, usize> {
     documents
         .par_iter()
-        .map(|document| count_words(document))
-        .reduce(HashMap::default, combine_documents);
+        .map(|document| term_occurence(document))
+        .reduce(HashMap::default, combine_occurences);
 }
 
-fn count_words(document: &str) -> HashMap<&str, usize> {
+/// Map each word in the document to the value 1
+fn term_occurence(document: &str) -> HashMap<&str, usize> {
     todo!()
 }
 
-fn combine_documents<'a>(
+
+/// combine the counts from maps a and b. 
+fn combine_occurences<'a>(
     a: HashMap<&'a str, usize>,
     b: HashMap<&'a str, usize>,
 ) -> HashMap<&'a str, usize> {
@@ -343,7 +346,7 @@ layout: default
 
 # Thread lifetime: make it known
 
-- force the lifetime to be known by using scopes
+- explicitly bound the lifetime with a scope 
 
 ```rust
 let numbers = Vec::from_iter(0..=1000);
@@ -400,6 +403,23 @@ layout: default
 # Fearless concurrency
 
 - restrictions on multiple mutable borrows prevent data races: it is never the case that one thread is modifying data that another thread is looking at
+
+---
+layout: default
+---
+
+# Re-defining references 
+
+- `&T`: (possibly) shared reference
+- `&mut T`: exclusive reference
+
+
+for safe mutation, we need exclusive *access*, which we can get in multiple ways:
+
+- we have an exclusive reference to the value
+- we own the value (we can exclusively borrow from ourselves)
+- access is inherently exclusive
+
 
 
 ---
@@ -499,6 +519,42 @@ struct Mutex<T> {}
 impl<T> Mutex<T> { 
     fn lock(&self) -> MutexGuard<'_, T> {
     }
+}
+``` 
+
+---
+layout: default
+---
+
+# Orchestrating Threads 
+
+- MPSC: many producer, single consumer
+
+```rust
+use std::thread;
+use std::sync::mpsc::channel;
+
+fn main() { 
+    // Create a shared channel that can be sent along from many threads
+    // where tx is the sending half (tx for transmission), and rx is the receiving
+    // half (rx for receiving).
+    let (tx, rx) = channel();
+
+    thread::scope(|s| { 
+        for (i, tx) in std::iter::repeat(tx).take(10).enumerate() {
+            s.spawn(move || {
+                tx.send(i).unwrap();
+            });
+        }
+
+        s.spawn(move || { 
+            while let Ok(msg) = rx.recv() { 
+                println!("{msg}");
+            }
+        });
+    });
+
+    println!("done");
 }
 ``` 
 
