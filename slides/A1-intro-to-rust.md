@@ -61,8 +61,8 @@ layout: default
 # Content overview
 
 - Why learn Rust?
+- Basic Rust syntax (quickly)
 - The ownership model
-- Basic Rust syntax
 
 ---
 layout: section
@@ -72,12 +72,21 @@ layout: section
 
 ## by Florian Gilcher
 
+Founder of Ferrous Systems
+
+- Rust training and evangelisation
+- Company support
+- Tooling
+- Ferrocene: Rust in automotive
+
 ---
 layout: default
 ---
 # Why learn Rust?
-
+<https://www.youtube.com/embed/l8Qk5Nh6qsg>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/l8Qk5Nh6qsg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 0 auto; "></iframe>
+
+
 
 ---
 layout: section
@@ -432,8 +441,8 @@ instead.
 
 # Strings
 ```rust
-    // Static literal string *slice*
-    let s1: &str = "Hello, 🌍!";
+    // Owned, heap-allocated string *slice*
+    let s1: Sring = String::new("Hello, 🌍!");
 ```
 
 - Rust strings are UTF-8-encoded
@@ -596,7 +605,7 @@ no value members has no instances, just as with unit.
 - Expressions evaluate to a resulting value
 - Statements are instructions that perform some action and do not return a value
 - A definition of any kind (function definition etc.)
-- The `let var = value;` statement
+- The `let var = expr;` statement
 - Almost everything else is an expression
 
 ## Example statements
@@ -1211,14 +1220,14 @@ layout: default
 * Some typse may be explicitly `Clone`d
 
 ---
-layout: end
----
-
-
----
 layout: default
 ---
 # Practicalities
 
 - Follow installation instructions: https://101-rs.tweede.golf
 - Exercises A1 during tutorial
+- Help each other out!
+
+---
+layout: end
+---

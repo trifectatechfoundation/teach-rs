@@ -28,7 +28,7 @@ layout: three-slots
 ##  Henk Oordt
 - Embedded software engineer
 - 4 year Rust experience
-- Rust trainer
+- Work on IoT device using Rust
 - Main contact
 
 ::right::
@@ -45,9 +45,26 @@ layout: three-slots
 ##  Folkert de Vries
 - Embedded software engineer
 - Write compiler in spare time with Rust
+- 3 years of Rust experience
 
 ::right::
 <img src="https://tweedegolf.nl/images/folkert.jpg" alt="Photo Folkert" width="300" />
+
+---
+layout: three-slots
+---
+
+# Who are we?
+
+::left::
+
+##  Ruben Nijveld
+- Software engineer
+- Rust for web and systems programming
+- Introduced Rust at our company
+
+::right::
+<img src="https://tweedegolf.nl/images/ruben.jpg" alt="Photo Ruben" width="300" />
 
 ---
 layout: default
@@ -133,13 +150,10 @@ layout: default
 ---
 layout: default
 ---
-# Practical information
-- Where to find slides
-- Contact information & availability
 
----
-layout: default
----
-# Next module
+# Today
+<br/>
 
-## TODO link to next module slides
+## Module A1
+  - Slightly longer lecture
+  - Start with exercises
