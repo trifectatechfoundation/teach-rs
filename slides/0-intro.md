@@ -21,58 +21,50 @@ to build reliable and efficient software.
 layout: three-slots
 ---
 
-# Who am I?
+# Who are we?
 
 ::left::
-## Henk Oordt
 
-![Photo Henk](https://tweedegolf.nl/images/hd_sept_21_small.jpg)
-
+##  Henk Oordt
 - Embedded software engineer
-- Rust for Embedded/IoT
-- Rust-lang trainer
+- 4 year Rust experience
+- Work on IoT device using Rust
+- Main contact
 
 ::right::
-
-<style>
-h2 {
-  text-align: center
-}
-
-ul {
-  width: 70%;
-  display: block;
-  margin: auto;
-}
-
-img {
-  display: block;
-  margin: auto;
-}
-
-</style>
+<img src="https://tweedegolf.nl/images/henk.jpg" alt="Photo Henk" width="300" />
 
 ---
 layout: three-slots
 ---
-# Other lecturers
 
-## TODO add other lecturers
+# Who are we?
 
-<style>
-* {
-  text-align: center
-}
+::left::
 
-img {
-  display: block;
-  margin: auto;
-}
+##  Folkert de Vries
+- Embedded software engineer
+- Write compiler in spare time with Rust
+- 3 years of Rust experience
 
-.col-left {
-  background: red;
-}
-</style>
+::right::
+<img src="https://tweedegolf.nl/images/folkert.jpg" alt="Photo Folkert" width="300" />
+
+---
+layout: three-slots
+---
+
+# Who are we?
+
+::left::
+
+##  Ruben Nijveld
+- Software engineer
+- Rust for web and systems programming
+- Introduced Rust at our company
+
+::right::
+<img src="https://tweedegolf.nl/images/ruben.jpg" alt="Photo Ruben" width="300" />
 
 ---
 layout: default
@@ -106,7 +98,7 @@ layout: default
 layout: default
 ---
 # Course structure
- - 7 modules (apart from this intro)
+ - 9 modules (apart from this intro)
  - 12 weeks
 ---
 layout: default
@@ -122,13 +114,9 @@ layout: default
 ---
 # Course structure
 ## Weeks 10 - 12
-Final project. More later
+- Lecture only
+- Work on final project
 
----
-layout: default
----
-# Course schedule
-<!-- TODO add tables with modules, lecturers and dates -->
 ---
 layout: default
 ---
@@ -136,16 +124,17 @@ layout: default
 
 - A bigger project involving Rust
 - Work in teams of 2
-- Hand in proposal in **week 7**
-- Write small report (2-3 pages), to be handed in in **week 12**
+- Hand in proposal in **week 7 before lecture**
+  - Any reparations due in **week 8 before lecture**
+- Write small report (2-3 pages), to be handed in in **week 12 before lecture**
     - Introduction
     - Requirements
     - Design overview diagram
     - Design choices
     - Dependencies
     - Evaluation
-- Present project in about 5 minutes in week 12
-<!-- TODO point towards list of ideas -->
+- Present project in about 5-10 minutes in **week 12 during lecture/tutorial**
+
 ---
 layout: default
 ---
@@ -156,19 +145,15 @@ layout: default
   - [Rust Analyzer plugin](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
   - [Live share plugin](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack)
 - [Rust playground](https://play.rust-lang.org/)
-- [GitHub (TODO LINK TO REPO)]()
+- [Rust 101 repo on GitHub](https://github.com/tweedegolf/101-rs)
 
 ---
 layout: default
 ---
-# Practical information
-- Where to find slides
-- Contact information & availability
 
+# Today
+<br/>
 
----
-layout: default
----
-# Next module
-
-## TODO link to next module slides
+## Module A1
+  - Slightly longer lecture
+  - Start with exercises

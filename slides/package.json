@@ -4,22 +4,22 @@
     "build-0": "slidev build 0-intro.md",
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export 0-intro.md",
-
     "build-A1": "slidev build A1-intro-to-rust.md",
     "dev-A1": "slidev A1-intro-to-rust.md",
     "export-A1": "slidev export A1-intro-to-rust.md",
-
     "build-B": "slidev build B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",
-
     "dev-format-lecture": "slidev format-lecture.md",
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
   "dependencies": {
-    "@slidev/cli": "^0.35.5",
+    "@slidev/cli": "^0.40.0",
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*"
   },
-  "name": "rust-workshop"
+  "name": "rust-workshop",
+  "devDependencies": {
+    "playwright-chromium": "^1.30.0"
+  }
 }
