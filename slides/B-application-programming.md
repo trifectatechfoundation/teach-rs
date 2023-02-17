@@ -13,7 +13,7 @@ title: 'Rust - B: Application programming'
 ---
 
 # Rust programming
-Module B: Application programming (pilot)
+Module B: Application programming
 <!-- Start with welcome, students entering -->
 
 
@@ -23,31 +23,12 @@ layout: three-slots
 
 ## Who am i?
 ::left::
-## Henk Oordt
-- Embedded software engineer
-- Rust for Embedded/IoT
-- Rust-lang trainer
+- Ferris
+- I Love Rust
 
 ::right::
-![Photo Henk](https://tweedegolf.nl/images/hd_sept_21_small.jpg)
-<style>
-h2 {
-  text-align: center;
-  margin-bottom: 50px;
-}
+<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
 
-ul {
-  width: 70%;
-  display: block;
-  margin: auto;
-}
-
-img {
-  display: block;
-  margin: auto;
-}
-
-</style>
 <!--
 Optionally quickly introduce yourself, add photo
 -->
@@ -55,28 +36,27 @@ Optionally quickly introduce yourself, add photo
 ---
 layout: default
 ---
-# Today
-- Introduce Rust application programming
-- Work on exercises
-- Have fun!
+# Last time...
+- [TODO: add last module's topics]
 
 *Any questions?*
 
+<!--
+- Recap on content from last time that current subject builds on
+- Keep it short. Any longer explanations can be deferred to tutorial
+-->
 ---
-layout: quote
+layout: section
 ---
+# Recap Quiz
 
-# Please interrupt me if you have any questions or remarks
-### 15 minute break every 45 minutes
+## [Link to quiz here]
 
 ---
-layout: default
+layout: iframe
+url: http://your-quiz-url-here
 ---
-# Introduce yourself
-
-- Name
-- Your experience with Rust
-- Favorite Rust feature
+<!-- insert URL to quiz roundup in slide option `url` -->
 
 ---
 layout: default
@@ -110,6 +90,15 @@ layout: section
 # Mindmap
 
 What do you know already about this subject?
+
+## [Mindmap access code here]
+<!-- Quick mindmap, show mindmap access code -->
+
+---
+layout: iframe
+url: http://your-interactive-mindmap-url-here
+---
+<!-- insert URL to live mindmap in slide option `url` -->
 
 ---
 layout: cover
@@ -882,14 +871,6 @@ layout: default
 
 
 <!-- Very quickly go over the learning objectives and how they were covered -->
-
----
-layout: section
----
-
-# Exercise time!
-
-## &rarr; 101-rs.tweede.golf &larr;
 
 ---
 layout: end
