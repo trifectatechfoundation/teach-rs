@@ -20,13 +20,283 @@ Advanced Rust syntax
 
 ---
 
+# Ownership
+We previously talked about ownership
+
+* In rust there is always a single owner for each stack value
+* Once the owner goes out of scope any associated values should be cleaned up
+* Copy types creates copies, all other types are *moved*
+
+---
+
+# Moving out of a function
+We have previously seen this example
+
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let len = calculate_length(s1);
+    println!("The length of '{}' is {}.", s1, len);
+}
+fn calculate_length(s: String) -> usize {
+    s.len()
+}
+```
+
+* This does not compile because ownership of `s1` is moved into
+ `calculate_length`, meaning it is no longer available in `main` afterwards
+* We can use `Clone` to create an explicit copy
+* We can give ownership back by returning the value
+* What about other options?
+
+---
+
+# Borrowing
+- We can make an analogy with real life: if somebody owns something you can
+  borrow it from them, but eventually you have to give it back
+- If a value is borrowed, it is not moved and the ownership stays with the
+  original owner
+- To borrow in rust, we create a *reference*
+
+```rust {all|3|7|all}
+fn main() {
+    let x = String::from("hello");
+    let len = get_length(&x);
+    println!("{}: {}", x, len);
+}
+
+fn get_length(arg: &String) -> usize {
+    arg.len()
+}
+```
+
+---
+
+# References (immutable)
+
+```rust
+fn main() {
+    let s = String::from("hello");
+    change(&s);
+    println!("{}", s);
+}
+
+fn change(some_string: &String) {
+    some_string.push_str(", world");
+}
+```
+
+<v-click>
+
+<div class="no-line-numbers">
+
+```text
+   Compiling playground v0.0.1 (/playground)
+error[E0596]: cannot borrow `*some_string` as mutable, as it is behind a `&` reference
+ --> src/main.rs:8:5
+  |
+7 | fn change(some_string: &String) {
+  |                        ------- help: consider changing this to be a mutable reference: `&mut String`
+8 |     some_string.push_str(", world");
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `some_string` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+
+For more information about this error, try `rustc --explain E0596`.
+error: could not compile `playground` due to previous error
+```
+
+</div>
+
+</v-click>
+
+<!--
+- Note how we cannot modify the referenced value through an immutable reference
+-->
+
+---
+
+# References (mutable)
+
+```rust
+fn main() {
+    let mut s = String::from("hello");
+    change(&mut s);
+    println!("{}", s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+<v-click>
+
+<div class="no-line-numbers">
+
+```text
+   Compiling playground v0.0.1 (/playground)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.55s
+     Running `target/debug/playground`
+hello, world
+```
+
+</div>
+
+</v-click>
+
+<v-click>
+
+- A mutable reference can even fully replace the original value
+- To do this, you can use the dereference operator (`*`) to modify the value:
+
+```rust
+*some_string = String::from("Goodbye");
+```
+
+</v-click>
+
+<!--
+- We can use a mutable reference here to allow us to modify a borrowed value
+- Note that you may also sometimes have to use the deref operator to access
+  the value when reading it, but most of the time the Rust compiler will do
+  this automatically and you need not worry about it.
+-->
+
+---
+
+
+# Rules for borrowing and references
+
+- You may only ever have one mutable reference at the same time
+- You may have any number of immutable references at the same time as long as
+  there is no mutable reference
+- References cannot *live* longer than their owners
+- A reference will always at all times point to a valid value
+
+These rules can be checked by the Rust compiler. Combined with the ownership
+model we can be sure that whole classes of errors cannot occur.
+
+<!--
+- Memory bugs such as: null pointer dereferences, data races, dangling pointers,
+  use after free.
+-->
+
+---
+
+# Reference example
+
+```rust
+fn main() {
+    let mut s = String::from("hello");
+    let s1 = &s;
+    let s2 = &s;
+    let s3 = &mut s;
+    println!("{} - {} - {}", s1, s2, s3);
+}
+```
+
+<v-click>
+
+<div class="no-line-numbers">
+
+```text
+   Compiling playground v0.0.1 (/playground)
+error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+ --> src/main.rs:5:14
+  |
+3 |     let s1 = &s;
+  |              -- immutable borrow occurs here
+4 |     let s2 = &s;
+5 |     let s3 = &mut s;
+  |              ^^^^^^ mutable borrow occurs here
+6 |     println!("{} - {} - {}", s1, s2, s3);
+  |                              -- immutable borrow later used here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `playground` due to previous error
+```
+
+</div>
+
+</v-click>
+
+---
+
+# Returning references
+
+You can return references, but the value borrowed from must exist at least as
+long
+
+```rust
+fn give_me_a_ref() -> &String {
+    let s = String::from("Hello, world!");
+    &s
+}
+```
+
+<v-click>
+
+<div class="no-line-numbers">
+
+```md {8}
+   Compiling playground v0.0.1 (/playground)
+error[E0106]: missing lifetime specifier
+ --> src/lib.rs:1:23
+  |
+1 | fn give_me_a_ref() -> &String {
+  |                       ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+help: consider using the `'static` lifetime
+  |
+1 | fn give_me_a_ref() -> &'static String {
+  |                       ~~~~~~~~
+
+For more information about this error, try `rustc --explain E0106`.
+error: could not compile `playground` due to previous error
+```
+
+</div>
+
+</v-click>
+
+---
+
+# Returning references
+
+You can return references, but the value borrowed from must exist at least as
+long
+
+```rust
+fn give_me_a_ref(input: &(String, i32)) -> &String {
+    &input.0
+}
+```
+
+<v-click>
+
+```rust
+fn give_me_a_value() -> String {
+    let s = String::from("Hello, world!");
+    s
+}
+```
+
+</v-click>
+
+---
+
 # Types redux
 We have previously looked at some of the basic types in the Rust typesystem
 
 - Primitives (integers, floats, booleans, characters)
 - Compounds (tuples, arrays)
+- Most of the types we looked at were `Copy`
+- Borrowing will make more sense when we look at some more ways we can type
+  our data
 
 ---
+
 # Structuring data
 Rust has two important ways to structure data
 
@@ -137,7 +407,6 @@ fn main() {
 
 </v-click>
 
-
 ---
 
 # Enumerations
@@ -160,6 +429,8 @@ fn main() {
   let ipv6_home = IpAddress::Ipv6(0, 0, 0, 0, 0, 0, 0, 1);
 }
 ```
+
+* Note: an enum always is as large as the largest variant
 
 ---
 
@@ -293,9 +564,8 @@ fn main() {
 
 ---
 
-# Result
-Another really powerful enum is the result, to understand the usage of this
-enum we have to think about error handling
+# Error handling
+What would we do when there is an error?
 
 ```rust
 fn divide(x: i64, y: i64) -> i64 {
@@ -309,9 +579,50 @@ fn divide(x: i64, y: i64) -> i64 {
 
 ---
 
-# Result
-Another really powerful enum is the result, to understand the usage of this
-enum we have to think about error handling
+# Error handling
+What would we do when there is an error?
+
+```rust
+fn divide(x: i64, y: i64) -> i64 {
+  if y == 0 {
+    panic!("Cannot divide by zero");
+  } else {
+    x / y
+  }
+}
+```
+
+* A panic in Rust is the most basic way to handle errors
+* A panic will immediately stop running the current thread/program and instead
+  immediately work to shut it down, using one of two methods:
+  * Unwinding: going up throught the stack and making sure that each value
+    is cleaned up
+  * Aborting: ignore everything and immediately exit the thread/program
+* Only use panic in small programs if normal error handling would also exit
+  the program
+* Avoid using panic in library code or other reusable components
+
+<!--
+* Unwinding has its usages, mainly to clean up resources that you previously
+  opened.
+* An unwind can be stopped, but this is highly unusual to do and very expensive
+* In a multithreaded program unwinding is essential to make sure that any
+  memory owned by that thread is freed, making sure you don't have any memory
+  leaks
+* Rust programs are compiled such that if a panic does not occur, it doesn't
+  add any extra cost, but that does mean that if a panic does occur, it isn't
+  very fast
+* Generally panicing should be avoided as much as possible
+* The panic! macro is not the only way to trigger a panic, so beware, we will
+  see some ways we can also trigger a panic very soon
+* Note that if the main thread panics, the entire program will always exit
+-->
+
+---
+
+# Error handling
+What would we do when there is an error? We could try and use the option enum
+instead of panicking
 
 ```rust
 fn divide(x: i64, y: i64) -> Option<i64> {
@@ -326,8 +637,8 @@ fn divide(x: i64, y: i64) -> Option<i64> {
 ---
 
 # Result
-Another really powerful enum is the result, to understand the usage of this
-enum we have to think about error handling
+Another really powerful enum is the result, which is even more useful if we
+think about error handling
 
 ```rust
 enum Result<T, E> {
@@ -353,18 +664,92 @@ fn divide(x: i64, y: i64) -> Result<i64, DivideError> {
 
 ---
 
+# Handling results
+Now that we have a function that returns a result we have to think about how
+we handle that error at the call-site
+
+```rust
+fn div_zero_fails() {
+  match divide(10, 0) {
+    Ok(div) => println!("{}", div),
+    Err(e) => panic!("Could not divide by zero"),
+  }
+}
+```
+
+* We made the signature of the `divide` function explicit in how it can fail
+* The user of the function can now decide what to do, even if it is panicking
+
+
+<!--
+- Note how in this case the error still causes a panic, but at least we get a
+  choice of what we do
+-->
+
+---
+
+# Handling results
+Especially when writing initial prototyping code you will often find yourself
+wanting to write error handling code later, Rust has a useful utility function
+to help you for both `Option` and `Result`:
+
+```rust
+fn div_zero_fails() {
+  let div = divide(10, 0).unwrap();
+  println!("{}", div);
+}
+```
+
+* Unwrap checks if the Result/Option is `Ok(x)` or `Some(x)` respectively and
+  then return that `x`, otherwise it will panic your program with an error
+  message
+* Having unwraps all over the place is generally considered a bad practice
+* Sometimes you can ensure that an error won't occur, in such cases `unwrap`
+  can be a good solution
+
+---
+
+# Handling results
+Especially when writing initial prototyping code you will often find yourself
+wanting to write error handling code later, Rust has a useful utility function
+to help you for both `Option` and `Result`:
+
+```rust
+fn div_zero_fails() {
+  let div = divide(10, 0).unwrap_or(-1);
+  println!("{}", div);
+}
+```
+
+Besides unwrap, there are some other useful utility functions
+
+- `unwrap_or(val)`: If there is an error, use the value given to unwrap_or
+  instead
+- `unwrap_or_default()`: Use the default value for that type if there is an
+  error
+- `expect(msg)`: Same as unwrap, but instead pass a custom error message
+- `unwrap_or_else(fn)`: Same as unwrap_or, but instead call a function that
+  generates a value in case of an error
+
+<!--
+* unwrap_or_else is mainly useful if generating a default value is an expensive
+  operation
+-->
+
+---
+
 # Result and the try operator
 Results are so common that there is a special operator associated with them, the
 try operator
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
-  let intermediate_result = match some_failable_operation() {
+  let intermediate_result = match divide(10, 0) {
     Ok(ir) => ir,
     Err(e) => return Err(e);
   };
 
-  match some_secondary_operation(intermediate_result) {
+  match divide(intermediate_result, 0) {
     Ok(sec) => Ok(sec * 2),
     Err(e) => Err(e),
   }
@@ -377,8 +762,8 @@ Look how this function changes if we use the try operator
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
-  let intermediate_result = some_failable_operation()?;
-  Ok(some_secondary_operation(intermediate_result)?)
+  let intermediate_result = divide(10, 0)?;
+  Ok(divide(intermediate_result, 0)? * 2)
 }
 ```
 
@@ -390,8 +775,8 @@ fn can_fail() -> Result<i64, Error> {
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
-  let intermediate_result = some_failable_operation()?;
-  Ok(some_secondary_operation(intermediate_result)?)
+  let intermediate_result = divide(10, 0)?;
+  Ok(divide(intermediate_result, 0)? * 2)
 }
 ```
 
@@ -402,14 +787,367 @@ fn can_fail() -> Result<i64, Error> {
 
 ---
 
-# Lifetimes
-We've now discussed all ways we could store and structure our data in Rust
+# Intermission: Impl blocks
+In the past few slides we saw a syntax which wasn't explained before:
 
-* Combining our primitive types, our basic compounds, and by structuring data
-  using structs and enums we should be able to model almost any data we
-  encounter.
-* But there is one more type you really need to know about, and it concerns the
-  Rust ownership system.
+```rust {3}
+fn main() {
+  let x = Some(42);
+  let unwrapped = x.unwrap();
+  println!("{}", unwrapped);
+}
+```
+
+* The syntax `x.y()` looks similar to how we accessed a field in a struct
+* We can define functions on our types using impl blocks
+* Impl blocks can be defined on any type, not just structs (with some limitations)
+
+---
+
+# Intermission: Impl blocks
+
+```rust {all|6,13|7-12|7|17}
+enum IpAddress {
+  Ipv4(u8, u8, u8, u8),
+  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),
+}
+
+impl IpAddress {
+  fn as_u32(&self) -> Option<u32> {
+    match self {
+      IpAddress::Ipv4(a, b, c, d) => a << 24 + b << 16 + c << 8 + d
+      _ => None,_
+    }
+  }
+}
+
+fn main() {
+  let addr = IpAddress::Ipv4(127, 0, 0, 1);
+  println!("{:?}", addr.as_u32());
+}
+```
+
+<!--
+- Here we define the as_u32 method
+- Note how the impl block is separate from the type definition
+- In fact we can have multiple impl blocks for the same type, as long as
+  function definitions do not overlap (not useful right now, but it will be
+  once we get more into generics)
+-->
+
+---
+
+# Intermission: Impl blocks, self and Self
+
+- The `self` parameter defines how the method can be used.
+- The `Self` type is a shorthand for the type on which the current
+  implementation is specified.
+
+```rust {all|4-6|8-14|16-18}
+struct Foo(i32);
+
+impl Foo {
+  fn consume(self) -> Self {
+    Self(self.0 + 1)
+  }
+
+  fn borrow(&self) -> &i32 {
+    &self.0
+  }
+
+  fn borrow_mut(&mut self) -> &mut i32 {
+    &mut self.0
+  }
+
+  fn new() -> Self {
+    Self(0)
+  }
+}
+```
+
+---
+
+# Intermission: Impl blocks, the self parameter
+The self parameter is called the *receiver*.
+
+* The self parameter is always the first and it always has the type on which it
+  was defined
+* We never specify the type of the self parameter
+* We can optionally prepend `&` or `&mut ` to self to indicate that we take
+  a value by reference
+* Absence of a self parameter means that the function is an associated function
+  instead
+
+```rust
+fn main () {
+  let mut f = Foo::new();
+  println!("{}", f.borrow());
+  *f.borrow_mut() = 10;
+  let g = f.consume();
+  println!("{}", g.borrow());
+}
+```
+
+---
+
+# Vec: storing more of the same
+The vector is an array that can grow
+
+* Compare this to the array we previously saw, which has a fixed size
+
+```rust
+fn main() {
+  let arr = [1, 2];
+  println!("{:?}", arr);
+
+  let mut nums = Vec::new();
+  nums.push(1);
+  nums.push(2);
+  println!("{:?}", nums);
+}
+```
+
+---
+
+# Vec
+Vec is such a common type that there is an easy way to initialize
+it with values that looks similar to arrays
+
+```rust
+fn main() {
+  let mut nums = vec![1, 2];
+  nums.push(3);
+  println!("{:?}", nums);
+}
+```
+
+---
+
+# Vec: memory layout
+How can a vector grow? Things on the stack need to be of a fixed size
+
+<div class="relative left-130px">
+
+![Memory Layout](/images/A3-vector-rust.drawio.svg)
+
+</div>
+
+<!--
+- A Vec does this by allocating its contents on the heap as opposed to the
+  stack-based storage of an array
+- Think about what would happen if the capacity is full but we still want to
+  add another element
+-->
+
+---
+
+# Put it in a box
+That pointer from the stack to the heap, how do we create such a thing?
+
+* Boxing something is the way to create data that is stored on the heap
+* A box uniquely owns that data, there is no one else that also owns the same
+  data
+* Even if the type inside the box is `Copy`, the box itself is not, move
+  semantics apply to a box.
+
+```rust
+fn main() {
+  // put an integer on the heap
+  let boxed_int = Box::new(10);
+}
+```
+
+<div class="relative left-170px">
+
+![Memory Layout](/images/A3-box-in-memory.drawio.svg)
+
+</div>
+
+---
+
+# Boxing
+There are several reasons to box a variable on the heap
+
+* Something is too large to store on the stack
+* We need something that is sized dynamically
+* For writing recursive datastructures
+
+```rust
+struct Node {
+  data: Vec<u8>,
+  parent: Node,
+}
+```
+
+---
+
+# Boxing
+There are several reasons to box a variable on the heap
+
+* Something is too large to store on the stack
+* We need something that is sized dynamically
+* For writing recursive datastructures
+
+```rust
+struct Node {
+  data: Vec<u8>,
+  parent: Box<Node>,
+}
+```
+
+<!--
+- Allowing arbitrarily large values on the stack would quickly let our
+  function calls exhaust the stack limit
+- Of course the main reason that a vector uses the heap is to be able to be
+  sized dynamically, but even so, a vector can be large, whereas an array will
+  generally always have a limited size
+-->
+
+---
+
+# Vectors and arrays
+What if we wanted to write a sum function, we could define one for arrays of
+a specific size:
+
+```rust
+fn sum(data: &[i64; 10]) -> i64 {
+  let mut total = 0;
+  for val in data {
+    total += val;
+  }
+  total
+}
+```
+
+---
+
+# Vectors and arrays
+Or one for just vectors:
+
+```rust
+fn sum(data: &Vec<i64>) -> i64 {
+  let mut total = 0;
+  for val in data {
+    total += val;
+  }
+  total
+}
+```
+
+---
+
+# Slices
+But what if we want something to work on arrays of any size? Or what if we want
+to support summing up only parts of a vector?
+
+* A slice is a dynamically sized view into a contiguous sequence
+* Contiguous: elements are layed out in memory such that they are evenly spaced
+* Dynamically sized: the size of the slice is not stored in the type, but is
+  determined at runtime
+* View: a slice is never an owned datastructure
+* Slices are typed as `[T]`, where `T` is the type of the elements in the slice
+
+---
+
+# Slices
+
+```rust
+fn sum(data: [i64]) -> i64 {
+  let mut total = 0;
+  for val in data {
+    total += val;
+  }
+  total
+}
+
+fn main() {
+  let data = vec![10, 11, 12, 13, 14];
+  println!("{}", sum(data));
+}
+```
+
+<v-click>
+
+```text
+   Compiling playground v0.0.1 (/playground)
+error[E0277]: the size for values of type `[i64]` cannot be known at compilation time
+ --> src/main.rs:1:8
+  |
+1 | fn sum(data: [i64]) -> i64 {
+  |        ^^^^ doesn't have a size known at compile-time
+  |
+  = help: the trait `Sized` is not implemented for `[i64]`
+help: function arguments must have a statically known size, borrowed types always have a known size
+```
+
+</v-click>
+
+<!--
+- This cannot compile because [T] cannot exist on its own because it is never
+  an owned datastructure
+- We must always put slices behind a pointer type
+-->
+
+---
+
+# Slices
+
+```rust
+fn sum(data: &[i64]) -> i64 {
+  let mut total = 0;
+  for val in data {
+    total += val;
+  }
+  total
+}
+
+fn main() {
+  let data = vec![10, 11, 12, 13, 14];
+  println!("{}", sum(&data));
+}
+```
+
+<v-click>
+
+```text
+   Compiling playground v0.0.1 (/playground)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.89s
+     Running `target/debug/playground`
+60
+```
+
+</v-click>
+
+---
+
+# Slices
+
+* `[T]` is an incomplete type: we need to know how many `T` there are
+* Types that have a known compile time size implement the `Sized` trait, raw
+  slices do **not** implement it
+* Slices must always be behind a reference type, i.e. `&[T]` and `&mut [T]`
+  (but also `Box<[T]>` etc)
+* The length of the slice is always stored together with the reference
+
+<div class="relative left-170px bottom-15px">
+
+![Memory Layout](/images/A3-slice-ptr.drawio.svg)
+
+</div>
+
+---
+
+# Creating slices
+Because we cannot create slices out of thin air, they have to be located
+somewhere. There are three possible ways to create slices:
+
+* Using a borrow
+  - We can borrow from arrays and vectors to create a slice of their entire
+    contents
+* Using ranges
+  - We can use ranges to create a slice from parts of a vector or array
+* Using a literal (for immutable slices only)
+  - We can have memory statically available from our compiled binary
 
 ---
 
@@ -420,15 +1158,8 @@ little deeper
 * Strings are used to represent text
 * In Rust they are always valid UTF-8
 * Their data is stored on the heap
-<v-click>
-
-* A string consists of three pieces of information:
-  * The _length_ of the string; they are **not** null terminated
-  * The _capacity_: how much space was reserved for the string to grow into
-  * A _pointer_ to where the actual string data is stored in memory
-
-</v-click>
-
+* A String is almost the same as `Vec<u8>` with extra checks to prevent
+  creating invalid text
 <!--
 - We store data on the heap so we can easily have strings of variable sizes
   and grow and shrink them as needed when they are modified.
@@ -445,48 +1176,16 @@ fn main() {
   let
 }
 
+TODO
+
 ```
 
 ---
 
 # String literals
+TODO
 
 ---
 
-# Slices
-
----
-
-# Vec(tor)
-
----
-
-# Box
-
----
-
-# Pointers
-
----
-
-# Ownership
-
----
-
-# Borrowing
-
----
-
-# Lifetimes
-
----
-
-# Lifetime annotations
-
----
-
-# Panic, another kind of error
-
----
-
-# When (not) to panic
+# str - the string slice
+TODO
