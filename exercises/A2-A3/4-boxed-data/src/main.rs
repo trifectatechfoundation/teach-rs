@@ -5,11 +5,11 @@
 ///
 /// - Add support for multiplication and division
 ///
-/// - Since division can fail, the function eval needs to return an Option<i64>, where None indicates that a division by
-///   zero has occurred. Make sure that errors are propagated correctly (hint: use the ? syntax).
-///
 /// - We have added the the form "Summation(Vec<Expr>)", representing the sum of a list of expressions.
 /// Question: why can we get away with Vec<Expr> enough in that case, instead of Box<Vec<Expr>> ?
+///
+/// - EXTRA: Since division can fail, the function eval needs to return an Option<i64>, where None indicates that a division by
+///   zero has occurred. Can you change the code so that that errors are propagated correctly? (hint: use the ? syntax).
 
 #[derive(Debug)]
 enum Expr {
@@ -22,8 +22,8 @@ enum Expr {
 
 // inject these two identifiers directly into the current namespace
 use Expr::Const;
-use Expr::Var;
 use Expr::Summation;
+use Expr::Var;
 
 // These are convenience functions, so you don't have to type "Box::new" as often
 // when building test-data types
@@ -45,7 +45,8 @@ fn div(x: Expr, y: Expr) -> Expr {
 
 // ...
 
-fn eval(expr: &Expr, var: i64) -> i64 {  // this should return an Option<i64>
+fn eval(expr: &Expr, var: i64) -> i64 {
+    // this should return an Option<i64>
     use Expr::*;
     match expr {
         Const(k) => *k,
@@ -53,20 +54,25 @@ fn eval(expr: &Expr, var: i64) -> i64 {  // this should return an Option<i64>
         Add(lhs, rhs) => eval(lhs, var) + eval(rhs, var),
         Sub(lhs, rhs) => eval(lhs, var) - eval(rhs, var),
 
-	Summation(exprs) => {
-	    let mut acc = 0;
-	    for e in exprs {
-		acc += eval(e, var)
-	    }
-	    acc
-	}
+        Summation(exprs) => {
+            let mut acc = 0;
+            for e in exprs {
+                acc += eval(e, var);
+            }
+            acc
+        }
     }
 }
 
 fn main() {
     let test = |expr| {
         let value = rand::random::<i8>() as i64;
-        println!("{:?} with Var = {} ==> {}", &expr, value, eval(&expr, value));
+        println!(
+            "{:?} with Var = {} ==> {}",
+            &expr,
+            value,
+            eval(&expr, value)
+        );
     };
 
     test(Const(5));

@@ -4,7 +4,7 @@
 //
 // 2. Finish the implementation of the function merge_sort
 //
-// 3. try changing the type from i32 into String everywhere; does your program still compile? What changes are necessary?
+// 3. EXTRA: try changing the type from i32 into String everywhere; does your program still compile? What changes are necessary?
 
 /// Merge two array slices (that have to be sorted) into a vector
 fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
@@ -36,8 +36,8 @@ fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
 /// Take an array slice, and sort into a freshly constructor vector using the above function
 fn merge_sort(data: &[i32]) -> Vec<i32> {
     if data.len() > 1 {
-	// implement this
-	todo!()
+        // implement this
+        todo!()
     } else {
         data.to_vec()
     }
