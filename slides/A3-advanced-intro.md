@@ -27,6 +27,13 @@ We previously talked about ownership
 * Once the owner goes out of scope any associated values should be cleaned up
 * Copy types creates copies, all other types are *moved*
 
+<!--
+- Note once more that the idea of moving is something that exists in the Rust
+  world, but not necesarrily every move actually copies bytes around, these are
+  all things where Rust's model is an abstraction over what the compiled code
+  actually does.
+-->
+
 ---
 
 # Moving out of a function
@@ -179,6 +186,13 @@ model we can be sure that whole classes of errors cannot occur.
 <!--
 - Memory bugs such as: null pointer dereferences, data races, dangling pointers,
   use after free.
+- Rust tries to be smart about enforcing these rules, such that you don't notice
+  them that often in real life usage, but there may be some cases that clearly
+  appear valid, but Rust won't allow. There are generally pretty easy workarounds
+  though
+- Again: references are not pointers, but in practice of course they do look
+  similar and are implemented the same way, but Rust's memory model is not the
+  same as that of C/C++ and implementation is not the same as our model.
 -->
 
 ---
@@ -1151,6 +1165,82 @@ somewhere. There are three possible ways to create slices:
 
 ---
 
+# Creating slices
+Using a borrow
+
+```rust
+fn sum(data: &[i32]) -> i32 { /* ... */ }
+
+fn main() {
+  let v = vec![1, 2, 3, 4, 5, 6];
+  let total = sum(&v);
+  println!("{}", total);
+}
+```
+
+---
+
+# Creating slices
+Using ranges
+
+```rust
+fn sum(data: &[i32]) -> i32 { /* ... */ }
+
+fn main() {
+  let v = vec![0, 1, 2, 3, 4, 5, 6];
+  let all = sum(&v[..]);
+  let except_first = sum(&v[1..]);
+  let except_last = sum(&v[..5]);
+  let except_ends = sum(&v[1..5]);
+}
+```
+
+* The range `start..end` contains all values `x` with `start <= x < end`.
+
+<v-click>
+
+* Note: you can also use ranges on their own, for example in a for loop:
+
+```rust
+fn main() {
+  for i in 0..10 {
+    println!("{}", i);
+  }
+}
+```
+
+</v-click>
+
+---
+
+# Creating slices
+From a literal
+
+```rust {3-5,12|7-9,13}
+fn sum(data: &[i32]) -> i32 { /* ... */ }
+
+fn get_v() -> &'static [i32] {
+    &[0, 1, 2, 3, 4, 5, 6]
+}
+
+fn get_v_vec() -> &'static [i32] {
+    &vec![0, 1, 2, 3, 4, 5, 6]
+}
+
+fn main() {
+  let all = sum(get_v());
+  let all_vec = sum(get_v_vec());
+}
+```
+
+* Interestingly this also works, even though the literal looks like it would
+  only exist temporarily
+* Literals actually exist during the entire lifetime of the program
+* `&'static` here is used to indicate that this slice will exist the entire
+  lifetime of the program
+
+---
+
 # Strings
 We have already seen the `String` type being used before, but let's dive a
 little deeper
@@ -1173,19 +1263,22 @@ Let's take a look at some strings
 
 ```rust
 fn main() {
-  let
+  let s = String::new("Hello world");
 }
-
-TODO
-
 ```
 
 ---
 
-# String literals
-TODO
+# str - the string slice
+What is a slice of a string?
+
+* Not `[u8]`: not every sequence of bytes is valid UTF-8
+* Not `[char]`: we could not create a slice from a string since it is stored as
+  UTF-8 encoded bytes
+* We introduce a new special kind of slice: `str`
+* For string slices we do not use brackets!
 
 ---
 
-# str - the string slice
+# String literals
 TODO
