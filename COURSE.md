@@ -68,7 +68,7 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 - Basic problems on move semantics
 
 
-#### A2 - Ecosystem and tools
+#### A2 - Intermezzo - Ecosystem and tools
 - **Cargo**
     - configuration
     - dependencies
@@ -104,7 +104,7 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 *TBD*
 
 
-#### A3 - Advanced Syntax, Ownership, References
+#### A2 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
     - Types: struct/enum/slice/String/Vec/Box/Option/Result
     - Impl blocks
