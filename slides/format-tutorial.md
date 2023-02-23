@@ -28,4 +28,4 @@ layout: section
 ---
 # This weeks exercises
 
-<!-- Introduce new exercies -->
+<!-- Introduce new exercise -->

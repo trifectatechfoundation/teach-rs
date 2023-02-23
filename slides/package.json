@@ -1,15 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "build-0": "slidev build 0-intro.md",
+    "build-0": "slidev build --out dist-0 --base /slides/0/ 0-intro.md",
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export 0-intro.md",
 
-    "build-A1": "slidev build --out dist-A1 A1-intro-to-rust.md",
+    "build-A1": "slidev build --out dist-A1 --base /slides/A1/ A1-intro-to-rust.md",
     "dev-A1": "slidev A1-intro-to-rust.md",
     "export-A1": "slidev export A1-intro-to-rust.md",
 
-    "build-A2-tools": "slidev build --out dist-A2-tools A2-tools.md",
+    "build-A2-tools": "slidev build --out dist-A2-tools --base /slides/A2-tools/ A2-tools.md",
     "dev-A2-tools": "slidev A2-tools.md",
     "export-A2-tools": "slidev export A2-tools.md",
 
@@ -17,7 +17,7 @@
     "dev-A2": "slidev A2-advanced-intro.md",
     "export-A2": "slidev export A2-advanced-intro.md",
 
-    "build-B": "slidev build --out dist-B B-application-programming.md",
+    "build-B": "slidev build --out dist-B --base /slides/B/ B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",
 
@@ -25,10 +25,12 @@
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
   "dependencies": {
-    "@slidev/cli": "^0.35.5",
+    "@slidev/cli": "^0.40.0",
     "@slidev/theme-default": "*",
-    "@slidev/theme-seriph": "*",
-    "playwright-chromium": "^1.31.1"
+    "@slidev/theme-seriph": "*"
   },
-  "name": "rust-workshop"
+  "name": "rust-workshop",
+  "devDependencies": {
+    "playwright-chromium": "^1.31.1"
+  }
 }
