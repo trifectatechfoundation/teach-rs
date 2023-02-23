@@ -1,12 +1,12 @@
 # Module 0 - Installing the tools
 In this file you'll find instructions on how to install the tools we'll use during the course.
 
-All of these tools are available for Linux, Mac and Windows users. We'll need the tools to write and compile our Rust code, and allow for remote mentoring. *Important: these instructions are to be followed at home, before the start of the first tutorial. If you have any problems with installation, contact the lecturers! We won't be adressing installation problems during the first tutorial.*
+All of these tools are available for Linux, Mac and Windows users. We'll need the tools to write and compile our Rust code, and allow for remote mentoring. *Important: these instructions are to be followed at home, before the start of the first tutorial. If you have any problems with installation, contact the lecturers! We won't be addressing installation problems during the first tutorial.*
 
 ## Rust and Cargo
 First we'll need `rustc`, the standard Rust compiler. `rustc` is generally not invoked directly, but through `cargo`, the Rust package manager. `rustup` takes care of installing `rustc` and `cargo`.
 
-This part is easy: go to <https://rustup.rs> and follow the instructions. Please make sure you're installing the default toolchain. Once done, run
+This part is easy: go to <https://rustup.rs> and follow the instructions. Please make sure you're installing the latest default toolchain. Once done, run
 
 ```bash
 rustc -V && cargo -V
@@ -15,8 +15,8 @@ rustc -V && cargo -V
 The output should be something like this:
 
 ```bash
-rustc 1.66.0 (69f9c33d7 2022-12-12)
-cargo 1.66.0 (d65d197ad 2022-11-15)
+rustc 1.67.1 (d5a82bbd2 2023-02-07)
+cargo 1.67.1 (8ecd4f20a 2023-01-10)
 ```
 
 Using Rustup, you can install Rust toolchains and components. More info: 
@@ -47,9 +47,9 @@ During the course, we will use Visual Studio Code (vscode) to write code in. Of 
 
 You can find the installation instructions here: <https://code.visualstudio.com/>.
 
-We will install some plugins as well. The first one is Rust-Analyzer. Installation instructions can be found here <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>. Rust-Analyzer provides a lot of help during development and in indispensible when getting started with Rust.
+We will install some plugins as well. The first one is Rust-Analyzer. Installation instructions can be found here <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>. Rust-Analyzer provides a lot of help during development and in indispensable when getting started with Rust.
 
-Another plugin we'll install is Live Share. We will use the plugin to share screens and provide help during remote tutorial sessions. The extension pack also conains the Live Share Audio plugin, which allows for audio communication during share sessions. Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
+Another plugin we'll install is Live Share. We will use the plugin to share screens and provide help during remote tutorial sessions. The extension pack also contains the Live Share Audio plugin, which allows for audio communication during share sessions. Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
 
 The last plugin we'll use is CodeLLDB. This plugin enables debugging Rust code from within vscode. You can find instructions here: <https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb>.
 

@@ -1,4 +1,6 @@
-//! Make me compile without changing line 9 or moving line 6!
+//! Make me compile without changing line 11, but by moving line 8!
+//! If you're curious: the `stringify!` macro transforms tokens to
+//! a string. For instance, `stringify!(s1)` yields string `"s1"`.
 
 fn main() {
     let s0 = String::from("Hello");

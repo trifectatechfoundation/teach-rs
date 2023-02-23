@@ -10,7 +10,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 
 The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
 
-*Currently highly in flux, and incomplete, but feedback is welcome!*
+*Currently highly in flux, and incomplete, but feedback is welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/tweedegolf).*
 
 
 
@@ -48,17 +48,17 @@ When used in full 12-week format, the schedule is:
 The course assumes intermediate C/C++ knowledge.
 
 The course outline, along with more elaborate learning objectives, can be found [here](./COURSE.md).
-You can find instructions on the installation of used tools [here](./INSTALLATION.md).
+You can find instructions on the installation of used tools [here](./exercises/book/0-install/mod.md).
 
 ## About the project
 
-Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirity or by using bits and pieces to create your custom course.
+Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution. In its entirety or by using bits and pieces to create your custom course.
 
 The project is executed by Henk Oordt and others at [Tweede golf](https://tweedegolf.nl). It is a not-for-profit project, where the only requirement is that the cost of our work is covered.
 
 ### Other contributors
 
-We're very happy with the support in developing the course material, by:
+We're very happy with support in developing the course material from:
 
 - Bernard van Gastel, Radboud University
 - Florian Gilcher, Ferrous Systems
@@ -66,8 +66,25 @@ We're very happy with the support in developing the course material, by:
 
 ### Our sponsors
 
+#### Founding sponsors
+
+![Logo STU FIIT](./assets/STU_FIIT_logo_100_color.png)
+![Logo RF](./assets/Rust_Foundation_logo_100_color.png)
+
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
-We are in search of further funding for our project. Contact us if your interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work.
+In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+
+#### Silver sponsors
+
+Thanks to our `Rust 101 Course Silver sponsor`'s!
+
+- [Gofore](https://gofore.com/en/)
+
+### Support Rust 101
+
+We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
+
+
 
 
