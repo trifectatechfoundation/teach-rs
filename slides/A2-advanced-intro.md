@@ -3,20 +3,19 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A3: Advanced Syntax, Ownership, References"
+info: "Rust - A2: Advanced Syntax, Ownership, References"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust - A3: Advanced Syntax, Ownership, References"
+title: "Rust - A2: Advanced Syntax, Ownership, References"
 ---
 
 # In this module
 
 <!-- Introduce today's subject -->
 Advanced Rust syntax
-
 
 ---
 
@@ -446,6 +445,12 @@ fn main() {
 
 * Note: an enum always is as large as the largest variant
 
+<div class="relative">
+
+![Memory Layout](/images/A2-enum-memory.drawio.svg)
+
+</div>
+
 ---
 
 # Pattern matching
@@ -562,8 +567,8 @@ enum Option<T> {
 }
 
 fn main() {
-  let some_int = Some(42);
-  let no_string: Option<String> = None;
+  let some_int = Option::Some(42);
+  let no_string: Option<String> = Option::None;
 }
 ```
 
@@ -575,6 +580,27 @@ fn main() {
   is so common that the variants are available by default without needing to
   prefix them with `Option::`
 -->
+
+---
+
+# Option
+A quick look into the basic enums available in the standard library
+
+* Rust does not have null, but you can still define variables that optionally
+  do not have a value
+* For this you can use the `Option<T>` enum
+
+```rust
+enum Option<T> {
+  Some(T),
+  None,
+}
+
+fn main() {
+  let some_int = Some(42);
+  let no_string: Option<String> = None;
+}
+```
 
 ---
 
@@ -693,6 +719,8 @@ fn div_zero_fails() {
 
 * We made the signature of the `divide` function explicit in how it can fail
 * The user of the function can now decide what to do, even if it is panicking
+* Note: just as with `Option` we never have to use `Result::Ok` and
+  `Result::Err` because they have been made available globally
 
 
 <!--
@@ -942,7 +970,7 @@ How can a vector grow? Things on the stack need to be of a fixed size
 
 <div class="relative left-130px">
 
-![Memory Layout](/images/A3-vector-rust.drawio.svg)
+![Memory Layout](/images/A2-vector-rust.drawio.svg)
 
 </div>
 
@@ -973,7 +1001,7 @@ fn main() {
 
 <div class="relative left-170px">
 
-![Memory Layout](/images/A3-box-in-memory.drawio.svg)
+![Memory Layout](/images/A2-box-in-memory.drawio.svg)
 
 </div>
 
@@ -982,7 +1010,7 @@ fn main() {
 # Boxing
 There are several reasons to box a variable on the heap
 
-* Something is too large to store on the stack
+* When something is too large to move around
 * We need something that is sized dynamically
 * For writing recursive datastructures
 
@@ -998,7 +1026,7 @@ struct Node {
 # Boxing
 There are several reasons to box a variable on the heap
 
-* Something is too large to store on the stack
+* When something is too large to move around
 * We need something that is sized dynamically
 * For writing recursive datastructures
 
@@ -1012,6 +1040,8 @@ struct Node {
 <!--
 - Allowing arbitrarily large values on the stack would quickly let our
   function calls exhaust the stack limit
+- Especially if a move actually would involve memcopying the bits to another
+  location in memory that would take way too long
 - Of course the main reason that a vector uses the heap is to be able to be
   sized dynamically, but even so, a vector can be large, whereas an array will
   generally always have a limited size
@@ -1145,7 +1175,7 @@ fn main() {
 
 <div class="relative left-170px bottom-15px">
 
-![Memory Layout](/images/A3-slice-ptr.drawio.svg)
+![Memory Layout](/images/A2-slice-ptr.drawio.svg)
 
 </div>
 
@@ -1216,10 +1246,10 @@ fn main() {
 # Creating slices
 From a literal
 
-```rust {3-5,12|7-9,13}
+```rust {3-5,12|7-9,13|all}
 fn sum(data: &[i32]) -> i32 { /* ... */ }
 
-fn get_v() -> &'static [i32] {
+fn get_v_arr() -> &'static [i32] {
     &[0, 1, 2, 3, 4, 5, 6]
 }
 
@@ -1228,16 +1258,20 @@ fn get_v_vec() -> &'static [i32] {
 }
 
 fn main() {
-  let all = sum(get_v());
+  let all = sum(get_v_arr());
   let all_vec = sum(get_v_vec());
 }
 ```
 
-* Interestingly this also works, even though the literal looks like it would
+<v-click>
+
+* Interestingly `get_v_arr` works, even though the literal looks like it would
   only exist temporarily
 * Literals actually exist during the entire lifetime of the program
 * `&'static` here is used to indicate that this slice will exist the entire
   lifetime of the program
+
+</v-click>
 
 ---
 
@@ -1263,14 +1297,64 @@ Let's take a look at some strings
 
 ```rust
 fn main() {
-  let s = String::new("Hello world");
+  let s = String::from("Hello world\nSee you!");
+  println!("{:?}", s.split_once(" "));
+  println!("{}", s.len());
+  println!("{:?}", s.starts_with("Hello"));
+  println!("{}", s.to_uppercase());
+  for line in s.lines() {
+    println!("{}", line);
+  }
 }
 ```
 
 ---
 
+# String literals
+We have already seen string literals being used while constructing a string.
+The string literal is what arrays are to vectors
+
+```rust
+fn main() {
+  let s1 = "Hello world";
+  let s2 = String::from("Hello world");
+}
+```
+
+---
+
+# String literals
+We have already seen string literals being used while constructing a string.
+The string literal is what arrays are to vectors
+
+```rust
+fn main() {
+  let s1: &'static str = "Hello world";
+  let s2: String = String::from("Hello world");
+}
+```
+
+* `s1` is actually a slice, a string slice
+
+---
+
+# String literals
+We have already seen string literals being used while constructing a string.
+The string literal is what arrays are to vectors
+
+```rust
+fn main() {
+  let s1: &str = "Hello world";
+  let s2: String = String::from("Hello world");
+}
+```
+
+* `s1` is actually a slice, a string slice
+
+---
+
 # str - the string slice
-What is a slice of a string?
+It should be possible to have a reference to part of a string. But what is it?
 
 * Not `[u8]`: not every sequence of bytes is valid UTF-8
 * Not `[char]`: we could not create a slice from a string since it is stored as
@@ -1280,5 +1364,41 @@ What is a slice of a string?
 
 ---
 
-# String literals
-TODO
+# str, String, array, Vec
+
+| Static   | Dynamic  | Borrowed |
+|----------|----------|----------|
+| `[T; N]` | `Vec<T>` | `&[T]`   |
+| -        | `String` | `&str`   |
+
+* There is no static variant of str
+* This would only be useful if we wanted strings of an extact length
+* But just like we had the static slice literals, we can use `&'static str`
+  literals for that instead!
+
+---
+
+# String or str
+When do we use String and when do we use str?
+
+```rust
+fn string_len(data: &String) -> usize {
+  data.len()
+}
+```
+
+---
+
+# String or str
+When do we use String and when do we use str?
+
+```rust
+fn string_len(data: &str) -> usize {
+  data.len()
+}
+```
+
+* Prefer `&str` over `String` whenever possible
+* If you need to mutate a string you might try `&mut str`, but you cannot
+  change a slice's length
+* Use `String` or `&mut String` if you need to fully mutate the string

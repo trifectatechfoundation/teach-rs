@@ -9,13 +9,13 @@
     "dev-A1": "slidev A1-intro-to-rust.md",
     "export-A1": "slidev export A1-intro-to-rust.md",
 
-    "build-A2": "slidev build A2-tools.md",
-    "dev-A2": "slidev A2-tools.md",
-    "export-A2": "slidev export A2-tools.md",
+    "build-A2-tools": "slidev build A2-tools.md",
+    "dev-A2-tools": "slidev A2-tools.md",
+    "export-A2-tools": "slidev export A2-tools.md",
 
-    "build-A3": "slidev build A3-advanced-intro.md",
-    "dev-A3": "slidev A3-advanced-intro.md",
-    "export-A3": "slidev export A3-advanced-intro.md",
+    "build-A2": "slidev build A2-advanced-intro.md",
+    "dev-A2": "slidev A2-advanced-intro.md",
+    "export-A2": "slidev export A2-advanced-intro.md",
 
     "build-B": "slidev build B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
