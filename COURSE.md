@@ -150,10 +150,9 @@ This module introduces technologies to make your Rust code more versatile: *trai
     - Deref/DerefMut
     - PartialEq/Eq/Add/Mul/Div/Sub/PartialOrd/Ord
     - Drop
-- **Generics, trait objects, object safety, const generics**
-    - Static vs dynamic dispatch
-    - when to use generics vs trait objects
 - **Orphan rule**
+- **Const generics**
+- **Lifetime annotations**
 
 
 **Exercises**
