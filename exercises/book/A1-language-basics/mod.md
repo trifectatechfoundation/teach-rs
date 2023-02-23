@@ -1,5 +1,7 @@
 # Module A1 - Language basics
 
+[Slides](/slides/A1/) (or [pdf](/slides/A1-intro-to-rust.pdf))
+
 ## A1.1 Basic syntax
 Open `exercises/A1/1-basic-syntax` in your editor. This folder contains a number of exercises with which you can practise basic Rust syntax.
 
