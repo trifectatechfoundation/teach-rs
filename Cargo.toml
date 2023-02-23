@@ -9,7 +9,7 @@ members = [
     "exercises/A2/3-error-handling",
     "exercises/A2/4-boxed-data",
     "exercises/A2/5-bonus-ring-buffer",
-    "exercises/A4/2-local-storage-vec/",
+    "exercises/A3/2-local-storage-vec/",
     "exercises/B/1-my-serde-app",
     "exercises/B/3-fizzbuzz",
     "slides/examples/B-application-programming",

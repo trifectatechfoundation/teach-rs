@@ -17,9 +17,9 @@
     "dev-A2": "slidev A2-advanced-intro.md",
     "export-A2": "slidev export A2-advanced-intro.md",
 
-    "build-A4": "slidev build --out dist-A2 --base /slides/A2/ A4-traits-generics.md",
-    "dev-A4": "slidev A4-traits-generics.md",
-    "export-A4": "slidev export A4-traits-generics.md",
+    "build-A3": "slidev build --out dist-A3 --base /slides/A3/ A3-traits-generics.md",
+    "dev-A3": "slidev A3-traits-generics.md",
+    "export-A3": "slidev export A3-traits-generics.md",
 
     "build-B": "slidev build --out dist-B --base /slides/B/ B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
