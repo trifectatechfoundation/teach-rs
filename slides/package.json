@@ -5,19 +5,19 @@
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export 0-intro.md",
 
-    "build-A1": "slidev build A1-intro-to-rust.md",
+    "build-A1": "slidev build --out dist-A1 A1-intro-to-rust.md",
     "dev-A1": "slidev A1-intro-to-rust.md",
     "export-A1": "slidev export A1-intro-to-rust.md",
 
-    "build-A2-tools": "slidev build A2-tools.md",
+    "build-A2-tools": "slidev build --out dist-A2-tools A2-tools.md",
     "dev-A2-tools": "slidev A2-tools.md",
     "export-A2-tools": "slidev export A2-tools.md",
 
-    "build-A2": "slidev build A2-advanced-intro.md",
+    "build-A2": "slidev build --out dist-A2 --base /slides/A2/ A2-advanced-intro.md",
     "dev-A2": "slidev A2-advanced-intro.md",
     "export-A2": "slidev export A2-advanced-intro.md",
 
-    "build-B": "slidev build B-application-programming.md",
+    "build-B": "slidev build --out dist-B B-application-programming.md",
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",
 
@@ -27,7 +27,8 @@
   "dependencies": {
     "@slidev/cli": "^0.35.5",
     "@slidev/theme-default": "*",
-    "@slidev/theme-seriph": "*"
+    "@slidev/theme-seriph": "*",
+    "playwright-chromium": "^1.31.1"
   },
   "name": "rust-workshop"
 }
