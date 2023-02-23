@@ -3,7 +3,7 @@ members = [
     "exercises/0-intro",
     "exercises/A1/1-basic-syntax",
     "exercises/A1/2-move-semantics/",
-    "exercises/A4/2-stackvec/",
+    "exercises/A4/2-local-storage-vec/",
     "exercises/B/1-my-serde-app",
     "exercises/B/3-fizzbuzz",
     "slides/examples/B-application-programming",
