@@ -1,4 +1,6 @@
-# Rust 101 
+# Rust 101
+
+![Rust 101](https://tweedegolf.nl/images/rust-101-logo.jpg)
 
 Rust 101 is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
@@ -9,6 +11,8 @@ This repo will contain everything that's needed to organize the course: slides, 
 The rendered exercises, including installation instructions, can be found at <https://101-rs.tweede.golf>
 
 *Currently highly in flux, and incomplete, but feedback is welcome!*
+
+
 
 ## High-level goals
 
@@ -26,20 +30,20 @@ The course is setup so that, after modules A1-A4, cherry-picking the modules tha
 
 When used in full 12-week format, the schedule is:
 
-| Week | Module | Topic                    | 
-| ---- | ------ | ------------------------ | 
+| Week | Module       | Topic                                    |
+| ---- | ------------ | ---------------------------------------- |
 | 1    | 0, <br />A1  | Course intro <br />Language basics |
-| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |
-| 3    | A4     | Traits and generics      |
-| 4    | B      | Application programming  |
-| 5    | C      | Multitasking             |
-| 6    | D      | Idiomatic Rust patterns  | 
-| 7    | E      | Rust for web             | 
-| 8    | F      | Safe Unsafe Rust         | 
-| 9    | G      | FFI and Dynamic modules  |
-| 10   | P      | Final project            |
-| 11   | P      | Final project            |
-| 12   | P      | Final project presentation |
+| 2    | A2           | Advanced Syntax, Ownership, references   |
+| 3    | A3           | Traits and generics                      |
+| 4    | B            | Application programming                  |
+| 5    | C            | Multitasking                             |
+| 6    | D            | Idiomatic Rust patterns                  |
+| 7    | E            | Rust for web                             |
+| 8    | F            | Safe Unsafe Rust                         |
+| 9    | G            | FFI and Dynamic modules                  |
+| 10   | P            | Final project                            |
+| 11   | P            | Final project                            |
+| 12   | P            | Final project presentation               |
 
 The course assumes intermediate C/C++ knowledge.
 

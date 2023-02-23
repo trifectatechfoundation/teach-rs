@@ -68,7 +68,7 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 - Basic problems on move semantics
 
 
-#### A2 - Ecosystem and tools
+#### A2 - Intermezzo - Ecosystem and tools
 - **Cargo**
     - configuration
     - dependencies
@@ -86,7 +86,7 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Crates.io
 - **Widely used tools**
     - debug
-    - test 
+    - test
     - security
     - bench (Criterion)
 - **Rust versions**
@@ -104,9 +104,9 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 *TBD*
 
 
-#### A3 - Advanced Syntax, Ownership, References
+#### A2 - Advanced Syntax, Ownership, References
 - **Advanced syntax**
-    - Types: struct/enum/union/slice/String/Vec/Box/Option/Result
+    - Types: struct/enum/slice/String/Vec/Box/Option/Result
     - Impl blocks
     - Coercion
     - Closures
@@ -222,6 +222,7 @@ This module is about learning to write actual Rust applications. At the end of t
 *TBD*
 
 ### F - Safe Unsafe Rust
+- **Union**
 - **Why safe vs unsafe**
 - **Undefined behavior**
 - **Unsafe keyword**
@@ -292,9 +293,9 @@ This module is about learning to write actual Rust applications. At the end of t
 
 ## Lecture format (90 minutes)
 ### Rationale
-During lectures, new content is provided to students. The idea is to keep engagement high using interaction an by extensively activating prior knowledge. We take some time for questions and discussion during the lecture and are aware of the facts that many concepts are outright confusing to beginners. During discussion, we encourage students to answer questions of fellow students. However, we actively make sure that discussions don't divert from the subject. 
+During lectures, new content is provided to students. The idea is to keep engagement high using interaction an by extensively activating prior knowledge. We take some time for questions and discussion during the lecture and are aware of the facts that many concepts are outright confusing to beginners. During discussion, we encourage students to answer questions of fellow students. However, we actively make sure that discussions don't divert from the subject.
 
-To activate prior knowledge, we start each lecture with a recap on the subject of the last lecture with quiz questions. Once that's done, we relate content of the current subject with content of prior lectures where possible. 
+To activate prior knowledge, we start each lecture with a recap on the subject of the last lecture with quiz questions. Once that's done, we relate content of the current subject with content of prior lectures where possible.
 
 We also relate content to other programming languages, taking into account the intermediate C++ knowledge students have. This can be done by asking questions such as 'How would you solve this problem in your favourite programming language'? However, as relating to
 
@@ -310,7 +311,7 @@ The lecture slides are available online, and contain links to the [Rust playgrou
 ### Schedule
  - (2m) Start with welcome, students entering
  - (10m) Recap on content from last time that current subject builds on
-     - (2m) Recap overview 
+     - (2m) Recap overview
      - (3m) Short round of questions
      - (5m) 1 set of quiz questions
  - (3m) Introduce lecture subject and learning objectives
