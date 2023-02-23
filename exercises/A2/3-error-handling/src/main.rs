@@ -12,7 +12,7 @@
 // 3) We have provided an error type for properly reporting all errors that get_username() might generate; change the function get_username
 // so that it returns a Result<String, MyError>.
 //
-// Tip: to keep your main() working while making this change, you can temporarily replace get_username() with get_username().unwrap
+// Tip: to keep your main() working while making this change, you can temporarily replace get_username() with get_username().unwrap()
 // (this will still result in a panic! in case get_username() returns an error)
 //
 // 4) Finally, handle the errors in main() properly: an IOError should quit the program, but after an InvalidName error it should repeat
@@ -28,17 +28,17 @@ enum MyError{ InvalidName,IOError( io::Error),
 }
 
 fn get_username( )
-->  String 
+->  String
 {
     print!("Username: ");
     io::stdout().flush();
 
-    let mut input=String::new(); 
+    let mut input=String::new();
     io::stdin().lock().read_line(&mut input); input=input.trim().to_string();
 
-    for c in input.chars() 
-    { 
-	if !char::is_alphabetic(c) { panic!("that's not a valid name, try again"); } 
+    for c in input.chars()
+    {
+	if !char::is_alphabetic(c) { panic!("that's not a valid name, try again"); }
     }
 
 if input.is_empty() {

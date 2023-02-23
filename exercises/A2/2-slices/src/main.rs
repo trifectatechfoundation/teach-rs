@@ -33,7 +33,7 @@ fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
     dest
 }
 
-/// Take an array slice, and sort into a freshly constructor vector using the above function
+/// Take an array slice, and sort into a freshly constructed vector using the above function
 fn merge_sort(data: &[i32]) -> Vec<i32> {
     if data.len() > 1 {
         // implement this
