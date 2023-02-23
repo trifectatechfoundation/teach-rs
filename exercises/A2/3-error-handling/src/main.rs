@@ -28,17 +28,17 @@ enum MyError{ InvalidName,IOError( io::Error),
 }
 
 fn get_username( )
-->  String 
+->  String
 {
     print!("Username: ");
     io::stdout().flush();
 
-    let mut input=String::new(); 
+    let mut input=String::new();
     io::stdin().lock().read_line(&mut input); input=input.trim().to_string();
 
-    for c in input.chars() 
-    { 
-	if !char::is_alphabetic(c) { panic!("that's not a valid name, try again"); } 
+    for c in input.chars()
+    {
+	if !char::is_alphabetic(c) { panic!("that's not a valid name, try again"); }
     }
 
 if input.is_empty() {

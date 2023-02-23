@@ -179,12 +179,9 @@ hello, world
 - References cannot *live* longer than their owners
 - A reference will always at all times point to a valid value
 
-These rules can be checked by the Rust compiler. Combined with the ownership
-model we can be sure that whole classes of errors cannot occur.
+These rules can be checked by the Rust compiler.
 
 <!--
-- Memory bugs such as: null pointer dereferences, data races, dangling pointers,
-  use after free.
 - Rust tries to be smart about enforcing these rules, such that you don't notice
   them that often in real life usage, but there may be some cases that clearly
   appear valid, but Rust won't allow. There are generally pretty easy workarounds
@@ -192,6 +189,22 @@ model we can be sure that whole classes of errors cannot occur.
 - Again: references are not pointers, but in practice of course they do look
   similar and are implemented the same way, but Rust's memory model is not the
   same as that of C/C++ and implementation is not the same as our model.
+-->
+
+---
+
+# Borrowing and memory safety
+Combined with the ownership model we can be sure that whole classes of errors
+cannot occur.
+
+* Rust is memory safe without having to use any runtime background proces such
+  as a garbage collector
+* But we still get the performance of a language that would normally let you
+  manage memory manually
+
+<!--
+- Memory bugs such as: null pointer dereferences, data races, dangling pointers,
+  use after free.
 -->
 
 ---
@@ -633,6 +646,7 @@ fn divide(x: i64, y: i64) -> i64 {
 ```
 
 * A panic in Rust is the most basic way to handle errors
+* A panic error is an all or nothing kind of error
 * A panic will immediately stop running the current thread/program and instead
   immediately work to shut it down, using one of two methods:
   * Unwinding: going up throught the stack and making sure that each value
@@ -1402,3 +1416,36 @@ fn string_len(data: &str) -> usize {
 * If you need to mutate a string you might try `&mut str`, but you cannot
   change a slice's length
 * Use `String` or `&mut String` if you need to fully mutate the string
+
+---
+
+# Summary
+
+* Rust uses ownership and borrowing to give memory safety without a garbage collector
+* Rust has structs and enums to structure your data
+* Use `panic!`, `Result` and `Option` for handling errors and missing values
+* Define methods and associated functions with impl blocks
+* Use `Vec<T>` for growable array storage
+* Use `Box<T>` to put something on the heap
+* Use slices whenever possible instead of owned Vec and String types
+
+---
+
+# Exercises
+
+* We'll be doing the A2 excercises, see [https://101-rs.tweede.golf](https://101-rs.tweede.golf/A2-advanced-intro/mod.html)
+* To keep in contact we will use Discord: https://discord.gg/pzv92cAZ
+* Join one of the voice channels and ask us to join you in the `#lab-sessions` channel when you need help!
+* Don't hesitate to ask when you get stuck!
+
+<div class="relative left-100px">
+
+<Transform scale="0.7">
+
+![Discord](/images/A2-discord.svg)
+
+</Transform>
+
+</div>
+
+
