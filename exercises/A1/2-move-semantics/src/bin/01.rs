@@ -1,11 +1,13 @@
-fn main() {
-    let s0 = String::from("Hello");
+//! Make me compile!
 
-    let mut s1 = append_to_string(s0);
+fn main() {
+    let s0 = String::new();
+
+    let s1 = append_to_string(s0);
 
     println!("{} == `{}`", stringify!(s1), s1);
 
-    s1.push('!');
+    s1.push_str("!");
 
     println!("{} == `{}`", stringify!(s1), s1);
 }
@@ -13,7 +15,9 @@ fn main() {
 fn append_to_string(s: String) -> String {
     let mut s = s;
 
-    s.push_str(" World");
+    s.push_str("Hello");
+    s.push_str(" ");
+    s.push_str("World");
 
     s
 }

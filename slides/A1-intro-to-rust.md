@@ -19,21 +19,6 @@ Module A1: Language basics
 <!-- TODO add subject code -->
 
 ---
-layout: three-slots
----
-
-## Who am i?
-
-::left::
-
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
-
----
 layout: default
 ---
 
@@ -58,19 +43,7 @@ layout: default
 layout: section
 ---
 
-# Mindmap
-
-What do you know already about this subject?
-
-## [Mindmap access code here]
-
-<!-- Quick mindmap, show mindmap access code -->
-
----
-layout: iframe
-url: http://your-interactive-mindmap-url-here
----
-<!-- insert URL to live mindmap in slide option `url` -->
+# Anyone have experience with Rust?
 
 ---
 layout: cover
@@ -87,17 +60,33 @@ layout: default
 
 # Content overview
 
-- Why and when Rust
+- Why learn Rust?
+- Basic Rust syntax (quickly)
 - The ownership model
-- Basic Rust syntax
 
 ---
 layout: section
 ---
 
-# Why and when Rust?
+# Why learn Rust?
 
-<!-- TODO add slides about why and when Rust -->
+## by Florian Gilcher
+
+Founder of Ferrous Systems
+
+- Rust training and evangelisation
+- Company support
+- Tooling
+- Ferrocene: Rust in automotive
+
+---
+layout: default
+---
+# Why learn Rust?
+<https://www.youtube.com/embed/l8Qk5Nh6qsg>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l8Qk5Nh6qsg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 0 auto; "></iframe>
+
+
 
 ---
 layout: section
@@ -320,9 +309,9 @@ fn main() {
 </v-click>
 
 <!--
-    - Use isize and usize mostly when working with indexing or other things
-    that need to have a specific size for your platform
-    -->
+- Use isize and usize mostly when working with indexing or other things
+that need to have a specific size for your platform
+-->
 
 ---
 
@@ -342,7 +331,7 @@ fn main() {
 - Rust uses f64 by default
 - Similar to integers you can append the type of float to indicate a specific
 literal type
-    -->
+-->
 
 ---
 
@@ -438,8 +427,6 @@ fn main() {
 ```
 
 - A character is a 32 bit unicode scalar value
-- Almost identical to a unicode code point, but excludes code points only valid
-in UTF-16 context
 - Very much unlike C/C++ where char is 8 bits
 
 <!--
@@ -448,6 +435,25 @@ in UTF-16 context
 interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
+-->
+
+---
+
+# Strings
+```rust
+    // Owned, heap-allocated string *slice*
+    let s1: Sring = String::new("Hello, 🌍!");
+```
+
+- Rust strings are UTF-8-encoded
+- Unlike C/C++: *Not null-terminated*
+- Cannot be indexed like C Strings
+- Actually many types of strings in Rust
+
+<!--
+- Rusts strings are complicated, because all strings are complicated
+- Rusts strings are UTF-8 encoded sequences. Not null terminated unlike C/C++
+- Literal strings are static by default, called string *slices*, being pointers to their start, accompanied with the length
 -->
 
 ---
@@ -599,7 +605,7 @@ no value members has no instances, just as with unit.
 - Expressions evaluate to a resulting value
 - Statements are instructions that perform some action and do not return a value
 - A definition of any kind (function definition etc.)
-- The `let var = value;` statement
+- The `let var = expr;` statement
 - Almost everything else is an expression
 
 ## Example statements
@@ -1008,6 +1014,7 @@ Running `target/debug/playground`
 <v-click>
 
 ```rust
+// Create an owned, heap allocated string
 let s1 = String::from("hello");
 let s2 = s1;
 println!("{}, world!", s1);
@@ -1207,11 +1214,19 @@ layout: default
 ---
 # Summary
 
-* TODO on why Rust
 * Loads of syntax
 * Values are owned by variables
 * Values may be moved to new owners or copied
 * Some typse may be explicitly `Clone`d
+
+---
+layout: default
+---
+# Practicalities
+
+- Follow installation instructions: https://101-rs.tweede.golf
+- Exercises A1 during tutorial
+- Help each other out!
 
 ---
 layout: end

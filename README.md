@@ -1,4 +1,4 @@
-# Rust 101 
+# Rust 101
 
 ![Rust 101](https://tweedegolf.nl/images/rust-101-logo.jpg)
 
@@ -30,20 +30,20 @@ The course is setup so that, after modules A1-A4, cherry-picking the modules tha
 
 When used in full 12-week format, the schedule is:
 
-| Week | Module | Topic                    | 
-| ---- | ------ | ------------------------ | 
+| Week | Module       | Topic                                    |
+| ---- | ------------ | ---------------------------------------- |
 | 1    | 0, <br />A1  | Course intro <br />Language basics |
-| 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |
-| 3    | A4     | Traits and generics      |
-| 4    | B      | Application programming  |
-| 5    | C      | Multitasking             |
-| 6    | D      | Idiomatic Rust patterns  | 
-| 7    | E      | Rust for web             | 
-| 8    | F      | Safe Unsafe Rust         | 
-| 9    | G      | FFI and Dynamic modules  |
-| 10   | P      | Final project            |
-| 11   | P      | Final project            |
-| 12   | P      | Final project presentation |
+| 2    | A2           | Advanced Syntax, Ownership, references   |
+| 3    | A3           | Traits and generics                      |
+| 4    | B            | Application programming                  |
+| 5    | C            | Multitasking                             |
+| 6    | D            | Idiomatic Rust patterns                  |
+| 7    | E            | Rust for web                             |
+| 8    | F            | Safe Unsafe Rust                         |
+| 9    | G            | FFI and Dynamic modules                  |
+| 10   | P            | Final project                            |
+| 11   | P            | Final project                            |
+| 12   | P            | Final project presentation               |
 
 The course assumes intermediate C/C++ knowledge.
 
@@ -66,12 +66,22 @@ We're very happy with support in developing the course material from:
 
 ### Our sponsors
 
+#### Founding sponsors
+
 ![Logo STU FIIT](./assets/STU_FIIT_logo_100_color.png)
 ![Logo RF](./assets/Rust_Foundation_logo_100_color.png)
 
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+
+#### Silver sponsors
+
+Thanks to our `Rust 101 Course Silver sponsor`'s!
+
+- [Gofore](https://gofore.com/en/)
+
+### Support Rust 101
 
 We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
 
