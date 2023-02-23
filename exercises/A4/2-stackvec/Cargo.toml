@@ -1,8 +1,18 @@
 [package]
-name = "stackvec"
+name = "exercise-a4-2"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+[features]
+default = []
+all = ["f"]
+a = []
+b = ["a"]
+c = ["b"]
+d = ["c"]
+e = ["d"]
+f = ["e"]
