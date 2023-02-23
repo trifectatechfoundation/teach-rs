@@ -11,7 +11,7 @@
 /// - EXTRA: Since division can fail, the function eval needs to return an Option<i64>, where None indicates that a division by
 ///   zero has occurred. Can you change the code so that that errors are propagated correctly? (hint: use the ? syntax).
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 enum Expr {
     Const(i64),
     Add(Box<Expr>, Box<Expr>),
@@ -78,8 +78,25 @@ fn main() {
     test(Const(5));
     test(Var);
     test(sub(Var, Const(5)));
+    test(sub(Var, Var));
     test(add(sub(Var, Const(5)), Const(5)));
     test(Summation(vec![Var, Const(1)]));
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_cases() {
+        let x = 42;
+        assert_eq!(eval(&Const(5), x), 5);
+        assert_eq!(eval(&Var, x), 42);
+        assert_eq!(eval(&sub(Var, Const(5)), x), 37);
+        assert_eq!(eval(&sub(Var, Var), x), 0);
+        assert_eq!(eval(&add(sub(Var, Const(5)), Const(5)), x), 42);
+        assert_eq!(eval(&Summation(vec![Var, Const(1)]), x), 43);
+    }
 }
 
 // If you have time let and want to code more Rust: you can extend this exercise endlessly; one idea would be adding a Sigma(from,to,expr)
