@@ -1,11 +1,11 @@
 // This is a very basic rust implementation that approximates the UNIX 'wc' program for text-files; for example, the file you are reading now
-// has 49 lines, 294 words, and 2026 bytes, which you can verify by running cargo run src/main.rs
+// has 49 lines, 292 words, and 2020 bytes, which you can verify by running cargo run src/main.rs
 //
 // However, reading a particular line in a file can fail (for example, if it is not a valid UTF-8 file); this will be very rare, and the code
 // just uses unwrap() to convert a Result<String,Error> into a String. And of course, opening a file can fail for obvious reasons.
 //
 // You can trigger this behaviour by running this program on something that is
-// not a text file, e.g. cargo run wc /bin/bash or cargo run wc c:\windows\system32\cmd.exe
+// not a text file, e.g. cargo run /bin/bash or cargo run c:\windows\system32\cmd.exe
 //
 // Your tasks:
 // 1) change the functions read_lines and count_bytes_and_lines so they return a Result<TYPE, io::Error>, and make them propagate errors.
