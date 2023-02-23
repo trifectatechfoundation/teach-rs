@@ -1431,7 +1431,7 @@ fn string_len(data: &str) -> usize {
 
 ---
 
-# Excercises
+# Exercises
 
 * We'll be doing the A2 excercises, see [https://101-rs.tweede.golf](https://101-rs.tweede.golf/A2-advanced-intro/mod.html)
 * To keep in contact we will use Discord: https://discord.gg/pzv92cAZ
