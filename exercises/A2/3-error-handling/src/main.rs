@@ -12,7 +12,7 @@
 // 3) We have provided an error type for properly reporting all errors that get_username() might generate; change the function get_username
 // so that it returns a Result<String, MyError>.
 //
-// Tip: to keep your main() working while making this change, you can temporarily replace get_username() with get_username().unwrap
+// Tip: to keep your main() working while making this change, you can temporarily replace get_username() with get_username().unwrap()
 // (this will still result in a panic! in case get_username() returns an error)
 //
 // 4) Finally, handle the errors in main() properly: an IOError should quit the program, but after an InvalidName error it should repeat

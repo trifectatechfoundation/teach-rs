@@ -33,7 +33,7 @@ fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
     dest
 }
 
-/// Take an array slice, and sort into a freshly constructor vector using the above function
+/// Take an array slice, and sort into a freshly constructed vector using the above function
 fn merge_sort(data: &[i32]) -> Vec<i32> {
     if data.len() > 1 {
         // implement this
@@ -64,4 +64,19 @@ fn main() {
     let sorted_input = merge_sort(&input);
     println!("Sorted data:");
     println!("{sorted_input:?}");
+}
+
+// you can run these automatic tests by typing 'cargo test'
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_sort() {
+	assert_eq!(merge_sort(&[]), vec![]);
+	assert_eq!(merge_sort(&[5]), vec![5]);
+	assert_eq!(merge_sort(&[1,2,3]), vec![1,2,3]);
+	assert_eq!(merge_sort(&[47,42,5,1]), vec![1,5,42,47]);
+	assert_eq!(merge_sort(&[6,47,42,5,1,123]), vec![1,5,6,42,47,123]);
+    }
 }
