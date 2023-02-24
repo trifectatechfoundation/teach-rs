@@ -17,23 +17,15 @@ Module A4: Traits and generics
 <!-- TODO add subject code -->
 
 ---
-layout: three-slots
----
-## Who am i?
-::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
-
----
 layout: default
 ---
 # Last time...
-- Ownership model
-- Move semantics
+- Rust references
+- Structs & enums
+- `Option` and `Result`
+- Advanced syntax
+  - Pattern matching
+  - Slices
 
 *Any questions?*
 
@@ -646,6 +638,153 @@ Code is <em>monomorphized</em>:
  - Slow to compile and larger binary
 
 ---
+layout: section
+---
+
+# Lifetime bounds
+
+---
+layout: default
+---
+
+# What lifetime?
+
+- References refer to variable
+- Varable has a lifetime:
+  - Start at declaration
+  - End at drop
+
+
+*Question: Will this compile?*
+```rust
+/// Return reference to longest of `strings`
+fn longer(a: &str, b: &str) -> &str {
+    if a.len() > b.len() {
+        a
+    } else {
+        b
+    }
+}
+```
+
+---
+layout: default
+---
+```rust{all|2}
+/// Return reference to longest of `strings`
+fn longer(a: &str, b: &str) -> &str {
+    if a.len() > b.len() {
+        a
+    } else {
+        b
+    }
+}
+```
+
+```
+   Compiling playground v0.0.1 (/playground)
+error[E0106]: missing lifetime specifier
+ --> src/lib.rs:2:32
+  |
+2 | fn longer(a: &str, b: &str) -> &str {
+  |              ----     ----     ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `a` or `b`
+help: consider introducing a named lifetime parameter
+  |
+2 | fn longer<'a>(a: &'a str, b: &'a str) -> &'a str {
+  |          ++++     ++          ++          ++
+
+For more information about this error, try `rustc --explain E0106`.
+error: could not compile `playground` due to previous error
+```
+
+---
+layout: default
+---
+
+# Lifetime annotations
+
+```rust{all|1}
+fn longer<'a>(left: &'a str, right: &'a str) -> &'a str {
+    if left.len() > right.len() {
+        left
+    } else {
+        right
+    }
+}
+```
+
+English: 
+
+- Given a lifetime called `'a`,
+- `longer` takes two references `left` and `right`
+- that live for <ins>at least</ins> `'a`
+- and returns a reference that lives for `'a`
+
+*Note: Annotations do NOT change the lifetime of variables! Their scopes do!*
+
+Just provide information for the borrow checker
+
+---
+layout: default
+---
+
+# Validation boundaries
+
+- Lifetime validation is done within function boundaries
+- No information of calling context is used
+
+*Question: Why?*
+
+---
+layout: default
+---
+
+# Lifetime elision
+&nbsp;
+
+Q: "Why haven't I come across this before?"<br/>
+A: "Because of lifetime elision!"
+
+**Rust compiler has heuristics for eliding lifetime bounds**:
+- Each elided lifetime in input position becomes a distinct lifetime parameter.
+- If there is exactly one input lifetime position (elided or annotated), that lifetime is assigned to all elided output lifetimes.
+- If there are multiple input lifetime positions, but one of them is `&self` or `&mut self`, the lifetime of `self` is assigned to all elided output lifetimes.
+- Otherwise, annotations are needed to satisfy compiler
+
+---
+layout: default
+---
+# Lifetime elision examples
+
+```rust
+fn print(s: &str);                                      // elided
+fn print<'a>(s: &'a str);                               // expanded
+
+fn debug(lvl: usize, s: &str);                          // elided
+fn debug<'a>(lvl: usize, s: &'a str);                   // expanded
+
+fn substr(s: &str, until: usize) -> &str;               // elided
+fn substr<'a>(s: &'a str, until: usize) -> &'a str;     // expanded
+
+fn get_str() -> &str;                                   // ILLEGAL (why?)
+
+fn frob(s: &str, t: &str) -> &str;                      // ILLEGAL (why?)
+
+fn get_mut(&mut self) -> &mut T;                        // elided
+fn get_mut<'a>(&'a mut self) -> &'a mut T;              // expanded
+
+fn args<T: ToCStr>(&mut self, args: &[T]) -> &mut Command                  // elided
+fn args<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command // expanded
+
+fn new(buf: &mut [u8]) -> BufWriter;                    // elided
+fn new(buf: &mut [u8]) -> BufWriter<'_>;                // elided (with `rust_2018_idioms`)
+fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>          // expanded
+
+```
+
+---
 layout: default
 ---
 # Practicalities
@@ -655,21 +794,3 @@ layout: default
 layout: end
 ---
 <!-- Below are example slides you can use -->
-
----
-layout: playground
----
-# Code example
-
-```rust
-fn main() {
-  println!("Hello world!");
-}
-```
-<!-- Slide for code examples with a link to Rust playground -->
-
----
-layout: iframe
-url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&code=fn%20main()%20%7B%0A%20%20println!(%22Hello%20world!%22)%3B%0A%7D
----
-<!-- Iframe slide containing Rust playground -->
