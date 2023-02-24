@@ -737,6 +737,20 @@ layout: default
 
 *Question: Why?*
 
+
+---
+layout: default
+---
+
+# Lifetime annotations in types
+
+```rust
+/// A struct that contains a reference to a T
+pub struct ContainsRef<'r, T> {
+  reference: &'r T
+}
+```
+
 ---
 layout: default
 ---

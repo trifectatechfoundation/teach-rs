@@ -43,7 +43,15 @@ Run `cargo test` to validate your implementation.
 ### A3.2.C `impl LocalStorageVec`
 To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a assosiated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
 
-The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`. Uncomment the corresponding test cases and make them compile and pass. **Be sure to have a look at the methods provided for slices [`[T]`](https://doc.rust-lang.org/std/primitive.slice.html) and [`Vec<T>`](https://doc.rust-lang.org/std/vec/struct.Vec.html)** Specifically, `[T]::copy_within` and `Vec::extend_from_slice` can be of use.
+The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`:
+- `len` returns the length of the `LocalStorageVec`
+- `push` appends an item to the end of the `LocalStorageVec` and increments its length. Possibly moves the contents to the heap if they no longer fit on the stack.
+- `pop` removes an item from the end of the `LocalStorageVec`, optionally returns it and decrements its length. If the length is 0, `pop` returns `None`
+- `insert` inserts an item at the given index and increments the length of the `LocalStorageVec`
+- `remove` removes an item at the given index and returns it.
+- `clear` resets the length of the `LocalStorageVec` to 0.
+
+ Uncomment the corresponding test cases and make them compile and pass. **Be sure to have a look at the methods provided for slices [`[T]`](https://doc.rust-lang.org/std/primitive.slice.html) and [`Vec<T>`](https://doc.rust-lang.org/std/vec/struct.Vec.html)** Specifically, `[T]::copy_within` and `Vec::extend_from_slice` can be of use.
 
 
 ### A3.2.D `Iterator` and `IntoIterator`
@@ -70,10 +78,56 @@ Now to instantiate a `LocalStorageVecIter`, implement the [`IntoIter`] trait for
 
 Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`.
 
-### A3.2.F `Deref` and `DerefMut`
+### A3.2.F `Index`
+To allow users of the `LocalStorageVec` to read items or slices from its buffer, we can implement the [`Index`](https://doc.rust-lang.org/std/ops/trait.Index.html) trait. This trait is generic over the type of the item used for indexing. In order to make our `LocalStorageVec` versatile, we should implement: 
+
+- `Index<uize>`, allowing us to get a single item by calling `vec[1]`;
+- `Index<RangeTo<usize>>`, allowing us to get the first `n` items (excluding item `n`) by calling `vec[..n]`;
+- `Index<RangeFrom<usize>>`, allowing us to get the last `n` items by calling `vec[n..]`;
+- `Index<Range<usize>>`, allowing us to get the items between `n` and `m` items (excluding item `m`) by calling `vec[n..m]`;
+
+Each of these implementations can be implemented in terms of the `as_ref` implementation, as slices `[T]` all support indexing by the previous types. That is, `[T]` also implements `Index` for those types. Uncomment the `it_indexes` test case and run `cargo test` in order to validate your implementation.
+
+#### A3.2.G Borrowing `Iterator`
+We've already got an iterator for `LocalStorageVec`, though it has the limitation that in order to construct it, the `LocalStorageVec` needs to be consumed. What if we only want to iterate over the items, and not consume them? We will need another iterator type, one that contains an immutable reference to the `LocalStorageVec` and that will thus need a lifetime annotation. Add a method called `iter` to `LocalStorageVec` that takes a shared `&self` reference, and instantiates the borrowing iterator. Implement the `Iterator` trait with the appropriate `Item` reference type for your borrowing iterator. To validate your code, uncomment and run the `it_borrowing_iters` test case.
+
+Note that this time, the test won't compile if you require the items of `LocalStorageVec` be `Copy`! That means you'll have to define `LocalStorageVec::iter` in a new `impl` block that does not put this bound on `T`:
+
+```rust
+impl<T: Default + Copy, const N: usize> LocalStorageVec<T, N> {
+    // Methods you've implemented so far
+}
+
+impl<T: const N: usize> LocalStorageVec<T, N> {
+    pub fn iter(&self) -> /* TODO */
+}
+```
+
+Defining methods in separate `impl` blocks means some methods are not available for certain instances of the generic type. In our case, the `new` method is only available for `LocalStorageVec`s containing items of type `T` that implement both `Copy` and `Default`, but `iter` is available for all `LocalStorageVec`s.
+
+### A3.2.H Generic `Index`
+You've probably duplicated a lot of code in the last exercise. We can reduce the boilerplate by defining an empty trait:
+
+```rust
+trait LocalStorageVecIndex {}
+```
+
+First, implement this trait for `usize`, `RangeTo<usize>`, `RangeFrom<usize>`, and `Range<usize>`.
+
+Next, replace the implementations from the previous exercise with a blanket implementation of `Index`. In English:
+
+*"For each type `T`, `I` and constant `N` of type `usize`,*
+*implement `Index<I>` for `LocalStorageVec<T, N>`, 
+*where `I` implements `LocalStorageVecIndex`*
+*and `[T]` implements `Index<I>`"*
+
+If you've done this correctly, `it_indexes` should again compile and pass.
+
+### A3.2.I `Deref` and `DerefMut`
 The next trait that makes our `LocalStorageVec` more flexible in use are [`Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html) and [`DerefMut`](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) that utilize the 'deref coercion' feature of Rust to allow types to be treated as if they were some type they look like. That would allow us to use any [method that is defined on `[T]`](https://doc.rust-lang.org/std/primitive.slice.html) by calling them on a `LocalStorageVec`. Before continueing, read the section ['Treating a Type Like a Reference by Implementing the Deref Trait'](https://doc.rust-lang.org/book/ch15-02-deref.html#treating-a-type-like-a-reference-by-implementing-the-deref-trait) from The Rust Programming Language (TRPL). **Don't confuse deref coercion with any kind of inheritance! Using `Deref` and `DerefMut` for inheritance is frowned upon in Rust.**
 
-Below, an implementation of `Deref` and `DerefMut` is provided in terms of the `AsRef` and `AsMut` implementations. Notice the specific way in which `as_ref` and `as_mut` are called. 
+Below, an implementation of `Deref` and `DerefMut` is provided in terms of the `AsRef` and `AsMut` implementations. Notice the specific way in which `as_ref` and `as_mut` are called.
+
 ```rust
 impl<T, const N: usize> Deref for LocalStorageVec<T, N> {
     type Target = [T];
@@ -91,33 +145,7 @@ impl<T, const N: usize> DerefMut for LocalStorageVec<T, N> {
 ```
 
 **Question**
-- Replacing the implementation of `deref` with `self.as_ref()` results in a stack overflow. Why? (Hint: deref coercion)
+- Replacing the implementation of `deref` with `self.as_ref()` results in a stack overflow when running an unoptimized version. Why? (Hint: deref coercion)
 
-### A3.2.G `Index`
-To allow users of the `LocalStorageVec` to read items or slices from its buffer, we can implement the [`Index`](https://doc.rust-lang.org/std/ops/trait.Index.html) trait. This trait is generic over the type of the item used for indexing. In order to make our `LocalStorageVec` versatile, we should implement: 
-
-- `Index<uize>`, allowing us to get a single item by calling `vec[1]`;
-- `Index<RangeTo<usize>>`, allowing us to get the first `n` items (excluding item `n`) by calling `vec[..n]`;
-- `Index<RangeFrom<usize>>`, allowing us to get the last `n` items by calling `vec[n..]`;
-- `Index<Range<usize>>`, allowing us to get the items between `n` and `m` items (excluding item `m`) by calling `vec[n..m]`;
-
-Each of these implementations can be implemented in terms of the `as_ref` implementation, as slices `[T]` all support indexing by the previous types. That is, `[T]` also implements `Index` for those types. Uncomment the `it_indexes` test case and run `cargo test` in order to validate your implementation.
-
-
-### A3.2.G Generix `Index`
-You've probably duplicated a lot of code in the last exercise. We can reduce the boilerplate by defining an empty trait:
-
-```rust
-trait LocalStorageVecIndex {}
-```
-
-First, implement this trait for `usize`, `RangeTo<usize>`, `RangeFrom<usize>`, and `Range<usize>`.
-
-Next, replace the implementations from the previous exercise with a blanket implementation of `Index`. In English:
-
-*"For each type `T`, `I` and constant `N` of type `usize`,*
-*implement `Index<I>` for `LocalStorageVec<T, N>`, 
-*where `I` implements `LocalStorageVecIndex`*
-*and `[T]` implements `Index<I>`"*
-
-If you've done this correctly, `it_indexes` should again compile and pass.
+### A3.2.J Removing bounds
+When we implemented the borrowing `Iterator`, we saw that it's possible to define methods in separate `impl` blocks with different type bounds. Some of the functionality you wrote used the assumption that `T` is both `Copy` and `Default`. However, this means that each of those methods are only defined for `LocalStorageVec`s containing items of type `T` that in fact do implement `Copy` and `Default`, which is not ideal. How many methods can you rewrite having one or both of these bounds removed?
