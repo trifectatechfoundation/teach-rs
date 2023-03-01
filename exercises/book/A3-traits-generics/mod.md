@@ -11,7 +11,7 @@ In this exercise, we'll create a type called `LocalStorageVec`, which is generic
 Open the `exercises/A3/2-local-storage-vec` crate. It contains a `src/lib.rs` file, meaning this crate is a library. `lib.rs` contains a number of tests, which can be run by calling `cargo test`. Don't worry if they don't pass or even compile right now: it's your job to fix that in this exercise. Most of the tests are commented out right now, to enable a step-by-step approach. **Before you begin, have a look at the code and the comments in there, they contain various helpful clues.**
 
 ### A3.2.A Defining the type
-Currently, the `LocalStorageVec` `enum` is incomplete. Give it two variants: `Stack` and `Heap`. `Stack` contains two named fields, `buf` and `usize`. `buf` will be the array containing `N` items of type `T`. The `Heap` variant has an unnamed field containing a `Vec<T>`. If you've defined the `LocalStorageVec` variants correctly, running `cargo test` should output something like
+Currently, the `LocalStorageVec` `enum` is incomplete. Give it two variants: `Stack` and `Heap`. `Stack` contains two named fields, `buf` and `len`. `buf` will be the array with a capacity to hold `N` items of type `T`; `len` is a field of type `usize` that will denote the amount of items actually stored. The `Heap` variant has an unnamed field containing a `Vec<T>`. If you've defined the `LocalStorageVec` variants correctly, running `cargo test` should output something like
 
 ```txt
 running 1 test
@@ -41,7 +41,7 @@ impl<T, const N: usize> From<Vec<T>> for LocalStorageVec<T, N> {
 Run `cargo test` to validate your implementation.
 
 ### A3.2.C `impl LocalStorageVec`
-To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a assosiated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
+To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a associated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
 
 The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`:
 - `len` returns the length of the `LocalStorageVec`
@@ -55,7 +55,7 @@ The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` an
 
 
 ### A3.2.D `Iterator` and `IntoIterator`
-Our `LocalStorageVec` can be used in the real world now, but we still shoudn't be statisfied. There are various traits in the standard library that we can implement for our `LocalStorageVec` that would make users of our crate happy. 
+Our `LocalStorageVec` can be used in the real world now, but we still shouldn't be satisfied. There are various traits in the standard library that we can implement for our `LocalStorageVec` that would make users of our crate happy.
 
 First off, we will implement the [`IntoIterator`](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html) and [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) traits. Go ahead and uncomment the `it_iters` test case. Let's define a new type:
 
@@ -81,7 +81,7 @@ Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`
 ### A3.2.F `Index`
 To allow users of the `LocalStorageVec` to read items or slices from its buffer, we can implement the [`Index`](https://doc.rust-lang.org/std/ops/trait.Index.html) trait. This trait is generic over the type of the item used for indexing. In order to make our `LocalStorageVec` versatile, we should implement: 
 
-- `Index<uize>`, allowing us to get a single item by calling `vec[1]`;
+- `Index<usize>`, allowing us to get a single item by calling `vec[1]`;
 - `Index<RangeTo<usize>>`, allowing us to get the first `n` items (excluding item `n`) by calling `vec[..n]`;
 - `Index<RangeFrom<usize>>`, allowing us to get the last `n` items by calling `vec[n..]`;
 - `Index<Range<usize>>`, allowing us to get the items between `n` and `m` items (excluding item `m`) by calling `vec[n..m]`;

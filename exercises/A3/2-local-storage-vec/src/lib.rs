@@ -17,19 +17,19 @@ impl<T, const N: usize, const M: usize> From<[T; N]> for LocalStorageVec<T, M>
 where
     // We require that `T` implement `Default`, in case we need to fill up our
     // stack-based array without resorting to uninitialized memory. Once
-    // we are more proficient in working with unitialized memory, we'll be 
+    // we are more proficient in working with unitialized memory, we'll be
     // able to remove this bound.
     T: Default,
 {
     fn from(array: [T; N]) -> Self {
-        if N < M {
-            // In this case, the passed array should fit on the stack. 
+        if N <= M {
+            // In this case, the passed array should fit on the stack.
 
             // We crate an `Iterator` of the passed array,
             let mut it = array.into_iter();
             Self::Stack {
                 // This is a trick for copyng an array into another one that's
-                // at least as long as the original, without having to create 
+                // at least as long as the original, without having to create
                 // default values more than strictly necessary. The `[(); M]`
                 // array is zero-sized, meaning there's no cost to instantiate it.
                 // The `map` call iterates over each of its items, and maps them to
@@ -82,12 +82,12 @@ mod test {
     // fn it_from_vecs() {
     //     // The `vec!` macro creates a `Vec<T>` in a way that resembles
     //     // array-initalization syntax.
-    //     let vec: LocalStorageVec<usize, 10> = LocalStorageVec::from(vec![1,2,3]);
+    //     let vec: LocalStorageVec<usize, 10> = LocalStorageVec::from(vec![1, 2, 3]);
     //     // Assert that the call to `from` indeed yields a `Heap` variant
     //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
-
-    //     let vec: LocalStorageVec<usize, 2> = LocalStorageVec::from(vec![1,2,3]);
-
+    //
+    //     let vec: LocalStorageVec<usize, 2> = LocalStorageVec::from(vec![1, 2, 3]);
+    //
     //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
     // }
 
@@ -130,13 +130,13 @@ mod test {
     //         assert_eq!(vec.pop(), Some(0))
     //     }
     //     assert_eq!(vec.pop(), None);
-
+    //
     //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 256]);
     //     for _ in 0..256 {
     //         assert_eq!(vec.pop(), Some(0))
     //     }
     //     assert_eq!(vec.pop(), None);
-
+    //
     //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from(vec![0; 256]);
     //     for _ in 0..256 {
     //         assert_eq!(vec.pop(), Some(0))
@@ -156,12 +156,12 @@ mod test {
     //             len: 4
     //         }
     //     ));
-
+    //
     //     let mut vec: LocalStorageVec<_, 4> = LocalStorageVec::from([0, 1, 2, 3]);
     //     vec.insert(1, 3);
     //     assert!(matches!(vec, LocalStorageVec::Heap { .. }));
     //     assert_eq!(vec.as_ref(), &[0, 3, 1, 2, 3]);
-
+    //
     //     let mut vec: LocalStorageVec<_, 4> = LocalStorageVec::from([0, 1, 2, 3, 4]);
     //     vec.insert(1, 3);
     //     assert!(matches!(vec, LocalStorageVec::Heap { .. }));
@@ -182,7 +182,7 @@ mod test {
     //         }
     //     ));
     //     assert_eq!(elem, 1);
-
+    //
     //     let mut vec: LocalStorageVec<_, 2> = LocalStorageVec::from([0, 1, 2]);
     //     let elem = vec.remove(1);
     //     assert!(matches!(vec, LocalStorageVec::Heap(..)));
@@ -193,13 +193,13 @@ mod test {
     // Uncomment me for part C
     // #[test]
     // fn it_clears() {
-    //     let mut vec: LocalStorageVec<_, 10> = LocalStorageVec::from([0, 1, 2, 3].as_slice());
-    //     assert!(matches!(vec, LocalStorageVec::Stack { buf: _, len: 3 }));
+    //     let mut vec: LocalStorageVec<_, 10> = LocalStorageVec::from([0, 1, 2, 3]);
+    //     assert!(matches!(vec, LocalStorageVec::Stack { buf: _, len: 4 }));
     //     vec.clear();
     //     assert_eq!(vec.len(), 0);
-
-    //     let mut vec: LocalStorageVec<_, 3> = LocalStorageVec::from([0, 1, 2, 3].as_slice());
-    //     assert!(matches!(vec, LocalStorageVec::Stack { buf: _, len: 3 }));
+    //
+    //     let mut vec: LocalStorageVec<_, 3> = LocalStorageVec::from([0, 1, 2, 3]);
+    //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
     //     vec.clear();
     //     assert_eq!(vec.len(), 0);
     // }
@@ -213,7 +213,7 @@ mod test {
     //         assert_eq!(item, 0);
     //     }
     //     assert_eq!(iter.next(), None);
-
+    //
     //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from(vec![0; 128]);
     //     let mut iter = vec.into_iter();
     //     for item in &mut iter {
@@ -225,11 +225,19 @@ mod test {
     // Uncomment me for part E
     // #[test]
     // fn it_as_refs() {
-    //     let vec: LocalStorageVec<i32, 128> = LocalStorageVec::from([0; 128]);
-    //     let _slice: &[i32] = vec.as_ref();
-
-    //     let mut vec: LocalStorageVec<i32, 128> = LocalStorageVec::from([0; 128]);
-    //     let _slice_mut: &[i32] = vec.as_mut();
+    //     let vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
+    //     let slice: &[i32] = vec.as_ref();
+    //     assert!(slice.len() == 128);
+    //     let vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
+    //     let slice: &[i32] = vec.as_ref();
+    //     assert!(slice.len() == 128);
+    //
+    //     let mut vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
+    //     let slice_mut: &[i32] = vec.as_mut();
+    //     assert!(slice_mut.len() == 128);
+    //     let mut vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
+    //     let slice_mut: &[i32] = vec.as_mut();
+    //     assert!(slice_mut.len() == 128);
     // }
 
     // Uncomment me for part F
@@ -267,7 +275,7 @@ mod test {
     //     // `chunks` is a method that's defined for slices `[T]`, that we can use thanks to `Deref`
     //     let chunks = vec.chunks(4);
     //     let slice: &[_] = vec.deref();
-
+    //
     //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128].as_slice());
     //     let chunks = vec.chunks_mut(4);
     //     let slice: &mut [_] = vec.deref_mut();
