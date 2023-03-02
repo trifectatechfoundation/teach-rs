@@ -3,16 +3,16 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A4: Traits and Generics"
+info: "Rust - A3: Traits and Generics"
 drawings:
   persist: false
 fonts:
   mono: Fira Mono
 layout: cover
-title: 'Rust - A4: Traits and Generics'
+title: 'Rust - A3: Traits and Generics'
 ---
 # Rust programming
-Module A4: Traits and generics
+Module A3: Traits and generics
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -35,23 +35,10 @@ layout: default
 -->
 
 ---
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
 layout: default
 ---
 # In this module
-Make your code more versatile
+Make your code more versatile with generics
 <!-- Introduce today's subject -->
 
 ---
@@ -60,29 +47,13 @@ layout: default
 # Learning objectives
 - Use traits and generics
 - Use common traits from `std`
-- Static versus dynamic dispatch
+- Understand and use lifetime bounds
 <!-- List this module's learning objectives -->
-
----
-layout: section
----
-# Mindmap
-
-What do you know already about this subject?
-
-## [Mindmap access code here]
-<!-- Quick mindmap, show mindmap access code -->
-
----
-layout: iframe
-url: http://your-interactive-mindmap-url-here
----
-<!-- insert URL to live mindmap in slide option `url` -->
 
 ---
 layout: cover
 ---
-#  Module A4
+#  Module A3
 Traits and generics
 <!-- Start lecture content here -->
 
@@ -90,14 +61,14 @@ Traits and generics
 layout: default
 ---
 # Content overview
-TODO
-<!-- Give an overview of the subjects covered in this lecture -->
-<!-- Incorporate any breaks as well -->
+- Introduction to generics
+- Various traits from `std`
+- Lifetime bounds
 
 ---
 layout: section
 ---
-# Introduction to traits
+# Introduction to generics
 
 ---
 layout: default
@@ -130,10 +101,10 @@ Let's have a look at this Rust module. We'd like to provide functionality for fi
 layout: default
 ---
 # Generic code
+
+An example
 ```rust
 fn add<T>(lhs: T, rhs: T) -> T { /* - snip - */}
-
-fn log<T>(item: T) { /* - snip - */}
 ```
 
 <v-click>
@@ -152,7 +123,7 @@ Or, in plain English:
 Some open points:
 
 - What can we do with a `T`?
-- What should body be?
+- What should the body be?
 </div>
 </v-click>
 
@@ -160,7 +131,9 @@ Some open points:
 layout: default
 ---
 # Bounds on generic code
-We need to provide information to compiler:
+&nbsp;
+
+We need to provide information to the compiler:
 - Tell Rust what `T` can do
 - Tell Rust what `T` is accepted
 - Tell Rust how `T` implements functionality
@@ -170,20 +143,23 @@ layout: default
 ---
 
 # `trait`
+&nbsp;
+
+Describe what the type can do
 ```rust
 trait MyAdd {
     fn my_add(&self, other: &Self) -> Self;
 }
 ```
 
-- Describe what the type can do
-- Describe how the type does it
-
-
 ---
 layout: default
 ---
 # `impl trait`
+&nbsp;
+
+Describe how the type does it
+
 ```rust{all|1|2-8}
 impl MyAdd for u32 {
     fn my_add(&self, other: &Self) -> Self {
@@ -197,7 +173,7 @@ layout: default
 ---
 # Using a `trait`
 
-```rust{all|1-2|5-6|7-9}
+```rust{all|1-2|5-6|7-9|10-12}
 // Import the type and the trait
 use my_mod::{MyAdd}
 
@@ -206,19 +182,23 @@ fn main() {
   let right: u32 = 8;
   // Call trait method
   let result = left.my_add(&right);
-  assert_eq!(result, 14)
+  assert_eq!(result, 14);
+  // Explicit call
+  let result = MyAdd::my_add(&left, &right);
+  assert_eq!(result, 14);
 }
 ```
 
 - Trait needs to be in scope
 - Call just like a method
+- Or by using the explicit associated function syntax
 
 ---
 layout: default
 ---
 # Trait bounds
 
-```rust{all|1-3,5|5,7-10}
+```rust{all|1-3,5|5,7-11}
 fn add_values<T: MyAdd>(this: &T, other: &T) -> T {
   this.my_add(other)
 }
@@ -242,9 +222,63 @@ layout: default
 # Limitations of `MyAdd`
 What happens if...
 
-- We want to add other types?
-- We want to add separate types?
+- We want to add two values of different types?
 - Addition yields a different type?
+
+---
+layout: default
+---
+
+# Making `MyAdd` itself generic
+&nbsp;
+
+Add an 'Input type' `O`:
+
+```rust{all|1-3|5-9}
+trait MyAdd<O> {
+    fn my_add(&self, other: &O) -> Self;
+}
+
+impl MyAdd<u16> for u32 {
+    fn my_add(&self, other: &u16) -> Self {
+      *self + (*other as u32)
+    }
+}
+```
+
+We can now add a `u16` to a `u32`.
+
+---
+layout: default
+---
+
+# Defining output of `MyAdd`
+
+- Addition of two given types always yields in one specific type of output
+- Add *associated type* for addition output
+
+```rust{all|2-3|7-9|6-20}
+trait MyAdd<O> {
+    type Output;
+    fn my_add(&self, other: &O) -> Self::Output;
+}
+
+impl MyAdd<u16> for u32 {
+    type Output = u64;
+
+    fn my_add(&self, other: &u16) -> Self::Output {
+      *self as u64 + (*other as u64)
+    }
+}
+
+impl MyAdd<u32> for u32 {
+    type Output = u32;
+
+    fn my_add(&self, other: &u32) -> Self::Output {
+      *self + *other
+    }
+}
+```
 
 ---
 layout: default
@@ -260,9 +294,7 @@ pub trait Add<Rhs = Self> {
 }
 ```
 
-- Trait itself is generic: allow adding separate types
-- Associated type: allow defining addition ouput on implementation
-
+- Default type of `Self` for `Rhs`
 
 ---
 layout: default
@@ -376,8 +408,10 @@ layout: default
 ---
 # Summary
 - Traits describe functionality
-- Generics allow writing in terms of traits
+- Generics allow writing code in terms of traits
 - Traits can be generic, too
+
+*Questions?*
 <!-- Very quickly go over the learning objectives and how they were covered -->
 
 ---
@@ -388,12 +422,11 @@ layout: section
 ---
 layout: default
 ---
-# How Rust uses traits
+# Operator overloading: `std::ops::Add<T>` et al.
 
-- Shared behavior (`Add<T>`)
-- Operator overloading
+- Shared behavior
 
-```rust{all|13}
+```rust{all|13-14}
 use std::ops::Add;
 pub struct BigNumber(u64);
 
@@ -410,10 +443,13 @@ fn main() {
   let res: BigNumber = BigNumber(1) + (BigNumber(2));
 }
 ```
+
+- Others: `Mul`, `Div`, `Sub`, ..
+
 ---
 layout: default
 ---
-# How Rust uses traits (2)
+# Markers: `std::marker::Sized`
 
 - Marker traits
 
@@ -429,13 +465,16 @@ pub trait Sized { }
 
 *Slice reference `&[T]`, `&str` is `Sized`*
 
+Others:
+- `Sync`: Types of which references can be shared between threads
+- `Send`: Types that can be transferred across thread boundaries
 
 ---
 layout: default
 ---
 # Default values: `std::default::Default`
 
-```rust
+```rust{all|5|10-17}
 pub trait Default: Sized {
     fn default() -> Self;
 }
@@ -460,7 +499,7 @@ layout: default
 ---
 
 # Duplication: `std::clone::Clone` & `std::marker::Copy`
-```rust
+```rust{all|9|4-6}
 pub trait Clone: Sized {
     fn clone(&self) -> Self;
 
@@ -473,18 +512,16 @@ pub trait Copy: Clone { } // That's it!
 ```
 
 - Both `Copy` and `Clone` can be `#[derive]`d
+- `Copy` is a marker trait
 - `trait A: B` == "Implementor of `A` must also implement `B`"
-- `clone_from` has default implementation
-- `Copy` & `Sized ` are marker traits
-
-*Why should one implement `Copy`?*
+- `clone_from` has default implementation, can be overridden
 
 ---
 layout: default
 ---
 
 # Conversion: `Into<T>` & `From<T>`
-```rust{all|1-3|5-7|9-14}
+```rust{all|1-3|5-7|9-15}
 pub trait From<T>: Sized {
     fn from(value: T) -> Self;
 }
@@ -501,6 +538,8 @@ impl <T, U> Into<U> for T
     }
 }
 ```
+
+- Blanket implementation
 
 *Prefer `From` over `Into` if orphan rule allows to*
 
@@ -566,9 +605,9 @@ pub trait Drop {
 ---
 layout: two-cols
 ---
-# `std::ops::Drop`
+# Destruction:`std::ops::Drop`
 
-```rust{all|1-7|9-17|19-21}
+```rust{all|1-7|9-17|19-22}
 struct Inner;
 
 impl Drop for Inner {
@@ -588,7 +627,8 @@ impl Drop for Outer {
 }
 
 fn main() {
-  drop(Outer { inner: Inner });
+  // Explicit drop
+  std::mem::drop(Outer { inner: Inner });
 }
 ```
 ::right::
@@ -605,8 +645,17 @@ Dropped inner
 ```
 </div>
 
-- Runs *before* members are dropped
-- Signature `&mut` prevents dropping `self` in `drop`
+- Destructor runs *before* members are removed from stack
+- Signature `&mut` prevents explicitly dropping `self` or its fields in destructor
+- Compiler inserts `std::mem::drop` call at end of scope
+
+```rust
+// Implementation of `std::mem::drop`
+fn drop<T>(_x: T) {}
+```
+
+*Question: why does `std::mem::drop` work?*
+
 </v-click>
 
 ---
@@ -657,7 +706,7 @@ layout: default
 
 *Question: Will this compile?*
 ```rust
-/// Return reference to longest of `strings`
+/// Return reference to longest of `&str`s
 fn longer(a: &str, b: &str) -> &str {
     if a.len() > b.len() {
         a
@@ -671,7 +720,7 @@ fn longer(a: &str, b: &str) -> &str {
 layout: default
 ---
 ```rust{all|2}
-/// Return reference to longest of `strings`
+/// Return reference to longest of `&str`s
 fn longer(a: &str, b: &str) -> &str {
     if a.len() > b.len() {
         a
@@ -730,7 +779,7 @@ Just provide information for the borrow checker
 layout: default
 ---
 
-# Validation boundaries
+# Validating boundaries
 
 - Lifetime validation is done within function boundaries
 - No information of calling context is used
@@ -759,20 +808,29 @@ layout: default
 &nbsp;
 
 Q: "Why haven't I come across this before?"<br/>
+<v-click>
+<div>
 A: "Because of lifetime elision!"
+</div>
+</v-click>
+<v-click>
+<div>
+<br/>
+<br/>
 
-**Rust compiler has heuristics for eliding lifetime bounds**:
+## Rust compiler has heuristics for eliding lifetime bounds:
 - Each elided lifetime in input position becomes a distinct lifetime parameter.
 - If there is exactly one input lifetime position (elided or annotated), that lifetime is assigned to all elided output lifetimes.
 - If there are multiple input lifetime positions, but one of them is `&self` or `&mut self`, the lifetime of `self` is assigned to all elided output lifetimes.
 - Otherwise, annotations are needed to satisfy compiler
-
+</div>
+</v-click>
 ---
 layout: default
 ---
 # Lifetime elision examples
 
-```rust
+```rust{all|1-2|4-5|7-8|10|12|14-15}
 fn print(s: &str);                                      // elided
 fn print<'a>(s: &'a str);                               // expanded
 
@@ -788,21 +846,18 @@ fn frob(s: &str, t: &str) -> &str;                      // ILLEGAL (why?)
 
 fn get_mut(&mut self) -> &mut T;                        // elided
 fn get_mut<'a>(&'a mut self) -> &'a mut T;              // expanded
-
-fn args<T: ToCStr>(&mut self, args: &[T]) -> &mut Command                  // elided
-fn args<'a, 'b, T: ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command // expanded
-
-fn new(buf: &mut [u8]) -> BufWriter;                    // elided
-fn new(buf: &mut [u8]) -> BufWriter<'_>;                // elided (with `rust_2018_idioms`)
-fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>          // expanded
-
 ```
 
 ---
 layout: default
 ---
-# Practicalities
+# Tutorial time!
 <!-- Use this slide to announce any organizational information -->
+
+- Exercises A2 recap
+- Exercises A3 in 101-rs.tweede.golf
+
+*Don't forget to `git pull`!*
 
 ---
 layout: end
