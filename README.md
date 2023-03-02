@@ -26,7 +26,7 @@ The rendered exercises, including installation instructions, can be found at <ht
 
 ## Suggested course schedule
 
-The course is setup so that, after modules A1-A4, cherry-picking the modules that suit your purpose is possible.
+The course is setup so that, after modules A1-A3, cherry-picking the modules that suit your purpose is possible.
 
 When used in full 12-week format, the schedule is:
 

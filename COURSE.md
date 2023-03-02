@@ -130,7 +130,15 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
 **Exercises**
 *TBD*
 
-#### A4 - Traits and generics
+#### A3 - Traits and generics
+This module introduces technologies to make your Rust code more versatile: *traits* and *generics*. After completing this module, the student is able to:
+- Describe the problems traits and generics solve
+- Use traits to describe functionality that is common beween types
+- Write functions and methods in terms of traits and bounds.
+- Use various common traits from the standard library
+- Use trait objects to implement dynamic dispatch
+- Decide when dynamic dispatch should be used over static dispatch
+
 - **Traits**
 - **Commonly used traits from std**
     - Into/From/TryFrom/TryInto, compared to `as` from A1
@@ -142,10 +150,9 @@ This module introduces the first basic concepts of Rust. It motivates why the Ru
     - Deref/DerefMut
     - PartialEq/Eq/Add/Mul/Div/Sub/PartialOrd/Ord
     - Drop
-- **Generics, trait objects, object safety, const generics**
-    - Static vs dynamic dispatch
-    - when to use generics vs trait objects
 - **Orphan rule**
+- **Const generics**
+- **Lifetime annotations**
 
 
 **Exercises**
@@ -342,7 +349,7 @@ In the tutorials, the focus lies on applying the content of the prior lecture by
 | ---- | ------------ | --------------------------------------------------------------- | ----------------------------- |
 | 1    | 0, <br />A1  | Course intro <br />Language basics                              |                               |
 | 2    | A2, <br />A3 | Ecosystem and tools<br />Advanced Syntax, Ownership, references |                               |
-| 3    | A4           | Traits and generics                                             |                               |
+| 3    | A3           | Traits and generics                                             |                               |
 | 4    | B            | Application programming                                         |                               |
 | 5    | C            | Multitasking                                                    |                               |
 | 6    | D            | Idiomatic Rust patterns                                         | Project proposal reminder     |

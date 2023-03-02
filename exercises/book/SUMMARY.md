@@ -4,7 +4,7 @@
 - [A - Introduction to Rust]()
   - [A1 - Language basics](./A1-language-basics/mod.md)
   - [A2 - Advanced Syntax, Ownership, references](./A2-advanced-intro/mod.md)
-  - [A4 - Traits and generics]()
+  - [A3 - Traits and generics](./A3-traits-generics/mod.md)
 - [B - Application programming](./B-application-programming/mod.md)
 - [C - Multitasking]()
 - [D - Idiomatic Rust patterns]()
