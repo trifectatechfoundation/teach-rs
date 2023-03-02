@@ -58,7 +58,7 @@ mod test {
     fn it_compiles() {
         // Here's a trick to 'initialize' a type while not actually
         // creating a value: an infinite `loop` expression diverges
-        // and evaluates to the never type `!`, which, as is can never
+        // and evaluates to the 'never type' `!`, which, as is can never
         // actually be instantiated, coerces to any other type.
         // Some other ways of diverging are by calling the `panic!` or the `todo!`
         // macros.
@@ -250,7 +250,7 @@ mod test {
     //     assert_eq!(vec[1..3], [1, 2]);
     // }
 
-    // Uncomment me for part G
+    // Uncomment me for part H
     // #[test]
     // fn it_borrowing_iters() {
     //     let vec: LocalStorageVec<String, 10> = LocalStorageVec::from([
@@ -267,7 +267,7 @@ mod test {
     //     drop(vec);
     // }
 
-    // Uncomment me for part I
+    // Uncomment me for part J
     // #[test]
     // fn it_derefs() {
     //     use std::ops::{Deref, DerefMut};
