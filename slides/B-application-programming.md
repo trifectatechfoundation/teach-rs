@@ -762,5 +762,18 @@ layout: default
 <!-- Very quickly go over the learning objectives and how they were covered -->
 
 ---
+layout: default
+---
+# Tutorial time!
+<!-- Use this slide to announce any organizational information -->
+
+- Exercises A3 recap
+- Exercises B in 101-rs.tweede.golf
+- Live code on ex B1 and first part of B2
+
+*Don't forget to `git pull`!*
+
+
+---
 layout: end
 ---
