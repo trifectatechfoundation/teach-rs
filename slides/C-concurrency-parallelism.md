@@ -70,8 +70,8 @@ layout: default
 # Learning objectives
 <!-- List this module's learning objectives -->
 
-- Working with C from Rust and vice versa 
-- be familiar with the C representation 
+- Working with C from Rust and vice versa
+- be familiar with the C representation
 - be familiar with the C calling convention
 - Work with `cargo bindgen`
 - Make nice rust APIs around C libraries
@@ -92,23 +92,29 @@ layout: default
 ---
 layout: center
 ---
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Moore%27s_Law_Transistor_Count_1970-2020.png/1280px-Moore%27s_Law_Transistor_Count_1970-2020.png" class="h-130 rounded shadow" />
 
+<!--
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Moore%27s_Law_Transistor_Count_1970-2020.png/1280px-Moore%27s_Law_Transistor_Count_1970-2020.png" class="h-130 rounded shadow" />
+-->
+
+
+
+<img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2059e188-16be-46b6-9f8c-0d571540b29f_789x498.png" class="h-130 rounded shadow" />
 ---
 layout: default
 ---
-# The end of Moore's law 
+# The end of Moore's law
 
-- No more free performance  
-- Software Development as a profession originates around this time 
+- No more free performance
+- Software Development as a profession originates around this time
 - Many dynamic languages (Python, Perl, Ruby, JavaScript) are from this time
 
 ---
 layout: default
 ---
-# A "solution": just duplicate the hardware 
+# A "solution": just duplicate the hardware
 
-- We get computers with multiple cores 
+- We get computers with multiple cores
 - On a per-dollar basis, that means we still get more compute
 - But comes with all sorts of problems
 - Programming Languages have not done a great job of fixing those problems
@@ -116,7 +122,7 @@ layout: default
 ---
 layout: default
 ---
-# Concurrency vs. Parallelism 
+# Concurrency vs. Parallelism
 
 | **Concurrency**  | **Parallelism**   |
 | -------          | ------------      |
@@ -125,24 +131,31 @@ layout: default
 | <img src="https://tienda.bricogeek.com/6417-thickbox_default/sparkfun-thing-plus-esp32-wroom.jpg" class="h-40 center" /> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/IBM_Blue_Gene_P_supercomputer.jpg/1920px-IBM_Blue_Gene_P_supercomputer.jpg" class="h-40 center" /> |
 | Waiting for events | Waiting for computation |
 
+---
+theme: default
+class: text-center
+highlighter: shiki
+lineNumbers: true
+info: "Rust - X: Y"
+drawings:
+  persist: false
+fonts:
+  mono: Fira Mono
+layout: cover
+title: 'Rust - X: Y'
+---
+# Parallelism with Rayon
+solving Pleasantly Parallel Problems
 
 ---
 layout: default
 ---
-# Pleasantly Parallel Problems 
-
-- Some problems are "embarrasingly parallel"
-- A common architecture is MapReduce:
-
----
-layout: default
----
-# TF–IDF 
+# TF–IDF
 
 An algorithm for searching in a big collection of text documents
 
-- term frequency–inverse document frequency 
-- TF: "how often does a word occur in a particular document" 
+- term frequency–inverse document frequency
+- TF: "how often does a word occur in a particular document"
 - IDF: "how rare is the word across all documents"
 
 Problem:
@@ -172,7 +185,7 @@ fn term_occurence(document: &str) -> HashMap<&str, usize> {
 }
 
 
-/// combine the counts from maps a and b. 
+/// combine the counts from maps a and b.
 fn combine_occurences<'a>(
     a: HashMap<&'a str, usize>,
     b: HashMap<&'a str, usize>,
@@ -185,10 +198,16 @@ fn combine_occurences<'a>(
 layout: default
 ---
 
-# `a + b + c + d = (0 + a + b) + (0 + c + d)`
+# Combining results
+
+The `combine_documents` function has several useful properties
+
+- our operation is associative `a • (b • c) = (a • b) • c`
+- our operation has a neutral value `HashMap::default()`: `0 • x = x • 0 = x`
+- therefore we can split the computation `a • b • c • d = (0 • a • b) • (0 • c • d)`
+- an associative operation with a neutral value is called a "monoid"
 
 ```rust
-
 // for each word, how often it occurs across all documents
 documents
     .par_iter()
@@ -196,7 +215,7 @@ documents
     .reduce(HashMap::default, combine_documents);
 ```
 
-- this idea is called a "monoid"
+- this idea means each thread can start accumulating values
 
 
 ---
@@ -207,13 +226,29 @@ layout: default
 
 - Rayon makes data-parallel programming in rust extremely convenient
 
+
+---
+theme: default
+class: text-center
+highlighter: shiki
+lineNumbers: true
+info: "Rust - X: Y"
+drawings:
+  persist: false
+fonts:
+  mono: Fira Mono
+layout: cover
+title: 'Rust - X: Y'
+---
+# Fearless concurrency
+thread-based concurrency in rust
+
+
 ---
 layout: default
 ---
 
-# Fearless concurrency 
-
-- a process can spawn multiple threads of execution. These run concurrently (may run in parallel)  
+# Fearless concurrency
 
 ```rust
 use std::thread;
@@ -233,6 +268,7 @@ fn f() {
 }
 ```
 
+- A process can spawn multiple threads of execution. These run concurrently (may run in parallel)
 - Question: what is the output of this program?
 
 ---
@@ -241,7 +277,7 @@ layout: default
 
 # Expected output
 
-maybe 
+maybe
 
 ```
 Hello from another thread!
@@ -255,9 +291,9 @@ or
 
 ```
 Hello from another thread!
-This is my thread id: ThreadId(412)
 Hello from another thread!
 This is my thread id: ThreadId(411)
+This is my thread id: ThreadId(412)
 Hello from the main thread.
 ```
 
@@ -267,7 +303,7 @@ layout: default
 
 # Expected output
 
-but most likely 
+but most likely
 
 ```
 Hello from the main thread.
@@ -290,7 +326,7 @@ fn main() {
 }
 ```
 
-- `.join()` turns a panic in the thread into an `Err` 
+- `.join()` turns a panic in the thread into an `Err`
 
 ---
 layout: default
@@ -322,7 +358,7 @@ layout: default
 
 # Thread lifetime
 
-- otherwise `numbers` might be dropped while the thread is still using it! 
+- otherwise `numbers` might be dropped while the thread is still using it!
 
 ```rust
 let numbers = Vec::from_iter(0..=1000);
@@ -346,8 +382,6 @@ layout: default
 
 # Thread lifetime: make it known
 
-- explicitly bound the lifetime with a scope 
-
 ```rust
 let numbers = Vec::from_iter(0..=1000);
 
@@ -362,38 +396,40 @@ let average = thread::scope(|s| {
 println!("average: {average:?}");
 ```
 
+- explicitly bound the lifetime with a scope
+- threads are always joined at the end of that scope
+- makes immutable references just work
+
 ---
 layout: default
 ---
 
-- of course, borrowing rules still apply 
+- but mutable borrowing rules still apply:
 
 ```rust
-let mut numbers = vec![1, 2, 3];
+let mut count = 0;
+let counter = &mut count;
 
-thread::scope(|s| {
-    s.spawn(|| {
-        numbers.push(1);
-    });
-    s.spawn(|| {
-        numbers.push(2); // Error!
-    });
+std::thread::scope(|s| {
+    s.spawn(|| { *counter = *counter + 1; });
+    s.spawn(|| { *counter = *counter + 1; });
 });
 ```
 
 ```txt
-error[E0499]: cannot borrow `numbers` as mutable more than once at a time
- --> example.rs:7:13
-  |
-4 |     s.spawn(|| {
-  |             -- first mutable borrow occurs here
-5 |         numbers.push(1);
-  |         ------- first borrow occurs due to use of `numbers` in closure
-  |
-7 |     s.spawn(|| {
-  |             ^^ second mutable borrow occurs here
-8 |         numbers.push(2);
-  |         ------- second borrow occurs due to use of `numbers` in closure
+error[E0499]: cannot borrow `*counter` as mutable more than once at a time
+6 |     thread::scope(|s| {
+  |                    - has type `&'1 Scope<'1, '_>`
+7 |         s.spawn(|| { *counter = *counter + 1; });
+  |         ----------------------------------------
+  |         |       |    |
+  |         |       |    first borrow occurs due to use of `*counter` in closure
+  |         |       first mutable borrow occurs here
+  |         argument requires that `*counter` is borrowed for `'1`
+8 |         s.spawn(|| { *counter = *counter + 1; });
+  |                 ^^   -------- second borrow occurs due to use of `*counter` in closure
+  |                 |
+  |                 second mutable borrow occurs here
 ```
 
 ---
@@ -402,13 +438,17 @@ layout: default
 
 # Fearless concurrency
 
-- restrictions on multiple mutable borrows prevent data races: it is never the case that one thread is modifying data that another thread is looking at
+<img src="https://arctype.com/blog/content/images/size/w1750/2021/02/deadlock.jpeg" alt="Photo Ferris" width="500" />
+
+- borrowing rules prevent data races & deadlocks
+- but also any shared mutable state between threads
+- many correct, useful programs are disallowed!
 
 ---
 layout: default
 ---
 
-# Re-defining references 
+# Re-defining references
 
 - `&T`: (possibly) shared reference
 - `&mut T`: exclusive reference
@@ -418,7 +458,7 @@ for safe mutation, we need exclusive *access*, which we can get in multiple ways
 
 - we have an exclusive reference to the value
 - we own the value (we can exclusively borrow from ourselves)
-- access is inherently exclusive
+- access is inherently exclusive (atomic operations)
 
 
 
@@ -426,7 +466,7 @@ for safe mutation, we need exclusive *access*, which we can get in multiple ways
 layout: default
 ---
 
-# Mutual Exclusion 
+# Mutual Exclusion
 
 - `Mutex` allows mutation of a `T` through a shared `&Mutex<T>` reference
 
@@ -437,14 +477,13 @@ use std::thread;
 fn main() {
     let n = Mutex::new(String::from("foo"));
     thread::scope(|s| {
-        s.spawn(|| {
-            n.lock().unwrap().push_str("bar");
-        });
 
-        s.spawn(|| {
-            n.lock().unwrap().push_str("baz")
-        });
+        s.spawn(|| { n.lock().unwrap().push_str("bar"); });
+
+        s.spawn(|| { n.lock().unwrap().push_str("baz"); });
+
     });
+
     println!("{}", n.into_inner().unwrap());
 }
 ```
@@ -455,11 +494,11 @@ fn main() {
 layout: default
 ---
 
-# Sharing ownership between threads 
+# Sharing ownership between threads
 
 ```rust
 impl<T> Mutex<T> {
-    pub fn lock(&self) -> LockResult<MutexGuard<'_, T>> { 
+    pub fn lock(&self) -> LockResult<MutexGuard<'_, T>> {
         ...
     }
 }
@@ -475,88 +514,67 @@ impl<T> Mutex<T> {
 layout: default
 ---
 
-# Sharing ownership between threads 
+# Moving ownership between threads 
 
-- with `Arc`, ownership can be shared between threads
+- Some values should never be shared or moved between threads
+
+The `Send` and `Sync` marker traits enfoce this:
+
+- `Send`: A type is Send if it can be sent to another thread. In other words, if ownership of a value of that type can be transferred to another thread
+- `Sync`: A type is Sync if it can be shared with another thread. In other words, a type T is Sync if and only if a shared reference to that type `&T` is Send
 
 ```rust
-use std::sync::{Mutex, Arc};
-use std::thread;
+impl<T: ?Sized> !Send for MutexGuard<'_, T>
+impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T>
+```
 
+---
+layout: default
+---
+
+# MSPC: many producer single consumer 
+
+```rust
 fn main() {
-    let n = Arc::new(Mutex::new(String::from("foo")));
+    let (tx, rx) = std::sync::mpsc::channel();
 
-    thread::scope(|s| {
-        let n2 = n.clone();
-        s.spawn(|| {
-            n2.lock().unwrap().push_str("bar");
-        });
-
-        s.spawn(|| {
-            n.lock().unwrap().push_str("baz")
-        });
-    });
-
-    // n has moved and cannot be used here
-}
-```
-
-- `Arc` stands for "atomically reference counted"
-- useful for resolving lifetime issues 
-- `.clone()` is very cheap: it just increments the reference count
-
----
-layout: default
----
-
-# Reinventing the Mutex 
-
-- `Mutex` allows mutation through a shared `&T` reference
-
-```
-struct Mutex<T> {}
-
-impl<T> Mutex<T> { 
-    fn lock(&self) -> MutexGuard<'_, T> {
-    }
-}
-``` 
-
----
-layout: default
----
-
-# Orchestrating Threads 
-
-- MPSC: many producer, single consumer
-
-```rust
-use std::thread;
-use std::sync::mpsc::channel;
-
-fn main() { 
-    // Create a shared channel that can be sent along from many threads
-    // where tx is the sending half (tx for transmission), and rx is the receiving
-    // half (rx for receiving).
-    let (tx, rx) = channel();
-
-    thread::scope(|s| { 
+    std::thread::scope(|s| {
         for (i, tx) in std::iter::repeat(tx).take(10).enumerate() {
-            s.spawn(move || {
-                tx.send(i).unwrap();
-            });
+            s.spawn(move || { tx.send(i).unwrap(); });
         }
 
-        s.spawn(move || { 
-            while let Ok(msg) = rx.recv() { 
+        s.spawn(move || {
+            while let Ok(msg) = rx.recv() {
                 println!("{msg}");
             }
         });
     });
-
-    println!("done");
 }
-``` 
+```
+
+where the `Receiver` is:
+
+```rust
+impl<T: Send> Send for Receiver<T>
+impl<T> !Sync for Receiver<T>
+```
+
+---
+layout: default
+---
+
+# Orchestrating Threads
+
+- MPSC: many producer, single consumer
+
+
+---
+layout: default
+---
+
+# Further reading
+
+<img src="https://marabos.nl/atomics/cover.jpg" alt="Rust atomics and locks" width="300" />
 
 ---
 layout: default
