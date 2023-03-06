@@ -268,7 +268,7 @@ fn f() {
 }
 ```
 
-- A process can spawn multiple threads of execution. These run concurrently (may run in parallel)
+- A process can spawn multiple threads of execution. These run concurrently (and may run in parallel)
 - Question: what is the output of this program?
 
 ---
@@ -385,8 +385,8 @@ layout: default
 ```rust
 let numbers = Vec::from_iter(0..=1000);
 
-let average = thread::scope(|s| {
-    s.spawn(|| {
+let average = thread::scope(|spawner| {
+    spawner.spawn(|| {
         let len = numbers.len();
         let sum = numbers.iter().sum::<usize>();
         sum / len

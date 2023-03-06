@@ -9,13 +9,16 @@ struct Mutex<T> {
     locked: AtomicBool,
 }
 
-// TODO implement Sync for Mutex<T>.
+// TODO implement Send for Mutex<T>.
 //
-// Implementing `Sync` is an assertion that `Mutex<T>` is safe to share between threads, which is
+// Implementing `Sync` is an assertion that `Mutex<T>` is safe to move between threads, which is
 // equivalent to saying that `&Mutex<T>` implement `Send`.
 //
 // Conceptually a mutex can be used to send a value from one thread to another. If `T` is not
 // `Send`, can `Mutex<T>` implement `Sync`?
+
+// even with a reference to `Mutex<T>`, we can actually move a value of type T between threads. But
+// moving values of type T is only allowed if `T: Send`
 unsafe impl<T> Sync for Mutex<T> where T: Send {}
 
 struct MutexGuard<'a, T> {
@@ -44,16 +47,14 @@ impl<T> Mutex<T> {
 
     pub fn lock(&self) -> MutexGuard<T> {
         // TODO: implement lock()
-        self.block_until_you_lock();
-
-        MutexGuard { mutex: self }
+        todo!()
     }
 
     pub fn into_inner(self) -> T {
         // TODO: implement into_inner()
-        self.block_until_you_lock();
-
-        self.cell.into_inner()
+        // hint: look at the available functions on UnsafeCell
+        // question: do you need to `block_until_you_lock`?
+        todo!()
     }
 }
 
@@ -86,21 +87,21 @@ impl<T> DerefMut for MutexGuard<'_, T> {
 }
 
 // TODO: implement a `Drop` for MutexGuard that unlocks the mutex
-impl<T> Drop for MutexGuard<'_, T> {
-    fn drop(&mut self) {
-        self.mutex.unlock()
-    }
-}
+// use the `unlock` method that is already defined for `Mutex`
 
 // imaginary bonus points: use the atomic_wait crate https://docs.rs/atomic-wait/latest/atomic_wait/index.html
 // to replace the spin loop with something more efficient. This section https://marabos.nl/atomics/building-locks.html#mutex of
 // "Rust Atomics and Locks" explains how to do it (and has lots of other good stuff too)
 
 fn main() {
-    let n = Mutex::new(String::from("foo"));
+    let n = Mutex::new(String::from("threads: "));
     std::thread::scope(|s| {
-        s.spawn(|| n.lock().push_str("bar"));
-        s.spawn(|| n.lock().push_str("baz"));
+        s.spawn(|| n.lock().push_str("1"));
+        s.spawn(|| n.lock().push_str("2"));
+        s.spawn(|| n.lock().push_str("3"));
+        s.spawn(|| n.lock().push_str("4"));
+        s.spawn(|| n.lock().push_str("5"));
+        s.spawn(|| n.lock().push_str("6"));
     });
     println!("{}", n.into_inner());
 }

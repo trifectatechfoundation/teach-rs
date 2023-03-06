@@ -52,7 +52,7 @@ fn document_frequency<'a>(
     documents: impl rayon::iter::ParallelIterator<Item = &'a str>,
 ) -> HashMap<&'a str, usize> {
     // map each document to a hashmap that maps words to whether they occur (use `term_occurence`),
-    // then reduce to accumulate the counts.
+    // then reduce, combining the counts.
     todo!()
 }
 
