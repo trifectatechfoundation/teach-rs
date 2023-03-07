@@ -183,9 +183,9 @@ for the blocks
 ```rust {all|2|all}
 fn main() {
     let some_x = 5;
-    println!("some_x = {}", some_x);
+    println!("some_x = {some_x}");
     some_x = 6;
-    println!("some_x = {}", some_x);
+    println!("some_x = {some_x}");
 }
 ```
 
@@ -203,7 +203,7 @@ error[E0384]: cannot assign twice to immutable variable `some_x`
   |         |
   |         first assignment to `some_x`
   |         help: consider making this binding mutable: `mut some_x`
-3 |     println!("some_x = {}", some_x);
+3 |     println!("some_x = {some_x}");
 4 |     some_x = 6;
   |     ^^^^^^^^^^ c annot assign twice to immutable variable
 
@@ -228,9 +228,9 @@ variable names
 ```rust
 fn main() {
     let mut some_x = 5;
-    println!("some_x = {}", some_x);
+    println!("some_x = {some_x}");
     some_x = 6;
-    println!("some_x = {}", some_x);
+    println!("some_x = {some_x}");
 }
 ```
 
@@ -482,7 +482,7 @@ fn main() {
 fn main() {
     let tup = (1, 2.0, 'Z');
     let (a, b, c) = tup;
-    println!("({}, {}, {})", a, b, c);
+    println!("({a}, {b}, {c})");
 
     let another_tuple = (true, 42);
     println!("{}", another_tuple.1);
@@ -511,7 +511,7 @@ fn main() {
     let arr: [i32; 3] = [1, 2, 3];
     println!("{}", arr[0]);
     let [a, b, c] = arr;
-    println!("[{}, {}, {}]", a, b, c);
+    println!("[{a}, {b}, {c}]");
 }
 ```
 
@@ -540,7 +540,7 @@ fn main() {
     let mut x = 0;
     loop {
         if x < 5 {
-            println!("x: {}", x);
+            println!("x: {x}");
             x += 1;
         } else {
             break;
@@ -550,11 +550,11 @@ fn main() {
     let mut y = 5;
     while y > 0 {
         y -= 1;
-        println!("y: {}", y);
+        println!("y: {y}");
     }
 
     for i in [1, 2, 3, 4, 5] {
-        println!("i: {}", i);
+        println!("i: {i}");
     }
 }
 ```
@@ -653,7 +653,7 @@ fn main() {
         let x = 3;
         x + 1
     };
-    println!("{}", y); // 4
+    println!("{y}"); // 4
 }
 ```
 
@@ -694,9 +694,9 @@ fn main() {
 
 ```rust
 fn main() {
-    println!("Hello, {}", name);  // invalid: name is not yet defined
+    println!("Hello, {name}");  // invalid: name is not yet defined
     let name = "world";  // from this point name is in scope
-    println!("Hello, {}", name);
+    println!("Hello, {name}");
 } // name goes out of scope
 ```
 
@@ -712,9 +712,9 @@ fn main() { // nothing in scope here
     let i = 10; // i is now in scope
     if i > 5 {
         let j = 20; // j is now also in scope
-        println!("i = {}, j = {}", i, j);
+        println!("i = {i}, j = {j}");
     } // j is no longer in scope, i still remains
-    println!("i = {}", i);
+    println!("i = {i}");
 } // i is no longer in scope
 ```
 
@@ -952,9 +952,9 @@ fn main() { // nothing in scope here
     let i = 10; // i is now in scope
     if i > 5 {
         let j = i; // j is now also in scope
-        println!("i = {}, j = {}", i, j);
+        println!("i = {i}, j = {j}");
     } // j is no longer in scope, i still remains
-    println!("i = {}", i);
+    println!("i = {i}");
 } // i is no longer in scope
 ```
 
@@ -989,7 +989,7 @@ layout: four-square
 ```rust
 let x = 5;
 let y = x;
-println!("{}", x);
+println!("{x}");
 ```
 
 ::topright::
@@ -1017,7 +1017,7 @@ Running `target/debug/playground`
 // Create an owned, heap allocated string
 let s1 = String::from("hello");
 let s2 = s1;
-println!("{}, world!", s1);
+println!("{s1}, world!");
 ```
 
 </v-click>
@@ -1043,8 +1043,8 @@ error[E0382]: borrow of moved value: `s1`
   |         -- move occurs because `s1` has type `String`, which does not implement the `Copy` trait
 3 |     let s2 = s1;
   |              -- value moved here
-4 |     println!("{}, world!", s1);
-  |                            ^^ value borrowed here after move
+4 |     println!("{s1}, world!");
+  |                ^^ value borrowed here after move
 ```
 
 </div>
@@ -1095,7 +1095,7 @@ variable and removes it from the first variable, instead of aliasing it
 fn main() {
     let s1 = String::from("hello");
     let len = calculate_length(s1);
-    println!("The length of '{}' is {}.", s1, len);
+    println!("The length of '{s1}' is {len}.");
 }
 
 fn calculate_length(s: String) -> usize {
@@ -1116,8 +1116,8 @@ error[E0382]: borrow of moved value: `s1`
   |     -- move occurs because `s1` has type `String`, which does not implement the `Copy` trait
 3 | let len = calculate_length(s1);
   |                            -- value moved here
-4 | println!("The length of '{}' is {}.", s1, len);
-  |                                       ^^ value borrowed here after move
+4 | println!("The length of '{s1}' is {len}.");
+  |                           ^^ value borrowed here after move
 ```
 
 </div>
@@ -1143,7 +1143,7 @@ We can return a value to move it out of the function
 fn main() {
     let s1 = String::from("hello");
     let (len, s1) = calculate_length(s1);
-    println!("The length of '{}' is {}.", s1, len);
+    println!("The length of '{s1}' is {len}.");
 }
 
 fn calculate_length(s: String) -> (usize, String) {
@@ -1190,7 +1190,7 @@ this syntax.
 fn main() {
     let x = String::from("hellothisisaverylongstring...");
     let len = get_length(x.clone());
-    println!("{}: {}", x, len);
+    println!("{x}: {len}");
 }
 
 fn get_length(arg: String) -> usize {
