@@ -324,8 +324,8 @@ fn main() {
 }
 ```
 
-- `f32`: single precision (32 bit) floating point number
-- `f64`: double precision (64 bit) floating point number
+- `f32`: single precision (32-bit) floating point number
+- `f64`: double precision (64-bit) floating point number
 
 <!--
 - Rust uses f64 by default
@@ -426,7 +426,7 @@ fn main() {
 }
 ```
 
-- A character is a 32 bit unicode scalar value
+- A character is a 32-bit unicode scalar value
 - Very much unlike C/C++ where char is 8 bits
 
 <!--
