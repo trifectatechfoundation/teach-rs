@@ -216,7 +216,7 @@ error: could not compile `hello-world` due to previous error
 </v-click>
 
 <!--
-- By convention rust uses snake case (i.e. all lowercase with underscores) for
+- By convention Rust uses snake case (i.e. all lowercase with underscores) for
 variable names
 - The immutable variable cannot be mutated in any way (exceptions apply)
 -->
@@ -431,7 +431,7 @@ fn main() {
 
 <!--
 - The final scalar type is the character, but it isn't often seen.
-- Note that it is not the same as u8 (a byte) in rust, and cannot be used
+- Note that it is not the same as u8 (a byte) in Rust, and cannot be used
 interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
@@ -596,7 +596,7 @@ expression
 the return type
 - Unit may be omitted, note the syntax looks like an empty tuple: a tuple with
 no value members has no instances, just as with unit.
-- In rust you must always specify your type signatures for function boundaries
+- In Rust you must always specify your type signatures for function boundaries
 -->
 
 ---

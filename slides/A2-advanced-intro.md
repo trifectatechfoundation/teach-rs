@@ -22,7 +22,7 @@ Advanced Rust syntax
 # Ownership
 We previously talked about ownership
 
-* In rust there is always a single owner for each stack value
+* In Rust there is always a single owner for each stack value
 * Once the owner goes out of scope any associated values should be cleaned up
 * Copy types creates copies, all other types are *moved*
 
@@ -63,7 +63,7 @@ fn calculate_length(s: String) -> usize {
   borrow it from them, but eventually you have to give it back
 - If a value is borrowed, it is not moved and the ownership stays with the
   original owner
-- To borrow in rust, we create a *reference*
+- To borrow in Rust, we create a *reference*
 
 ```rust {all|3|7|all}
 fn main() {
