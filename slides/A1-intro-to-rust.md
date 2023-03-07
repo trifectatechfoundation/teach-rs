@@ -447,7 +447,7 @@ instead.
 
 - Rust strings are UTF-8-encoded
 - Unlike C/C++: *Not null-terminated*
-- Cannot be indexed like C Strings
+- Cannot be indexed like C strings
 - Actually many types of strings in Rust
 
 <!--
