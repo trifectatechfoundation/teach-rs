@@ -888,7 +888,7 @@ The stack has limitations though, because it only grows as a result of a
 function call.
 
 * Size of items on stack frame must be known at compile time
-* If I don't know the size of a variable upfront: What size should my stack
+* If I don't know the size of a variable up front: What size should my stack
 frame be?
 * How can I handle arbitrary user input efficiently?
 
