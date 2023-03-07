@@ -733,7 +733,7 @@ we need them somewhere else
 - We don't want to pass a copy all the time
 - Large data that we do not want to copy
 - Modifying original data
-- What about datastructures with a variable size?
+- What about data structures with a variable size?
 
 ::right::
 

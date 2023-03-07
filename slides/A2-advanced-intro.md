@@ -537,7 +537,7 @@ struct PointFloat(f64, f64);
 struct PointInt(i64, i64);
 ```
 
-We are repeating ourselves here, what if we could write a datastructure for
+We are repeating ourselves here, what if we could write a data structure for
 both of these cases?
 
 <v-click>
@@ -1026,7 +1026,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1042,7 +1042,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1102,7 +1102,7 @@ to support summing up only parts of a vector?
 * Contiguous: elements are layed out in memory such that they are evenly spaced
 * Dynamically sized: the size of the slice is not stored in the type, but is
   determined at runtime
-* View: a slice is never an owned datastructure
+* View: a slice is never an owned data structure
 * Slices are typed as `[T]`, where `T` is the type of the elements in the slice
 
 ---
@@ -1142,7 +1142,7 @@ help: function arguments must have a statically known size, borrowed types alway
 
 <!--
 - This cannot compile because [T] cannot exist on its own because it is never
-  an owned datastructure
+  an owned data structure
 - We must always put slices behind a pointer type
 -->
 
