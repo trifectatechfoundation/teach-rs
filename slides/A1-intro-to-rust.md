@@ -550,7 +550,7 @@ fn main() {
     let mut y = 5;
     while y > 0 {
         y -= 1;
-        println!("y: {}", x);
+        println!("y: {}", y);
     }
 
     for i in [1, 2, 3, 4, 5] {
