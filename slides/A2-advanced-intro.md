@@ -1387,7 +1387,7 @@ It should be possible to have a reference to part of a string. But what is it?
 | -        | `String` | `&str`   |
 
 * There is no static variant of str
-* This would only be useful if we wanted strings of an extact length
+* This would only be useful if we wanted strings of an exact length
 * But just like we had the static slice literals, we can use `&'static str`
   literals for that instead!
 
