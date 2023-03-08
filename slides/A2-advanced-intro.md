@@ -1428,7 +1428,7 @@ fn string_len(data: &str) -> usize {
 * Define methods and associated functions with impl blocks
 * Use `Vec<T>` for growable array storage
 * Use `Box<T>` to put something on the heap
-* Use slices whenever possible instead of owned Vec and String types
+* Use slices whenever possible instead of owned `Vec<T>` and `String` types
 
 ---
 
