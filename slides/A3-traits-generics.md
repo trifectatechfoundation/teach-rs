@@ -677,7 +677,7 @@ fn main() {
   let sum_one = add_values(&6, &8);
   assert_eq!(sum_one, 14);
   let sum_two = add_values(&6.5, &7.5);
-  println!("Sum two: {}", sum_two); // 14
+  println!("Sum two: {sum_two}"); // 14
 }
 ```
 

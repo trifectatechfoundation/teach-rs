@@ -43,7 +43,7 @@ We have previously seen this example
 fn main() {
     let s1 = String::from("hello");
     let len = calculate_length(s1);
-    println!("The length of '{}' is {}.", s1, len);
+    println!("The length of '{s1}' is {len}.");
 }
 fn calculate_length(s: String) -> usize {
     s.len()
@@ -69,7 +69,7 @@ fn calculate_length(s: String) -> usize {
 fn main() {
     let x = String::from("hello");
     let len = get_length(&x);
-    println!("{}: {}", x, len);
+    println!("{x}: {len}");
 }
 
 fn get_length(arg: &String) -> usize {
@@ -85,7 +85,7 @@ fn get_length(arg: &String) -> usize {
 fn main() {
     let s = String::from("hello");
     change(&s);
-    println!("{}", s);
+    println!("{s}");
 }
 
 fn change(some_string: &String) {
@@ -127,7 +127,7 @@ error: could not compile `playground` due to previous error
 fn main() {
     let mut s = String::from("hello");
     change(&mut s);
-    println!("{}", s);
+    println!("{s}");
 }
 
 fn change(some_string: &mut String) {
@@ -217,7 +217,7 @@ fn main() {
     let s1 = &s;
     let s2 = &s;
     let s3 = &mut s;
-    println!("{} - {} - {}", s1, s2, s3);
+    println!("{s1} - {s2} - {s3}");
 }
 ```
 
@@ -235,8 +235,8 @@ error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immuta
 4 |     let s2 = &s;
 5 |     let s3 = &mut s;
   |              ^^^^^^ mutable borrow occurs here
-6 |     println!("{} - {} - {}", s1, s2, s3);
-  |                              -- immutable borrow later used here
+6 |     println!("{s1} - {s2} - {s3}");
+  |                -- immutable borrow later used here
 
 For more information about this error, try `rustc --explain E0502`.
 error: could not compile `playground` due to previous error
@@ -473,7 +473,7 @@ To extract data from enums we can use pattern matching using the
 ```rust
 fn accept_ipv4(ip: IpAddress) {
   if let IpAddress::Ipv4(a, b, _, _) = ip {
-    println!("Accepted, first octet is {} and second is {}", a, b);
+    println!("Accepted, first octet is {a} and second is {b}");
   }
 }
 ```
@@ -519,7 +519,7 @@ fn get_first_byte(ip: IpAddress) {
     IpAddress::Ipv4(a, _, _, _) => a,
     IpAddress::Ipv6(a, _, _, _, _, _, _, _) => a / 256 as u8,
   };
-  println!("The first byte was: {}", first_byte);
+  println!("The first byte was: {first_byte}");
 }
 ```
 
@@ -725,7 +725,7 @@ we handle that error at the call-site
 ```rust
 fn div_zero_fails() {
   match divide(10, 0) {
-    Ok(div) => println!("{}", div),
+    Ok(div) => println!("{div}"),
     Err(e) => panic!("Could not divide by zero"),
   }
 }
@@ -752,7 +752,7 @@ to help you for both `Option` and `Result`:
 ```rust
 fn div_zero_fails() {
   let div = divide(10, 0).unwrap();
-  println!("{}", div);
+  println!("{div}");
 }
 ```
 
@@ -773,7 +773,7 @@ to help you for both `Option` and `Result`:
 ```rust
 fn div_zero_fails() {
   let div = divide(10, 0).unwrap_or(-1);
-  println!("{}", div);
+  println!("{div}");
 }
 ```
 
@@ -850,7 +850,7 @@ In the past few slides we saw a syntax which wasn't explained before:
 fn main() {
   let x = Some(42);
   let unwrapped = x.unwrap();
-  println!("{}", unwrapped);
+  println!("{unwrapped}");
 }
 ```
 
@@ -1218,7 +1218,7 @@ fn sum(data: &[i32]) -> i32 { /* ... */ }
 fn main() {
   let v = vec![1, 2, 3, 4, 5, 6];
   let total = sum(&v);
-  println!("{}", total);
+  println!("{total}");
 }
 ```
 
@@ -1248,7 +1248,7 @@ fn main() {
 ```rust
 fn main() {
   for i in 0..10 {
-    println!("{}", i);
+    println!("{i}");
   }
 }
 ```
@@ -1317,7 +1317,7 @@ fn main() {
   println!("{:?}", s.starts_with("Hello"));
   println!("{}", s.to_uppercase());
   for line in s.lines() {
-    println!("{}", line);
+    println!("{line}");
   }
 }
 ```
