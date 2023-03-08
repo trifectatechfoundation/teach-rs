@@ -1,3 +1,12 @@
+// In this exercise "unsafe" code is used, which does not necessarily mean that the code is really
+// 'unsafe' (in the general sense of the word), but it does mean that you as a programmer have to take on 
+// responsibility of making sure the code is not doing any "funny business", as you would in C/C++.
+//
+// Some background: the formal term for "funny business" is "undefined behaviour (UB)"; the most visible type of 
+// undefined behaviour is that your program crashes in a dramatic and unexpected way such as a segmentation fault. 
+// But it may can also have more destructive effects. (Note that "panic" may be a drastic way to end a program, but
+// since a programmer put it in the code, it is not "unexpected"). In ordinary code, Rust's type system and borrow
+// checker ensure that no UB can occur.
 use std::{
     cell::UnsafeCell,
     ops::{Deref, DerefMut},
@@ -89,6 +98,9 @@ impl<T> DerefMut for MutexGuard<'_, T> {
 // TODO: implement a `Drop` for MutexGuard that unlocks the mutex
 // use the `unlock` method that is already defined for `Mutex`
 
+// The function main() should execute cleanly and normally, i.e. without entering a deadlock
+// situation and certainly not causing any undefined behaviour.
+//
 // imaginary bonus points: use the atomic_wait crate https://docs.rs/atomic-wait/latest/atomic_wait/index.html
 // to replace the spin loop with something more efficient. This section https://marabos.nl/atomics/building-locks.html#mutex of
 // "Rust Atomics and Locks" explains how to do it (and has lots of other good stuff too)
@@ -96,12 +108,22 @@ impl<T> DerefMut for MutexGuard<'_, T> {
 fn main() {
     let n = Mutex::new(String::from("threads: "));
     std::thread::scope(|s| {
+        s.spawn(|| n.lock().push_str("0"));
         s.spawn(|| n.lock().push_str("1"));
         s.spawn(|| n.lock().push_str("2"));
         s.spawn(|| n.lock().push_str("3"));
         s.spawn(|| n.lock().push_str("4"));
         s.spawn(|| n.lock().push_str("5"));
         s.spawn(|| n.lock().push_str("6"));
+        s.spawn(|| n.lock().push_str("7"));
+        s.spawn(|| n.lock().push_str("8"));
+        s.spawn(|| n.lock().push_str("9"));
+        s.spawn(|| n.lock().push_str("a"));
+        s.spawn(|| n.lock().push_str("b"));
+        s.spawn(|| n.lock().push_str("c"));
+        s.spawn(|| n.lock().push_str("d"));
+        s.spawn(|| n.lock().push_str("e"));
+        s.spawn(|| n.lock().push_str("f"));
     });
     println!("{}", n.into_inner());
 }
