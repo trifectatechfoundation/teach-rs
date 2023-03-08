@@ -205,7 +205,7 @@ error[E0384]: cannot assign twice to immutable variable `some_x`
   |         help: consider making this binding mutable: `mut some_x`
 3 |     println!("some_x = {}", some_x);
 4 |     some_x = 6;
-  |     ^^^^^^^^^^ c annot assign twice to immutable variable
+  |     ^^^^^^^^^^ cannot assign twice to immutable variable
 
 For more information about this error, try `rustc --explain E0384`.
 error: could not compile `hello-world` due to previous error
