@@ -1,7 +1,7 @@
 # Module 0 - Installing the tools
 In this file you'll find instructions on how to install the tools we'll use during the course.
 
-All of these tools are available for Linux, Mac and Windows users. We'll need the tools to write and compile our Rust code, and allow for remote mentoring. *Important: these instructions are to be followed at home, before the start of the first tutorial. If you have any problems with installation, contact the lecturers! We won't be addressing installation problems during the first tutorial.*
+All of these tools are available for Linux, macOS and Windows users. We'll need the tools to write and compile our Rust code, and allow for remote mentoring. *Important: these instructions are to be followed at home, before the start of the first tutorial. If you have any problems with installation, contact the lecturers! We won't be addressing installation problems during the first tutorial.*
 
 ## Rust and Cargo
 First we'll need `rustc`, the standard Rust compiler. `rustc` is generally not invoked directly, but through `cargo`, the Rust package manager. `rustup` takes care of installing `rustc` and `cargo`.
