@@ -499,6 +499,7 @@ fn accept_home(ip: IpAddress) {
     _ => {
       println!("You are not home");
     },
+  }
 }
 ```
 
