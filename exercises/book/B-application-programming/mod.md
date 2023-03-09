@@ -1,4 +1,7 @@
 # Module B - Application programming
+
+[Slides](/slides/B/) (or [pdf](/slides/B-application-programming.pdf))
+
 *Code written in this exercise has to adhere to the Rust API Guidelines. [A checklist can be found here.](https://rust-lang.github.io/api-guidelines/checklist.html)*
 
 
