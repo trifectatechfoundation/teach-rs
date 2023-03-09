@@ -29,7 +29,7 @@ layout: default
 *Any questions?*
 
 ---
-layout: default
+layout: cover
 ---
 
 # In this module
@@ -48,11 +48,15 @@ layout: default
 
 # Learning objectives
 <!-- List this module's learning objectives -->
-- Set up your own Rust application and library
-- Divide your code into logical parts with modules
-- Create a nice API
+
+- Work with `crete` dependencies
+- Create a nice API for your crate
 - Test and benchmark your code
-- Use common crates (tutorial)
+
+**During tutorial:**
+- Divide your code into logical parts with modules
+- Use common crates
+- Set up your own Rust application and library
 
 ---
 layout: cover
@@ -66,7 +70,7 @@ layout: default
 ---
 
 # Content overview
-- Project structure
+- Working with `crate`s
 - API guidelines
 - Testing and benchmarking
 <!-- Give an overview of the subjects covered in this lecture -->
@@ -79,8 +83,9 @@ layout: section
 ---
 
 # Cargo
-Most daily usage of Rust will involve using cargo in one way or another, some
-of the more common tasks are
+Most daily usage of Rust will involve using cargo in one way or another.
+
+Some of the more common tasks are:
 
 * Creating new projects
 * Managing dependencies
@@ -153,15 +158,17 @@ cargo add itertools
 
 ---
 
-# Dependencies? Crates!
+# Dependencies? Crates! 📦
 The crate is the compilation unit for Rust
 
-* Binary crates: result in a compiled binary program that you can execute,
-  binaries have a `main` function that acts as the entrypoint of the program
-* Library crates: define functionality that can be used by other crates, they
-  have no specific `main` function
+* Binary crates: 
+  * Result in a compiled binary program that you can execute.
+  * Binaries have a `main` function as entrypoint of the program
+* Library crates: 
+  * define functionality that can be used by other crates. 
+  * No specific `main` function
 
-Each crate in Rust has a root file, for binary crates this typically is
+Each crate in Rust has a root file. For binary crates this typically is
 `main.rs`, but for libraries this typically is `lib.rs`.
 
 
@@ -175,7 +182,7 @@ Crates included in `Cargo.toml` can be:
   - imported with a `use`
   - qualified directly using path separator `::`
 
-```rust {all|3-4,16-17|7-10}
+```rust {all|3-4,15-17|7-10}
 // Import an item from this crate, called `my_first_app`
 use my_first_app::add;
 // Import an item from the `tracing` dependency
@@ -220,6 +227,8 @@ $ cat Cargo.toml
 my_local_dependency = { path = "../path/to/my_local_dependency" }
 my_git_dependency = { git = "<Git SSH or HTTPS url>", rev="<commit hash or tag>", branch = "<branch>" }
 ```
+
+- Private crate registries are WIP
 
 <!--
  - Other sources Cargo can pull dependencies from are your local file system or Git.
@@ -501,34 +510,86 @@ Hello, henkdieter!
 layout: default
 ---
 
-# Use semantic typing
+# Use semantic typing (1)
 
 Make the type system work for you!
 
-```rust {all|1-3,14,15,17|5-12,14,16,17}
-fn register_bit(enabled: bool) {
-    todo!("Enable it")
+```rust {all|1-2|7-8}
+/// Fetch a page from passed URL
+fn load_page(url: &str) -> String {
+    todo!("Fetch");
 }
 
-enum BitState {
-    Enabled,
-    Disabled
-}
-
-fn register_bit(state: BitState) {
-    todo!("Enable it")
-}
-
-fn do_stuff_with_led() {
-    register_bit(true);
-    set_led_state(BitState::Enabled)
+fn main() {
+  let page = load_page("https://101-rs.tweede.golf");
+  let crab = load_page("🦀"); // Ouch!
 }
 ```
 
+*`&str` is not restrictive enough: not all `&str` represent correct URLs*
+
 <!--
 Rusts type system is awesome. Use it to you advantage by embedding semantics into your types.
-- As an example, the `enable_led` method takes a `bool`. The calling code does not express intent as much as it could.
-- The `set_led_state`, however, takes a `LedState` variant, which clearly expresses what the developer was trying to do.
+- As an example, the `load_page` function takes a string slice, indicating the URL of the page that it should load.
+- At the call site of load_page, it's unclear what a page even is (memory page? remote content?)
+- `load_page` accepts all strings, even strings that do not represent valid URLs
+-->
+
+---
+layout: two-cols
+---
+
+# Use semantic typing (2)
+
+```rust{all|1-3,14-16|5-12,22-24|18-20|all}
+struct Url<'u> {
+  url: &'u str,
+}
+
+impl<'u> Url<'u> {
+  fn new(url: &'u str) -> Self {
+    if !valid(url) {
+      panic!("URL invalid: {}", url);
+    }
+    Self { url }
+  }
+}
+
+fn load_page(remote: Url) -> String {
+    todo!("load it");
+}
+
+fn main() {
+    let content = load_page(Url::new("🦀")); // Not good
+}
+
+fn valid(url: &str) -> bool {
+    url != "🦀" // Far from complete
+}
+```
+::right::
+
+<v-click>
+<div style="padding-left:10px; padding-top: 50px;">
+```txt
+   Compiling playground v0.0.1 (/playground)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.90s
+     Running `target/debug/playground`
+thread 'main' panicked at 'URL invalid: 🦀', src/main.rs:11:7
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+- Clear intent
+- Input validation: security!
+
+*Use the [`url`](https://lib.rs/url) crate*
+</div>
+
+</v-click>
+
+<!--
+ - The `Url` struct defined here, wraps a string slice, but has a name that clarifies intent at the call site
+ - what's more, the `Url` struct can only be instantiated with strings that represent valid URLs
 -->
 
 ---
@@ -561,10 +622,10 @@ layout: default
 
 # Testing methods
 
-- Correctness
+- Testing for correctness
   - Unit tests
   - Integration tests
-- Performance
+- Testing for performance
   - Benchmarks
 
 <!--
@@ -596,6 +657,14 @@ test tests::test_swap_oob - should panic ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 [..]
+```
+
+*Rust compiles your test code into binary using a **test harness** that itself has a CLI*:
+
+
+```bash
+# Don't capture stdout while running tests
+$ cargo test -- --nocapture
 ```
 
 <!--
