@@ -12,7 +12,7 @@ layout: cover
 title: 'Rust - X: Y'
 ---
 # Rust programming
-Module X: description
+Module C: concurrency and parallelism 
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -70,11 +70,12 @@ layout: default
 # Learning objectives
 <!-- List this module's learning objectives -->
 
-- Working with C from Rust and vice versa
-- be familiar with the C representation
-- be familiar with the C calling convention
-- Work with `cargo bindgen`
-- Make nice rust APIs around C libraries
+after this lecture + exercises, you can:
+
+- parallelize a program with Rayon
+- reason about exclusive access
+- work with threads in rust
+- implement a basic Mutex
 
 ---
 layout: default
@@ -369,7 +370,7 @@ let t = thread::spawn(|| {
     sum / len
 });
 
-drop(numbers); // oh no
+drop(numbers); // compile error: would create a dangling reference  
 
 let average = t.join().unwrap();
 
