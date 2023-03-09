@@ -1,5 +1,5 @@
 [package]
-name = "C1-tf-idf"
+name = "tf-idf"
 version = "0.1.0"
 edition = "2021"
 

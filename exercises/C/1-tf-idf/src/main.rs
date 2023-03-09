@@ -1,6 +1,8 @@
 use rayon::prelude::*;
 use std::{cmp::Ordering, collections::HashMap};
 
+// in this exercise we implement a basic version of tf-idf using rayon.
+
 /// Some random books from Project Gutenberg
 const DOCUMENTS: &[(&str, &str)] = &[
     ("Middlemarch", include_str!("../documents/pg145.txt")),
@@ -27,7 +29,7 @@ fn term_frequency(document: &str) -> HashMap<&str, usize> {
     // HINT: use the https://doc.rust-lang.org/std/collections/hash_map/struct.HashMap.html#method.entry method, and
     // its API https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html, particular the `or_insert` function.
     //
-    // bonus points: do not use an explicit for loop
+    // bonus points: use `some_iterator.fold(_, _)` for some extra training with monoids
     todo!()
 }
 
@@ -38,7 +40,7 @@ fn combine_occurences<'a>(
     // combine the counts from maps a and b. If a word is in both maps, add up their counts,
     // otherwise just use the count from one of the maps.
     //
-    // bonus points: do not use an explicit for loop
+    // bonus points: use `some_iterator.fold(_, _)` for some extra training with monoids
     todo!()
 }
 

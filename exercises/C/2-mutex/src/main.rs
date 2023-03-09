@@ -1,9 +1,14 @@
-// In this exercise "unsafe" code is used, which does not necessarily mean that the code is really
-// 'unsafe' (in the general sense of the word), but it does mean that you as a programmer have to take on 
+// In this exercise we build a basic Mutex, a synchronization primitive that guarantees safe access
+// to a piece of shared mutable state. In the implementation, we must guarantee that only one
+// thread can modify the value within the mutex at any one time.
+//
+// This exercise uses "unsafe" - something that we will look at in more detail in a later lecture.
+// use of the "unsafe" keyword does not necessarily mean that the code is really
+// 'unsafe' (in the general sense of the word), but it does mean that you as a programmer have to take on
 // responsibility of making sure the code is not doing any "funny business", as you would in C/C++.
 //
-// Some background: the formal term for "funny business" is "undefined behaviour (UB)"; the most visible type of 
-// undefined behaviour is that your program crashes in a dramatic and unexpected way such as a segmentation fault. 
+// Some background: the formal term for "funny business" is "undefined behaviour (UB)"; the most visible type of
+// undefined behaviour is that your program crashes in a dramatic and unexpected way such as a segmentation fault.
 // But it may can also have more destructive effects. (Note that "panic" may be a drastic way to end a program, but
 // since a programmer put it in the code, it is not "unexpected"). In ordinary code, Rust's type system and borrow
 // checker ensure that no UB can occur.
