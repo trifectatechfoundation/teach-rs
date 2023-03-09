@@ -794,9 +794,9 @@ Besides unwrap, there are some other useful utility functions
 
 ---
 
-# Result and the try operator
+# Result and the `?` operator
 Results are so common that there is a special operator associated with them, the
-try operator
+`?` operator
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
@@ -814,7 +814,7 @@ fn can_fail() -> Result<i64, Error> {
 
 <v-click>
 
-Look how this function changes if we use the try operator
+Look how this function changes if we use the `?` operator
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
@@ -827,7 +827,7 @@ fn can_fail() -> Result<i64, Error> {
 
 ---
 
-# Result and the try operator
+# Result and the `?` operator
 
 ```rust
 fn can_fail() -> Result<i64, Error> {
@@ -836,7 +836,7 @@ fn can_fail() -> Result<i64, Error> {
 }
 ```
 
-* The try operator does an implicit match, if there is an error, that error
+* The `?` operator does an implicit match, if there is an error, that error
   is then immediately returned and the function returns early
 * If the result is `Ok()` then the value is extracted and we can continue right
   away
