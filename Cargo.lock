@@ -215,7 +215,7 @@ name = "exercise-a1-2"
 version = "0.1.0"
 
 [[package]]
-name = "exercise-a3-2"
+name = "exercise-a3"
 version = "0.1.0"
 
 [[package]]
