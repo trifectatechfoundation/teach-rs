@@ -49,8 +49,8 @@ layout: default
 # Learning objectives
 <!-- List this module's learning objectives -->
 
-- Work with `crete` dependencies
-- Create a nice API for your crate
+- Work with `crate` dependencies
+- Create your own crate with a nice API
 - Test and benchmark your code
 
 **During tutorial:**
