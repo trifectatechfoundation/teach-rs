@@ -49,7 +49,7 @@ pub enum LocalStorageVec<T, const N: usize> {
 ```
 </details>
 
-### A3.B `impl`-ing `From<Vec<T>` ⭐
+### A3.B `impl`-ing `From<Vec<T>>` ⭐
 
 Uncomment the test `it_from_vecs`, and add an implementation for `From<Vec<T>>` to `LocalStorageVec<T>`. To do so, copy the following code in your `lib.rs` file and replace the `todo!` macro invocation with your code that creates a heap-based `LocalStorageVec` containing the passed `Vec<T>`.
 
