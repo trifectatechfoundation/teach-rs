@@ -23,14 +23,13 @@ const DOCUMENTS: &[(&str, &str)] = &[
 
 /// For each word in the document, how often does it occur in the document
 fn term_frequency(document: &str) -> HashMap<&str, usize> {
-    // HINT: use https://doc.rust-lang.org/stable/std/primitive.str.html#method.split_whitespace to
-    // iterate over words.
-    //
     // HINT: use the https://doc.rust-lang.org/std/collections/hash_map/struct.HashMap.html#method.entry method, and
     // its API https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html, particular the `or_insert` function.
-    //
-    // bonus points: use `some_iterator.fold(_, _)` for some extra training with monoids
-    todo!()
+    document
+        // good enough definition of "word" for this exercise
+        .split_whitespace()
+        // using fold to get some extra practice with monoids. Using a for loop is also totally fine.
+        .fold(HashMap::default(), |mut hash_map, word| todo!())
 }
 
 fn combine_occurences<'a>(
@@ -40,8 +39,9 @@ fn combine_occurences<'a>(
     // combine the counts from maps a and b. If a word is in both maps, add up their counts,
     // otherwise just use the count from one of the maps.
     //
-    // bonus points: use `some_iterator.fold(_, _)` for some extra training with monoids
-    todo!()
+    // NOTE: we're already using all of our cores to process whole documents. Using a parallel iterator
+    // here would likely make performance worse!
+    b.into_iter().fold(a, |mut hash_map, (word, count)| todo!())
 }
 
 /// Map each word in the document to the value 1
