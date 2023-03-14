@@ -6,7 +6,7 @@
   - [A2 - Advanced Syntax, Ownership, references](./A2-advanced-intro/mod.md)
   - [A3 - Traits and generics](./A3-traits-generics/mod.md)
 - [B - Application programming](./B-application-programming/mod.md)
-- [C - Multitasking]()
+- [C - Concurrency & Parallelism](./C-concurrency-parallelism/mod.md)
 - [D - Idiomatic Rust patterns]()
 - [E - Rust for web]()
 - [F - Safe Unsafe Rust]()

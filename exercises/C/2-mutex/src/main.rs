@@ -33,7 +33,9 @@ struct Mutex<T> {
 
 // even with a reference to `Mutex<T>`, we can actually move a value of type T between threads. But
 // moving values of type T is only allowed if `T: Send`
-unsafe impl<T> Sync for Mutex<T> where T: Send {}
+unsafe impl<T: Send> Sync for Mutex<T> {
+    /* no methods to implement */
+}
 
 struct MutexGuard<'a, T> {
     mutex: &'a Mutex<T>,
