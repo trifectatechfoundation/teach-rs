@@ -12,7 +12,7 @@ layout: cover
 title: 'Rust - X: Y'
 ---
 # Rust programming
-Module C: concurrency and parallelism 
+Module C: concurrency and parallelism
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -21,12 +21,9 @@ layout: three-slots
 ---
 ## Who am i?
 ::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
+- I'm Folkert
+- work on Network Time Protocol and other systems programming things
+- work on the Roc compiler (and other low-level shenanigans)
 
 ---
 layout: default
@@ -42,9 +39,9 @@ layout: default
 ---
 layout: default
 ---
-# Closures 
+# Closures
 
-- Closures are anonymous (unnamed) functions 
+- Closures are anonymous (unnamed) functions
 - they can capture ("close over") values in their scope
 - they are first-class values
 
@@ -338,7 +335,7 @@ let t = thread::spawn(|| {
     sum / len
 });
 
-drop(numbers); // compile error: would create a dangling reference  
+drop(numbers); // compile error: would create a dangling reference
 
 let average = t.join().unwrap();
 
@@ -405,7 +402,7 @@ error[E0499]: cannot borrow `*counter` as mutable more than once at a time
 layout: default
 ---
 
-# Race Conditions 
+# Race Conditions
 
 - if multiple mutable borrows were allowed, this could happen ...
 
@@ -444,7 +441,7 @@ for safe mutation, we need exclusive *access*, which we can get in multiple ways
 layout: default
 ---
 
-# Atomics 
+# Atomics
 
 - atomic operations are indivisible, but relatively expensive
 
@@ -457,7 +454,7 @@ assert_eq!(foo.fetch_add(10, Ordering::SeqCst), 0);
 assert_eq!(foo.load(Ordering::SeqCst), 10);
 ```
 
-- no risk of a race condition: another thread cannot read the value while an atomic operation is ongoing 
+- no risk of a race condition: another thread cannot read the value while an atomic operation is ongoing
 
 ```rust
 pub fn fetch_add(&self, val: u32, order: Ordering) -> u32
@@ -515,7 +512,7 @@ impl<T> Mutex<T> {
 layout: default
 ---
 
-# Moving ownership between threads 
+# Moving ownership between threads
 
 - Some values should never be shared or moved between threads
 
@@ -529,7 +526,7 @@ The `Send` and `Sync` marker traits enfoce this:
 layout: default
 ---
 
-# `Send` 
+# `Send`
 
 - A type is Send if it can be sent to another thread. In other words, if ownership of a value of that type can be transferred to another thread
 
@@ -546,7 +543,7 @@ impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T>
 layout: default
 ---
 
-# MPSC: many producer single consumer 
+# MPSC: many producer single consumer
 
 ```rust
 fn main() {
@@ -577,15 +574,6 @@ impl<T> !Sync for Receiver<T>
 layout: default
 ---
 
-# Orchestrating Threads
-
-- MPSC: many producer, single consumer
-
-
----
-layout: default
----
-
 # Further reading
 
 <img src="https://marabos.nl/atomics/cover.jpg" alt="Rust atomics and locks" width="300" />
@@ -600,7 +588,7 @@ layout: default
 
 - Rayon makes parallel computation easy
 - Scoped threads allow borrowing into threads
-- Mutation requires exclusive access 
+- Mutation requires exclusive access
 - Some data structures guarantee exclusive access (even through a shared reference)
 - The borrow checker, `Send` and `Sync` prevent many common problems
 
