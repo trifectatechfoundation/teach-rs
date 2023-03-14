@@ -197,7 +197,7 @@ These rules can be checked by the Rust compiler.
 Combined with the ownership model we can be sure that whole classes of errors
 cannot occur.
 
-* Rust is memory safe without having to use any runtime background proces such
+* Rust is memory safe without having to use any runtime background process such
   as a garbage collector
 * But we still get the performance of a language that would normally let you
   manage memory manually
