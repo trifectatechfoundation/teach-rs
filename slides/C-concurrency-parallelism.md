@@ -32,8 +32,10 @@ layout: three-slots
 layout: default
 ---
 # Last time...
-- Ownership model
-- Move semantics
+- Cargo and dependencies
+- Creating a nice API
+- Testing and benchmarking
+- Setting up your own project
 <!-- Recap on content from last time that current subject builds on -->
 
 
