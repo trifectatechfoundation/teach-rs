@@ -25,6 +25,10 @@
     "dev-B": "slidev B-application-programming.md",
     "export-B": "slidev export B-application-programming.md",
 
+    "build-C": "slidev build --out dist-C --base /slides/C/ C-concurrency-parallelism.md",
+    "dev-C": "slidev C-concurrency-parallelism.md",
+    "export-C": "slidev export C-concurrency-parallelism.md",
+
     "build-D": "slidev build --out dist-D --base /slides/D/ D-idiomatic-patterns.md",
     "dev-D": "slidev D-idiomatic-patterns.md",
     "export-D": "slidev export D-idiomatic-patterns.md",
