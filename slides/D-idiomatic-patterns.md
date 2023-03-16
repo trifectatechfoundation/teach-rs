@@ -20,6 +20,7 @@ layout: cover
 ---
 # In this module
 
+- Introdcing dynamic dispatch
 - Work with design pattern in Rust
 - Common anti-patterns to avoid
 
@@ -28,22 +29,26 @@ layout: default
 ---
 # Learning objectives
 <!-- List this module's learning objectives -->
+- Understand the difference between static and dynamic dispatch
+- Be able to create trait objects
+- Understand the concept of 'object safety'
+- Apply various commonly used design patterns
+- Know which anti-patterns to avoid
 
 ---
 layout: cover
 ---
-#  Module X
-[The name of this module]
+#  Module D
+Idiomatic Rust Patterns
 <!-- Start lecture content here -->
 
 ---
 layout: default
 ---
 # Content overview
-- FFI types
-- Types from std
-<!-- Give an overview of the subjects covered in this lecture -->
-<!-- Incorporate any breaks as well -->
+- Introduction to trait objects
+- Rust design patterns
+- Anti-patterns
 
 ---
 layout: default
