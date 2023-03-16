@@ -36,35 +36,6 @@ layout: default
 <!-- Recap on content from last time that current subject builds on -->
 
 
----
-layout: default
----
-# Closures
-
-- Closures are anonymous (unnamed) functions
-- they can capture ("close over") values in their scope
-- they are first-class values
-
-```rust
-fn foo() -> impl Fn(i64, i64) -> i64 {
-    z = 42;
-    |x, y| x + y + z
-}
-
-fn bar() -> i64 {
-    // construct the closure
-    let f = foo();
-
-    // evaluate the closure
-    f(1, 2)
-}
-```
-
-- very useful when working with iterators, `Option` and `Result`.
-
-```rust
-let evens: Vec<_> = some_iterator.filter(|x| x % 2 == 0).collect();
-```
 
 ---
 layout: default
@@ -181,6 +152,37 @@ documents
 ```
 
 - this idea means each thread can start accumulating values
+
+---
+layout: default
+---
+# Intermezzo: Closures
+
+- Closures are anonymous (unnamed) functions
+- they can capture ("close over") values in their scope
+- they are first-class values
+
+```rust
+fn foo() -> impl Fn(i64, i64) -> i64 {
+    z = 42;
+    |x, y| x + y + z
+}
+
+fn bar() -> i64 {
+    // construct the closure
+    let f = foo();
+
+    // evaluate the closure
+    f(1, 2)
+}
+```
+
+- very useful when working with iterators, `Option` and `Result`.
+
+```rust
+let evens: Vec<_> = some_iterator.filter(|x| x % 2 == 0).collect();
+```
+
 
 
 ---
@@ -506,6 +508,15 @@ impl<T> Mutex<T> {
 - Returns a `PoisonError` if a thread panicked while holding the lock
 - Returns a `MutexGuard`, proof to the type checker that we hold the lock
 - `MutexGuard<'a, T>` implements `DerefMut<Target = T>`, so we can use it like a mutable reference
+
+```rust
+impl<'a, T> DerefMut for MutexGuard<'a, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        // ...
+    }
+}
+```
+
 - dropping the `MutexGuard` unlocks the mutex
 
 ---
@@ -516,7 +527,12 @@ layout: default
 
 - Some values should never be shared or moved between threads
 
-The `Send` and `Sync` marker traits enfoce this:
+The `Send` and `Sync` marker traits enforce this:
+
+```rust
+pub unsafe auto trait Send { /* no method */ }
+pub unsafe auto trait Sync { /* no method */ }
+```
 
 - `Send`: A type is Send if it can be sent to another thread. In other words, if ownership of a value of that type can be transferred to another thread
 - `Sync`: A type is Sync if it can be shared with another thread. In other words, a type T is Sync if and only if a shared reference to that type `&T` is Send
@@ -536,7 +552,7 @@ impl<T: ?Sized> !Send for MutexGuard<'_, T>
 impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T>
 ```
 
-- On certian OS's, only the thread that locked a mutex may unlock it again!
+- On certain OS's, only the thread that locked a mutex may unlock it again!
 
 
 ---

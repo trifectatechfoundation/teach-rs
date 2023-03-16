@@ -80,7 +80,7 @@ impl<T> Deref for MutexGuard<'_, T> {
     fn deref(&self) -> &Self::Target {
         // unsafe code will be covered in module F. The standard API for `UnsafeCell` is not
         // sufficient to implement this function, even though it does not break any of rust's rules.
-        // We explicitly take on the task of verifying correctness here, and promis to the compiler
+        // We explicitly take on the task of verifying correctness here, and promise to the compiler
         // the operation below is valid.
         //
         // SAFETY: we have a shared reference to the mutex guard,
@@ -93,7 +93,7 @@ impl<T> DerefMut for MutexGuard<'_, T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         // unsafe code will be covered in module F. The standard API for `UnsafeCell` is not
         // sufficient to implement this function, even though it does not break any of rust's rules.
-        // We explicitly take on the task of verifying correctness here, and promis to the compiler
+        // We explicitly take on the task of verifying correctness here, and promise to the compiler
         // the operation below is valid.
         //
         // SAFETY: we have an exclusive reference to the mutex guard,
