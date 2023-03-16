@@ -281,9 +281,11 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Some audio filtering and streaming software**
 - **Contribute to an open source project**
 - **SIMD**
+    - Uwuify: https://github.com/Daniel-Liu-c0deb0t/uwu
 - **Simple programming language**
     - https://craftinginterpreters.com/
     - Brainfuck interpreter/compiler
+    - https://strlen.com/false-language/
 
 #### Structure
 - Work in teams of 2
