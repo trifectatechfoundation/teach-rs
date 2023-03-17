@@ -99,6 +99,6 @@ mod test {
     }
 }
 
-// If you have time let and want to code more Rust: you can extend this exercise endlessly; one idea would be adding a Sigma(from,to,expr)
+// If you have time left and want to code more Rust: you can extend this exercise endlessly; one idea would be adding a Sigma(from,to,expr)
 // constructor to Expr which computes the equivalent of (in LaTeX notation) \sum_{Var = from}^{to} expr; i.e. Sigma(Const(1), Const(5), Var) should be
 // equivalent to Summation(vec![Const(1), Const(2), Const(3), Const(4), Const(5)]).

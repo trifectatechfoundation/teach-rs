@@ -530,7 +530,7 @@ fn get_first_byte(ip: IpAddress) {
 ---
 
 # Generics
-Enums become even more powerful if we introduce a little of generics
+Structs become even more powerful if we introduce a little of generics
 
 ```rust
 struct PointFloat(f64, f64);

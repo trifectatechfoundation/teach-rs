@@ -1,9 +1,7 @@
-//! Make me compile!
-
 fn main() {
     let s0 = String::new();
 
-    let s1 = append_to_string(s0);
+    let mut s1 = append_to_string(s0);
 
     println!("{} == `{}`", stringify!(s1), s1);
 
