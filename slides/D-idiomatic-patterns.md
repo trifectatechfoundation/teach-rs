@@ -365,6 +365,180 @@ layout: section
 ---
 layout: default
 ---
+
+# Why learn design patterns?
+
+- Common problems call for common, tried an tested solutions
+- Make crate architecture more clear
+- Speed up development
+- Rust does some patterns ever-so-slightly differently
+
+---
+layout: default
+---
+
+# What we'll do
+
+```rust
+const PATTERNS: &[Pattern] = &[
+    Pattern::new("Newtype"),
+    Pattern::new("RAII with guards"),
+    Pattern::new("Builder"),
+    Pattern::new("Typestate"),
+    Pattern::new("Visitor"),
+];
+fn main() {
+    for pattern in PATTERNS {
+        pattern.introduce();
+        pattern.show_example();
+        pattern.when_to_use();
+    }
+}
+```
+
+---
+layout: statement
+---
+
+# 1. The Newtype pattern
+a small but useful pattern
+
+---
+layout: default
+---
+
+# Newtype: introduction
+&nbsp;
+
+### Wrap an external type in a new local type
+
+```rust
+pub struct Imei(String)
+```
+
+That's it!
+
+---
+layout: default
+---
+
+# Newtype: example
+
+```rust
+pub enum ValidateImeiError { /* - snip - */}
+
+pub struct Imei(String);
+
+impl Imei {
+    fn validate(imei: &str) -> Result<(), ValidateImeiError> {
+        todo!();
+    }
+}
+
+impl TryFrom<String> for Imei {
+    type Error = ValidateImeiError;
+
+    fn try_from(imei: String) -> Result<Self, Self::Error> {
+        Self::validate(&imei)?;
+        Ok(Self(imei))
+    }
+}
+
+fn register_phone(imei: Imei, label: String) {
+    // We can certain `imei` is valid here
+}
+```
+
+---
+layout: default
+---
+
+# Newtype: when to use
+
+Newtype solves some problems:
+- Orphan rule: no `impl`s for external `trait`s on external types
+- Allow for semantic typing (`url` example from mod B)
+- Enforce input validation
+
+---
+layout: statement
+---
+
+# 2. The RAII guard pattern
+More robust resource handling
+
+---
+layout: default
+---
+
+# RAII Guards: introduction
+
+- Resource Acquisition Is Initialization (?)
+- Couple resource aquisition and forfeiture with lifetime of a variable
+- Constructor initializes resource, destructor drops it
+
+*Do you know of an example?*
+
+---
+layout: two-cols
+---
+
+# RAII Guards: example
+
+```rust
+pub struct Transaction<'c> {
+    connection: &'c mut Connection,
+    committed: bool,
+    id: usize,
+}
+
+impl<'c> Transaction<'c> {
+    pub fn begin(connection: &'c mut Connection)
+     -> Self {
+        let id = 
+            connection.start_transaction();
+        Self {
+            committed: false,
+            id,
+            connection,
+        }
+    }
+
+    pub fn commit(self) {
+        self.committed = true;
+    }
+}
+```
+::right::
+<div style="padding-left:10px; padding-top: 50px;">
+
+```rust
+impl Drop for Transaction<'_> {
+    fn drop(&mut self) {
+        if self.committed {
+            self
+                .connection
+                .commit_transaction(self.id);
+            
+        } else {
+            self
+                .connection
+                .rollback_transaction(self.id);
+        }
+    }
+}
+```
+</div>
+
+---
+layout: default
+---
+
+# RAII Guards: when to use
+
+---
+layout: default
+---
 # Summary
 <!-- Very quickly go over the learning objectives and how they were covered -->
 
