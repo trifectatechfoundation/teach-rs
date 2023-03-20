@@ -48,7 +48,8 @@ layout: default
 # Content overview
 - Trait objects and dynamic dispatch
 - Rust design patterns
-- Anti-patterns
+- The deref polymorphism anti-pattern
+- Project intro
 
 ---
 layout: section
@@ -386,7 +387,7 @@ const PATTERNS: &[Pattern] = &[
     Pattern::new("Newtype"),
     Pattern::new("RAII with guards"),
     Pattern::new("Typestate"),
-    Pattern::new("Visitor"),
+    Pattern::new("Strategy"),
 ];
 fn main() {
     for pattern in PATTERNS {
@@ -641,16 +642,173 @@ layout: default
 layout: statement
 ---
 
-# 4. The Visitor pattern
-Separate objects from the algorithm
+# 4. The Strategy pattern
+Select behavior dynamically
 
 ---
 layout: default
 ---
 
-# Visitor: introduction
+# Strategy: introduction
 
+- Turn set of behaviors into objects
+- Make them interchangeble inside context
+- Execute strategy depending on input
 
+*Trait objects work well here!*
+
+---
+layout: two-cols
+---
+
+# Strategy: example
+
+```rust
+
+trait PaymentStrategy {
+    fn pay(&self);
+}
+
+struct CashPayment;
+impl PaymentStrategy for CashPayment {
+    fn pay(&self) {
+        println!("🪙💸");
+    }
+}
+
+struct CardPayment;
+impl PaymentStrategy for CardPayment {
+    fn pay(&self) {
+        println!("💳");
+    }
+}
+```
+::right::
+
+<div style="padding-left:10px; padding-top: 50px;">
+
+```rust
+
+fn main() {
+    let method: &str 
+        = todo!("Read input");
+    let strategy: &dyn PaymentStrategy 
+        = match method {
+        "card" => &CardPayment,
+        "cash" => &CashPayment,
+        _ => panic!("Oh no!"),
+    };
+    strategy.pay();
+}
+```
+
+</div> 
+
+---
+layout: section
+---
+
+# The Deref polymorphism anti-pattern
+
+A common pitfall you'll want to avoid
+
+---
+layout: two-cols
+---
+
+# Deref polymorphism: Example
+
+```rust
+use std::ops::Deref;
+
+struct Animal {
+    name: String,
+}
+
+impl Animal {
+    fn walk(&self) {
+        println!("Tippy tap")
+    }
+    fn eat(&self) {
+        println!("Om nom")
+    }
+    fn say_name(&self) {
+        // Animals generally can't speak
+        println!("...")
+    }
+}
+```
+::right::
+```rust
+struct Dog {
+    animal: Animal
+}
+impl Dog {
+    fn eat(&self) {
+        println!("Munch munch");
+    }
+    fn bark(&self) {
+        println!("Woof woof!");
+    }
+}
+
+impl Deref for Dog {
+    type Target = Animal;
+
+    fn deref(&self) -> &Self::Target {
+        &self.animal
+    }
+}
+
+fn main (){ 
+    let dog: Dog = todo!("Instantiate Dog");
+    dog.bark();
+    dog.walk();
+    dog.eat();
+    dog.say_name();
+}
+```
+
+---
+layout: default
+---
+
+# The output
+
+```txt
+Woof woof!
+Tippy tap
+Munch munch
+```
+
+*Even overloading works!*
+
+---
+layout: default
+---
+
+# Why is it bad?
+
+- This is no 'real' inheritance: `Dog` is no subtype of `Animal`
+- Traits implemented on `Animal` are not implemented on `Dog` automatically
+- `Deref` and `DerefMut` are intended 'pointer-to-`T`' to `T` conversions
+- Deref coercion by `.` 'converts' `self` from `Dog` to `Animal`
+- Rust favours explicit conversions for easier reasoning about code
+
+*It will only add confusion: for OOP programmers it's incomplete, for Rust programmers it goes against semantics*
+
+## ⚠️ Don't do OOP in Rust!
+
+---
+layout: default
+---
+
+# What to do instead?
+
+- *Move away from OOP constructs*
+- Compose your structs
+- Use facade methods
+- Use `AsRef` and `AsMut` for explicit conversion
 
 ---
 layout: default
@@ -661,10 +819,6 @@ layout: default
 ---
 layout: default
 ---
-# Practicalities
+# Project introduction
+TODO
 <!-- Use this slide to announce any organizational information -->
-
----
-layout: end
----
-<!-- Below are example slides you can use -->
