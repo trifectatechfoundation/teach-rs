@@ -383,7 +383,6 @@ layout: default
 const PATTERNS: &[Pattern] = &[
     Pattern::new("Newtype"),
     Pattern::new("RAII with guards"),
-    Pattern::new("Builder"),
     Pattern::new("Typestate"),
     Pattern::new("Visitor"),
 ];
@@ -475,7 +474,8 @@ layout: default
 
 - Resource Acquisition Is Initialization (?)
 - Couple resource aquisition and forfeiture with lifetime of a variable
-- Constructor initializes resource, destructor drops it
+- Guard constructor initializes resource, destructor frees it
+- Access resource through the guard
 
 *Do you know of an example?*
 
@@ -488,7 +488,7 @@ layout: two-cols
 ```rust
 pub struct Transaction<'c> {
     connection: &'c mut Connection,
-    committed: bool,
+    did_commit: bool,
     id: usize,
 }
 
@@ -498,14 +498,16 @@ impl<'c> Transaction<'c> {
         let id = 
             connection.start_transaction();
         Self {
-            committed: false,
+            did_commit: false,
             id,
             connection,
         }
     }
 
+    pub fn query(&self sql: &str) { /* - snip - */}
+
     pub fn commit(self) {
-        self.committed = true;
+        self.did_commit = true;
     }
 }
 ```
@@ -515,7 +517,7 @@ impl<'c> Transaction<'c> {
 ```rust
 impl Drop for Transaction<'_> {
     fn drop(&mut self) {
-        if self.committed {
+        if self.did_commit {
             self
                 .connection
                 .commit_transaction(self.id);
@@ -535,6 +537,103 @@ layout: default
 ---
 
 # RAII Guards: when to use
+
+- Ensure a resource is freed at some point
+- Ensure invariants hold while guard lives
+
+---
+layout: statement
+---
+
+# 3. The Typestate pattern
+Encode state in the type
+
+---
+layout: default
+---
+
+# Typestate: introduction
+
+- Define uninitializable types for each state of your object
+```rust
+pub enum Ready {} // No variants, cannot be initialized
+```
+<v-click>
+
+- Make your type generic over its state using `std::marker::PhantomData`
+- Implement methods only for relevant states
+- Methods that update state take owned `self` and return instance with new state
+
+*👻 `PhantomData<T>` makes types act like they own a `T`, and takes no space*
+</v-click>
+---
+layout: two-cols
+---
+
+# Typestate: example
+
+```rust
+pub enum Idle {} // Nothing to do
+pub enum ItemSelected {} // Item was selected
+pub enum MoneyInserted {} // Money was inserted
+
+pub struct CoffeeMachine<S> {
+    _state: PhantomData<S>,
+}
+
+impl<CS> CoffeeMachine<CS> {
+    /// Just update the state
+    fn into_state<NS>(self) -> CoffeeMachine<NS> {
+        CoffeeMachine {
+            _state: PhantomData,
+        }
+    }
+}
+
+impl CoffeeMachine<Idle> {
+    pub fn new() -> Self {
+        Self {
+            _state: PhantomData,
+        }
+    }
+}
+```
+
+::right::
+<div style="padding-left:10px; padding-top: 0;">
+
+```rust
+impl CoffeeMachine<Idle> {
+    fn select_item(self, item: usize) -> CoffeeMachine<ItemSelected> {
+        println!("Selected item {item}");
+        self.into_state()
+    }
+}
+
+impl CoffeeMachine<ItemSelected> {
+    fn insert_money(self) -> CoffeeMachine<MoneyInserted> {
+        println!("Money inserted!");
+        self.insert_money()
+    }
+}
+
+impl CoffeeMachine<MoneyInserted> {
+    fn make_beverage(self) -> CoffeeMachine<Idle> {
+        println!("There you go!");
+        self.into_state()
+    }
+}
+```
+</div>
+
+---
+layout: default
+---
+
+# Typestate: when to use
+
+- If your problem is like a state machine
+- Ensure at compile time that no invalid operation is done
 
 ---
 layout: default
