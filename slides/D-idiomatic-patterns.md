@@ -373,6 +373,8 @@ layout: default
 - Speed up development
 - Rust does some patterns ever-so-slightly differently
 
+*Learning common Rust patterns makes understanding new code easier*
+
 ---
 layout: default
 ---
@@ -633,7 +635,22 @@ layout: default
 # Typestate: when to use
 
 - If your problem is like a state machine
-- Ensure at compile time that no invalid operation is done
+- Ensure *at compile* time that no invalid operation is done
+
+---
+layout: statement
+---
+
+# 4. The Visitor pattern
+Separate objects from the algorithm
+
+---
+layout: default
+---
+
+# Visitor: introduction
+
+
 
 ---
 layout: default
