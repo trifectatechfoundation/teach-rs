@@ -184,6 +184,7 @@ layout: default
 - Opaque type that implements a set of traits
 - Type description: `dyn T: !Sized` where `T` is a `trait`
 - Like slices, Trait Objects always live behind pointers (`&dyn T`, `&mut dyn T`, `Box<dyn T>`, `...`)
+- Concrete underlying types are erased from trait object
 
 ```rust{all|5-7}
 fn main() {
@@ -235,8 +236,9 @@ layout: default
 
 - Trait objects `&dyn T`, `Box<dyn T>`, ... implement `T`!
 
-```rust{all}
-fn log<L: Write>(entry: &str, logger: &mut L) {
+```rust{all|9-12|1-2}
+// We no longer require L be `Sized`, so to accept trait objects
+fn log<L: Write + ?Sized>(entry: &str, logger: &mut L) {
     write!(logger, "{}", entry);
 }
 
@@ -258,7 +260,9 @@ And all is well!
 layout: default
 ---
 
-# Enforce dynamic dispatch
+# Forcing dynamic dispatch
+
+Sometimes you want to enforce API users (or colleagues) to use dynamic dispatch
 
 ```rust{all|1}
 fn log(entry: &str, logger: &mut dyn Write) {
@@ -289,8 +293,8 @@ layout: default
 fn main() {
     let mut shapes = Vec::new();
     let circle = Circle;
-    let rect = Rectangle;
     shapes.push(circle);
+    let rect = Rectangle;
     shapes.push(rect);
     shapes.iter().for_each(|shape| shape.paint());
 }
@@ -298,7 +302,7 @@ fn main() {
 <v-click>
 Becomes
 
-```rust
+```rust{all|2,3,5}
 fn main() {
     let mut shapes: Vec<Box<dyn Render>> = Vec::new();
     let circle = Box::new(Circle);
@@ -320,6 +324,7 @@ layout: default
 
 - Pointer indirection cost
 - Harder to debug
+- Type erasure
 - Not all traits work:
 
 *Traits need to be 'Object Safe'*
