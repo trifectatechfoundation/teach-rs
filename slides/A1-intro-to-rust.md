@@ -43,7 +43,7 @@ layout: default
 layout: section
 ---
 
-# Anyone have experience with Rust?
+# Anyone has experience with Rust?
 
 ---
 layout: cover
