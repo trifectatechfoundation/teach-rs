@@ -795,7 +795,7 @@ layout: default
 - Deref coercion by `.` 'converts' `self` from `Dog` to `Animal`
 - Rust favours explicit conversions for easier reasoning about code
 
-*It will only add confusion: for OOP programmers it's incomplete, for Rust programmers it goes against semantics*
+*It will only add confusion: for OOP programmers it's incomplete, for Rust programmers it is unidiomatic*
 
 ## ⚠️ Don't do OOP in Rust!
 
