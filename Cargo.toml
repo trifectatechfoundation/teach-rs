@@ -14,5 +14,6 @@ members = [
     "exercises/B/3-fizzbuzz",
     "exercises/C/1-tf-idf",
     "exercises/C/2-mutex",
+    "exercises/D/1-bsn",
     "slides/examples/B-application-programming",
 ]

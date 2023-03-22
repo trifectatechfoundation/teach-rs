@@ -7,7 +7,7 @@
   - [A3 - Traits and generics](./A3-traits-generics/mod.md)
 - [B - Application programming](./B-application-programming/mod.md)
 - [C - Concurrency & Parallelism](./C-concurrency-parallelism/mod.md)
-- [D - Idiomatic Rust patterns]()
+- [D - Trait objects and Rust patterns](./D-trait-objects-patterns/mod.md)
 - [E - Rust for web]()
 - [F - Safe Unsafe Rust]()
 - [G - FFI and Dynamic modules]()
