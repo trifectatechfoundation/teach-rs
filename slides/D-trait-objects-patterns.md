@@ -476,7 +476,7 @@ layout: default
 # RAII Guards: introduction
 
 - Resource Acquisition Is Initialization (?)
-- Couple resource aquisition and forfeiture with lifetime of a variable
+- Link acquiring/releasing a resource to the lifetime of a variable
 - Guard constructor initializes resource, destructor frees it
 - Access resource through the guard
 
