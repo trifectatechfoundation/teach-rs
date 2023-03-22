@@ -11,4 +11,4 @@
 - [E - Rust for web]()
 - [F - Safe Unsafe Rust]()
 - [G - FFI and Dynamic modules]()
-- [P Final project]()
+- [P Final project](./P-final-project/mod.md)

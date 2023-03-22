@@ -1,4 +1,4 @@
-# D - Trait objects and Rust patterns
+# Module D - Trait objects and Rust patterns
 
 [Slides](/slides/D/) (or [pdf](/slides/D-trait-objects-patterns.pdf))
 
