@@ -3,7 +3,7 @@
 It is time to submit a proposal for the final project.
 
 - Form groups of 2 or 3 people. Working solo is not permitted.
-- Build a small rust project
+- Build a small Rust project
 - Up to 2 groups can work on the same topic
 
 The proposal needs to be submitted by _30th of March, 2023_ by opening a Github repo, placing your proposal there, and granting access to [`@hdoordt`](https://github.com/hdoordt/).
