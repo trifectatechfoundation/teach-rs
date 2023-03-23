@@ -370,12 +370,15 @@ layout: default
 In order for a trait to be object safe, these conditions need to be met:
 
 - If `trait T: Y`, then`Y` must be object safe
-- trait `T` must not be `Sized`
-- No associated constants allowed
-- No associated types with generic allowed
+- trait `T` must not be `Sized`: *Why?*
+- No associated constants allowed*
+- No associated types with generic allowed*
 - All associated functions must either be dispatchable from a trait object, or explicitly non-dispatchable
+    - e.g. function must have a receiver with a reference to `Self`
 
 Details in [The Rust Reference](https://doc.rust-lang.org/reference/items/traits.html#object-safety). Read them!
+
+*These seem to be compiler limitations
 
 ---
 layout: default
