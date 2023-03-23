@@ -11,7 +11,7 @@ The proposal needs to be submitted by _30th of March, 2023_ by opening a Github 
 The proposal must contain the following sections:
 - Your names
 - Introduction to your idea
-- Requirements in brief. Just some bullet points on what your application or library should be able to do in order for the project to be deemed successful.
+- Requirements in brief. Just some bullet points on what your application or library should be able to do in order for the project to be deemed successful. Half a page maximum.
 - The dependencies you want to use (use <https://lib.rs> to discover crates)
 - Optional: A rudimentary diagram of the architecture
 
@@ -41,8 +41,9 @@ You are encouraged to suggest your own project, here are some suggestions. We wi
     - bitvec (lowlevel binary protocols)
     - bevy (games)
     - a serializer/deserializer using Serde
-    - RTIC or Embassy (embedded applications, H)
+    - RTIC or Embassy (embedded applications)
 - Build a GUI application (https://www.areweguiyet.com/)
+- Build Rust markdown-to-slide-deck renderer, as an alternative to sli.dev that we've been using
 - Implement a more complex data structure
     - implement and benchmark a doubly linked list
     - benchmark the ntpd-rs ipfilter https://github.com/pendulum-project/ntpd-rs/blob/main/ntp-daemon/src/ipfilter.rs
