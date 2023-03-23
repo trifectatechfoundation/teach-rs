@@ -669,7 +669,7 @@ layout: default
 # Typestate: when to use
 
 - If your problem is like a state machine
-- Ensure *at compile* time that no invalid operation is done
+- Ensure *at compile time* that no invalid operation is done
 
 ---
 layout: statement
@@ -736,6 +736,21 @@ fn main() {
 ```
 
 </div> 
+
+---
+layout: default
+---
+
+# Strategy: when to use
+
+- Switch algorithms based on some run-time parameter (input, config, ...)
+
+---
+layout: section
+---
+
+# Anti-patterns
+What *not* to do
 
 ---
 layout: section
@@ -812,6 +827,7 @@ layout: default
 Woof woof!
 Tippy tap
 Munch munch
+...
 ```
 
 *Even overloading works!*
@@ -849,9 +865,9 @@ layout: default
 
 # More anti-patterns
 
-- forcing dynamic dispatch in libraries
+- Forcing dynamic dispatch in libraries
 - `clone()` _to satisfy the borrow checker_
-- `unwrap()` or `expect()` to handle conditions that are recoverable or not impossible
+- `unwrap()` or `expect()` _to handle conditions that are recoverable or not impossible_
 
 
 ---
