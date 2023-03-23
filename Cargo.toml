@@ -16,5 +16,6 @@ members = [
     "exercises/C/2-mutex",
     "exercises/D/1-bsn",
     "exercises/D/2-3d-printer",
+    "exercises/D/3-config-reader",
     "slides/examples/B-application-programming",
 ]

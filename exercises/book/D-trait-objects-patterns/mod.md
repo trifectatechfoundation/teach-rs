@@ -92,3 +92,13 @@ If the product is ready, the printer goes to Product Ready state, and once the u
 The printer can be represented in Rust using the typestate pattern as described during the lecture. This allows you to write a simple 3D printer driver. In `exercises/D/2-3d-printer`, a `Printer3D` struct is instantiated. Add methods corresponding to each of the traits, that simulate the state transitions by printing the state. A method simulating checking if the printer is out of filament is provided.
 
 Of course, to make the printer more realistic, you can add more states and transitions.
+
+# D.3 Dynamic deserialization ⭐⭐
+In this exercise, you'll work with dynamic dispatch to deserialize with `serde_json` or `serde_yaml`, depending on the file extension. The starter code is in `exercises/D/3-config-reader`. Fix the todo's in there.
+
+To run the program, you'll need to pass the file to deserialize to the binary, not to Cargo. To do this, run
+```bash
+cargo run -- <FILE_PATH>
+```
+
+Deserializing both `config.json` and `config.yml` should result in the `Config` being printed correctly.
