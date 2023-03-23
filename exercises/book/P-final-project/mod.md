@@ -2,15 +2,17 @@
 
 It is time to submit a proposal for the final project.
 
-- Form groups of 2 or 3 people. Working solo is not permitted.
-- Build a small Rust project
+- Form groups of 2 or 3 people. _Working solo is not permitted_.
+- Build a small Rust project yourselves
 - Up to 2 groups can work on the same topic
 
-The proposal needs to be submitted by _30th of March, 2023_ by opening a Github repo, placing your proposal there, and granting access to [`@hdoordt`](https://github.com/hdoordt/).
+## Proposal
+
+The proposal needs to be submitted by _30th of March, 2023_ by opening a Github repo, placing your proposal there, and either making it public or granting access to [`@hdoordt`](https://github.com/hdoordt/). Then, please send Henk a link to the repository via Discord so we know where to find it.
 
 The proposal must contain the following sections:
-- Your names
-- Introduction to your idea
+- Your names and Discord handles used in the Rust 101 Discord server
+- Introduction to your idea. What general problem does it solve? What do you hope to learn?
 - Requirements in brief. Just some bullet points on what your application or library should be able to do in order for the project to be deemed successful. Half a page maximum.
 - The dependencies you want to use (use <https://lib.rs> to discover crates)
 - Optional: A rudimentary diagram of the architecture
@@ -19,8 +21,9 @@ Of course, if you want to discuss your idea before handing in your proposal, or 
 
 Any reparations to the proposals must be handed in on the _6th of April 2023_
 
+## Final product
 
-Af the end of the project following will be required (deadline is the _4th of May, 2023_)
+At the end of the project following will be required (deadline is the _4th of May, 2023_)
 
 - The source of your project (GitHub)
 - A live 10 minute presentation, including a _short_ demonstration (and an additional 2 minutes for questions) during the final lecture

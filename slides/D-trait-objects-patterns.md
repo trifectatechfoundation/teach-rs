@@ -846,12 +846,29 @@ layout: default
 ---
 layout: default
 ---
-# Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
+
+# More anti-patterns
+
+- forcing dynamic dispatch in libraries
+- `clone()` _to satisfy the borrow checker_
+- `unwrap()` or `expect()` to handle conditions that are recoverable or not impossible
+
 
 ---
 layout: default
 ---
-# Project introduction
-TODO
-<!-- Use this slide to announce any organizational information -->
+# Summary
+- Trait objects allow for heterogeneous collections and dynamic dispatch
+- Use design patterns to address common problems
+- Don't do OOP in Rust!
+
+Further reading on design patterns: [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
+
+---
+layout: default
+---
+# Tutorial
+
+- Project introduction
+- Work on module D exercises
+- Work on project proposal
