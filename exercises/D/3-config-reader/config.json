@@ -1,0 +1,6 @@
+{
+    "port": 1234,
+    "base_url": "https://config.101-rs.tweede.golf",
+    "s3_path": "bucket.101-rs.tweede.golf",
+    "database_url": "postgresql://user@database:5432/db"
+  }
