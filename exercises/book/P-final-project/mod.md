@@ -11,8 +11,8 @@ The proposal needs to be submitted by _30th of March, 2023_ by opening a Github 
 The proposal must contain the following sections:
 - Your names
 - Introduction to your idea
-- Requirements in brief
-- The dependencies you want to use
+- Requirements in brief. Just some bullet points on what your application or library should be able to do in order for the project to be deemed successful.
+- The dependencies you want to use (use <https://lib.rs> to discover crates)
 - Optional: A rudimentary diagram of the architecture
 
 Of course, if you want to discuss your idea before handing in your proposal, or if you have any other questions, please reach out via Discord.
@@ -47,12 +47,15 @@ You are encouraged to suggest your own project, here are some suggestions. We wi
     - implement and benchmark a doubly linked list
     - benchmark the ntpd-rs ipfilter https://github.com/pendulum-project/ntpd-rs/blob/main/ntp-daemon/src/ipfilter.rs
     - add "seamless slices" to the rust implementation of `RocList` (ask Folkert)
-    - Image renderer and editor (PNG, SVG)
+    - Image renderer and manipulator (PNG, SVG)
     - Implement a simple HTTP1 static file server on raw TCP sockets
+    - Doubly linked list
 - Programming languages
     - an interpreter for False (https://strlen.com/false-language/)
     - an interpreter for (a subset of) webassembly
     - contribute to Roc (Folkert is a maintainer and will help you)
+    - An implementation of Lox (https://craftinginterpreters.com/)
+- Develop a simple OS (https://os.phil-opp.com/)
 - Make an open source contribution
     NOTE: make sure your contribution has a good chance of being accepted; don't just create extra work for project maintainers 
     - update inkwell's kaleidoscope example so it also works with llvm 15 https://github.com/TheDan64/inkwell/blob/master/examples/kaleidoscope/main.rs#L199
