@@ -47,7 +47,7 @@ You are encouraged to suggest your own project, here are some suggestions. We wi
 - Implement a more complex data structure
     - implement and benchmark a doubly linked list
     - benchmark the ntpd-rs ipfilter https://github.com/pendulum-project/ntpd-rs/blob/main/ntp-daemon/src/ipfilter.rs
-    - add "seamless slices" to the rust implementation of `RocList` (ask Folkert)
+    - add "seamless slices" to the Rust implementation of `RocList` (ask Folkert)
     - Image renderer and manipulator (PNG, SVG)
     - Implement a simple HTTP1 static file server on raw TCP sockets
     - Doubly linked list
