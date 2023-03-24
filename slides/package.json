@@ -33,6 +33,10 @@
     "dev-D": "slidev D-trait-objects-patterns.md",
     "export-D": "slidev export D-trait-objects-patterns.md",
 
+    "build-E": "slidev build --out dist-E --base /slides/E/ E-async-web.md",
+    "dev-E": "slidev E-async-web.md",
+    "export-E": "slidev export E-async-web.md",
+
     "dev-format-lecture": "slidev format-lecture.md",
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
