@@ -436,7 +436,7 @@ fn main() {
 ---
 
 # Enumerations
-But enums get more powerful, because each variant can have associated data with
+Enums get more powerful, because each variant can have associated data with
 it
 
 ```rust
@@ -498,7 +498,7 @@ fn accept_ipv4(ip: IpAddress) {
 ---
 
 # Match
-But pattern matching is very powerful if combined with the match statement
+Pattern matching is very powerful if combined with the match statement
 
 ```rust
 fn accept_home(ip: IpAddress) {
@@ -1121,7 +1121,7 @@ fn sum(data: &Vec<i64>) -> i64 {
 ---
 
 # Slices
-But what if we want something to work on arrays of any size? Or what if we want
+What if we want something to work on arrays of any size? Or what if we want
 to support summing up only parts of a vector?
 
 * A slice is a dynamically sized view into a contiguous sequence
