@@ -179,7 +179,7 @@ hello, world
 - References cannot *live* longer than their owners
 - A reference will always at all times point to a valid value
 
-These rules can be checked by the Rust compiler.
+These rules are enforced by the Rust compiler.
 
 <!--
 - Rust tries to be smart about enforcing these rules, such that you don't notice
