@@ -1000,9 +1000,9 @@ How can a vector grow? Things on the stack need to be of a fixed size
 # Put it in a box
 That pointer from the stack to the heap, how do we create such a thing?
 
-* Boxing something is the way to create data that is stored on the heap
-* A box uniquely owns that data, there is no one else that also owns the same
-  data
+* Boxing something is the way to store a value on the heap
+* A `Box` uniquely owns that value, there is no one else that also owns that same
+  value
 * Even if the type inside the box is `Copy`, the box itself is not, move
   semantics apply to a box.
 
