@@ -1217,7 +1217,7 @@ layout: default
 * Loads of syntax
 * Values are owned by variables
 * Values may be moved to new owners or copied
-* Some typse may be explicitly `Clone`d
+* Some types may be explicitly `Clone`d
 
 ---
 layout: default
