@@ -101,7 +101,8 @@ layout: default
 # What's async?
 
 - Concurrent programming model
-- Very suitable for running large number of tasks
+- Very suitable for running large number of I/O bound tasks
+  - like web servers!
 - Look and feel* of synchronous code through `async`/`await` syntax
 
 **Well, not perfectly. We'll go into that*
@@ -583,31 +584,6 @@ layout: default
 - Rust generates state machines out of `await`s
 - Generated code may become very complex, but original is easy to follow
 
-
----
-layout: default
----
-
-# * `async` and lifetime elision
-&nbsp;
-`async fn`s which accept references, return a `Future` bound by argument lifetime:
-
-```rust
-async fn foo(x: &u8) -> u8 { *x }
-```
-
-is equivalent to:
-```rust
-fn foo_expanded<'a>(x: &'a u8) -> impl Future<Output = u8> + 'a {
-    async move { *x }
-}
-```
-
-- `async move` takes ownership of any variables it references
-  - i.e. `x`, which itself is a *reference*
-- The returned `impl Future` internally holds the references
-- The returned `impl Future` must be `await`ed within `'a`
-
 ---
 layout: section
 ---
@@ -642,7 +618,7 @@ layout: default
 *Note: crates may depend on a specific runtime!*
 
 ---
-layout: layout
+layout: default
 ---
 
 # Showcase: Tokio
@@ -725,7 +701,8 @@ async fn main() -> Result<()> {
 ```
 becomes:
 ```rust
-loop {
+async fn main() -> Result<()> {
+    loop {
         // The second item contains the IP and port of the new connection.
         let (socket, _) = listener.accept().await.unwrap();
         tokio::task::spawn(async {
@@ -733,7 +710,172 @@ loop {
             Ok::<_, anyhow::Error>(()) // <-- cool trick to specify error type
         });
     }
+}
 ```
+
+---
+layout: section
+---
+
+# Rust for web
+
+
+
+---
+layout: default
+---
+
+# [Are we web yet?](https://www.arewewebyet.org/)
+
+- "Yes! And it's freaking fast!"
+- Several web frameworks exist
+  - [`rocket`](https://rocket.rs/)
+  - [`actix-web`](https://actix.rs/)
+  - [`warp`](https://github.com/seanmonstar/warp)
+  - [`axum`](https://github.com/tokio-rs/axum)
+  - ...loads more
+
+---
+layout: default
+---
+
+# Axum demo: setting up server
+
+```rust
+use axum::{
+    extract::{Path, State},
+    response::Html,
+    routing::get,
+    Router,
+};
+use std::net::SocketAddr;
+
+#[tokio::main]
+async fn main() {
+    // set up shared, mutable state
+    let app_state = Arc::new(Mutex::new(Vec::new()));
+    // build our application with a route
+    let app = Router::new()
+        .route("/:name", get(handler))
+        .with_state(app_state);
+    // run it
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    println!("listening on {}", addr);
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+```
+
+---
+layout: default
+---
+# Axum demo: request hander
+
+```rust
+/// A very long type name warrants a type alias
+type AppState = State<Arc<Mutex<Vec<String>>>>;
+
+async fn handler(
+    Path(name): Path<String>,
+    State(past_names): State<AppState>,
+) -> Html<String> {
+    let mut response = format!("<h1>Hello, {name}!</h1>");
+
+    // Of course, locking here is not very fast
+    let mut past_names = past_names.lock().await;
+
+    if !past_names.is_empty() {
+        response += "<h2>Names we saw earlier:</h2>";
+        past_names
+            .iter()
+            .for_each(|name| response += &format!("<p>{name}</p>"))
+    }
+
+    past_names.push(name);
+
+    Html(response)
+}
+```
+
+---
+layout: section
+---
+# Bonus section: `Pin`
+
+<!-- If there's no time left, we skip this -->
+
+---
+layout: default
+---
+
+# * `async` and lifetime elision
+&nbsp;
+`async fn`s which accept references, return a `Future` bound by argument lifetime:
+
+```rust
+async fn foo(x: &u8) -> u8 { *x }
+```
+
+is equivalent to:
+```rust
+fn foo_expanded<'a>(x: &'a u8) -> impl Future<Output = u8> + 'a {
+    async move { *x }
+}
+```
+
+- `async move` takes ownership of any variables it references
+  - i.e. `x`, which itself is a *reference*
+- The returned `impl Future` internally holds the references
+- The returned `impl Future` must be `await`ed within `'a`
+
+---
+layout: default
+---
+
+# Self-referential structs
+&nbsp;
+
+Consider:
+```rust
+async {
+    let mut x = [0; 128];                           // <-- 
+    let read_into_buf_fut = read_into_buf(&mut x);  // <-- Create future
+    read_into_buf_fut.await;                        // <-- `await` future
+    println!("{:?}", x);                            // 
+}
+```
+<v-click>
+<div>
+
+which becomes
+
+```rust
+struct ReadIntoBuf<'a> {
+    buf: &'a mut [u8], // <-- reference to `Async::Future.x` below
+}
+
+struct AsyncFuture {
+    x: [u8; 128],       // <-- referent
+    read_into_buf_fut: ReadIntoBuf<'what_lifetime?>,
+}
+```
+*Question: what happens when `AsyncFuture` is moved?
+</div>
+</v-click>
+
+---
+layout: default
+---
+
+# `Pin<T>`
+
+- Wraps pointer types
+- Guarantees values can't be moved (unless `T: Unpin`) using type system
+
+More in [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/04_pinning/01_chapter.html), and [docs on `Pin`](https://doc.rust-lang.org/std/pin/)
+
 
 ---
 layout: default
