@@ -458,11 +458,24 @@ fn main() {
 
 * Note: an enum always is as large as the largest variant
 
-<div class="relative">
+<!--<div class="relative">-->
 
-![Memory Layout](/images/A2-enum-memory.drawio.svg)
+<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+
+<LightOrDark>
+    <template #dark>
+        <center>
+            <img src="/images/A2-enum-memory-dark.svg"/>
+        </center>
+    </template>
+    <template #light>
+        <img src="/images/A2-enum-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
+
+<!--</div>-->
 
 ---
 
@@ -982,9 +995,16 @@ fn main() {
 # Vec: memory layout
 How can a vector grow? Things on the stack need to be of a fixed size
 
-<div class="relative left-130px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-vector-rust.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-vector-rust-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-vector-rust-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1012,10 +1032,16 @@ fn main() {
   let boxed_int = Box::new(10);
 }
 ```
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-<div class="relative left-170px">
-
-![Memory Layout](/images/A2-box-in-memory.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-box-in-memory-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-box-in-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1187,9 +1213,16 @@ fn main() {
   (but also `Box<[T]>` etc)
 * The length of the slice is always stored together with the reference
 
-<div class="relative left-170px bottom-15px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-slice-ptr.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-slice-ptr-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-slice-ptr-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
