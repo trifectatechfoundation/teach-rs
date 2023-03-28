@@ -36,25 +36,12 @@ layout: default
 ---
 # In this module
 - Introduction to concurrency
-    - Why and when use it
-    - Async vs threads
-    - The Rust async ecosystem
-    - Compatibility
 - The `Future` type
-    - What's a future?
-        - More and more complex versions up until the real signature
-    - Futures are lazy
-    - Build your own future
 - `async fn`s and `async` blocks
-    - `async fn`s are really functions returning an `async` block
-    - How `async` and `await` are desugared into state machines
 - How futures are run with an executor
-    - naive polling
-    - wakers
-    - Pin (self-referential)
 - Trade offs when using `async`
 - Intro to `futures` and `tokio`
-- Introduction to Rocket with Postgres
+- Introduction to Rocket and Axum
 
 
 ---
@@ -604,11 +591,13 @@ layout: default
 Nice to have:
 - Poll `Future`s on multiple threads
 - Abstract over I/O
+
+*Crates depending on different runtime I/O abstractions be incompatible!*
 ---
 layout: default
 ---
 
-# Many flavours
+# Many flavors
 
 - [`smol`](https://github.com/smol-rs/smol): Small
 - [`async-std`](https://async.rs/): API resembles `std`
@@ -734,6 +723,8 @@ layout: default
   - [`warp`](https://github.com/seanmonstar/warp)
   - [`axum`](https://github.com/tokio-rs/axum)
   - ...loads more
+- Several DB drivers and ORMs
+- Much more!
 
 ---
 layout: default
@@ -752,7 +743,7 @@ use std::net::SocketAddr;
 
 #[tokio::main]
 async fn main() {
-    // set up shared, mutable state
+    // set up shared, mutable state.
     let app_state = Arc::new(Mutex::new(Vec::new()));
     // build our application with a route
     let app = Router::new()
