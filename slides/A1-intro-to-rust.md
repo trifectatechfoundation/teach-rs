@@ -101,7 +101,7 @@ layout: default
 # A new project
 
 ```bash
-$ cargo init hello-world
+$ cargo new hello-world
 ```
 
 <v-click>
