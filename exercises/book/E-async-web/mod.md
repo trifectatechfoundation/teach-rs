@@ -5,7 +5,7 @@
 ## E.1 Channels
 Channels are a very useful way to communicate between threads and `async` tasks. They allow for decoupling your application into many tasks. You'll see how that can come in nicely in exercise E.2. In this exercise, you'll implement two variants: a oneshot channel and a multi-producer-single-consumer (MPSC) channel. If you're up for a challenge, you can write a broadcast channel as well.
 
-### E.1 A MPSC channel ⭐⭐
+### E.1.A MPSC channel ⭐⭐
 A multi-producer-single-consumer (MPSC) channel is a channel that allows for multiple `Sender`s to send many messages to a single `Receiver`.
 
 Open `exercises/E/1-channels` in your editor. You'll find the scaffolding code there. For part A, you'll work in `src/mpsc.rs`. Fix the `todo!`s in that file in order to make the test pass. To test, run:
@@ -16,7 +16,7 @@ cargo test -- mpsc
 
 If your tests are stuck, probably either your implementation does not use the `Waker` correctly, or it returns `Poll::Pending` where it shouldn't.
 
-### E.1 A oneshot channel ⭐⭐⭐
+### E.1.B Oneshot channel ⭐⭐⭐
 A oneshot is a channel that allows for one `Sender` to send exactly one message to a single `Receiver`.
 
 For part B, you'll work in `src/broadcast.rs`. This time, you'll have to do more yourself. Intended behavior:
@@ -33,3 +33,36 @@ To test, run:
 ```bash
 cargo test -- broadcast
 ```
+
+### E.1.B Broadcast channel (bonus) ⭐⭐⭐⭐
+A Broadcast channel is a channel that supports multiple senders and receivers. Each message that is sent by any of the senders, is received by every receiver. Therefore, the implemenentation has to hold on to messages until they have been sent to every receiver that has not yet been dropped. This furthermore implies that the message shoud be cloned upon broadcasting.
+
+For this bonus exercise, we provide no scaffolding. Take your inspiration from the `mpsc` and `oneshot` modules, and implement a `broadcast` module yourself.
+
+## E.2 Chat app
+In this exercise, you'll write a simple chat server and client based on [Tokio](https://lib.rs/crates/tokio). Open `exercises/E/2-chat` in your editor. The project contains a `lib.rs` file, in which a type `Message` resides. This `Message` defines the data the chat server and clients use to communicate.
+
+### E.2.A Server ⭐⭐⭐
+The chat server, which resides in `src/bin/server.rs` listens for incoming TCP connections on port 8000, and spawns two tasks (futures):
+
+- `handle_incoming`: reads lines coming in from the TCP connection. It reads the username the client provides, and broadcasts incoming `Messages`, possibly after some modification.
+- `handle_outgoing`: sends messages that were broadcasted by the `handle_incoming` tasks to the client over TCP.
+
+Both `handle_incoming` and `handle_outgoing` contain a number to `todo`s. Fix them.
+
+To start the server, run
+
+```bash
+cargo run --bin server
+```
+
+### E.2.B Client ⭐⭐
+The chat client, residing in `src/bin/client.rs` contains some todo's as well. Fix them to allow for registration and sending `Message`s to the server.
+
+To start the client, run
+
+```bash
+cargo run --bin client
+```
+
+If everything works well, you should be able to run multiple clients and see messages sent from each client in every other.

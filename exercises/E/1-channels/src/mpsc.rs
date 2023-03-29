@@ -34,7 +34,8 @@ impl<T> Stream for Receiver<T> {
         todo!("Replace innerwaker with the waker from the context");
         todo!("Return `Poll::Ready(Some(item))` if there are items in inner.buffer");
         todo!("Return `Poll::Pending` if `inner.buffer` is empty");
-        todo!("Return `Poll::Ready(None)` if all `Sender`s have been dropped");    }
+        todo!("Return `Poll::Ready(None)` if all `Sender`s have been dropped");
+    }
 }
 
 impl<T> Drop for Receiver<T> {

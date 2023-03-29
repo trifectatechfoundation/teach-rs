@@ -19,6 +19,7 @@ members = [
     "exercises/D/2-3d-printer",
     "exercises/D/3-config-reader",
     "exercises/E/1-channels",
+    "exercises/E/2-chat",
 
     # Examples used in slides
     "slides/examples/B-application-programming",
