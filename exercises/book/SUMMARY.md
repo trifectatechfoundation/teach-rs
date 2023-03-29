@@ -8,7 +8,7 @@
 - [B - Application programming](./B-application-programming/mod.md)
 - [C - Concurrency & Parallelism](./C-concurrency-parallelism/mod.md)
 - [D - Trait objects and Rust patterns](./D-trait-objects-patterns/mod.md)
-- [E - Rust for web]()
+- [E - Async and Rust for Web](./E-async-web/mod.md)
 - [F - Safe Unsafe Rust]()
 - [G - FFI and Dynamic modules]()
 - [P Final project](./P-final-project/mod.md)
