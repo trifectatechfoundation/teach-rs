@@ -35,22 +35,21 @@ layout: default
 layout: default
 ---
 # In this module
-- Introduction to concurrency
+- Introduction Rust `async` programming
 - The `Future` type
-- `async fn`s and `async` blocks
-- How futures are run with an executor
-- Trade offs when using `async`
+- The `async` and `await` keywords
 - Intro to `futures` and `tokio`
-- Introduction to Rocket and Axum
+- Introduction to the Axum web framework
 
 
 ---
 layout: default
 ---
 # Learning objectives
-- Understand the mechanics of async/await from a high-level point of view
-- Understand the reason of Rust's implementation of async
-- Work with Futures using the Tokio runtime
+- Understand the mechanics of `async`/`await` from a high-level point of view
+- Understand the reason of Rusts implementation of `async`
+- Understand the trade-offs concerning Rust `async` programming
+- Work with `Future`s using the Tokio runtime
 - Apply knowledge on `async` Rust in a web context
 
 <!-- List this module's learning objectives -->
@@ -66,11 +65,21 @@ Async and Rust for Web
 layout: default
 ---
 # Content overview
-TODO
+- Rusts `async` implementation
+- The `Future` trait
+- `async` and `await`
+- Running `Future`s
+- Rust for web
+---
+layout: section
+---
+
+# Rusts `async` implementation
+
 ---
 layout: default
 ---
-# Concurrency vs. Parallelism
+# Recap: Concurrency vs. Parallelism
 
 | **Concurrency**    | **Parallelism**         |
 | ------------------ | ----------------------- |
@@ -143,15 +152,15 @@ layout: default
 
 # Async in Rust
 
-- Revolve around `Future` trait (~like JS Promise)  
+- Revolve around `Future` trait (~like JS `Promise`, C# `Task`)  
   &rarr; `async fn`s return `Future`s
 
 - `Future`s are inert
 - `async` is zero-cost
 - No built-in runtime
-- Single- or multithreaded
+- Single- or multithreaded execution
 - Can be mixed with other concurrency models
-- `async` is relatively new and lacks some features
+- Relatively new and lacks some features and nice diagnostics
 
 ---
 layout: default
@@ -166,7 +175,7 @@ What you can expect doing `async` Rust
 - Faster evolving ecosystem
 - `async fn` in Traits not stable
 
-*Work in progress*
+*But still a work in progress*
 
 ---
 layout: default
@@ -212,21 +221,17 @@ enum Poll<T> {
 
 ```rust
 struct VerySimpleAlarm {
-    alarm_time: Option<Instant>,
+    alarm_time: Instant,
 }
 
 impl VerySimpleFuture for VerySimpleAlarm {
     type Output = ();
 
     fn poll(&mut self) -> Poll<()> {
-        match self.alarm_time {
-            None => Poll::Ready(()),
-            Some(alarm_time) 
-                if Instant::now() > alarm_time => {
-                    self.alarm_time.take();
-                    Poll::Ready(())
-            },
-            Some(_) => Poll::Pending,
+        if Instant::now() >= self.alarm_time {
+            Poll::Ready(())
+        } else {
+            Poll::Pending
         }
     }
 }
@@ -240,12 +245,14 @@ layout: two-cols
 # Executing `VerySimpleFuture`
  ```rust
 fn main() {
-    let mut first_alarm = VerySimpleAlarm::new(
-        Instant::now() + Duration::from_secs(3)
-    );
-    let mut snooze_alarm = VerySimpleAlarm::new(
-        Instant::now() + Duration::from_secs(5)
-    );
+    let mut first_alarm = VerySimpleAlarm {
+        alarm_time: Instant::now() 
+            + Duration::from_secs(3)
+    };
+    let mut snooze_alarm = VerySimpleAlarm {
+        alarm_time: Instant::now() 
+            + Duration::from_secs(5)
+    };
 
     loop {
         if let Poll::Ready(_) = first_alarm.poll() {
@@ -344,7 +351,8 @@ pub struct Join<FutureA, FutureB> {
     b: Option<FutureB>,
 }
 
-impl<FutureA, FutureB> SimpleFuture for Join<FutureA, FutureB>
+impl<FutureA, FutureB> SimpleFuture 
+    for Join<FutureA, FutureB>
 where
     FutureA: SimpleFuture<Output = ()>,
     FutureB: SimpleFuture<Output = ()>,
@@ -597,12 +605,13 @@ Nice to have:
 layout: default
 ---
 
-# Many flavors
+# Many Runtime flavors
 
 - [`smol`](https://github.com/smol-rs/smol): Small
 - [`async-std`](https://async.rs/): API resembles `std`
 - [`tokio`](https://tokio.rs): Bery commonly used
 - [`embassy`](https://embassy.dev/): Embedded
+- Create your own?
 
 *Note: crates may depend on a specific runtime!*
 
@@ -707,8 +716,6 @@ layout: section
 ---
 
 # Rust for web
-
-
 
 ---
 layout: default

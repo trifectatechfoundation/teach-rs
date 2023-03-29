@@ -39,38 +39,42 @@ async fn run() -> anyhow::Result<()> {
     Ok(())
 }
 
-// #[tokio::main]
-// async fn main() -> anyhow::Result<()> {
-// // Set up a `tokio` runtime with default configurations
-// let runtime = tokio::runtime::Runtime::new().unwrap();
-// // Run a Future to completion
-// runtime.block_on(run());
-// runtime.shutdown_background();
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // // Set up a `tokio` runtime with default configurations
+    // let runtime = tokio::runtime::Runtime::new().unwrap();
+    // // Run a Future to completion
+    // runtime.block_on(run());
+    // runtime.shutdown_background();
 
-// let mut first_alarm = VerySimpleAlarm::new(Instant::now() + Duration::from_secs(3));
-// let mut snooze_alarm = VerySimpleAlarm::new(Instant::now() + Duration::from_secs(5));
+    let mut first_alarm = VerySimpleAlarm {
+        alarm_time: Instant::now() + Duration::from_secs(3),
+    };
+    let mut snooze_alarm = VerySimpleAlarm {
+        alarm_time: Instant::now() + Duration::from_secs(5),
+    };
 
-// loop {
-//     if let Poll::Ready(_) = first_alarm.poll() {
-//         println!("Beep beep beep");
-//     }
-//     if let Poll::Ready(_) = snooze_alarm.poll() {
-//         println!("You're late for work!")
-//     }
-// }
+    loop {
+        if let Poll::Ready(_) = first_alarm.poll() {
+            println!("Beep beep beep");
+        }
+        if let Poll::Ready(_) = snooze_alarm.poll() {
+            println!("You're late for work!")
+        }
+    }
 
-// Bind the listener to the address
-// let listener = TcpListener::bind("127.0.0.1:6379").await?;
+    // Bind the listener to the address
+    // let listener = TcpListener::bind("127.0.0.1:6379").await?;
 
-// loop {
-//     // The second item contains the IP and port of the new connection.
-//     let (socket, _) = listener.accept().await.unwrap();
-//     tokio::task::spawn(async {
-//         handle_connection(socket).await?;
-//         Ok::<_, anyhow::Error>(())
-//     });
-// }
-// }
+    // loop {
+    //     // The second item contains the IP and port of the new connection.
+    //     let (socket, _) = listener.accept().await.unwrap();
+    //     tokio::task::spawn(async {
+    //         handle_connection(socket).await?;
+    //         Ok::<_, anyhow::Error>(())
+    //     });
+    // }
+}
 
 trait VerySimpleFuture {
     type Output;
@@ -86,28 +90,17 @@ enum Poll<T> {
 }
 
 struct VerySimpleAlarm {
-    alarm_time: Option<Instant>,
-}
-
-impl VerySimpleAlarm {
-    fn new(alarm_time: Instant) -> Self {
-        Self {
-            alarm_time: Some(alarm_time),
-        }
-    }
+    alarm_time: Instant,
 }
 
 impl VerySimpleFuture for VerySimpleAlarm {
     type Output = ();
 
     fn poll(&mut self) -> Poll<()> {
-        match self.alarm_time {
-            None => Poll::Ready(()),
-            Some(alarm_time) if Instant::now() > alarm_time => {
-                self.alarm_time.take();
-                Poll::Ready(())
-            }
-            Some(_) => Poll::Pending,
+        if Instant::now() >= self.alarm_time {
+            Poll::Ready(())
+        } else {
+            Poll::Pending
         }
     }
 }
@@ -143,29 +136,26 @@ use std::net::SocketAddr;
 
 type AppState = State<Arc<Mutex<Vec<String>>>>;
 
-#[tokio::main]
-async fn main() {
-    // set up shared state
-    let app_state = Arc::new(Mutex::new(Vec::new()));
+// #[tokio::main]
+// async fn main() {
+//     // set up shared state
+//     let app_state = Arc::new(Mutex::new(Vec::new()));
 
-    // build our application with a route
-    let app = Router::new()
-        .route("/:name", get(handler))
-        .with_state(app_state);
+//     // build our application with a route
+//     let app = Router::new()
+//         .route("/:name", get(handler))
+//         .with_state(app_state);
 
-    // run it
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    println!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await
-        .unwrap();
-}
+//     // run it
+//     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+//     println!("listening on {}", addr);
+//     axum::Server::bind(&addr)
+//         .serve(app.into_make_service())
+//         .await
+//         .unwrap();
+// }
 
-async fn handler(
-    Path(name): Path<String>,
-    State(past_names): AppState,
-) -> Html<String> {
+async fn handler(Path(name): Path<String>, State(past_names): AppState) -> Html<String> {
     let mut response = format!("<h1>Hello, {name}!</h1>");
     let mut past_names = past_names.lock().await;
     if !past_names.is_empty() {
