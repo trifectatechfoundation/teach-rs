@@ -11,7 +11,7 @@ a.playground {
   margin-bottom: 10px;
 }
 
-div.col-right {
+div[layout="two-cols"] div.col-right {
   padding-left:10px;
    padding-top: 53px;
 }

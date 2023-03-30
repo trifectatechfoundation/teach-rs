@@ -38,7 +38,7 @@ layout: default
 - Introduction Rust `async` programming
 - The `Future` type
 - The `async` and `await` keywords
-- Intro to `futures` and `tokio`
+- How to run futures using Tokio
 - Introduction to the Axum web framework
 
 
@@ -49,6 +49,7 @@ layout: default
 - Understand the mechanics of `async`/`await` from a high-level point of view
 - Understand the reason of Rusts implementation of `async`
 - Understand the trade-offs concerning Rust `async` programming
+- Understand the mechanics behind `async` and `await`
 - Work with `Future`s using the Tokio runtime
 - Apply knowledge on `async` Rust in a web context
 
@@ -68,24 +69,25 @@ layout: default
 - Rusts `async` implementation
 - The `Future` trait
 - `async` and `await`
-- Running `Future`s
-- Rust for web
+- Running `Future`s with Tokio
+- Rust for web with Axum
+
 ---
 layout: section
 ---
 
-# Rusts `async` implementation
+# Async in Rust
 
 ---
 layout: default
 ---
 # Recap: Concurrency vs. Parallelism
 
-| **Concurrency**    | **Parallelism**         |
-| ------------------ | ----------------------- |
-| Interleaves work   | Parallelizes work       |
-| 1 or more cores    | 2 or more cores         |
-| Waiting for events | Waiting for computation |
+| **Concurrency**                                                                                                          | **Parallelism**                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Interleaves work                                                                                                         | Parallelizes work                                                                                                                                                      |
+| 1 or more cores                                                                                                          | 2 or more cores                                                                                                                                                        |
+| Waiting for events                                                                                                       | Waiting for computation                                                                                                                                                |
 | <img src="https://tienda.bricogeek.com/6417-thickbox_default/sparkfun-thing-plus-esp32-wroom.jpg" class="h-40 center" /> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/IBM_Blue_Gene_P_supercomputer.jpg/1920px-IBM_Blue_Gene_P_supercomputer.jpg" class="h-40 center" /> |
 
 Today, we're focusing on concurrency: _asynchronous programming_
@@ -101,7 +103,7 @@ layout: default
   - like web servers!
 - Look and feel* of synchronous code through `async`/`await` syntax
 
-**Well, not perfectly. We'll go into that*
+**Well, not perfectly. We'll get to that*
 
 ---
 layout: default
@@ -290,12 +292,13 @@ You're late for work!
 ---
 layout: default
 ---
-# Limitation
+# Limitation of `VerySimpleAlarm`
 
 - Busy waiting
 - How to signal the executor the future is *actually* ready to be polled?
 
 <v-click>
+<div>
 <br/>
 
 ## ⏰ Introduce a Waker
@@ -303,7 +306,7 @@ layout: default
 General idea: 
 - Run some callback to notify executor
 - Have executor implement some job queue
-
+</div>
 </v-click>
 
 ---
@@ -326,10 +329,10 @@ impl SimpleFuture for SocketRead<'_> {
     type Output = Vec<u8>;
 
     fn poll(&mut self, wake: fn()) -> Poll<Self::Output> {
-        if self.socket.has_data_to_read() { // Does syscall
+        if self.socket.has_data_to_read() {             // <-- Does syscall
             Poll::Ready(self.socket.read_buf())
         } else {
-            self.socket.set_readable_callback(wake); // Does syscall
+            self.socket.set_readable_callback(wake);    // <-- Does syscall
             Poll::Pending
         }
     }
@@ -459,23 +462,25 @@ layout: section
 # `async` and `await`
 
 ---
-layout: default
+layout: three-slots
 ---
 
 # Expanding `async`
 &nbsp;  
 
-**" `Futures` are cool, but why didn't I see them in the web scraper example?"*
+*" `Futures` are cool, but why didn't I see them in the web scraper example?"*
 
-`async fn`s and `async` blocks are syntactic sugar generating `Future`
 <v-click>
 <div>
+<br/>
 
+`async fn`s and `async` blocks are syntactic sugar generating `Future`s
 ```rust
 async fn foo() -> u8 { 5 }
 ```
 </div>
 </v-click>
+::left::
 <v-click>
 <div>
 
@@ -489,6 +494,7 @@ fn foo() -> impl Future<Output=u8> {
 ```
 </div>
 </v-click>
+::right::
 <v-click>
 <div>
 
@@ -511,7 +517,7 @@ layout: default
 ```rust
 let fut_one = /* ... */;
 let fut_two = /* ... */;
-async move {
+async move {            // <-- generated Future takes ownership of referenced variables
     fut_one.await;
     fut_two.await;
 }
@@ -576,7 +582,9 @@ layout: default
 
 # `async`/`await` expansion takeaways
 
-- Rust generates state machines out of `await`s
+- Rust generates state machines out of `async` blocks that implement `Future`
+- You can `await` `Future`s
+- Every `await` point introduces a new state
 - Generated code may become very complex, but original is easy to follow
 
 ---
@@ -705,7 +713,7 @@ async fn main() -> Result<()> {
         let (socket, _) = listener.accept().await.unwrap();
         tokio::task::spawn(async {
             handle_connection(socket).await?;
-            Ok::<_, anyhow::Error>(()) // <-- cool trick to specify error type
+            Ok::<_, anyhow::Error>(())
         });
     }
 }
@@ -729,9 +737,11 @@ layout: default
   - [`actix-web`](https://actix.rs/)
   - [`warp`](https://github.com/seanmonstar/warp)
   - [`axum`](https://github.com/tokio-rs/axum)
-  - ...loads more
+  - ...lots more
 - Several DB drivers and ORMs
 - Much more!
+
+*Tip: have a look if you want to do web stuff in your final project*
 
 ---
 layout: default
@@ -798,6 +808,33 @@ async fn handler(
 ```
 
 ---
+layout: default
+---
+# Summary
+- Async in Rust
+- The `Future` trait
+- `async` and `await` expansion
+- Running `Future`s
+- Rust for web
+
+---
+layout: default
+---
+# Tutorial time!
+<!-- Use this slide to announce any organizational information -->
+
+- Exercises E in 101-rs.tweede.golf
+- If you haven't done so yet: project proposal deadline is today!
+- Reach out if you want to discuss your proposal or need ideas!
+- We'll provide feedback on proposals in coming days
+
+*Don't forget to `git pull`!*
+
+---
+layout: end
+---
+
+---
 layout: section
 ---
 # Bonus section: `Pin`
@@ -808,7 +845,7 @@ layout: section
 layout: default
 ---
 
-# * `async` and lifetime elision
+# `async` and lifetime elision
 &nbsp;
 `async fn`s which accept references, return a `Future` bound by argument lifetime:
 
@@ -873,20 +910,3 @@ layout: default
 - Guarantees values can't be moved (unless `T: Unpin`) using type system
 
 More in [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/04_pinning/01_chapter.html), and [docs on `Pin`](https://doc.rust-lang.org/std/pin/)
-
-
----
-layout: default
----
-# Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
-
----
-layout: default
----
-# Practicalities
-<!-- Use this slide to announce any organizational information -->
-
----
-layout: end
----
