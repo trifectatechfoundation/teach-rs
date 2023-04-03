@@ -20,6 +20,9 @@ members = [
     "exercises/D/3-config-reader",
     "exercises/E/1-channels",
     "exercises/E/2-chat",
+    "exercises/F/1-linked-list",
+    "exercises/F/2-execve",
+    "exercises/F/3-tagged-union",
 
     # Examples used in slides
     "slides/examples/B-application-programming",

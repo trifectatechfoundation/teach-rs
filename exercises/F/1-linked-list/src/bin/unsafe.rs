@@ -43,9 +43,7 @@ impl LinkedList {
 
 impl Drop for LinkedList {
     fn drop(&mut self) {
-        if !self.0.is_null() {
-            unsafe { Box::from_raw(self.0 as *mut Node) };
-        }
+        todo!()
     }
 }
 
@@ -61,12 +59,10 @@ impl<'a> Iterator for Iter<'a> {
         if self.list.0.is_null() {
             None
         } else {
-            let mut node = unsafe { std::ptr::read(self.list.0) };
-
-            std::mem::swap(&mut node.rest, &mut self.list);
-            std::mem::forget(node.rest);
-
-            Some(node.first)
+            // NOTE: be sure that your list is not dropped (and therefore deallocated) when updating it.
+            // See the functions in the `std::mem` module, they will be useful
+            // it is very easy to cause segfaults here!
+            todo!()
         }
     }
 }
@@ -88,14 +84,7 @@ impl LinkedList {
         if right.0.is_null() {
             left
         } else {
-            let mut node = unsafe { std::ptr::read(right.0) };
-
-            let rest = node.rest;
-            node.rest = left;
-
-            unsafe { std::ptr::write(right.0, node) };
-
-            Self::reverse_help(right, rest)
+            todo!()
         }
     }
 }

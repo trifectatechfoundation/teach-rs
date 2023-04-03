@@ -3,6 +3,21 @@
 version = 3
 
 [[package]]
+name = "F1-linked-list"
+version = "0.1.0"
+
+[[package]]
+name = "F2-execve"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "F3-tagged-union"
+version = "0.1.0"
+
+[[package]]
 name = "anyhow"
 version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
