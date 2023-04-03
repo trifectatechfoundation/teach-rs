@@ -41,6 +41,10 @@
     "dev-F": "slidev F-safe-unsafe-rust.md",
     "export-F": "slidev export F-safe-unsafe-rust.md",
 
+    "build-G": "slidev build --out dist-G --base /slides/G/ G-ffi.md",
+    "dev-G": "slidev G-ffi.md",
+    "export-G": "slidev export G-ffi.md",
+
     "dev-format-lecture": "slidev format-lecture.md",
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
