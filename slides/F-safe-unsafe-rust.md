@@ -192,9 +192,15 @@ let reference: &u8 = unsafe {
 - unsafe functions: "programmer must check the preconditions"
 
 ```rust
-unsafe function foobar() {
+unsafe fn foobar() {
     ...
 }
+```
+
+- unsafe impl: "programmer must check impl is valid"
+
+```rust
+unsafe impl Send for MyType {}
 ```
 
 ---
@@ -328,10 +334,19 @@ layout: default
 
 Only some bit patterns are valid for a type. Creating an invalid bit pattern is UB!
 
-Only `0b0000_0000` and `0b0000_0001` are valid `bool` bit patterns. This is instant UB:
+Only `0b0000_0000` and `0b0000_0001` are valid `bool` bit patterns. This code has UB:
 
 ```rust
 std::mem::transmute::<u8, bool>(2u8)
+```
+
+An `if` statement might be compiled into a jump table
+
+```rust
+const JMP_TABLE: *const u8 = [ 0x1000, 0x1100 ];
+
+// this will fail horribly if `bool_value >= 2`
+jmp JMP_TABLE[bool_value as usize];
 ```
 
 The memory representation of rust values is explicitly undefined! Bitcasting is therefore very unsafe!
@@ -342,6 +357,93 @@ layout: default
 # So Rust is just as bad as C?
 
 - if memory safety can be broken, how is rust any better than C?
+
+---
+layout: default
+---
+# Raw Pointers
+
+```rust
+let mut x = 0;
+let y = &mut x as *mut i32;
+let z = 12;
+
+unsafe {
+    std::ptr::write(y, z);
+    assert_eq!(std::ptr::read(y), 12);
+}
+```
+
+---
+layout: default
+---
+# NonNull
+
+A `*mut T` that is guaranteed to not be NULL
+
+```rust
+use std::ptr::NonNull;
+
+let mut x = 0u32;
+let ptr = unsafe { NonNull::new_unchecked(&mut x as *mut _) };
+
+// NEVER DO THIS!!! This is undefined behavior. ⚠️
+let ptr = unsafe { NonNull::<u32>::new_unchecked(std::ptr::null_mut()) };
+```
+
+---
+layout: default
+---
+# MaybeUninit
+
+Working with uninitialized memory
+
+```rust
+use std::mem::MaybeUninit;
+
+let b: bool = unsafe { MaybeUninit::uninit().assume_init() }; // undefined behavior! ⚠️
+```
+
+- Useful when working with pointers (which may point to uninitialized data)
+
+```rust
+pub const unsafe fn swap<T>(x: *mut T, y: *mut T) {
+    // Give ourselves some scratch space to work with.
+    // We do not have to worry about drops: `MaybeUninit` does nothing when dropped.
+    let mut tmp = MaybeUninit::<T>::uninit();
+
+    // Perform the swap
+    // SAFETY: the caller must guarantee that `x` and `y` are
+    // valid for writes and properly aligned. `tmp` cannot be
+    // overlapping either `x` or `y` because `tmp` was just allocated
+    // on the stack as a separate allocated object.
+    unsafe {
+        std::ptr::copy_nonoverlapping(x, tmp.as_mut_ptr(), 1);
+        std::ptr::copy(y, x, 1); // `x` and `y` may overlap
+        std::ptr::copy_nonoverlapping(tmp.as_ptr(), y, 1);
+    }
+}
+```
+
+---
+layout: default
+---
+# CString
+
+A null-terminated string type
+
+```rust
+use std::ffi::CString;
+use libc::strlen;
+
+fn main() {
+  let cstring = CString::new("Hello, world!").expect("no NULL bytes");
+
+  // pub unsafe extern "C" fn strlen(cs: *const c_char) -> size_t
+  println!("{}", unsafe { strlen(cstring.as_ptr())});
+}
+```
+
 
 ---
 layout: default
