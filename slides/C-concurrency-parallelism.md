@@ -12,7 +12,7 @@ layout: cover
 title: 'Rust - X: Y'
 ---
 # Rust programming
-Module X: description
+Module C: concurrency and parallelism
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -21,47 +21,20 @@ layout: three-slots
 ---
 ## Who am i?
 ::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
+- I'm Folkert
+- work on Network Time Protocol and other systems programming things
+- work on the Roc compiler (and other low-level shenanigans)
 
 ---
 layout: default
 ---
 # Last time...
-- Ownership model
-- Move semantics
+- Cargo and dependencies
+- Creating a nice API
+- Testing and benchmarking
+- Setting up your own project
 <!-- Recap on content from last time that current subject builds on -->
 
----
-layout: section
----
-# Quick questions
-
-Any questions on last time's subject?
-<!-- Keep it short. Any longer explanations can be deferred to tutorial -->
-
----
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
-layout: default
----
-# In this module
-<!-- Introduce today's subject -->
 
 
 ---
@@ -70,54 +43,18 @@ layout: default
 # Learning objectives
 <!-- List this module's learning objectives -->
 
-- Working with C from Rust and vice versa
-- be familiar with the C representation
-- be familiar with the C calling convention
-- Work with `cargo bindgen`
-- Make nice rust APIs around C libraries
+after this lecture + exercises, you can:
 
----
-layout: default
----
-# Content overview
-
-- The end of Moore's law
-- Concurrency & Parallelism
-- data parallelism with Rayon
-- thread-based concurrency
-
-<!-- Give an overview of the subjects covered in this lecture -->
-<!-- Incorporate any breaks as well -->
+- parallelize a program with Rayon
+- work with threads in rust
+- reason about exclusive access
+- implement a basic Mutex
 
 ---
 layout: center
 ---
 
-<!--
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Moore%27s_Law_Transistor_Count_1970-2020.png/1280px-Moore%27s_Law_Transistor_Count_1970-2020.png" class="h-130 rounded shadow" />
--->
-
-
-
 <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2059e188-16be-46b6-9f8c-0d571540b29f_789x498.png" class="h-130 rounded shadow" />
----
-layout: default
----
-# The end of Moore's law
-
-- No more free performance
-- Software Development as a profession originates around this time
-- Many dynamic languages (Python, Perl, Ruby, JavaScript) are from this time
-
----
-layout: default
----
-# A "solution": just duplicate the hardware
-
-- We get computers with multiple cores
-- On a per-dollar basis, that means we still get more compute
-- But comes with all sorts of problems
-- Programming Languages have not done a great job of fixing those problems
 
 ---
 layout: default
@@ -184,7 +121,6 @@ fn term_occurence(document: &str) -> HashMap<&str, usize> {
     todo!()
 }
 
-
 /// combine the counts from maps a and b.
 fn combine_occurences<'a>(
     a: HashMap<&'a str, usize>,
@@ -217,6 +153,37 @@ documents
 
 - this idea means each thread can start accumulating values
 
+---
+layout: default
+---
+# Intermezzo: Closures
+
+- Closures are anonymous (unnamed) functions
+- they can capture ("close over") values in their scope
+- they are first-class values
+
+```rust
+fn foo() -> impl Fn(i64, i64) -> i64 {
+    z = 42;
+    |x, y| x + y + z
+}
+
+fn bar() -> i64 {
+    // construct the closure
+    let f = foo();
+
+    // evaluate the closure
+    f(1, 2)
+}
+```
+
+- very useful when working with iterators, `Option` and `Result`.
+
+```rust
+let evens: Vec<_> = some_iterator.filter(|x| x % 2 == 0).collect();
+```
+
+
 
 ---
 layout: default
@@ -224,6 +191,7 @@ layout: default
 
 # So far
 
+- Closures are unnamed inline functions
 - Rayon makes data-parallel programming in rust extremely convenient
 
 
@@ -268,7 +236,7 @@ fn f() {
 }
 ```
 
-- A process can spawn multiple threads of execution. These run concurrently (may run in parallel)
+- A process can spawn multiple threads of execution. These run concurrently (and may run in parallel)
 - Question: what is the output of this program?
 
 ---
@@ -369,7 +337,7 @@ let t = thread::spawn(|| {
     sum / len
 });
 
-drop(numbers); // oh no
+drop(numbers); // compile error: would create a dangling reference
 
 let average = t.join().unwrap();
 
@@ -385,8 +353,8 @@ layout: default
 ```rust
 let numbers = Vec::from_iter(0..=1000);
 
-let average = thread::scope(|s| {
-    s.spawn(|| {
+let average = thread::scope(|spawner| {
+    spawner.spawn(|| {
         let len = numbers.len();
         let sum = numbers.iter().sum::<usize>();
         sum / len
@@ -436,6 +404,16 @@ error[E0499]: cannot borrow `*counter` as mutable more than once at a time
 layout: default
 ---
 
+# Race Conditions
+
+- if multiple mutable borrows were allowed, this could happen ...
+
+<img src="https://qph.cf2.quoracdn.net/main-qimg-6dcced484a556a142eff85a0f03e7940" alt="race condition" width="600" />
+
+---
+layout: default
+---
+
 # Fearless concurrency
 
 <img src="https://arctype.com/blog/content/images/size/w1750/2021/02/deadlock.jpeg" alt="Photo Ferris" width="500" />
@@ -461,6 +439,28 @@ for safe mutation, we need exclusive *access*, which we can get in multiple ways
 - access is inherently exclusive (atomic operations)
 
 
+---
+layout: default
+---
+
+# Atomics
+
+- atomic operations are indivisible, but relatively expensive
+
+
+```rust
+use std::sync::atomic::{AtomicU32, Ordering};
+
+let foo = AtomicU32::new(0);
+assert_eq!(foo.fetch_add(10, Ordering::SeqCst), 0);
+assert_eq!(foo.load(Ordering::SeqCst), 10);
+```
+
+- no risk of a race condition: another thread cannot read the value while an atomic operation is ongoing
+
+```rust
+pub fn fetch_add(&self, val: u32, order: Ordering) -> u32
+```
 
 ---
 layout: default
@@ -498,7 +498,7 @@ layout: default
 
 ```rust
 impl<T> Mutex<T> {
-    pub fn lock(&self) -> LockResult<MutexGuard<'_, T>> {
+    pub fn lock<'a>(&'a self) -> LockResult<MutexGuard<'a, T>> {
         ...
     }
 }
@@ -507,32 +507,59 @@ impl<T> Mutex<T> {
 - Acquires a mutex, blocking the current thread until it is able to do so
 - Returns a `PoisonError` if a thread panicked while holding the lock
 - Returns a `MutexGuard`, proof to the type checker that we hold the lock
-- `MutexGuard<'_, T>` implements `DerefMut<Target = T>`, so we can use it like a mutable reference
+- `MutexGuard<'a, T>` implements `DerefMut<Target = T>`, so we can use it like a mutable reference
+
+```rust
+impl<'a, T> DerefMut for MutexGuard<'a, T> {
+    fn deref_mut(&mut self) -> &mut T {
+        // ...
+    }
+}
+```
+
 - dropping the `MutexGuard` unlocks the mutex
 
 ---
 layout: default
 ---
 
-# Moving ownership between threads 
+# Moving ownership between threads
 
 - Some values should never be shared or moved between threads
 
-The `Send` and `Sync` marker traits enfoce this:
+The `Send` and `Sync` marker traits enforce this:
+
+```rust
+pub unsafe auto trait Send { /* no method */ }
+pub unsafe auto trait Sync { /* no method */ }
+```
 
 - `Send`: A type is Send if it can be sent to another thread. In other words, if ownership of a value of that type can be transferred to another thread
 - `Sync`: A type is Sync if it can be shared with another thread. In other words, a type T is Sync if and only if a shared reference to that type `&T` is Send
+
+
+---
+layout: default
+---
+
+# `Send`
+
+- A type is Send if it can be sent to another thread. In other words, if ownership of a value of that type can be transferred to another thread
+
 
 ```rust
 impl<T: ?Sized> !Send for MutexGuard<'_, T>
 impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T>
 ```
 
+- On certain OS's, only the thread that locked a mutex may unlock it again!
+
+
 ---
 layout: default
 ---
 
-# MSPC: many producer single consumer 
+# MPSC: many producer single consumer
 
 ```rust
 fn main() {
@@ -563,51 +590,23 @@ impl<T> !Sync for Receiver<T>
 layout: default
 ---
 
-# Orchestrating Threads
-
-- MPSC: many producer, single consumer
-
-
----
-layout: default
----
-
 # Further reading
 
 <img src="https://marabos.nl/atomics/cover.jpg" alt="Rust atomics and locks" width="300" />
+
+- read for free at https://marabos.nl/atomics/
 
 ---
 layout: default
 ---
 
 # Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
 
----
-layout: default
----
-# Practicalities
-<!-- Use this slide to announce any organizational information -->
+- Rayon makes parallel computation easy
+- Scoped threads allow borrowing into threads
+- Mutation requires exclusive access
+- Some data structures guarantee exclusive access (even through a shared reference)
+- The borrow checker, `Send` and `Sync` prevent many common problems
 
----
-layout: end
----
-<!-- Below are example slides you can use -->
 
----
-layout: playground
----
-# Code example
 
-```rust
-fn main() {
-  println!("Hello world!");
-}
-```
-<!-- Slide for code examples with a link to Rust playground -->
-
----
-layout: iframe
-url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&code=fn%20main()%20%7B%0A%20%20println!(%22Hello%20world!%22)%3B%0A%7D
----
-<!-- Iframe slide containing Rust playground -->
