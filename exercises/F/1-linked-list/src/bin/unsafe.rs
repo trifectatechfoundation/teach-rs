@@ -4,6 +4,8 @@
 // We'll implement various functions for linked lists, and an iterator over linked lists
 // find and fix the TODOs, to make the tests run and pass.
 //
+// > cargo test -p F1-linked-list
+//
 // It is quite likely that you will run into SEGFAULTs or similar problems in this exercise. Please
 // let us know on the discord if you get stuck!
 use std::ops::Range;
