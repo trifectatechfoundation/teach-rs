@@ -12,7 +12,7 @@ layout: cover
 title: 'Rust - X: Y'
 ---
 # Rust programming
-Module X: description
+Module F: safe and unsafe rust
 <!-- Start with welcome, students entering -->
 <!-- TODO add subject code -->
 
@@ -28,78 +28,26 @@ linked list pointer version: implementeer `len()` en `is_empty()`, IntoIterator
 -->
 
 ---
-layout: three-slots
----
-## Who am i?
-::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
-
----
 layout: default
 ---
-# Last time...
-- Ownership model
-- Move semantics
-<!-- Recap on content from last time that current subject builds on -->
-
----
-layout: section
----
-# Quick questions
-
-Any questions on last time's subject?
-<!-- Keep it short. Any longer explanations can be deferred to tutorial -->
-
----
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
-layout: default
----
-# In this module
-<!-- Introduce today's subject -->
-
-
----
-layout: default
----
-# Learning objectives
-<!-- List this module's learning objectives -->
-
+# Unsafe: Learning objectives
 
 - when to reach for `unsafe` code
 - reason about undefined behavior
 - familiarity with raw pointers in rust
----
-layout: section
----
-#  Module X
-[The name of this module]
-<!-- Start lecture content here -->
+- practical experience with raw pointers, C strings and untagged unions
+
 
 ---
 layout: default
 ---
 # Content overview
-- FFI types
-- Types from std
-<!-- Give an overview of the subjects covered in this lecture -->
-<!-- Incorporate any breaks as well -->
+- Why is unsafe needed?
+- Undefined behavior and optimizations
+- Break
+- common types in unsafe code 
+- examples of unsafe usage
+
 
 ---
 layout: default
@@ -361,6 +309,23 @@ layout: default
 ---
 layout: default
 ---
+# So far 
+
+- rust is a systems language: it must provide unrestricted access 
+    * call code in different languages
+    * exploit all capabilities of the OS/hardware
+    * optimize
+- rust's goals mean restricting access
+- unsafe is an escape hatch: great power, but the risk of introducing UB
+
+---
+layout: section
+---
+# Part II: common types and examples
+
+---
+layout: default
+---
 # Raw Pointers
 
 ```rust
@@ -373,6 +338,8 @@ unsafe {
     assert_eq!(std::ptr::read(y), 12);
 }
 ```
+
+- raw (mut or const) pointers can alias each other!
 
 ---
 layout: default
@@ -682,9 +649,9 @@ layout: default
 
 # Exercises
 
-- implement `Drop` for the pointer-based `LinkedList`
-- Implement a process forwarding program using `std::process::Command`
+- Implement functions for the pointer-based `LinkedList`
 - Implement a process forwarding program using `execve`
+- Implement a custom `Result` variant that matches a specific memory layout 
 
 
 ---
@@ -692,33 +659,24 @@ layout: default
 ---
 
 # Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
+
+- rust is a systems language: it must provide unrestricted access 
+    * call code in different languages
+    * exploit all capabilities of the OS/hardware
+    * optimize
+- rust's goals mean restricting access
+- unsafe is an escape hatch: great power, but the risk of introducing UB
+- common types in unsafe code: `*const T`, `*mut T`, `CString`, `MaybeUninit`
+- examples of unsafe
+    * using the `execve` syscall wrapper
+    * using custom simd instructions
+    * optimizing a linked list with pointer trickery
 
 ---
 layout: default
----
-# Practicalities
-<!-- Use this slide to announce any organizational information -->
 
 ---
 layout: end
 ---
 <!-- Below are example slides you can use -->
 
----
-layout: playground
----
-# Code example
-
-```rust
-fn main() {
-  println!("Hello world!");
-}
-```
-<!-- Slide for code examples with a link to Rust playground -->
-
----
-layout: iframe
-url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&code=fn%20main()%20%7B%0A%20%20println!(%22Hello%20world!%22)%3B%0A%7D
----
-<!-- Iframe slide containing Rust playground -->
