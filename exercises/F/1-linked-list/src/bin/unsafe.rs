@@ -1,3 +1,11 @@
+// In this exercise we'll experience some of the pain of unsafe rust. it's just less nice than
+// "normal", safe rust. But with great responsibility comes great power.
+//
+// We'll implement various functions for linked lists, and an iterator over linked lists
+// find and fix the TODOs, to make the tests run and pass.
+//
+// It is quite likely that you will run into SEGFAULTs or similar problems in this exercise. Please
+// let us know on the discord if you get stuck!
 use std::ops::Range;
 
 fn main() {}
@@ -5,7 +13,7 @@ fn main() {}
 struct LinkedList(*mut Node);
 
 struct Node {
-    first: u64,
+    current: u64,
     rest: LinkedList,
 }
 
@@ -20,7 +28,7 @@ impl LinkedList {
         let mut this = LinkedList(std::ptr::null_mut());
         for value in range.rev() {
             let node = Node {
-                first: value,
+                current: value,
                 rest: this,
             };
 
@@ -36,19 +44,19 @@ impl LinkedList {
         } else {
             let node = unsafe { std::ptr::read(self.0) };
 
-            node.first + Self::sum(&node.rest)
+            node.current + Self::sum(&node.rest)
         }
     }
 }
 
 impl Drop for LinkedList {
     fn drop(&mut self) {
-        todo!()
+        // TODO: implement drop
     }
 }
 
 struct Iter<'a> {
-    list: LinkedList,
+    list: *const Node,
     _marker: std::marker::PhantomData<&'a u64>,
 }
 
@@ -56,36 +64,26 @@ impl<'a> Iterator for Iter<'a> {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.list.0.is_null() {
-            None
-        } else {
-            // NOTE: be sure that your list is not dropped (and therefore deallocated) when updating it.
-            // See the functions in the `std::mem` module, they will be useful
-            // it is very easy to cause segfaults here!
-            todo!()
-        }
+        // TODO: implement the next function
+        //
+        // make sure that `Node` values are never dropped here! An implementation is possible
+        // without any of the `std::ptr` functions, just dereferencing is sufficient.
+        None
     }
 }
 
 impl LinkedList {
     fn iter(&self) -> impl Iterator<Item = u64> + '_ {
         Iter {
-            list: LinkedList(self.0),
+            list: self.0,
             _marker: std::marker::PhantomData,
         }
     }
 
     fn reverse(&mut self) {
-        let this = std::mem::take(self);
-        *self = Self::reverse_help(LinkedList(std::ptr::null_mut()), this);
-    }
-
-    fn reverse_help(left: Self, right: Self) -> Self {
-        if right.0.is_null() {
-            left
-        } else {
-            todo!()
-        }
+        // TODO: reverse the linked list in-place. The general approach is to start with a new empty
+        // linked list, and move elements from self over to this new list. Finally update self with
+        // the new list.
     }
 }
 
