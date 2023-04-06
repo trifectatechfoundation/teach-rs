@@ -29,6 +29,7 @@ union RocResultUnion<T, E> {
 
 impl<T, E> Drop for RocResult<T, E> {
     fn drop(&mut self) {
+        // implement drop. Make sure values wrapped in a ManuallyDrop are dropped correctly!
         todo!()
     }
 }

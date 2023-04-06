@@ -54,9 +54,11 @@ layout: default
 ---
 # Rust guarantees that references are valid
 
-- their address is not `NULL`
-- their address is well-aligned for type `T`
-- they point into memory belonging to the process
+for any `&T` or `&mut T`
+
+- the address is not `NULL`
+- the address is well-aligned for type `T`
+- it points into memory belonging to the process
 
 These guarantees make rust memory safe
 
@@ -247,6 +249,15 @@ let reference: &u8 = unsafe {
 ```
 
 - the rust compiler assumes that references are valid, so this snippet contains UB!
+- LLVM encodes and exploits assumptions like `nonnull` or `noalias`
+
+```
+define internal fastcc void @str.RocStr.reallocate(
+    %str.RocStr* noalias nocapture nonnull %arg,
+    %str.RocStr* nocapture nonnull readonly align 8 %arg1,
+    i64 %arg2
+)
+```
 
 
 ---
@@ -671,9 +682,6 @@ layout: default
     * using the `execve` syscall wrapper
     * using custom simd instructions
     * optimizing a linked list with pointer trickery
-
----
-layout: default
 
 ---
 layout: end
