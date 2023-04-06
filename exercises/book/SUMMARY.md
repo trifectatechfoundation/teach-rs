@@ -8,6 +8,6 @@
 - [C - Concurrency & Parallelism](./C-concurrency-parallelism/mod.md)
 - [D - Trait objects and Rust patterns](./D-trait-objects-patterns/mod.md)
 - [E - Async and Rust for Web](./E-async-web/mod.md)
-- [F - Safe Unsafe Rust]()
+- [F - Safe Unsafe Rust](./F-safe-unsafe/mod.md)
 - [G - FFI and Dynamic modules]()
 - [P Final project](./P-final-project/mod.md)
