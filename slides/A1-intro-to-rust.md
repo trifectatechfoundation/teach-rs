@@ -442,7 +442,7 @@ instead.
 # Strings
 ```rust
     // Owned, heap-allocated string *slice*
-    let s1: Sring = String::new("Hello, 🌍!");
+    let s1: String = String::from("Hello, 🌍!");
 ```
 
 - Rust strings are UTF-8-encoded
