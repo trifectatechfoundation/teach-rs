@@ -12,57 +12,7 @@ layout: cover
 title: 'Rust - X: Y'
 ---
 # Rust programming
-Module X: description
-<!-- Start with welcome, students entering -->
-<!-- TODO add subject code -->
-
----
-layout: three-slots
----
-## Who am i?
-::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-<!-- Optionally quickly introduce yourself, add photo -->
-
----
-layout: default
----
-# Last time...
-- Ownership model
-- Move semantics
-<!-- Recap on content from last time that current subject builds on -->
-
----
-layout: section
----
-# Quick questions
-
-Any questions on last time's subject?
-<!-- Keep it short. Any longer explanations can be deferred to tutorial -->
-
----
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
-layout: default
----
-# In this module
-<!-- Introduce today's subject -->
-
+Module G: FFI
 
 ---
 layout: default
@@ -75,6 +25,7 @@ layout: default
 - be familiar with the C calling convention
 - Work with `cargo bindgen`
 - Make nice rust APIs around C libraries
+- Create python extensions
 
 ---
 layout: default
@@ -82,13 +33,10 @@ layout: default
 # Content overview
 
 - Calling convention and ABI
-- FFI types
-- Ownership
-- Useful std features for FFI 
 - using C from Rust
 - using Rust from C
 - `cargo bindgen`
-- TweetNaCl example
+- PyO3
 
 <!-- Give an overview of the subjects covered in this lecture -->
 <!-- Incorporate any breaks as well -->
@@ -96,31 +44,42 @@ layout: default
 ---
 layout: default
 ---
-# Goal: call code written in C (or other languages) 
+# Why do languages talk with each other? 
+
+- You get an ecosystem for free
+- The other language has capabilities (performance, hardware access) that you don't
+
+---
+layout: default
+---
+# Tight langugage coupling 
 
 Many languages can use code written in other languages 
 
 - JVM: Java, Scala, and Kotlin
 - BEAM VM: Erlang and Elixir
+- Bare Metal: Zig, D and Nim can import C code
 
 The compiler checks names and types.
-
 
 ---
 layout: default
 ---
-# Why we cannot import C 
+# Rust cannot "just" import C code 
 
-- Languages like Zig, D and Nim can import C code
 - Idiomatic C is not idiomatic Rust
 - C code cannot provide the guarantees that Rust expects
 - maintaining half of a C compiler is not fun
+
+Hence, a much looser coupling:
+
+- generate assembly that is similar to what C generates 
+- have the linker stitch everything together
 
 ---
 layout: default
 ---
 <img src="https://faultlore.com/blah/c-isnt-a-language/abi-kiss.png" class="ml-50 h-120 rounded shadow" />
-
 
 ---
 layout: default
@@ -143,7 +102,7 @@ extern "C" {
 }
 ```
 
-The implementation is provided by the linker
+The linker will stitch this declaration together with the definition 
 
 ---
 layout: default
@@ -388,14 +347,7 @@ $ python
 layout: default
 ---
 
-# Summary
-<!-- Very quickly go over the learning objectives and how they were covered -->
-
----
-layout: default
----
-# Practicalities
-<!-- Use this slide to announce any organizational information -->
+# Optional demo: `roc glue`
 
 ---
 layout: end
