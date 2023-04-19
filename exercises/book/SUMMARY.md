@@ -9,5 +9,5 @@
 - [D - Trait objects and Rust patterns](./D-trait-objects-patterns/mod.md)
 - [E - Async and Rust for Web](./E-async-web/mod.md)
 - [F - Safe Unsafe Rust](./F-safe-unsafe/mod.md)
-- [G - FFI and Dynamic modules]()
+- [G - FFI and Dynamic modules](./G-ffi/mod.md)
 - [P Final project](./P-final-project/mod.md)
