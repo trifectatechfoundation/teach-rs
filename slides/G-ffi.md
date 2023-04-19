@@ -105,10 +105,6 @@ Many languages can use code written in other languages
 
 The compiler checks names and types.
 
----
-layout: default
----
-<img src="https://faultlore.com/blah/c-isnt-a-language/abi-kiss.png" class="ml-50 h-120 rounded shadow" />
 
 ---
 layout: default
@@ -116,10 +112,23 @@ layout: default
 # Why we cannot import C 
 
 - Languages like Zig, D and Nim can import C code
-- C and Rust do not agree on memory layout and calling convention
 - Idiomatic C is not idiomatic Rust
-- So we fall back on the C ABI and the linker
+- C code cannot provide the guarantees that Rust expects
+- maintaining half of a C compiler is not fun
 
+---
+layout: default
+---
+<img src="https://faultlore.com/blah/c-isnt-a-language/abi-kiss.png" class="ml-50 h-120 rounded shadow" />
+
+
+---
+layout: default
+---
+# Rust & C disagree 
+
+- different calling conventions
+- different memory layout
 
 ---
 layout: default
@@ -198,7 +207,7 @@ layout: default
 
 - Rust and C make different choices on by-value vs. by-reference 
 - `extern "C"` forces rust to use the C calling convention
-- The C ABI is the lingua franca of calling between languages
+- The C calling convention is the lingua franca of calling between languages
 
 ---
 layout: default
@@ -280,6 +289,36 @@ layout: default
 
 these need special, manual treatment
 
+---
+layout: default
+---
+# `cargo-bindgen` 
+
+Generates rust API bindings based on C header files
+
+```rust
+extern "C" {
+    pub fn crypto_stream_salsa20_tweet_xor(
+        arg1: *mut ::std::os::raw::c_uchar,
+        arg2: *const ::std::os::raw::c_uchar,
+        arg3: ::std::os::raw::c_ulonglong,
+        arg4: *const ::std::os::raw::c_uchar,
+        arg5: *const ::std::os::raw::c_uchar,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn crypto_verify_16_tweet(
+        arg1: *const ::std::os::raw::c_uchar,
+        arg2: *const ::std::os::raw::c_uchar,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn crypto_verify_32_tweet(
+        arg1: *const ::std::os::raw::c_uchar,
+        arg2: *const ::std::os::raw::c_uchar,
+    ) -> ::std::os::raw::c_int;
+}
+```
 
 ---
 layout: default
@@ -291,6 +330,7 @@ C and Rust don't just work together, we must
 - tell rust the name and type of extern functions
 - force rust to use the C calling convention 
 - use only types that have a C-compatible representation
+- `cargo-bindgen` automates parts of this process 
 
 ---
 layout: default
@@ -309,6 +349,40 @@ extern "C" fn sum(ptr: *const u64, len: usize) -> u64 {
 ```
 
 Compiling rust into a static library requires some extra setup in the `Cargo.toml`.
+
+---
+layout: default
+---
+# Using Rust from Python
+
+```rust
+use pyo3::prelude::*;
+
+/// Formats the sum of two numbers as string.
+#[pyfunction]
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+
+/// A Python module implemented in Rust. The name of this function must match
+/// the `lib.name` setting in the `Cargo.toml`, else Python will not be able to
+/// import the module.
+#[pymodule]
+fn string_sum(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+    Ok(())
+}
+
+```
+
+```shell
+$ python
+>>> import string_sum
+>>> string_sum.sum_as_string(5, 20)
+'25'
+```
+
+
 
 ---
 layout: default
