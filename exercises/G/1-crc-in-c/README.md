@@ -5,14 +5,12 @@
 
 ## Steps
 
-0. `cargo new crc-in-c` and `cd crc-in-c`
-1. Copy `crc.c` and `crc.h`
-2. Add the `cc` build dependency, by adding to `Crate.toml` the lines:
+1. Add the `cc` build dependency, by adding to `Crate.toml` the lines:
     ```toml
     [build-dependencies]
     cc = "1.0"
     ```
-3. Create `build.rs` with contents
+2. Create `build.rs` with contents
     ```rust
     extern crate cc;
 
@@ -22,22 +20,23 @@
     ```
 
     This will find your c code, compile it, and link it into the executable rust produces
-4. Define an extern (fill in the argument and return types)
+3. In `main.rs`, define an extern (fill in the argument and return types)
     ```rust
     extern "C" {
         fn CRC32( ... ) -> ...; // hint: https://doc.rust-lang.org/std/os/raw
     }
     ```
-5. Create a rust wrapper that calls the extern function
+4. Now, create a rust wrapper that calls the extern function
     ```rust
     fn crc32( ... ) -> ... { 
         ... // (hints: `unsafe`, `.as_ptr()`, `.len()`)
     }
     ```
 
-6. Call our wrapper on some example input
+5. Call our wrapper on some example input
     ```rust
     fn main() {
-        println!("{}", crc32(b"12345678"));
+        println!("{:#x}", crc32(b"12345678"));
     }
     ```
+    In the above example, the correct output is `0x9ae0daaf`
