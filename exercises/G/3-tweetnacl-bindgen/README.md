@@ -11,14 +11,12 @@ Below you find instructions for using bindgen and wrapping `crypto_hash_sha512_t
 Prerequisites:
 
 - a C compiler is installed on the system
-- bindgen, install with `cargo install bindgen`
+- bindgen, install with `cargo install bindgen-cli`
 
 Steps
 
-0. Run `cargo new tweetnacl-bindgen`, then `cd tweetnacl-bindgen`
-1. Copy `tweetnacl.h` and `tweetnacl.c` 
-2. Create the rust bindings: `bindgen tweetnacl.h -o src/bindings.rs`
-3. Use `build.rs` to compile and link `tweetnacl.c`. Create `build.rs` and insert
+1. Create the rust bindings: `bindgen tweetnacl.h -o src/bindings.rs`
+2. Use `build.rs` to compile and link `tweetnacl.c`. Create `build.rs` and insert
     ```rust
     fn main() {
         cc::Build::new()
@@ -33,9 +31,9 @@ Steps
     [build-dependencies]
     cc = "1"
     ```
-4. Create `src/lib.rs` with the contents `pub mod bindings;`. This will make the `bindings` module available in `main.rs`.
-5. Run `cargo check` to verify everything is compiling correctly.
-6. By default building will generate a bunch of warnings. we can turn those off by replacing our build.rs with
+3. Create `src/lib.rs` with the contents `pub mod bindings;`. This will make the `bindings` module available in `main.rs`.
+4. Run `cargo check` to verify everything is compiling correctly.
+5. By default building will generate a bunch of warnings. we can turn those off by replacing our build.rs with
 
     ```rust
     fn main() {
