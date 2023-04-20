@@ -20,8 +20,8 @@ layout: default
 # Learning objectives
 <!-- List this module's learning objectives -->
 
-- Working with C from Rust and vice versa 
-- be familiar with the C representation 
+- Working with C from Rust and vice versa
+- be familiar with the C representation
 - be familiar with the C calling convention
 - Work with `cargo bindgen`
 - Make nice rust APIs around C libraries
@@ -44,7 +44,7 @@ layout: default
 ---
 layout: default
 ---
-# Why do languages talk with each other? 
+# Why do languages talk with each other?
 
 - You get an ecosystem for free
 - The other language has capabilities (performance, hardware access) that you don't
@@ -52,9 +52,9 @@ layout: default
 ---
 layout: default
 ---
-# Tight langugage coupling 
+# Tight langugage coupling
 
-Many languages can use code written in other languages 
+Many languages can use code written in other languages
 
 - JVM: Java, Scala, and Kotlin
 - BEAM VM: Erlang and Elixir
@@ -65,7 +65,7 @@ The compiler checks names and types.
 ---
 layout: default
 ---
-# Rust cannot "just" import C code 
+# Rust cannot "just" import C code
 
 - Idiomatic C is not idiomatic Rust
 - C code cannot provide the guarantees that Rust expects
@@ -73,7 +73,7 @@ layout: default
 
 Hence, a much looser coupling:
 
-- generate assembly that is similar to what C generates 
+- generate assembly that is similar to what C generates
 - have the linker stitch everything together
 
 ---
@@ -84,7 +84,7 @@ layout: default
 ---
 layout: default
 ---
-# Rust & C disagree 
+# Rust & C disagree
 
 - different calling conventions
 - different memory layout
@@ -92,7 +92,7 @@ layout: default
 ---
 layout: default
 ---
-# Idea: forward-declare the signature 
+# Idea: forward-declare the signature
 
 In rust, this function can now be used like any other
 
@@ -102,19 +102,19 @@ extern "C" {
 }
 ```
 
-The linker will stitch this declaration together with the definition 
+The linker will stitch this declaration together with the definition
 
 ---
 layout: default
 ---
-# How to call a function 
+# How to call a function
 
 ```rust
 extern "C" {
     fn my_c_function(x: i32) -> bool;
 }
 
-pub fn main () { 
+pub fn main () {
     unsafe { my_c_function(42) };
 }
 ```
@@ -125,8 +125,8 @@ generates this code for `main`:
 example::main:
  push   rax                             # free up rax
  mov    edi,0x2a                        # put the argument into the edi register
- call   80b0 <example::my_c_function>   # call `my_c_function` 
- pop    rax                             # restore rax 
+ call   80b0 <example::my_c_function>   # call `my_c_function`
+ pop    rax                             # restore rax
  ret                                    # return
 ```
 
@@ -162,9 +162,9 @@ fn foo(vec: *const (usize, usize, usize)) -> usize {
 ---
 layout: default
 ---
-# Calling convention 
+# Calling convention
 
-- Rust and C make different choices on by-value vs. by-reference 
+- Rust and C make different choices on by-value vs. by-reference
 - `extern "C"` forces rust to use the C calling convention
 - The C calling convention is the lingua franca of calling between languages
 
@@ -176,7 +176,7 @@ layout: default
 - for some types, Rust and C agree on the representation
 
 ```rust
-extern "C" { 
+extern "C" {
     // integers
     fn is_even(x: i32) -> bool;
 
@@ -188,7 +188,7 @@ extern "C" {
 #[repr(u8)]
 enum Color { R, G, B }
 
-extern "C" { 
+extern "C" {
     // tag-only enums
     fn circle_with_me(c: Color) -> Color;
 }
@@ -199,13 +199,13 @@ layout: default
 ---
 # C types != Rust types
 
-- for others, we must explicitly pick the representation 
+- for others, we must explicitly pick the representation
 
 ```rust
 #[repr(C)]
 struct Point { x: f32, y: f32 }
 
-extern "C" { 
+extern "C" {
     // repr(C) structs
     fn h(p: Point) -> bool;
 }
@@ -213,7 +213,7 @@ extern "C" {
 #[repr(transparent)]
 struct Wrapper<T>(T);
 
-extern "C" { 
+extern "C" {
     // repr(transparent) structs, if the inner type is repr(C)
     fn h(w: Wrapper<u64>) -> bool;
 }
@@ -224,14 +224,14 @@ layout: default
 ---
 # C types != Rust types
 
-- for others, we must explicitly pick the representation 
+- for others, we must explicitly pick the representation
 
 ```rust
 #[repr(C)]
 union U { int: i64, float: f64 }
 
-extern "C" { 
-    // repr(C) unions 
+extern "C" {
+    // repr(C) unions
     fn i(u: U) -> bool;
 }
 ```
@@ -251,7 +251,7 @@ these need special, manual treatment
 ---
 layout: default
 ---
-# `cargo-bindgen` 
+# `cargo-bindgen`
 
 Generates rust API bindings based on C header files
 
@@ -287,14 +287,14 @@ layout: default
 C and Rust don't just work together, we must
 
 - tell rust the name and type of extern functions
-- force rust to use the C calling convention 
+- force rust to use the C calling convention
 - use only types that have a C-compatible representation
-- `cargo-bindgen` automates parts of this process 
+- `cargo-bindgen` automates parts of this process
 
 ---
 layout: default
 ---
-# Using Rust from C 
+# Using Rust from C
 
 exposed functions look like this
 
@@ -304,7 +304,7 @@ extern "C" fn sum(ptr: *const u64, len: usize) -> u64 {
     let slice = unsafe { std::slice::from_raw_parts(ptr, len) };
 
     slice.iter().sum()
-} 
+}
 ```
 
 Compiling rust into a static library requires some extra setup in the `Cargo.toml`.
@@ -341,7 +341,11 @@ $ python
 '25'
 ```
 
+---
+layout: default
+---
 
+# Demo
 
 ---
 layout: default
