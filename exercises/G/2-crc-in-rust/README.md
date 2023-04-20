@@ -56,7 +56,7 @@
 
         uint32_t hash = crc32(data, data_length);
 
-        printf("Hash: %d", hash);
+        printf("Hash: 0x%d\n", hash);
 
         return 0;
     }
@@ -65,8 +65,8 @@
 5. compile and run
 
     ```sh
-    $ clang main.c crc_in_rust.h target/debug/libcrc_in_rust.so -lc
-    $ ./a.out
+    $ clang main.c target/debug/libcrc_in_rust.so -omain
+    $ ./main
     Hash: -1386739207
     ```
 
