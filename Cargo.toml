@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    # Exercise scaffolding
     "exercises/0-intro",
     "exercises/A1/1-basic-syntax",
     "exercises/A1/2-move-semantics/",
@@ -14,5 +15,20 @@ members = [
     "exercises/B/3-fizzbuzz",
     "exercises/C/1-tf-idf",
     "exercises/C/2-mutex",
+    "exercises/D/1-bsn",
+    "exercises/D/2-3d-printer",
+    "exercises/D/3-config-reader",
+    "exercises/E/1-channels",
+    "exercises/E/2-chat",
+    "exercises/F/1-linked-list",
+    "exercises/F/2-execve",
+    "exercises/F/3-tagged-union",
+
+    # Examples used in slides
     "slides/examples/B-application-programming",
+    "slides/examples/E-async-web",
+]
+
+exclude = [
+    "exercises/book"
 ]

@@ -77,13 +77,14 @@ In addition, lead developer Henk has received a grant from the [Rust Foundation]
 
 #### Silver sponsors
 
-Thanks to our `Rust 101 Course Silver sponsor`'s!
+And a big thank you to our Silver sponsors:
 
 - [Gofore](https://gofore.com/en/)
+- [RustJobs.dev](https://rustjobs.dev/)
 
 ### Support Rust 101
 
-We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to involve students in trial-runs and feedback sessions and adapt the course material for re-usability by other higher education institutes. 
+We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to create new modules and improve existing course material. 
 
 
 

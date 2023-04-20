@@ -29,6 +29,18 @@
     "dev-C": "slidev C-concurrency-parallelism.md",
     "export-C": "slidev export C-concurrency-parallelism.md",
 
+    "build-D": "slidev build --out dist-D --base /slides/D/ D-trait-objects-patterns.md",
+    "dev-D": "slidev D-trait-objects-patterns.md",
+    "export-D": "slidev export D-trait-objects-patterns.md",
+
+    "build-E": "slidev build --out dist-E --base /slides/E/ E-async-web.md",
+    "dev-E": "slidev E-async-web.md",
+    "export-E": "slidev export E-async-web.md",
+
+    "build-F": "slidev build --out dist-F --base /slides/F/ F-safe-unsafe-rust.md",
+    "dev-F": "slidev F-safe-unsafe-rust.md",
+    "export-F": "slidev export F-safe-unsafe-rust.md",
+
     "dev-format-lecture": "slidev format-lecture.md",
     "dev-format-tutorial": "slidev format-tutorial.md"
   },

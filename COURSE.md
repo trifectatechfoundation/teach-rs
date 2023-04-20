@@ -229,21 +229,21 @@ This module is about learning to write actual Rust applications. At the end of t
 *TBD*
 
 ### F - Safe Unsafe Rust
-- **Union**
 - **Why safe vs unsafe**
 - **Undefined behavior**
 - **Unsafe keyword**
 - **Added functionality**
-- **Abstract machine**
 - **Optimization**
 - **MaybeUninit**
 - **Drop check, ManuallyDrop**
 - **Type memory layout**
-- **MIRI**
 - [Unsafe code guidelines](https://rust-lang.github.io/unsafe-code-guidelines/introduction.html)
 
 **Exercises**
-*TBD*
+
+- linked list
+- execve
+- tagged union
 
 ### G - FFI and Dynamic modules
 - **FFI in Rust, extern "C"**
@@ -281,9 +281,11 @@ This module is about learning to write actual Rust applications. At the end of t
 - **Some audio filtering and streaming software**
 - **Contribute to an open source project**
 - **SIMD**
+    - Uwuify: https://github.com/Daniel-Liu-c0deb0t/uwu
 - **Simple programming language**
     - https://craftinginterpreters.com/
     - Brainfuck interpreter/compiler
+    - https://strlen.com/false-language/
 
 #### Structure
 - Work in teams of 2
