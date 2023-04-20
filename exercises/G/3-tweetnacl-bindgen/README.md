@@ -52,9 +52,7 @@ Steps
 
 ## Inspecting our bindings
 
-Now we're ready to write some nice rust wrappers around the generated bindings. 
-
-In the generated `bindings.rs` file we find this definition for the `crypto_hash_sha512_tweet` function:
+In the generated `bindings.rs` file we find this signature for the `crypto_hash_sha512_tweet` C function from tweetNaCl:
 
 ```rust
 extern "C" {
@@ -75,8 +73,11 @@ Some observations
     * `arg2` is the input: a constant pointer to a sequence of bytes
     * `arg3` is a length (unclear of what)
     * the return value is probably an error code
+- These are raw C types, which makes it a hassle to call directly from rust.
 
-In rust we bundle a pointer to a sequence of elements and its length in a slice. We could write the signature of our wrapper as:
+We will deal with the last point by writing some nice rust wrappers *around* the generated bindings.
+
+In rust we bundle a pointer to a sequence of elements and its length in a slice. We could write the signature of our own rust wrapper function as:
 
 ```rust
 pub fn crypto_hash_sha512_tweet(out: &mut [u8], data: &[u8]) -> i32 {
@@ -86,7 +87,7 @@ pub fn crypto_hash_sha512_tweet(out: &mut [u8], data: &[u8]) -> i32 {
 
 ## Modelling with types
 
-But by looking at the source we can see that the contract is a bit stronger: 
+But by looking at the tweetNaCl source code we can see that the contract is a bit stronger:
 
 - the output is always 64 bytes wide (64 * 8 = 512)
 - we only ever return `0`
@@ -137,11 +138,11 @@ pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
 
 The compiler will turn this signature into the one we had before under the hood. Returning the value is more idiomatic and convenient in rust, and with modern compilers there is no performance penalty.
 
-> In detail: The C ABI mandates that any return value larger than those that fit in a register (typically 128 bits nowadays) are allocated on the caller's stack. The first argument to the function is the pointer to write the result into. LLVM, the backend used by the rust compiler has specific optimizations to make sure the function result is written directly into this pointer. 
+> In detail: The C ABI mandates that any return value larger than those that fit in a register (typically 128 bits nowadays) are allocated on the caller's stack. The first argument to the function is the pointer to write the result into. LLVM, the backend used by the rust compiler has specific optimizations to make sure the function result is written directly into this pointer.
 
 ## Writing our implementation
 
-Allright, with the signature worked out, we can write the actual implementation. 
+Allright, with the signature worked out, we can write the actual implementation.
 
 We can reach the bindings from `main.rs` with e.g.
 
@@ -162,7 +163,7 @@ On to the implmentation. Extern functions are considered unsafe in rust, so we w
 
 ```rust
 pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
-    unsafe { 
+    unsafe {
         tweetnacl_bindgen::bindings::crypto_hash_sha512_tweet(
             todo!(),
             todo!(),
@@ -172,11 +173,11 @@ pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
 }
 ```
 
-Next we can pass our argument: we turn the slice into a pointer with `.as_ptr()`, and get the length with `len()`. The length needs to be cast to the right type. In this case we can use `as _` where rust will infer the right type to cast to. 
+Next we can pass our argument: we turn the slice into a pointer with `.as_ptr()`, and get the length with `len()`. The length needs to be cast to the right type. In this case we can use `as _` where rust will infer the right type to cast to.
 
 ```rust
 pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
-    unsafe { 
+    unsafe {
         tweetnacl_bindgen::bindings::crypto_hash_sha512_tweet(
             todo!(),
             data.as_ptr(),
@@ -192,7 +193,7 @@ Next we create an array for the return value, pass a mutable pointer to this mem
 pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
     let mut result = [ 0; 64 ];
 
-    unsafe { 
+    unsafe {
         tweetnacl_bindgen::bindings::crypto_hash_sha512_tweet(
             &mut result as *mut _,
             data.as_ptr(),
@@ -218,7 +219,7 @@ use std::mem::MaybeUninit;
 pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
     let mut result : MaybeUninit<[u8; 64]> = MaybeUninit::uninit();
 
-    unsafe { 
+    unsafe {
         tweetnacl_bindgen::bindings::crypto_hash_sha512_tweet(
             result.as_mut_ptr() as *mut _,
             data.as_ptr(),
@@ -230,9 +231,9 @@ pub fn crypto_hash_sha512_tweet(data: &[u8]) -> [u8; 64] {
 }
 ```
 
-The `std::mem::MaybeUninit` type is an abstraction for uninitialized memory. The `.uninit()` method gives a chunk of uninitialized memory big enough to store a value of the desired type (in our case `[u8; 64]` will be inferred). 
+The `std::mem::MaybeUninit` type is an abstraction for uninitialized memory. The `.uninit()` method gives a chunk of uninitialized memory big enough to store a value of the desired type (in our case `[u8; 64]` will be inferred).
 
-We can look at the LLVM IR to verify that 1) the initialization with zeroes is not optimized away and 2) using MaybeUninit does not initialize the array. 
+We can look at the LLVM IR to verify that 1) the initialization with zeroes is not optimized away and 2) using MaybeUninit does not initialize the array.
 
 Below is a call site of our `crypto_hash_sha512_tweet` function that zeroes out the memory. Indeed, we see a `memset` that sets all the bytes to 0. (also not that our wrapper function actually got inlined)
 
@@ -282,4 +283,4 @@ start:
 ```
 
 </p>
-</details>  
+</details> 
