@@ -179,7 +179,7 @@ hello, world
 - References cannot *live* longer than their owners
 - A reference will always at all times point to a valid value
 
-These rules can be checked by the Rust compiler.
+These rules are enforced by the Rust compiler.
 
 <!--
 - Rust tries to be smart about enforcing these rules, such that you don't notice
@@ -436,7 +436,7 @@ fn main() {
 ---
 
 # Enumerations
-But enums get more powerful, because each variant can have associated data with
+Enums get more powerful, because each variant can have associated data with
 it
 
 ```rust
@@ -458,11 +458,24 @@ fn main() {
 
 * Note: an enum always is as large as the largest variant
 
-<div class="relative">
+<!--<div class="relative">-->
 
-![Memory Layout](/images/A2-enum-memory.drawio.svg)
+<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+
+<LightOrDark>
+    <template #dark>
+        <center>
+            <img src="/images/A2-enum-memory-dark.svg"/>
+        </center>
+    </template>
+    <template #light>
+        <img src="/images/A2-enum-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
+
+<!--</div>-->
 
 ---
 
@@ -485,7 +498,7 @@ fn accept_ipv4(ip: IpAddress) {
 ---
 
 # Match
-But pattern matching is very powerful if combined with the match statement
+Pattern matching is very powerful if combined with the match statement
 
 ```rust
 fn accept_home(ip: IpAddress) {
@@ -982,9 +995,16 @@ fn main() {
 # Vec: memory layout
 How can a vector grow? Things on the stack need to be of a fixed size
 
-<div class="relative left-130px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-vector-rust.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-vector-rust-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-vector-rust-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1000,9 +1020,9 @@ How can a vector grow? Things on the stack need to be of a fixed size
 # Put it in a box
 That pointer from the stack to the heap, how do we create such a thing?
 
-* Boxing something is the way to create data that is stored on the heap
-* A box uniquely owns that data, there is no one else that also owns the same
-  data
+* Boxing something is the way to store a value on the heap
+* A `Box` uniquely owns that value, there is no one else that also owns that same
+  value
 * Even if the type inside the box is `Copy`, the box itself is not, move
   semantics apply to a box.
 
@@ -1012,10 +1032,16 @@ fn main() {
   let boxed_int = Box::new(10);
 }
 ```
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-<div class="relative left-170px">
-
-![Memory Layout](/images/A2-box-in-memory.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-box-in-memory-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-box-in-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1095,7 +1121,7 @@ fn sum(data: &Vec<i64>) -> i64 {
 ---
 
 # Slices
-But what if we want something to work on arrays of any size? Or what if we want
+What if we want something to work on arrays of any size? Or what if we want
 to support summing up only parts of a vector?
 
 * A slice is a dynamically sized view into a contiguous sequence
@@ -1187,9 +1213,16 @@ fn main() {
   (but also `Box<[T]>` etc)
 * The length of the slice is always stored together with the reference
 
-<div class="relative left-170px bottom-15px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-slice-ptr.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-slice-ptr-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-slice-ptr-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 

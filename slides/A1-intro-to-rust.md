@@ -104,7 +104,7 @@ layout: default
 # A new project
 
 ```bash
-$ cargo init hello-world
+$ cargo new hello-world
 ```
 
 <v-click>
@@ -1070,7 +1070,14 @@ them somewhere else.
 
 ---
 
-<img src="/images/A1-i-own-this.png" class="pl-30 h-90 float-right" />
+<LightOrDark>
+  <template #dark>
+    <img src="/images/A1-i-own-this-dark.png" class="pl-30 h-90 float-right" />
+  </template>
+  <template #light>
+    <img src="/images/A1-i-own-this-light.png" class="pl-30 h-90 float-right" />
+  </template>
+</LightOrDark>
 
 # Ownership
 

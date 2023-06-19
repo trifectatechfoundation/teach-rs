@@ -3,7 +3,7 @@
 [Slides](/slides/A3/) (or [pdf](/slides/A3-traits-generics.pdf))
 
 ## A3 Local Storage Vec
-In this exercise, we'll create a type called `LocalStorageVec`, which is generic list of items that resides either on the stack or the heap, depending on its size. If its size is small enough for items to be put on the stack, the `LocalStorageVec` buffer is backed by an array. `LocalStorageVec` is not only generic over the type  (`T`) of items in the list, but also by the size (`N`) of this stack-located array using a relatively new feature called 'const generics'. Once the `LocalStorageVec` contains more items than fit in the array, a heap based [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html) is allocated as space for the items to reside in.
+In this exercise, we'll create a type called `LocalStorageVec`, which is generic list of items that resides either on the stack or the heap, depending on its size. If its size is small enough for items to be put on the stack, the `LocalStorageVec` buffer is backed by an array. `LocalStorageVec` is not only generic over the type  (`T`) of items in the list, but also by the size (`N`) of this stack-located array using a relatively new feature called ["const generics"](https://doc.rust-lang.org/reference/items/generics.html#const-generics). Once the `LocalStorageVec` contains more items than fit in the array, a heap based [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html) is allocated as space for the items to reside in.
 
 **Within this exercise, the objectives are annotated with a number of stars (⭐), indicating the difficulty. You are likely not to be able to finish all exercises during the turorial session**
 
