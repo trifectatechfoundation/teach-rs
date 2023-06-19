@@ -699,7 +699,7 @@ layout: default
 # What lifetime?
 
 - References refer to variable
-- Varable has a lifetime:
+- Variable has a lifetime:
   - Start at declaration
   - End at drop
 

@@ -43,7 +43,7 @@ layout: default
 layout: section
 ---
 
-# Anyone have experience with Rust?
+# Anyone has experience with Rust?
 
 ---
 layout: cover
@@ -208,7 +208,7 @@ error[E0384]: cannot assign twice to immutable variable `some_x`
   |         help: consider making this binding mutable: `mut some_x`
 3 |     println!("some_x = {}", some_x);
 4 |     some_x = 6;
-  |     ^^^^^^^^^^ c annot assign twice to immutable variable
+  |     ^^^^^^^^^^ cannot assign twice to immutable variable
 
 For more information about this error, try `rustc --explain E0384`.
 error: could not compile `hello-world` due to previous error
@@ -219,7 +219,7 @@ error: could not compile `hello-world` due to previous error
 </v-click>
 
 <!--
-- By convention rust uses snake case (i.e. all lowercase with underscores) for
+- By convention Rust uses snake case (i.e. all lowercase with underscores) for
 variable names
 - The immutable variable cannot be mutated in any way (exceptions apply)
 -->
@@ -327,8 +327,8 @@ fn main() {
 }
 ```
 
-- `f32`: single precision (32 bit) floating point number
-- `f64`: double precision (64 bit) floating point number
+- `f32`: single precision (32-bit) floating point number
+- `f64`: double precision (64-bit) floating point number
 
 <!--
 - Rust uses f64 by default
@@ -429,12 +429,12 @@ fn main() {
 }
 ```
 
-- A character is a 32 bit unicode scalar value
+- A character is a 32-bit unicode scalar value
 - Very much unlike C/C++ where char is 8 bits
 
 <!--
 - The final scalar type is the character, but it isn't often seen.
-- Note that it is not the same as u8 (a byte) in rust, and cannot be used
+- Note that it is not the same as u8 (a byte) in Rust, and cannot be used
 interchangeably.
 - We'll see later that strings do not use chars, but are encoded as UTF-8
 instead.
@@ -445,12 +445,12 @@ instead.
 # Strings
 ```rust
     // Owned, heap-allocated string *slice*
-    let s1: String = String::from("Hello, 🌍!");
+    let s1: String = String::new("Hello, 🌍!");
 ```
 
 - Rust strings are UTF-8-encoded
 - Unlike C/C++: *Not null-terminated*
-- Cannot be indexed like C Strings
+- Cannot be indexed like C strings
 - Actually many types of strings in Rust
 
 <!--
@@ -599,7 +599,7 @@ expression
 the return type
 - Unit may be omitted, note the syntax looks like an empty tuple: a tuple with
 no value members has no instances, just as with unit.
-- In rust you must always specify your type signatures for function boundaries
+- In Rust you must always specify your type signatures for function boundaries
 -->
 
 ---
@@ -736,7 +736,7 @@ we need them somewhere else
 - We don't want to pass a copy all the time
 - Large data that we do not want to copy
 - Modifying original data
-- What about datastructures with a variable size?
+- What about data structures with a variable size?
 
 ::right::
 
@@ -891,7 +891,7 @@ The stack has limitations though, because it only grows as a result of a
 function call.
 
 * Size of items on stack frame must be known at compile time
-* If I don't know the size of a variable upfront: What size should my stack
+* If I don't know the size of a variable up front: What size should my stack
 frame be?
 * How can I handle arbitrary user input efficiently?
 
@@ -1227,7 +1227,7 @@ layout: default
 * Loads of syntax
 * Values are owned by variables
 * Values may be moved to new owners or copied
-* Some typse may be explicitly `Clone`d
+* Some types may be explicitly `Clone`d
 
 ---
 layout: default

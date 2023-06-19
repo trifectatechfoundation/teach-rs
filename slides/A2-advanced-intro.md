@@ -22,7 +22,7 @@ Advanced Rust syntax
 # Ownership
 We previously talked about ownership
 
-* In rust there is always a single owner for each stack value
+* In Rust there is always a single owner for each stack value
 * Once the owner goes out of scope any associated values should be cleaned up
 * Copy types creates copies, all other types are *moved*
 
@@ -63,7 +63,7 @@ fn calculate_length(s: String) -> usize {
   borrow it from them, but eventually you have to give it back
 - If a value is borrowed, it is not moved and the ownership stays with the
   original owner
-- To borrow in rust, we create a *reference*
+- To borrow in Rust, we create a *reference*
 
 ```rust {all|3|7|all}
 fn main() {
@@ -197,7 +197,7 @@ These rules are enforced by the Rust compiler.
 Combined with the ownership model we can be sure that whole classes of errors
 cannot occur.
 
-* Rust is memory safe without having to use any runtime background proces such
+* Rust is memory safe without having to use any runtime background process such
   as a garbage collector
 * But we still get the performance of a language that would normally let you
   manage memory manually
@@ -512,6 +512,7 @@ fn accept_home(ip: IpAddress) {
     _ => {
       println!("You are not home");
     },
+  }
 }
 ```
 
@@ -550,7 +551,7 @@ struct PointFloat(f64, f64);
 struct PointInt(i64, i64);
 ```
 
-We are repeating ourselves here, what if we could write a datastructure for
+We are repeating ourselves here, what if we could write a data structure for
 both of these cases?
 
 <v-click>
@@ -1052,7 +1053,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1068,7 +1069,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1128,7 +1129,7 @@ to support summing up only parts of a vector?
 * Contiguous: elements are layed out in memory such that they are evenly spaced
 * Dynamically sized: the size of the slice is not stored in the type, but is
   determined at runtime
-* View: a slice is never an owned datastructure
+* View: a slice is never an owned data structure
 * Slices are typed as `[T]`, where `T` is the type of the elements in the slice
 
 ---
@@ -1168,7 +1169,7 @@ help: function arguments must have a statically known size, borrowed types alway
 
 <!--
 - This cannot compile because [T] cannot exist on its own because it is never
-  an owned datastructure
+  an owned data structure
 - We must always put slices behind a pointer type
 -->
 
@@ -1419,7 +1420,7 @@ It should be possible to have a reference to part of a string. But what is it?
 | -        | `String` | `&str`   |
 
 * There is no static variant of str
-* This would only be useful if we wanted strings of an extact length
+* This would only be useful if we wanted strings of an exact length
 * But just like we had the static slice literals, we can use `&'static str`
   literals for that instead!
 
@@ -1460,7 +1461,7 @@ fn string_len(data: &str) -> usize {
 * Define methods and associated functions with impl blocks
 * Use `Vec<T>` for growable array storage
 * Use `Box<T>` to put something on the heap
-* Use slices whenever possible instead of owned Vec and String types
+* Use slices whenever possible instead of owned `Vec<T>` and `String` types
 
 ---
 
