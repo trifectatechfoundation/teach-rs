@@ -74,16 +74,19 @@ layout: section
 
 Founder of Ferrous Systems
 
-- Rust training and evangelisation
-- Company support
-- Tooling
-- Ferrocene: Rust in automotive
+Rust training and evangelisation
+
+Company support
+
+Tooling
+
+Ferrocene: Rust in automotive
 
 ---
 layout: default
 ---
 # Why learn Rust?
-<https://www.youtube.com/embed/l8Qk5Nh6qsg>
+<https://youtu.be/l8Qk5Nh6qsg>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/l8Qk5Nh6qsg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 0 auto; "></iframe>
 
 
@@ -101,7 +104,7 @@ layout: default
 # A new project
 
 ```bash
-$ cargo init hello-world
+$ cargo new hello-world
 ```
 
 <v-click>
@@ -602,7 +605,6 @@ no value members has no instances, just as with unit.
 ---
 
 # Statements
-- Expressions evaluate to a resulting value
 - Statements are instructions that perform some action and do not return a value
 - A definition of any kind (function definition etc.)
 - The `let var = expr;` statement
@@ -642,6 +644,7 @@ statements
 
 # Expressions
 
+- Expressions evaluate to a resulting value
 - Expressions make up most of the Rust code you write
 - Includes all control flow such as `if` and `while`
 - Includes scoping braces (`{` and `}`)
@@ -1067,7 +1070,14 @@ them somewhere else.
 
 ---
 
-<img src="/images/A1-i-own-this.png" class="pl-30 h-90 float-right" />
+<LightOrDark>
+  <template #dark>
+    <img src="/images/A1-i-own-this-dark.png" class="pl-30 h-90 float-right" />
+  </template>
+  <template #light>
+    <img src="/images/A1-i-own-this-light.png" class="pl-30 h-90 float-right" />
+  </template>
+</LightOrDark>
 
 # Ownership
 

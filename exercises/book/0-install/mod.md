@@ -67,7 +67,7 @@ Rust-Analyzer provides a lot of help during development and in indispensable whe
 Another plugin we'll install is Live Share.
 We will use the plugin to share screens and provide help during remote tutorial sessions.
 The extension pack also contains the Live Share Audio plugin, which allows for audio communication during share sessions.
-Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack>
+Installation instructions can be found here: <https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare>
 
 The last plugin we'll use is CodeLLDB.
 This plugin enables debugging Rust code from within vscode.
@@ -89,8 +89,6 @@ More info: <https://www.youtube.com/playlist?list=PLg7s6cbtAD15G8lNyoaYDuKZSKyJr
 Now that everything is installed, you can clone the source code repository.
 The repository can be found here: <https://github.com/tweedegolf/101-rs>.
 
-To clone the repository, you'll need an account on GitHub.
-Make sure you have one, it will serve you well, even outside this workshop.
 
 Instructions on cloning the repository can be found here: <https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls>
 
