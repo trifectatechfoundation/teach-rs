@@ -74,16 +74,19 @@ layout: section
 
 Founder of Ferrous Systems
 
-- Rust training and evangelisation
-- Company support
-- Tooling
-- Ferrocene: Rust in automotive
+Rust training and evangelisation
+
+Company support
+
+Tooling
+
+Ferrocene: Rust in automotive
 
 ---
 layout: default
 ---
 # Why learn Rust?
-<https://www.youtube.com/embed/l8Qk5Nh6qsg>
+<https://youtu.be/l8Qk5Nh6qsg>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/l8Qk5Nh6qsg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 0 auto; "></iframe>
 
 
@@ -275,14 +278,14 @@ layout: two-cols
 
 # Integers
 
-| Length                | Signed  | Unsigned |
-|-----------------------|---------|----------|
-| 8 bit                 | `i8`    | `u8`     |
-| 16 bit                | `i16`   | `u16`    |
-| 32 bit                | `i32`   | `u32`    |
-| 64 bit                | `i64`   | `u64`    |
-| 128 bit               | `i128`  | `u128`   |
-| architecture based    | `isize` | `usize`  |
+| Length        | Signed  | Unsigned |
+|---------------|---------|----------|
+| 8 bits        | `i8`    | `u8`     |
+| 16 bits       | `i16`   | `u16`    |
+| 32 bits       | `i32`   | `u32`    |
+| 64 bits       | `i64`   | `u64`    |
+| 128 bits      | `i128`  | `u128`   |
+| pointer-sized | `isize` | `usize`  |
 
 - Rust prefers explicit integer sizes
 - Use `isize` and `usize` sparingly
@@ -442,7 +445,7 @@ instead.
 # Strings
 ```rust
     // Owned, heap-allocated string *slice*
-    let s1: Sring = String::new("Hello, 🌍!");
+    let s1: String = String::from("Hello, 🌍!");
 ```
 
 - Rust strings are UTF-8-encoded
@@ -602,7 +605,6 @@ no value members has no instances, just as with unit.
 ---
 
 # Statements
-- Expressions evaluate to a resulting value
 - Statements are instructions that perform some action and do not return a value
 - A definition of any kind (function definition etc.)
 - The `let var = expr;` statement
@@ -642,6 +644,7 @@ statements
 
 # Expressions
 
+- Expressions evaluate to a resulting value
 - Expressions make up most of the Rust code you write
 - Includes all control flow such as `if` and `while`
 - Includes scoping braces (`{` and `}`)

@@ -18,48 +18,18 @@ Module B: Application programming
 
 
 ---
-layout: three-slots
----
-
-## Who am i?
-::left::
-- Ferris
-- I Love Rust
-
-::right::
-<img src="https://rustacean.net/assets/rustacean-orig-noshadow.png" alt="Photo Ferris" width="300" />
-
-<!--
-Optionally quickly introduce yourself, add photo
--->
-
----
 layout: default
 ---
 # Last time...
-- [TODO: add last module's topics]
+- Generic code
+- Traits
+- Trait generics & associated types
+- Lifetime annotations
 
 *Any questions?*
 
-<!--
-- Recap on content from last time that current subject builds on
-- Keep it short. Any longer explanations can be deferred to tutorial
--->
 ---
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
-layout: default
+layout: cover
 ---
 
 # In this module
@@ -78,27 +48,15 @@ layout: default
 
 # Learning objectives
 <!-- List this module's learning objectives -->
-- Set up your own Rust application and library
-- Divide your code into logical parts with modules
-- Create a nice API
+
+- Work with `crate` dependencies
+- Create your own crate with a nice API
 - Test and benchmark your code
-- Use common crates (tutorial)
 
----
-layout: section
----
-# Mindmap
-
-What do you know already about this subject?
-
-## [Mindmap access code here]
-<!-- Quick mindmap, show mindmap access code -->
-
----
-layout: iframe
-url: http://your-interactive-mindmap-url-here
----
-<!-- insert URL to live mindmap in slide option `url` -->
+**During tutorial:**
+- Divide your code into logical parts with modules
+- Use common crates
+- Set up your own Rust application and library
 
 ---
 layout: cover
@@ -112,102 +70,119 @@ layout: default
 ---
 
 # Content overview
-- Project structure
+- Working with `crate`s
 - API guidelines
 - Testing and benchmarking
 <!-- Give an overview of the subjects covered in this lecture -->
 
-
 ---
 layout: section
 ---
-# Rust Project structure
+# Creating Rust projects
 
 ---
-layout: default
----
 
-# Terminology
+# Cargo
+Most daily usage of Rust will involve using cargo in one way or another.
 
-- **Crate:** A package containing Rust source code. Library or binary.
-- **Module:** Logical part of crate, containing items.
-- **Workspace:** Set of related crates.
+Some of the more common tasks are:
 
-<!--
-Let's get started with some terminology involving Rust application structure.
-
-- A Module is a container in which items are defined, such as types, traits and functions.
-- In Rust, packages of source code are called 'crates'. They can define a library, or binary, or even both. Crates contain modules
-- Then there are workspaces, bundles of related crates that may or may not share dependencies. For example, you may split a large application into several crates. Those crates can still be loosely connected using a workspace. This helps avoiding issues with dependency versions and may improve build times.
-
--->
+* Creating new projects
+* Managing dependencies
+* Building projects
+* Executing the resulting binaries
+* Running tests and benchmarks
+* Generating and viewing local documentation
 
 ---
-layout: default
----
 
-# Setting up a crate
+# Cargo configuration
+Cargo is managed through the `Cargo.toml` configuration file. Toml is an easy
+to read configuration file fairly similar to ini files.
 
-Setting up a new crate is easy:
-
-```bash {all|1-2|3-7}
-$ cd /path/to/your/projects
-$ cargo new my-first-app --bin
-$ tree my-first-app
-.
-├── Cargo.toml
-└── src
-    └── main.rs
-```
-
-*Pass `--lib` instead of `--bin` to create a library*
-
-<!--
-- The way you set up a crate is by running `cargo-new`. You can pass it a name, and indicate whether you want to set up a library or an application.
-- This  will generate a `Cargo.toml` file as well as a demo  source file.
-- To create a library crate, pass `--lib` instead of `--bin`
-
--->
----
-layout: default
----
-# Adding a crate as dependency
-
-To add a dependency from crates.io:
-```bash {all|1|3-13|11-13}
-$ cargo add tracing tracing-subscriber
-[...]
-$ cat Cargo.toml
+```toml
 [package]
-name = "my-first-app"
+name = "example"
 version = "0.1.0"
 edition = "2021"
 
-# -snip-
-
 [dependencies]
-tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+serde = "1.0"
 ```
 
 <!--
-- In Rust, adding crates as dependencies is made easy using Cargo. That way, you can import all kinds of libraries that help you with developing your application.
-- By default, dependencies are pulled from crates.io, Rusts global crate registry.
-- In order to add a dependency to your project, you can use `cargo add`. Pass it the names of the dependencies you'd like to use.
-- `cargo add` will add the dependencies to your `Cargo.toml` file, making it available for your code to use.
+- The package part of the configuration file is used to configure the package
+- The dependencies section is used to add external dependencies
+- The configuration file should look familiar to users of tools such as NPM,
+  RubyGems or Composer.
+- Note the capital C at the start of the cargo.toml file
 -->
+
+---
+
+# Adding dependencies
+You can add dependencies to `Cargo.toml` in multiple ways
+
+<v-click>
+
+## Add a line in cargo.toml
+
+```toml
+[package]
+name = "example"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = "1.0"
+itertools = "0.10"
+```
+
+</v-click>
+
+<v-click>
+<br>
+
+## Use `cargo add`
+
+```bash
+cargo add itertools
+```
+
+</v-click>
+
+<!--
+- Note: cargo add is a relatively new addition to cargo, previously this used to
+  require a plugin called cargo-edit
+-->
+
+---
+
+# Dependencies? Crates! 📦
+The crate is the compilation unit for Rust
+
+* Binary crates: 
+  * Result in a compiled binary program that you can execute.
+  * Binaries have a `main` function as entrypoint of the program
+* Library crates: 
+  * define functionality that can be used by other crates. 
+  * No specific `main` function
+
+Each crate in Rust has a root file. For binary crates this typically is
+`main.rs`, but for libraries this typically is `lib.rs`.
+
 
 ---
 layout: default
 ---
 
-# Using dependencies
+# Using a `crate`
 
-Dependencies from Cargo.toml can be:
+Crates included in `Cargo.toml` can be:
   - imported with a `use`
   - qualified directly using path separator `::`
 
-```rust {all|3-4,16-17|7-10}
+```rust {all|3-4,15-17|7-10}
 // Import an item from this crate, called `my_first_app`
 use my_first_app::add;
 // Import an item from the `tracing` dependency
@@ -253,157 +228,12 @@ my_local_dependency = { path = "../path/to/my_local_dependency" }
 my_git_dependency = { git = "<Git SSH or HTTPS url>", rev="<commit hash or tag>", branch = "<branch>" }
 ```
 
+- Private crate registries are WIP
+
 <!--
  - Other sources Cargo can pull dependencies from are your local file system or Git.
  - To specify a dependency that lives on your file system, use the `path` key.
  - Dependencies from Git can be included using the `git` key, with which you specify a Git URL. Use `rev`, `branch` or `tag` to further specify a version.
--->
-
----
-layout: default
----
-
-# Modules
-
-- Logical part of a crate
-- Public or private visibility
-- Defined in blocks or files
-
-*Mod structure `!=` file structure*
-
-<!--
-- Rust crates are split up into several modules, which help you keep your code organized.
-- Modules may have public or private visibility.
-- These modules can defined in blocks, or in separate files. Note that the module file structure may not correspond to the module structure!
-
-Let's take a look at how defining modules work.
-
--->
-
----
-layout: default
----
-# Module block
-```rust {all|1-3,20|4-6,13|8-12,18|15-19}
-// Public module
-// Accessible from outside
-pub mod my_pub_mod {
-    // Private module
-    // Only accessible from parent module
-    mod private_mod {
-
-        // Public struct
-        // Accessible wherever `private_mod` is
-        pub struct PubStruct {
-            field: u32,
-        }
-    }
-
-    // Private struct
-    // Only accessible from current and child modules
-    struct PrivStruct {
-        field: private_mod::PubStruct,
-    }
-}
-```
-
-<!--
-Here's an example containing some modules defined with module blocks, using the `mod` keyword and braces.
-- The outer module, `my_pub_mod`, can be accessed from ancestor modules. It is decorated with the `pub` keyword.
-- It contains a private mod: `my_private_mod`. Note the absence of the `pub` keyword. This module is only visible for the module it is defined in.
-- The struct `PubStruct` that is defined in `my_private_mod` is visible from wherever `my_private_mod` is, and can thus be referred to from `my_pub_mod`
-- `PrivStruct` is only accessible from current and child modules.
--->
-
----
-layout: default
----
-
-# Module files
-
-Content specified in
-- Either `some_mod.rs`
-- Or `another_mod/mod.rs`
-
-```bash {all|7|3-4}
-$ tree src
-.
-├── another_mod
-│   └── mod.rs
-├── lib.rs
-├── main.rs
-└── some_mod.rs
-```
-
-<!--
-Apart from blocks, modules can be defined in separate files.
-- You can either create a file `some_mod.rs` directly,
-- Or keep related modules together in a separate directory. Of the modules defined in the directory, `mod.rs` is the parent.
--->
-
----
-layout: default
----
-
-# Module files
-
-Mod structure defined in other modules:
-
-
-**lib.rs**
-```rust {all|1-2|3-4|5-6}
-// Points to ./some_mod.rs
-mod some_mod;
-// Points to ./another_mod/mod.rs
-mod another_mod;
-// Imports an item defined in ./another_mod/mod.rs
-use another_mod::Item;
-```
-
-```bash
-$ tree src
-.
-├── another_mod
-│   └── mod.rs
-├── lib.rs
-├── main.rs
-└── some_mod.rs
-```
-
-<!--
-And here's how you declare the module structure.
--->
-
----
-layout: default
----
-
-# Module files vs blocks
-
-- Use blocks for small (private) modules
-- Use files for larger (public) modules
-- Group related module files in folder
-
-*If your file gets unwieldy, move code to new module file*
-
-<!--
-How to decide whether to declare modules in files or blocks? That again depends on context. Make your code readable and your intent clear.
--->
-
----
-layout: default
----
-
-# Binaries and examples
-
-- Use multiple binaries if you are creating
-  - multiple similar executables 
-  - that share code
-- Create examples to show users how to use your library
-
-<!--
-- A crate can contain multiple binaries. This is useful if you're creating multiple applications that share significant parts of code.
-- If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
 -->
 
 ---
@@ -649,34 +479,117 @@ Lots of respect for authors of good documentation! If you find writing documenta
 layout: default
 ---
 
-# Use semantic typing
+# Include examples
 
-Make the type system work for you!
+Create examples to show users how to use your library
 
-```rust {all|1-3,14,15,17|5-12,14,16,17}
-fn enable_led(enabled: bool) {
-    todo!("Enable it")
-}
+```txt{all}
+$ tree
+.
+├── Cargo.lock
+├── Cargo.toml
+├── examples
+│   └── say_hello.rs
+└── src
+    └── lib.rs
+$ cargo run --example say_hello
+   Compiling my_app v0.1.0 (/home/henkdieter/tg/edu/my_app)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+     Running `target/debug/examples/say_hello`
+Hello, henkdieter!
 
-enum LedState {
-    Enabled,
-    Disabled
-}
-
-fn set_led_state(state: LedState) {
-    todo!("Enable it")
-}
-
-fn do_stuff_with_led() {
-    enable_led(true);
-    set_led_state(LedState::Enabled)
-}
 ```
 
 <!--
+- If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
+- Run exaples with the `--example` option, specifying the binary
+-->
+
+
+---
+layout: default
+---
+
+# Use semantic typing (1)
+
+Make the type system work for you!
+
+```rust {all|1-2|7-8}
+/// Fetch a page from passed URL
+fn load_page(url: &str) -> String {
+    todo!("Fetch");
+}
+
+fn main() {
+  let page = load_page("https://101-rs.tweede.golf");
+  let crab = load_page("🦀"); // Ouch!
+}
+```
+
+*`&str` is not restrictive enough: not all `&str` represent correct URLs*
+
+<!--
 Rusts type system is awesome. Use it to you advantage by embedding semantics into your types.
-- As an example, the `enable_led` method takes a `bool`. The calling code does not express intent as much as it could.
-- The `set_led_state`, however, takes a `LedState` variant, which clearly expresses what the developer was trying to do.
+- As an example, the `load_page` function takes a string slice, indicating the URL of the page that it should load.
+- At the call site of load_page, it's unclear what a page even is (memory page? remote content?)
+- `load_page` accepts all strings, even strings that do not represent valid URLs
+-->
+
+---
+layout: two-cols
+---
+
+# Use semantic typing (2)
+
+```rust{all|1-3,14-16|5-12,22-24|18-20|all}
+struct Url<'u> {
+  url: &'u str,
+}
+
+impl<'u> Url<'u> {
+  fn new(url: &'u str) -> Self {
+    if !valid(url) {
+      panic!("URL invalid: {}", url);
+    }
+    Self { url }
+  }
+}
+
+fn load_page(remote: Url) -> String {
+    todo!("load it");
+}
+
+fn main() {
+    let content = load_page(Url::new("🦀")); // Not good
+}
+
+fn valid(url: &str) -> bool {
+    url != "🦀" // Far from complete
+}
+```
+::right::
+
+<v-click>
+<div style="padding-left:10px; padding-top: 50px;">
+```txt
+   Compiling playground v0.0.1 (/playground)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.90s
+     Running `target/debug/playground`
+thread 'main' panicked at 'URL invalid: 🦀', src/main.rs:11:7
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+- Clear intent
+- Input validation: security!
+
+*Use the [`url`](https://lib.rs/url) crate*
+</div>
+
+</v-click>
+
+<!--
+ - The `Url` struct defined here, wraps a string slice, but has a name that clarifies intent at the call site
+ - what's more, the `Url` struct can only be instantiated with strings that represent valid URLs
 -->
 
 ---
@@ -709,10 +622,10 @@ layout: default
 
 # Testing methods
 
-- Correctness
+- Testing for correctness
   - Unit tests
   - Integration tests
-- Performance
+- Testing for performance
   - Benchmarks
 
 <!--
@@ -744,6 +657,14 @@ test tests::test_swap_oob - should panic ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 [..]
+```
+
+*Rust compiles your test code into binary using a **test harness** that itself has a CLI*:
+
+
+```bash
+# Don't capture stdout while running tests
+$ cargo test -- --nocapture
 ```
 
 <!--
@@ -832,6 +753,43 @@ To test your application from the outside, you can set up integration tests. The
 -->
 
 ---
+
+# Tests in your documentation
+You can even use examples in your documentation as tests
+
+```rust {all|5-10|6}
+/// Calculates fibonacci number n
+///
+/// # Examples
+///
+/// ```
+/// # use example::fib;
+/// assert_eq!(fib(2), 1);
+/// assert_eq!(fib(5), 5);
+/// assert_eq!(fib(55), 55);
+/// ```
+pub fn fib(n: u64) -> u64 {
+    if n <= 1 {
+        n
+    } else {
+        fib(n - 1) + fib(n - 2)
+    }
+}
+```
+
+```bash
+cargo test --doc
+```
+
+<!--
+- Note that doctests are executed as if they are in another crate
+- Lines with a hash (#) in front of them are not outputted in the generated
+  documentation
+- Don't try and write all your tests in doc form, only use them if you really
+  want to provide an example
+-->
+
+---
 layout: default
 ---
 
@@ -871,6 +829,19 @@ layout: default
 
 
 <!-- Very quickly go over the learning objectives and how they were covered -->
+
+---
+layout: default
+---
+# Tutorial time!
+<!-- Use this slide to announce any organizational information -->
+
+- Exercises A3 recap
+- Exercises B in 101-rs.tweede.golf
+- Live code on ex B1 and first part of B2
+
+*Don't forget to `git pull`!*
+
 
 ---
 layout: end
