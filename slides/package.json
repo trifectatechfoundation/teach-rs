@@ -49,7 +49,7 @@
     "dev-format-tutorial": "slidev format-tutorial.md"
   },
   "dependencies": {
-    "@slidev/cli": "^0.40.0",
+    "@slidev/cli": "^0.42",
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*"
   },
