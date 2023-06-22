@@ -22,7 +22,7 @@ Advanced Rust syntax
 # Ownership
 We previously talked about ownership
 
-* In rust there is always a single owner for each stack value
+* In Rust there is always a single owner for each stack value
 * Once the owner goes out of scope any associated values should be cleaned up
 * Copy types creates copies, all other types are *moved*
 
@@ -63,7 +63,7 @@ fn calculate_length(s: String) -> usize {
   borrow it from them, but eventually you have to give it back
 - If a value is borrowed, it is not moved and the ownership stays with the
   original owner
-- To borrow in rust, we create a *reference*
+- To borrow in Rust, we create a *reference*
 
 ```rust {all|3|7|all}
 fn main() {
@@ -179,7 +179,7 @@ hello, world
 - References cannot *live* longer than their owners
 - A reference will always at all times point to a valid value
 
-These rules can be checked by the Rust compiler.
+These rules are enforced by the Rust compiler.
 
 <!--
 - Rust tries to be smart about enforcing these rules, such that you don't notice
@@ -197,7 +197,7 @@ These rules can be checked by the Rust compiler.
 Combined with the ownership model we can be sure that whole classes of errors
 cannot occur.
 
-* Rust is memory safe without having to use any runtime background proces such
+* Rust is memory safe without having to use any runtime background process such
   as a garbage collector
 * But we still get the performance of a language that would normally let you
   manage memory manually
@@ -436,7 +436,7 @@ fn main() {
 ---
 
 # Enumerations
-But enums get more powerful, because each variant can have associated data with
+Enums get more powerful, because each variant can have associated data with
 it
 
 ```rust
@@ -458,11 +458,24 @@ fn main() {
 
 * Note: an enum always is as large as the largest variant
 
-<div class="relative">
+<!--<div class="relative">-->
 
-![Memory Layout](/images/A2-enum-memory.drawio.svg)
+<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+
+<LightOrDark>
+    <template #dark>
+        <center>
+            <img src="/images/A2-enum-memory-dark.svg"/>
+        </center>
+    </template>
+    <template #light>
+        <img src="/images/A2-enum-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
+
+<!--</div>-->
 
 ---
 
@@ -485,7 +498,7 @@ fn accept_ipv4(ip: IpAddress) {
 ---
 
 # Match
-But pattern matching is very powerful if combined with the match statement
+Pattern matching is very powerful if combined with the match statement
 
 ```rust
 fn accept_home(ip: IpAddress) {
@@ -499,6 +512,7 @@ fn accept_home(ip: IpAddress) {
     _ => {
       println!("You are not home");
     },
+  }
 }
 ```
 
@@ -530,14 +544,14 @@ fn get_first_byte(ip: IpAddress) {
 ---
 
 # Generics
-Enums become even more powerful if we introduce a little of generics
+Structs become even more powerful if we introduce a little of generics
 
 ```rust
 struct PointFloat(f64, f64);
 struct PointInt(i64, i64);
 ```
 
-We are repeating ourselves here, what if we could write a datastructure for
+We are repeating ourselves here, what if we could write a data structure for
 both of these cases?
 
 <v-click>
@@ -982,9 +996,16 @@ fn main() {
 # Vec: memory layout
 How can a vector grow? Things on the stack need to be of a fixed size
 
-<div class="relative left-130px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-vector-rust.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-vector-rust-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-vector-rust-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1000,9 +1021,9 @@ How can a vector grow? Things on the stack need to be of a fixed size
 # Put it in a box
 That pointer from the stack to the heap, how do we create such a thing?
 
-* Boxing something is the way to create data that is stored on the heap
-* A box uniquely owns that data, there is no one else that also owns the same
-  data
+* Boxing something is the way to store a value on the heap
+* A `Box` uniquely owns that value, there is no one else that also owns that same
+  value
 * Even if the type inside the box is `Copy`, the box itself is not, move
   semantics apply to a box.
 
@@ -1012,10 +1033,16 @@ fn main() {
   let boxed_int = Box::new(10);
 }
 ```
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-<div class="relative left-170px">
-
-![Memory Layout](/images/A2-box-in-memory.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-box-in-memory-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-box-in-memory-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1026,7 +1053,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1042,7 +1069,7 @@ There are several reasons to box a variable on the heap
 
 * When something is too large to move around
 * We need something that is sized dynamically
-* For writing recursive datastructures
+* For writing recursive data structures
 
 ```rust
 struct Node {
@@ -1095,14 +1122,14 @@ fn sum(data: &Vec<i64>) -> i64 {
 ---
 
 # Slices
-But what if we want something to work on arrays of any size? Or what if we want
+What if we want something to work on arrays of any size? Or what if we want
 to support summing up only parts of a vector?
 
 * A slice is a dynamically sized view into a contiguous sequence
 * Contiguous: elements are layed out in memory such that they are evenly spaced
 * Dynamically sized: the size of the slice is not stored in the type, but is
   determined at runtime
-* View: a slice is never an owned datastructure
+* View: a slice is never an owned data structure
 * Slices are typed as `[T]`, where `T` is the type of the elements in the slice
 
 ---
@@ -1142,7 +1169,7 @@ help: function arguments must have a statically known size, borrowed types alway
 
 <!--
 - This cannot compile because [T] cannot exist on its own because it is never
-  an owned datastructure
+  an owned data structure
 - We must always put slices behind a pointer type
 -->
 
@@ -1187,9 +1214,16 @@ fn main() {
   (but also `Box<[T]>` etc)
 * The length of the slice is always stored together with the reference
 
-<div class="relative left-170px bottom-15px">
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block; width:50%;">
 
-![Memory Layout](/images/A2-slice-ptr.drawio.svg)
+<LightOrDark>
+    <template #dark>
+        <img src="/images/A2-slice-ptr-dark.svg"/>
+    </template>
+    <template #light>
+        <img src="/images/A2-slice-ptr-light.svg"/>
+    </template>
+</LightOrDark>
 
 </div>
 
@@ -1386,7 +1420,7 @@ It should be possible to have a reference to part of a string. But what is it?
 | -        | `String` | `&str`   |
 
 * There is no static variant of str
-* This would only be useful if we wanted strings of an extact length
+* This would only be useful if we wanted strings of an exact length
 * But just like we had the static slice literals, we can use `&'static str`
   literals for that instead!
 
@@ -1427,7 +1461,7 @@ fn string_len(data: &str) -> usize {
 * Define methods and associated functions with impl blocks
 * Use `Vec<T>` for growable array storage
 * Use `Box<T>` to put something on the heap
-* Use slices whenever possible instead of owned Vec and String types
+* Use slices whenever possible instead of owned `Vec<T>` and `String` types
 
 ---
 

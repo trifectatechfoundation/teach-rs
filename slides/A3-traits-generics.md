@@ -174,8 +174,8 @@ layout: default
 # Using a `trait`
 
 ```rust{all|1-2|5-6|7-9|10-12}
-// Import the type and the trait
-use my_mod::{MyAdd}
+// Import the trait
+use my_mod::MyAdd
 
 fn main() {
   let left: u32 = 6;
@@ -699,7 +699,7 @@ layout: default
 # What lifetime?
 
 - References refer to variable
-- Varable has a lifetime:
+- Variable has a lifetime:
   - Start at declaration
   - End at drop
 
