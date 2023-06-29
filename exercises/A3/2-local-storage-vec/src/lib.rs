@@ -47,6 +47,15 @@ where
     }
 }
 
+// impl<T, const N: usize> AsRef<[T]> for LocalStorageVec<T, N> {
+//     fn as_ref(&self) -> &[T] {
+//         match self {
+//             LocalStorageVec::Stack { buf, len } => &buf[..*len],
+//             LocalStorageVec::Heap(v) => v.as_ref(),
+//         }
+//     }
+// }
+
 #[cfg(test)]
 mod test {
     use crate::LocalStorageVec;
