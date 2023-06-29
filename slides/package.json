@@ -1,6 +1,8 @@
 {
   "private": true,
   "scripts": {
+    "dev-A": "slidev A-foundations/slides.md",
+
     "build-0": "slidev build --out dist-0 --base /slides/0/ 0-intro.md",
     "dev-0": "slidev 0-intro.md",
     "export-0": "slidev export 0-intro.md",

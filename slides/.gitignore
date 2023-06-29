@@ -6,3 +6,4 @@ dist-*
 tmp/
 yarn-error.log
 */**/target
+*/**/slides.md
