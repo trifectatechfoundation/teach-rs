@@ -1,3 +1,10 @@
+
+---
+layout: section
+---
+
+# Basic Syntax
+
 ---
 
 # Variables
@@ -84,6 +91,7 @@ that variable
 ```rust
 fn main() {
     let x: i32 = 20;
+    //   ^^^^^  Type annotation
 }
 ```
 
@@ -98,7 +106,7 @@ layout: two-cols
 # Integers
 
 | Length        | Signed  | Unsigned |
-|---------------|---------|----------|
+| ------------- | ------- | -------- |
 | 8 bits        | `i8`    | `u8`     |
 | 16 bits       | `i16`   | `u16`    |
 | 32 bits       | `i32`   | `u32`    |
@@ -242,14 +250,14 @@ then the code for b is not executed
 
 ```rust
 fn main() {
-    let c = 'z';
+    let c: char = 'z';
     let z = 'ℤ';
     let heart_eyed_cat = '😻';
 }
 ```
 
-- A character is a 32-bit unicode scalar value
-- Very much unlike C/C++ where char is 8 bits
+- A `char` is a 32-bit unicode scalar value
+- Very much unlike C/C++ where `char is 8 bits
 
 <!--
 - The final scalar type is the character, but it isn't often seen.
@@ -261,16 +269,22 @@ instead.
 
 ---
 
-# Strings
+# `String`s
 ```rust
-    // Owned, heap-allocated string *slice*
-    let s1: String = String::new("Hello, 🌍!");
+    
+    let s1 = String::new("Hello, 🌍!");
+    //       ^^^^^^ Owned, heap-allocated string
 ```
 
-- Rust strings are UTF-8-encoded
+- Rust `String`s are UTF-8-encoded
 - Unlike C/C++: *Not null-terminated*
 - Cannot be indexed like C strings
+- `String` is heap-allocated
 - Actually many types of strings in Rust
+    - `CString`
+    - `PathBuf`
+    - `OsString`
+    - ...
 
 <!--
 - Rusts strings are complicated, because all strings are complicated
@@ -294,7 +308,7 @@ fn main() {
 - Group multiple values into a single compound type
 - Fixed size
 - Different types per element
-- Create a tuple by writing a comma-separated list of values inside parentheses
+- Create by writing a comma-separated list of values inside parentheses
 
 ::right::
 
@@ -406,9 +420,9 @@ fn also_returns_nothing() {
 ```
 
 - The function boundary must always be explicitly annotated with types
-- Within the function body type inference may be used
+- Type inference may be used in function body
 - A function that returns nothing has the return type *unit* (`()`)
-- The function body contains a series of statements optionally ending with an
+- Function body contains a series of statements optionally ending with an
 expression
 
 <!--
@@ -440,6 +454,10 @@ fn my_fun() {
 let x = 10;
 ```
 
+```rust
+return 42;
+```
+
 <v-click>
 
 ```rust
@@ -465,9 +483,9 @@ statements
 
 - Expressions evaluate to a resulting value
 - Expressions make up most of the Rust code you write
-- Includes all control flow such as `if` and `while`
+- Includes all control flow such as `if` and `loop`
 - Includes scoping braces (`{` and `}`)
-- An expression can be turned into a statement by adding a semicolon (`;`)
+- Semicolon (`;`) turns expression into statement
 
 ```rust {all|2-5}
 fn main() {

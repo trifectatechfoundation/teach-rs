@@ -1,3 +1,10 @@
+
+---
+layout: section
+---
+
+# Slices
+
 ---
 
 # Vectors and arrays
@@ -310,7 +317,7 @@ fn main() {
 
 ---
 
-# str - the string slice
+# `str` - the string slice
 It should be possible to have a reference to part of a string. But what is it?
 
 * Not `[u8]`: not every sequence of bytes is valid UTF-8
@@ -321,7 +328,7 @@ It should be possible to have a reference to part of a string. But what is it?
 
 ---
 
-# str, String, array, Vec
+# `str`, `String`, `[T; N]`, `Vec`
 
 | Static   | Dynamic  | Borrowed |
 |----------|----------|----------|
@@ -335,8 +342,8 @@ It should be possible to have a reference to part of a string. But what is it?
 
 ---
 
-# String or str
-When do we use String and when do we use str?
+# `String` or `str`
+When do we use `String` and when do we use `str`?
 
 ```rust
 fn string_len(data: &String) -> usize {
@@ -346,7 +353,7 @@ fn string_len(data: &String) -> usize {
 
 ---
 
-# String or str
+# `String` or `str`
 When do we use String and when do we use str?
 
 ```rust
@@ -356,6 +363,5 @@ fn string_len(data: &str) -> usize {
 ```
 
 * Prefer `&str` over `String` whenever possible
-* If you need to mutate a string you might try `&mut str`, but you cannot
-  change a slice's length
+* If you need to mutate a string you might try `&mut str`, but you cannot change a slice's length
 * Use `String` or `&mut String` if you need to fully mutate the string

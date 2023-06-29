@@ -1,3 +1,9 @@
+
+---
+layout: section
+---
+# Meeting Rust
+
 ---
 layout: default
 ---

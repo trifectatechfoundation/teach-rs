@@ -1,3 +1,10 @@
+
+---
+layout: section
+---
+
+# Ownership and borrowing
+
 ---
 
 # Ownership
@@ -154,13 +161,13 @@ hello, world
 
 # Rules for borrowing and references
 
-- You may only ever have one mutable reference at the same time
-- You may have any number of immutable references at the same time as long as
-  there is no mutable reference
+- You may only ever have **one mutable reference** at the same time
+- You may have **any number of immutable references** at the same time **as long as
+  there is no mutable reference**
 - References cannot *live* longer than their owners
-- A reference will always at all times point to a valid value
+- A reference will always at all times *point to a valid value*
 
-These rules are enforced by the Rust compiler.
+These rules are enforced by Rust's borrow checker.
 
 <!--
 - Rust tries to be smart about enforcing these rules, such that you don't notice

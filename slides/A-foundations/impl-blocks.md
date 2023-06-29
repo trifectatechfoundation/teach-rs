@@ -1,7 +1,14 @@
+
+---
+layout: section
 ---
 
-# Intermission: Impl blocks
-In the past few slides we saw a syntax which wasn't explained before:
+# `impl` blocks
+
+---
+
+# `impl` blocks
+To associate functions to `structs` and `enums`, we use `impl` blocks
 
 ```rust {3}
 fn main() {
@@ -17,7 +24,7 @@ fn main() {
 
 ---
 
-# Intermission: Impl blocks
+# `impl` blocks
 
 ```rust {all|6,13|7-12|7|17}
 enum IpAddress {
@@ -50,7 +57,7 @@ fn main() {
 
 ---
 
-# Intermission: Impl blocks, self and Self
+# `self` and `Self`
 
 - The `self` parameter defines how the method can be used.
 - The `Self` type is a shorthand for the type on which the current
@@ -60,19 +67,19 @@ fn main() {
 struct Foo(i32);
 
 impl Foo {
-  fn consume(self) -> Self {
+  fn consume(self) -> Self {            // Takes `Foo` by value, returns `Foo`
     Self(self.0 + 1)
   }
 
-  fn borrow(&self) -> &i32 {
+  fn borrow(&self) -> &i32 {            // Takes immutable reference of `Foo`
     &self.0
   }
 
-  fn borrow_mut(&mut self) -> &mut i32 {
+  fn borrow_mut(&mut self) -> &mut i32 { // Takes mutable reference of `Foo`
     &mut self.0
   }
 
-  fn new() -> Self {
+  fn new() -> Self {                     // Associated function, returns `Foo`
     Self(0)
   }
 }
@@ -80,15 +87,15 @@ impl Foo {
 
 ---
 
-# Intermission: Impl blocks, the self parameter
+# `impl` blocks, the `self` parameter
 The self parameter is called the *receiver*.
 
-* The self parameter is always the first and it always has the type on which it
+* The `self` parameter is always the first and it always has the type on which it
   was defined
-* We never specify the type of the self parameter
-* We can optionally prepend `&` or `&mut ` to self to indicate that we take
+* We never specify the type of the `self` parameter
+* We can optionally prepend `&` or `&mut ` to `self` to indicate that we take
   a value by reference
-* Absence of a self parameter means that the function is an associated function
+* Absence of a `self` parameter means that the function is an associated function
   instead
 
 ```rust

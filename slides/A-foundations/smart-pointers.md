@@ -1,18 +1,43 @@
+
+---
+layout: section
 ---
 
-# Boxing
-There are several reasons to box a variable on the heap
+# Smart pointers
 
-* When something is too large to move around
-* We need something that is sized dynamically
-* For writing recursive data structures
+---
+
+# Put it in a `Box`
+That pointer from the stack to the heap, how do we create such a thing?
+
+* Boxing something is the way to store a value on the heap
+* A `Box` uniquely owns that value, there is no one else that also owns that same
+  value
+* Even if the type inside the box is `Copy`, the box itself is not, move
+  semantics apply to a box.
 
 ```rust
-struct Node {
-  data: Vec<u8>,
-  parent: Node,
+fn main() {
+  // put an integer on the heap
+  let boxed_int = Box::new(10);
 }
 ```
+<div style="margin-top: 50px; margin-left:auto; margin-right:auto; display:block;">
+
+<LightOrDark>
+    <template #dark>
+      <div style="padding: 20px; background-color:#1b1b1b; border-radius: var(--slidev-code-radius) !important;">
+          <img src="/images/A2-box-in-memory-dark.svg"/>
+      </div>
+    </template>
+    <template #light>
+        <div style="padding: 20px; background-color:#F8F8F8; border-radius: var(--slidev-code-radius) !important;">
+          <img src="/images/A2-box-in-memory-light.svg"/>
+        </div>
+    </template>
+</LightOrDark>
+
+</div>
 
 ---
 
@@ -39,3 +64,9 @@ struct Node {
   sized dynamically, but even so, a vector can be large, whereas an array will
   generally always have a limited size
 -->
+
+---
+
+# To Do
+
+Issue: [tweedegolf/101-rs#68](https://github.com/tweedegolf/101-rs/issues/68)

@@ -1,3 +1,47 @@
+
+---
+layout: section
+---
+
+# Optionals and Error handling
+---
+
+# Generics
+Structs become even more powerful if we introduce a little of generics
+
+```rust
+struct PointFloat(f64, f64);
+struct PointInt(i64, i64);
+```
+
+We are repeating ourselves here, what if we could write a data structure for
+both of these cases?
+
+<v-click>
+
+```rust
+struct Point<T>(T, T);
+
+fn main() {
+  let float_point: Point<f64> = Point(10.0, 10.0);
+  let int_point: Point<i64> = Point(10, 10);
+}
+```
+
+Generics are much more powerful, but this is all we need for now
+
+</v-click>
+
+<!--
+* The upper case letter between the angled brackets introduces a generic type
+  parameter.
+* We can now use that generic type variable we introduced as a type name
+* Then at the point of using the type we can specify which actual type we
+  want to use
+* Generics are much more powerful, but this is enough for now
+-->
+
+
 ---
 
 # Option

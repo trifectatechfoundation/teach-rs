@@ -1,7 +1,8 @@
 ---
 layout: section
 ---
-# Introduction to generics
+
+# Traits and generics
 
 ---
 layout: default
@@ -17,6 +18,8 @@ fn add_f32(l: f32, r: f32) -> f32 { /* -snip- */ }
 
 /* ... */
 ```
+
+No-one likes repeating themselves
 
 <v-click>
 <div>
@@ -334,3 +337,31 @@ Trait can be implemented for a type **iff**:
 - Or your crate defines the type
 
 Or both, of course
+
+---
+layout: default
+---
+
+# Compiling generic functions
+
+```rust
+impl MyAdd for i32 {/* - snip - */}
+impl MyAdd for f32 {/* - snip - */}
+
+fn add_values<T: MyAdd>(left: &T, right: &T) -> T
+{
+  left.my_add(right)
+}
+
+fn main() {
+  let sum_one = add_values(&6, &8);
+  assert_eq!(sum_one, 14);
+  let sum_two = add_values(&6.5, &7.5);
+  println!("Sum two: {}", sum_two); // 14
+}
+```
+
+Code is <em>monomorphized</em>:
+ - Two versions of `add_values` end up in binary
+ - Optimized separately and very fast to run (static dispatch)
+ - Slow to compile and larger binary

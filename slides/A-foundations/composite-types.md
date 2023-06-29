@@ -1,3 +1,10 @@
+
+---
+layout: section
+---
+
+# Composite types
+
 ---
 
 # Types redux
@@ -144,23 +151,21 @@ fn main() {
 }
 ```
 
-* Note: an enum always is as large as the largest variant
+* An enum always is as large as the largest variant + tag
 
-<!--<div class="relative">-->
-
-<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+<div style="margin-left:auto; margin-right:auto; display:block; width:100%;">
 
 <LightOrDark>
     <template #dark>
-        <center>
+        <div style="padding: 20px; background-color:#1b1b1b; border-radius: var(--slidev-code-radius) !important;">
             <img src="/images/A2-enum-memory-dark.svg"/>
-        </center>
+        </div>
     </template>
     <template #light>
-        <img src="/images/A2-enum-memory-light.svg"/>
+        <div style="padding: 20px; background-color:#F8F8F8; border-radius: var(--slidev-code-radius) !important;">
+          <img src="/images/A2-enum-memory-light.svg"/>
+        </div>
     </template>
 </LightOrDark>
 
 </div>
-
-<!--</div>-->

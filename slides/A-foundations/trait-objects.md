@@ -1,6 +1,7 @@
 ---
 layout: section
 ---
+
 # Trait objects & dynamic dispatch
 
 ---

@@ -1,7 +1,14 @@
+
+---
+layout: section
+---
+
+# Closures
+
 ---
 layout: default
 ---
-# Intermezzo: Closures
+# Closures
 
 - Closures are anonymous (unnamed) functions
 - they can capture ("close over") values in their scope
@@ -28,3 +35,8 @@ fn bar() -> i64 {
 let evens: Vec<_> = some_iterator.filter(|x| x % 2 == 0).collect();
 ```
 
+---
+
+# To do
+
+Issue: [tweedegolf/101-rs#66](https://github.com/tweedegolf/101-rs/issues/66)
