@@ -11,13 +11,15 @@ members = [
     "exercises/A/7-boxed-data",
     "exercises/A/8-bonus-ring-buffer",
     "exercises/A/9-local-storage-vec/",
+    "exercises/A/10-config-reader",
+
     "exercises/B/1-my-serde-app",
     "exercises/B/3-fizzbuzz",
+    "exercises/B/4-bsn",
+    "exercises/B/5-3d-printer",
+
     "exercises/C/1-tf-idf",
     "exercises/C/2-mutex",
-    "exercises/D/1-bsn",
-    "exercises/D/2-3d-printer",
-    "exercises/D/3-config-reader",
     "exercises/E/1-channels",
     "exercises/E/2-chat",
     "exercises/F/1-linked-list",
