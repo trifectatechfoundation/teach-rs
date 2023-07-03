@@ -55,6 +55,40 @@ cargo add itertools
 
 *Note: cargo add is a relatively new addition to cargo, previously this used to require a plugin called cargo-edit*
 
+## Using a `crate`
+
+Crates included in `Cargo.toml` can be:
+  - imported with a `use`
+  - qualified directly using path separator `::`
+
+```rust
+// Import an item from this crate, called `my_first_app`
+use my_first_app::add;
+// Import an item from the `tracing` dependency
+use tracing::info;
+
+fn main() {
+    // Use qualified path
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::DEBUG)
+        .init();
+
+    let x = 4;
+    let y = 6;
+
+    // Use imported items
+    let z = add(x, y);
+    info!("Let me just add {x} and {y}: {z}")
+}
+
+```
+
+To refer to an item from a dependency, you'll either have to import it, or qualify it.
+Importing an item is done with the `use` keyword like on the top of this file.
+You can now use the imported item without further qualification.
+Qualifying a path is done using the `::` path separator
+Which method of referring to an item depends on how readable it makes your code in a certain context.
+
 ## Dependencies? Crates!
 The crate is the *compilation unit* for Rust
 
