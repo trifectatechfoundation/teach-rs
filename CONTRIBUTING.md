@@ -22,3 +22,9 @@ Any exercise scaffolding can be added as a new Cargo project in `exercises/[your
 Prefix the exercise scaffolding project folders with the exercise number.
 
 Have a look at the structure of the current slides and exercises to get a better understanding of how modules are organized.
+
+# Trying it out on your students
+Rust-101 is distributed under a [Creative Commons](https://creativecommons.org/licenses/by-sa/4.0/) license, so even if you don't have the time to contribute to this repository directly, you are free to teach from it
+and to adapt its material to suit your students' needs. You can also help the development of Rust-101 by communicating your experiences---what modules did your students like, which ones did they struggle with?
+
+Just open an issue and don't forget to mention (without going into personal details) what the background of your students is and which parts of the course you used.
