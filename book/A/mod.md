@@ -125,7 +125,17 @@ impl<T, const N: usize> From<Vec<T>> for LocalStorageVec<T, N> {
 
 Run `cargo test` to validate your implementation.
 
-### A.9.C `impl LocalStorageVec` ⭐⭐
+### A.9.C `AsRef` and `AsMut` ⭐⭐
+[`AsRef`](https://doc.rust-lang.org/std/convert/trait.AsRef.html) and [`AsMut`](https://doc.rust-lang.org/std/convert/trait.AsMut.html) are used to implement *cheap* reference-to-reference coercion. For instance, our `LocalStorageVec<T, N>` is somewhat similar to a slice `&[T]`, as both represent a contiguous series of `T` values. This is true whether the `LocalStorageVec` buffer resides on the stack or on the heap. 
+
+Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`.
+
+<details>
+    <summary><b>Hint</b></summary>
+    Make sure to take into account the value of `len` for the `Stack` variant of `LocalStorageVec` when creating a slice.
+</details>
+
+### A.9.D `impl LocalStorageVec` ⭐⭐
 To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a associated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
 
 The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`:
@@ -139,7 +149,7 @@ The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` an
  Uncomment the corresponding test cases and make them compile and pass. **Be sure to have a look at the methods provided for slices [`[T]`](https://doc.rust-lang.org/std/primitive.slice.html) and [`Vec<T>`](https://doc.rust-lang.org/std/vec/struct.Vec.html)** Specifically, `[T]::copy_within` and `Vec::extend_from_slice` can be of use.
 
 
-### A.9.D `Iterator` and `IntoIterator` ⭐⭐
+### A.9.E `Iterator` and `IntoIterator` ⭐⭐
 Our `LocalStorageVec` can be used in the real world now, but we still shouldn't be satisfied. There are various traits in the standard library that we can implement for our `LocalStorageVec` that would make users of our crate happy.
 
 First off, we will implement the [`IntoIterator`](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html) and [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) traits. Go ahead and uncomment the `it_iters` test case. Let's define a new type:
@@ -157,16 +167,6 @@ This is the type we'll implement the `Iterator` trait on. You'll need to specify
 Take a look at the list of methods under the ['provided methods' section](https://doc.rust-lang.org/std/iter/trait.Iterator.html). In there, lots of useful methods that come free with the implementation of the `Iterator` trait are defined, and implemented in terms of the `next` method. Knowing in the back of your head what methods there are, greatly helps in improving your efficiency in programming with Rust. Which of the provided methods can you override in order to make the implementation of `LocalStorageVecIter` more efficient, given that we can access the fields and methods of `LocalStorageVec`?
 
 Now to instantiate a `LocalStorageVecIter`, implement the [`IntoIter`] trait for it, in such a way that calling `into_iter` yields a `LocalStorageVecIter`.
-
-### A.9.E `AsRef` and `AsMut` ⭐⭐
-[`AsRef`](https://doc.rust-lang.org/std/convert/trait.AsRef.html) and [`AsMut`](https://doc.rust-lang.org/std/convert/trait.AsMut.html) are used to implement *cheap* reference-to-reference coercion. For instance, our `LocalStorageVec<T, N>` is somewhat similar to a slice `&[T]`, as both represent a contiguous series of `T` values. This is true whether the `LocalStorageVec` buffer resides on the stack or on the heap. 
-
-Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`.
-
-<details>
-    <summary><b>Hint</b></summary>
-    Make sure to take into account the value of `len` for the `Stack` variant of `LocalStorageVec` when creating a slice.
-</details>
 
 ### A.9.F `Index` ⭐⭐
 To allow users of the `LocalStorageVec` to read items or slices from its buffer, we can implement the [`Index`](https://doc.rust-lang.org/std/ops/trait.Index.html) trait. This trait is generic over the type of the item used for indexing. In order to make our `LocalStorageVec` versatile, we should implement: 

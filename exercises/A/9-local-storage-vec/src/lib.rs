@@ -93,13 +93,31 @@ mod test {
 
     // Uncomment me for part C
     // #[test]
+    // fn it_as_refs() {
+    //     let vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
+    //     let slice: &[i32] = vec.as_ref();
+    //     assert!(slice.len() == 128);
+    //     let vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
+    //     let slice: &[i32] = vec.as_ref();
+    //     assert!(slice.len() == 128);
+    //
+    //     let mut vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
+    //     let slice_mut: &[i32] = vec.as_mut();
+    //     assert!(slice_mut.len() == 128);
+    //     let mut vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
+    //     let slice_mut: &[i32] = vec.as_mut();
+    //     assert!(slice_mut.len() == 128);
+    // }
+
+    // Uncomment me for part D
+    // #[test]
     // fn it_constructs() {
     //     let vec: LocalStorageVec<usize, 10> = LocalStorageVec::new();
     //     // Assert that the call to `new` indeed yields a `Stack` variant with zero length
     //     assert!(matches!(vec, LocalStorageVec::Stack { buf: _, len: 0 }));
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_lens() {
     //     let vec: LocalStorageVec<_, 3> = LocalStorageVec::from([0, 1, 2]);
@@ -108,7 +126,7 @@ mod test {
     //     assert_eq!(vec.len(), 3);
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_pushes() {
     //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::new();
@@ -122,7 +140,7 @@ mod test {
     //     assert!(matches!(vec, LocalStorageVec::Heap(v) if v.len() == 256))
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_pops() {
     //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128]);
@@ -144,7 +162,7 @@ mod test {
     //     assert_eq!(vec.pop(), None);
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_inserts() {
     //     let mut vec: LocalStorageVec<_, 4> = LocalStorageVec::from([0, 1, 2]);
@@ -168,7 +186,7 @@ mod test {
     //     assert_eq!(vec.as_ref(), &[0, 3, 1, 2, 3, 4])
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_removes() {
     //     let mut vec: LocalStorageVec<_, 4> = LocalStorageVec::from([0, 1, 2]);
@@ -190,7 +208,7 @@ mod test {
     //     assert_eq!(elem, 1);
     // }
 
-    // Uncomment me for part C
+    // Uncomment me for part D
     // #[test]
     // fn it_clears() {
     //     let mut vec: LocalStorageVec<_, 10> = LocalStorageVec::from([0, 1, 2, 3]);
@@ -204,7 +222,7 @@ mod test {
     //     assert_eq!(vec.len(), 0);
     // }
 
-    // Uncomment me for part D
+    // Uncomment me for part E
     // #[test]
     // fn it_iters() {
     //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 32]);
@@ -220,24 +238,6 @@ mod test {
     //         assert_eq!(item, 0);
     //     }
     //     assert_eq!(iter.next(), None);
-    // }
-
-    // Uncomment me for part E
-    // #[test]
-    // fn it_as_refs() {
-    //     let vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
-    //     let slice: &[i32] = vec.as_ref();
-    //     assert!(slice.len() == 128);
-    //     let vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
-    //     let slice: &[i32] = vec.as_ref();
-    //     assert!(slice.len() == 128);
-    //
-    //     let mut vec: LocalStorageVec<i32, 256> = LocalStorageVec::from([0; 128]);
-    //     let slice_mut: &[i32] = vec.as_mut();
-    //     assert!(slice_mut.len() == 128);
-    //     let mut vec: LocalStorageVec<i32, 32> = LocalStorageVec::from([0; 128]);
-    //     let slice_mut: &[i32] = vec.as_mut();
-    //     assert!(slice_mut.len() == 128);
     // }
 
     // Uncomment me for part F
