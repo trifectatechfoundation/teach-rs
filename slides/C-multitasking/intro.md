@@ -1,3 +1,4 @@
+
 ---
 layout: center
 ---
@@ -15,3 +16,9 @@ layout: default
 | 1 or more cores  | 2 or more cores   |
 | <img src="https://tienda.bricogeek.com/6417-thickbox_default/sparkfun-thing-plus-esp32-wroom.jpg" class="h-40 center" /> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/IBM_Blue_Gene_P_supercomputer.jpg/1920px-IBM_Blue_Gene_P_supercomputer.jpg" class="h-40 center" /> |
 | Waiting for events | Waiting for computation |
+
+---
+
+# To do
+
+Issue: [tweedegolf/101-rs#74](https://github.com/tweedegolf/101-rs/issues/74)
