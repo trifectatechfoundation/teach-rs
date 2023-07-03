@@ -1,8 +1,4 @@
-# Module E - Async and Rust for Web
-
-[Slides](/slides/E/) (or [pdf](/slides/E-async-web.pdf))
-
-## E.3 Pastebin ⭐⭐⭐
+## D.1 Pastebin ⭐⭐⭐
 This exercise is about writing a simple [pastebin](https://en.wikipedia.org/wiki/Pastebin) web server. Like the quizzer app, you will need to set up the project yourself. This webserver will be powered by [`axum`](https://lib.rs/crates/axum).
 
 - Data is kept in memory. Bonus if you use a database or `sqlite`, but first make the app function properly without.
