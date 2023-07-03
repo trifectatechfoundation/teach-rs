@@ -29,6 +29,7 @@ Module A: Foundations
 #[docdoc:path="slices.md"]
 #[docdoc:path="traits-generics.md"]
 #[docdoc:path="lifetime-annotations.md"]
+#[docdoc:path="std-traits.md"]
 #[docdoc:path="closures.md"]
 #[docdoc:path="smart-pointers.md"]
 #[docdoc:path="trait-objects.md"]
