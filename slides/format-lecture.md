@@ -43,19 +43,6 @@ layout: default
 -->
 
 ---
-layout: section
----
-# Recap Quiz
-
-## [Link to quiz here]
-
----
-layout: iframe
-url: http://your-quiz-url-here
----
-<!-- insert URL to quiz roundup in slide option `url` -->
-
----
 layout: default
 ---
 # In this module
@@ -66,22 +53,6 @@ layout: default
 ---
 # Learning objectives
 <!-- List this module's learning objectives -->
-
----
-layout: section
----
-# Mindmap
-
-What do you know already about this subject?
-
-## [Mindmap access code here]
-<!-- Quick mindmap, show mindmap access code -->
-
----
-layout: iframe
-url: http://your-interactive-mindmap-url-here
----
-<!-- insert URL to live mindmap in slide option `url` -->
 
 ---
 layout: cover

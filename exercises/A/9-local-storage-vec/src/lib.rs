@@ -28,7 +28,7 @@ where
             // We crate an `Iterator` of the passed array,
             let mut it = array.into_iter();
             Self::Stack {
-                // This is a trick for copyng an array into another one that's
+                // This is a trick for copying an array into another one that's
                 // at least as long as the original, without having to create
                 // default values more than strictly necessary. The `[(); M]`
                 // array is zero-sized, meaning there's no cost to instantiate it.
