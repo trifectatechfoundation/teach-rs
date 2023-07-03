@@ -20,8 +20,9 @@ members = [
 
     "exercises/C/1-tf-idf",
     "exercises/C/2-mutex",
-    "exercises/E/1-channels",
-    "exercises/E/2-chat",
+    "exercises/C/4-async-channels",
+    "exercises/C/5-async-chat",
+
     "exercises/F/1-linked-list",
     "exercises/F/2-execve",
     "exercises/F/3-tagged-union",
