@@ -9,6 +9,10 @@
     "dev-B": "slidev B-crate-engineering/slides.md",
     "export-B": "slodev export B-crate-engineering/slides.md",
 
+    "build-C": "slidev build --out dist-C --base /slides/C/ C-multitasking/slides.md",
+    "dev-C": "slidev C-multitasking/slides.md",
+    "export-C": "slodev export C-multitasking/slides.md",
+
     "_": ""
   },
   "dependencies": {
