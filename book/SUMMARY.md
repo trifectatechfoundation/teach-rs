@@ -2,7 +2,7 @@
 
 - [0 - Installation](./0-install/mod.md)
 - [A - Foundations](./A/mod.md)
-- [B - Application programming](./B-application-programming/mod.md)
+- [B - Crate engineering](./B/mod.md)
 - [C - Concurrency & Parallelism](./C-concurrency-parallelism/mod.md)
 - [D - Trait objects and Rust patterns](./D-trait-objects-patterns/mod.md)
 - [E - Async and Rust for Web](./E-async-web/mod.md)

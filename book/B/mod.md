@@ -135,7 +135,7 @@ The BSN is a number that adheres to some rules.
 In this exercise, we will create a Rust type that guarantees that it represents a valid BSN.
 
 
-## B.4.A Newtype ⭐⭐
+### B.4.A Newtype ⭐⭐
 In this part we will implement the BSN number validation, as well as a fallible constructor.
 
 A BSN is valid if and only if it matches the following criteria:
@@ -159,7 +159,7 @@ To try just the `test_validation` test case, run:
 cargo test -- test_validation
 ```
 
-## B.4.A Visitor with Serde ⭐⭐⭐
+### B.4.A Visitor with Serde ⭐⭐⭐
 Next up is implementing the `serde::Serialize` and `serde::Deserialize` traits, to support serialization and deserialization of `Bsn`s.
 In this case, simply deriving those traits won't suffice, as we want to represent the `BSN` as a string after serialization.
 We also want to deserialize strings directly into `Bsn`s, while still upholding the guarantee that an instantiated `Bsn` represents a valid BSN.
