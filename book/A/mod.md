@@ -1,8 +1,67 @@
-# Module A3 - Traits and generics
+# Module A - Language basics
 
-[Slides](/slides/A3/) (or [pdf](/slides/A3-traits-generics.pdf))
+[Slides](/slides/A/) (or [pdf](/slides/A-foundations.pdf))
 
-## A3 Local Storage Vec
+## A.1 Basic syntax
+Open `exercises/A/1-basic-syntax` in your editor. This folder contains a number of exercises with which you can practise basic Rust syntax.
+
+While inside the `exercises/A/1-basic-syntax` folder, to get started, run:
+```bash
+cargo run --bin 01
+```
+
+This will try to compile exercise 1. Try and get the example to run, and continue on with the next exercise by replacing the number of the exercise in the cargo run command.
+
+Some exercises contain unit tests. To run the test in `src/bin/01.rs`, run
+```bash
+cargo test --bin 01
+```
+Make sure all tests pass!
+
+## A.2 Move semantics
+*This exercise is adapted from the [move semantics exercise](https://github.com/rust-lang/rustlings/tree/main/exercises/move_semantics) from Rustlings*
+
+
+This exercise enables you to practise with move semantics. It works similarly to exercise `A.1`. To get started, `exercises/A/2-move-semantics` in your editor and run
+```bash
+cargo run --bin 01
+```
+
+`01.rs` should compile as is, but you'll have to make sure the others compile as well. For some exercises, instructions are included as doc comments at the top of the file. Make sure to adhere to them.
+
+[Slides](/slides/A2/) (or [pdf](/slides/A2-advanced-intro.pdf))
+
+## A.3 Borrowing
+
+Fix the two examples in the `exercises/A/3-borrowing` crate! Don't forget you
+can run individual binaries by using `cargo run --bin 01` in that directory!
+Make sure to follow the instructions that are in the comments!
+
+## A.4 Error Propagation
+
+Follow the instructions in the comments of `excercises/A/4-error-propagating/src/main.rs`!
+
+## A.5 Slices
+
+Follow the instructions in the comments of `excercises/A/5-slices/src/main.rs`!
+Don't take too much time on the extra assignment, instead come back later once
+you've done the rest of the excercises.
+
+## A.6 Error Handling
+
+Follow the instructions in the comments of `excercises/A/6-error-handling/src/main.rs`!
+
+## A.7 Boxed Data
+
+Follow the instructions in the comments of `excercises/A/7-boxed-data/src/main.rs`!
+
+## A.7 Bonus - Ring Buffer
+
+This is a bonus exercise! Follow the instructions in the comments of
+`excercises/A2/8-bonus-ring-buffer/src/main.rs`!
+
+
+## A.9 Local Storage Vec
 In this exercise, we'll create a type called `LocalStorageVec`, which is generic list of items that resides either on the stack or the heap, depending on its size. If its size is small enough for items to be put on the stack, the `LocalStorageVec` buffer is backed by an array. `LocalStorageVec` is not only generic over the type  (`T`) of items in the list, but also by the size (`N`) of this stack-located array using a relatively new feature called ["const generics"](https://doc.rust-lang.org/reference/items/generics.html#const-generics). Once the `LocalStorageVec` contains more items than fit in the array, a heap based [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html) is allocated as space for the items to reside in.
 
 **Within this exercise, the objectives are annotated with a number of stars (⭐), indicating the difficulty. You are likely not to be able to finish all exercises during the tutorial session**
@@ -11,9 +70,9 @@ In this exercise, we'll create a type called `LocalStorageVec`, which is generic
 1. When is such a data structure more efficient than a standard `Vec`?
 2. What are the downsides, compared to just using a `Vec`?
 
-Open the `exercises/A3/2-local-storage-vec` crate. It contains a `src/lib.rs` file, meaning this crate is a library. `lib.rs` contains a number of tests, which can be run by calling `cargo test`. Don't worry if they don't pass or even compile right now: it's your job to fix that in this exercise. Most of the tests are commented out right now, to enable a step-by-step approach. **Before you begin, have a look at the code and the comments in there, they contain various helpful clues.**
+Open the `exercises/A/9-local-storage-vec` crate. It contains a `src/lib.rs` file, meaning this crate is a library. `lib.rs` contains a number of tests, which can be run by calling `cargo test`. Don't worry if they don't pass or even compile right now: it's your job to fix that in this exercise. Most of the tests are commented out right now, to enable a step-by-step approach. **Before you begin, have a look at the code and the comments in there, they contain various helpful clues.**
 
-### A3.A Defining the type ⭐
+### A.9.A Defining the type ⭐
 Currently, the `LocalStorageVec` `enum` is incomplete. Give it two variants: `Stack` and `Heap`. `Stack` contains two named fields, `buf` and `len`. `buf` will be the array with a capacity to hold `N` items of type `T`; `len` is a field of type `usize` that will denote the amount of items actually stored. The `Heap` variant has an unnamed field containing a `Vec<T>`. If you've defined the `LocalStorageVec` variants correctly, running `cargo test` should output something like
 
 ```txt
@@ -49,7 +108,7 @@ pub enum LocalStorageVec<T, const N: usize> {
 ```
 </details>
 
-### A3.B `impl`-ing `From<Vec<T>>` ⭐
+### A.9.B `impl`-ing `From<Vec<T>>` ⭐
 
 Uncomment the test `it_from_vecs`, and add an implementation for `From<Vec<T>>` to `LocalStorageVec<T>`. To do so, copy the following code in your `lib.rs` file and replace the `todo!` macro invocation with your code that creates a heap-based `LocalStorageVec` containing the passed `Vec<T>`.
 
@@ -66,7 +125,7 @@ impl<T, const N: usize> From<Vec<T>> for LocalStorageVec<T, N> {
 
 Run `cargo test` to validate your implementation.
 
-### A3.C `impl LocalStorageVec` ⭐⭐
+### A.9.C `impl LocalStorageVec` ⭐⭐
 To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a associated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
 
 The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`:
@@ -80,7 +139,7 @@ The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` an
  Uncomment the corresponding test cases and make them compile and pass. **Be sure to have a look at the methods provided for slices [`[T]`](https://doc.rust-lang.org/std/primitive.slice.html) and [`Vec<T>`](https://doc.rust-lang.org/std/vec/struct.Vec.html)** Specifically, `[T]::copy_within` and `Vec::extend_from_slice` can be of use.
 
 
-### A3.D `Iterator` and `IntoIterator` ⭐⭐
+### A.9.D `Iterator` and `IntoIterator` ⭐⭐
 Our `LocalStorageVec` can be used in the real world now, but we still shouldn't be satisfied. There are various traits in the standard library that we can implement for our `LocalStorageVec` that would make users of our crate happy.
 
 First off, we will implement the [`IntoIterator`](https://doc.rust-lang.org/std/iter/trait.IntoIterator.html) and [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) traits. Go ahead and uncomment the `it_iters` test case. Let's define a new type:
@@ -99,7 +158,7 @@ Take a look at the list of methods under the ['provided methods' section](https:
 
 Now to instantiate a `LocalStorageVecIter`, implement the [`IntoIter`] trait for it, in such a way that calling `into_iter` yields a `LocalStorageVecIter`.
 
-### A3.E `AsRef` and `AsMut` ⭐⭐
+### A.9.E `AsRef` and `AsMut` ⭐⭐
 [`AsRef`](https://doc.rust-lang.org/std/convert/trait.AsRef.html) and [`AsMut`](https://doc.rust-lang.org/std/convert/trait.AsMut.html) are used to implement *cheap* reference-to-reference coercion. For instance, our `LocalStorageVec<T, N>` is somewhat similar to a slice `&[T]`, as both represent a contiguous series of `T` values. This is true whether the `LocalStorageVec` buffer resides on the stack or on the heap. 
 
 Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`.
@@ -109,7 +168,7 @@ Uncomment the `it_as_refs` test case and implement `AsRef<[T]>` and `AsMut<[T]>`
     Make sure to take into account the value of `len` for the `Stack` variant of `LocalStorageVec` when creating a slice.
 </details>
 
-### A3.F `Index` ⭐⭐
+### A.9.F `Index` ⭐⭐
 To allow users of the `LocalStorageVec` to read items or slices from its buffer, we can implement the [`Index`](https://doc.rust-lang.org/std/ops/trait.Index.html) trait. This trait is generic over the type of the item used for indexing. In order to make our `LocalStorageVec` versatile, we should implement: 
 
 - `Index<usize>`, allowing us to get a single item by calling `vec[1]`;
@@ -119,11 +178,11 @@ To allow users of the `LocalStorageVec` to read items or slices from its buffer,
 
 Each of these implementations can be implemented in terms of the `as_ref` implementation, as slices `[T]` all support indexing by the previous types. That is, `[T]` also implements `Index` for those types. Uncomment the `it_indexes` test case and run `cargo test` in order to validate your implementation.
 
-### A3.G Removing bounds ⭐⭐
+### A.9.G Removing bounds ⭐⭐
 When we implemented the borrowing `Iterator`, we saw that it's possible to define methods in separate `impl` blocks with different type bounds. Some of the functionality you wrote used the assumption that `T` is both `Copy` and `Default`. However, this means that each of those methods are only defined for `LocalStorageVec`s containing items of type `T` that in fact do implement `Copy` and `Default`, which is not ideal. How many methods can you rewrite having one or both of these bounds removed?
 
 
-#### A3.H Borrowing `Iterator` ⭐⭐⭐
+#### A.9.H Borrowing `Iterator` ⭐⭐⭐
 We've already got an iterator for `LocalStorageVec`, though it has the limitation that in order to construct it, the `LocalStorageVec` needs to be consumed. What if we only want to iterate over the items, and not consume them? We will need another iterator type, one that contains an immutable reference to the `LocalStorageVec` and that will thus need a lifetime annotation. Add a method called `iter` to `LocalStorageVec` that takes a shared `&self` reference, and instantiates the borrowing iterator. Implement the `Iterator` trait with the appropriate `Item` reference type for your borrowing iterator. To validate your code, uncomment and run the `it_borrowing_iters` test case.
 
 Note that this time, the test won't compile if you require the items of `LocalStorageVec` be `Copy`! That means you'll have to define `LocalStorageVec::iter` in a new `impl` block that does not put this bound on `T`:
@@ -140,7 +199,7 @@ impl<T: const N: usize> LocalStorageVec<T, N> {
 
 Defining methods in separate `impl` blocks means some methods are not available for certain instances of the generic type. In our case, the `new` method is only available for `LocalStorageVec`s containing items of type `T` that implement both `Copy` and `Default`, but `iter` is available for all `LocalStorageVec`s.
 
-### A3.I Generic `Index` ⭐⭐⭐⭐
+### A.9.I Generic `Index` ⭐⭐⭐⭐
 You've probably duplicated a lot of code in the last exercise. We can reduce the boilerplate by defining an empty trait:
 
 ```rust
@@ -158,7 +217,7 @@ Next, replace the implementations from the previous exercise with a blanket impl
 
 If you've done this correctly, `it_indexes` should again compile and pass.
 
-### A3.J `Deref` and `DerefMut` ⭐⭐⭐⭐
+### A.9.J `Deref` and `DerefMut` ⭐⭐⭐⭐
 The next trait that makes our `LocalStorageVec` more flexible in use are [`Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html) and [`DerefMut`](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) that utilize the 'deref coercion' feature of Rust to allow types to be treated as if they were some type they look like. That would allow us to use any [method that is defined on `[T]`](https://doc.rust-lang.org/std/primitive.slice.html) by calling them on a `LocalStorageVec`. Before continueing, read the section ['Treating a Type Like a Reference by Implementing the Deref Trait'](https://doc.rust-lang.org/book/ch15-02-deref.html#treating-a-type-like-a-reference-by-implementing-the-deref-trait) from The Rust Programming Language (TRPL). **Don't confuse deref coercion with any kind of inheritance! Using `Deref` and `DerefMut` for inheritance is frowned upon in Rust.**
 
 Below, an implementation of `Deref` and `DerefMut` is provided in terms of the `AsRef` and `AsMut` implementations. Notice the specific way in which `as_ref` and `as_mut` are called.
@@ -181,3 +240,4 @@ impl<T, const N: usize> DerefMut for LocalStorageVec<T, N> {
 
 **Question**
 - Replacing the implementation of `deref` with `self.as_ref()` results in a stack overflow when running an unoptimized version. Why? (Hint: deref coercion)
+
