@@ -3,13 +3,13 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A: Foundation"
+info: "Rust - A: Foundations"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust - A: Foundation"
+title: "Rust - A: Foundations"
 ---
 
 # Rust programming
