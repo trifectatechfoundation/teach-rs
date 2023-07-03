@@ -30,10 +30,6 @@ members = [
     "exercises/G/2-crc-in-rust",
     "exercises/G/3-tweetnacl-bindgen",
     "exercises/G/4-pyo3",
-
-    # Examples used in slides
-    "slides/examples/B-application-programming",
-    "slides/examples/E-async-web",
 ]
 
 exclude = [
