@@ -30,6 +30,8 @@ members = [
     "exercises/G/2-crc-in-rust",
     "exercises/G/3-tweetnacl-bindgen",
     "exercises/G/4-pyo3",
+
+    "modmod",
 ]
 
 exclude = [
