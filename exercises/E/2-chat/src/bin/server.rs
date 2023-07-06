@@ -55,7 +55,7 @@ async fn handle_incoming(
     todo!("For each further incoming line, deserialize the line into a Message");
     todo!("If the message is a Message::User, broadcast the message as-is using tx");
     todo!(
-        "If the message is a Message::SimpleMessage,
+        "If the message is a Message::ClientMessage,
         convert it into a Message::Chat and broadcast it using tx"
     );
     todo!("If the message is a Message::Chat, ignore it");
