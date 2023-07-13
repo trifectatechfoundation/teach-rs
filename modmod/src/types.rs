@@ -1,7 +1,8 @@
 use std::path::{Path, PathBuf};
 
-use crate::{load::Load, Result};
+use crate::load::{Load, LoadError};
 
+use error_stack::Result;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -48,7 +49,7 @@ pub struct Module {
 
 impl PathTo<Module> {
     #[allow(clippy::type_complexity)]
-    pub fn load_topics(&self) -> Result<Vec<(&Unit, Vec<PathTo<Topic>>)>> {
+    pub fn load_topics(&self) -> Result<Vec<(&Unit, Vec<PathTo<Topic>>)>, LoadError> {
         let Self { path, data } = self;
         let mut units = Vec::with_capacity(data.units.len());
         let base_path = path.parent().unwrap();
@@ -74,13 +75,13 @@ pub struct Track {
 }
 
 impl Track {
-    pub fn load(path: impl AsRef<Path>) -> Result<PathTo<Self>> {
+    pub fn load(path: impl AsRef<Path>) -> Result<PathTo<Self>, LoadError> {
         Load::load(path.as_ref(), None)
     }
 }
 
 impl PathTo<Track> {
-    pub fn load_modules(&self) -> Result<Vec<PathTo<Module>>> {
+    pub fn load_modules(&self) -> Result<Vec<PathTo<Module>>, LoadError> {
         let Self { path, data } = self;
         let mut modules = Vec::with_capacity(data.modules.len());
         let base_path = Some(path.parent().unwrap());
