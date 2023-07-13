@@ -1,4 +1,3 @@
-# Module 0 - Installing the tools
 In this file you'll find instructions on how to install the tools we'll use during the course.
 
 All of these tools are available for Linux, macOS and Windows users.

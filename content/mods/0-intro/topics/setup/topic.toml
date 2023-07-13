@@ -1,0 +1,5 @@
+name = "Setting up"
+
+[[exercises]]
+name = "Setup Your Installation"
+path = "exercises/setup"

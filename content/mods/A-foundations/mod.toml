@@ -3,7 +3,7 @@ description = "Get to learn the Rust programming language"
 
 [[units]]
 name = "Introduction"
-template = "1-intro.md"
+template = "intro.md"
 topics = [
     "topics/why-rust/topic.toml",
     "topics/first-project/topic.toml",
