@@ -1,18 +1,6 @@
 [workspace]
 members = [
     # Exercise scaffolding
-    "exercises/0-intro",
-
-    "exercises/B/1-my-serde-app",
-    "exercises/B/3-fizzbuzz",
-    "exercises/B/4-bsn",
-    "exercises/B/5-3d-printer",
-
-    "exercises/C/1-tf-idf",
-    "exercises/C/2-mutex",
-    "exercises/C/4-async-channels",
-    "exercises/C/5-async-chat",
-
     "exercises/F/1-linked-list",
     "exercises/F/2-execve",
     "exercises/F/3-tagged-union",

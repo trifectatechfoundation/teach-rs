@@ -1,0 +1,9 @@
+name = "The `futures` Crate"
+
+[[exercises]]
+name = "Async Channels"
+path = "exercises/async-channels"
+
+[[exercises]]
+name = "Async Chat"
+path = "exercises/async-chat"
