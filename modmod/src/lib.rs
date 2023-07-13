@@ -1,7 +1,9 @@
 pub use types::*;
 
+
 pub mod error;
 pub mod types;
+pub mod book;
 pub use error::{Error, Result};
 mod load;
 

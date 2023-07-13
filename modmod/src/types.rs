@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::{error::OutputError, load::Load, to_numbered_tag, Result};
+use crate::{error::OutputError, load::Load, to_numbered_tag, Result, book::Book};
 use globset::{Glob, GlobSetBuilder};
 use serde::Deserialize;
 
@@ -103,12 +103,16 @@ impl Track {
 
         let track = Self::load(path)?;
 
+        let mut book_builder = Book::builder("test");
+
         for (module, i_mod) in track.load_modules()?.iter().zip(1..) {
             let module_tag = to_numbered_tag(&module.data.name, i_mod);
             let module_out_dir = output_dir.join(Path::new(&module_tag));
             fs::create_dir(&module_out_dir)?;
+            let mut chapter = book_builder.chapter(&module.data.name);
 
             for ((unit, topics), i_unit) in module.load_topics()?.iter().zip(1..) {
+                let mut section = chapter.section(&unit.name);
                 let unit_tag = to_numbered_tag(&unit.name, i_unit);
                 let unit_out_dir = module_out_dir.join(unit_tag);
                 fs::create_dir(&unit_out_dir)?;
@@ -137,6 +141,7 @@ impl Track {
 
                     for (exercise, i_exercise) in topic.data.exercises.iter().zip(1..) {
                         let exercise_dir = topic.path.parent().unwrap().join(&exercise.path);
+                        section.subsection(exercise_dir.join(&exercise.description));
                         let content = fs_extra::dir::get_dir_content(&exercise_dir).unwrap();
                         let exercise_tag = to_numbered_tag(&exercise.name, i_exercise);
                         let mut globset = GlobSetBuilder::new();
@@ -156,6 +161,7 @@ impl Track {
                         }
                     }
                 }
+                section.add();
 
                 let unit_content = template
                     .replace("#[modmod:content]\n", &topic_content)
@@ -164,8 +170,10 @@ impl Track {
                 let mut unit_slides = File::create(unit_out_dir.join("slides.md"))?;
                 write!(unit_slides, "{unit_content}")?;
             }
+            chapter.add();
         }
-
+        
+        dbg!(book_builder.build());
         Ok(())
     }
 }
