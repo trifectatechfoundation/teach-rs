@@ -4,13 +4,17 @@ use std::{
 };
 
 use crate::{error::OutputError, load::Load, to_numbered_tag, Result};
+use globset::{Glob, GlobSetBuilder};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Exercise {
     pub name: String,
     pub path: PathBuf,
-    pub description: Option<PathBuf>,
+    #[serde(default = "exercise_description_md")]
+    pub description: PathBuf,
+    #[serde(default = "exercise_includes")]
+    pub includes: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -24,7 +28,7 @@ pub struct Topic {
     pub summary: Vec<String>,
     #[serde(default)]
     pub objectives: Vec<String>,
-    #[serde(default = "slides_md")]
+    #[serde(default = "topic_slides_md")]
     pub content: PathBuf,
     #[serde(default)]
     pub further_reading: Vec<String>,
@@ -33,7 +37,7 @@ pub struct Topic {
 #[derive(Debug, Deserialize)]
 pub struct Unit {
     pub name: String,
-    #[serde(default = "template_md")]
+    #[serde(default = "unit_template_md")]
     pub template: PathBuf,
     pub topics: Vec<PathBuf>,
 }
@@ -101,13 +105,15 @@ impl Track {
 
         for (module, i_mod) in track.load_modules()?.iter().zip(1..) {
             let module_tag = to_numbered_tag(&module.data.name, i_mod);
-            let module_dir = output_dir.join(Path::new(&module_tag));
-            fs::create_dir(&module_dir)?;
+            let module_out_dir = output_dir.join(Path::new(&module_tag));
+            fs::create_dir(&module_out_dir)?;
 
             for ((unit, topics), i_unit) in module.load_topics()?.iter().zip(1..) {
                 let unit_tag = to_numbered_tag(&unit.name, i_unit);
-                let unit_dir = module_dir.join(unit_tag);
-                fs::create_dir(&unit_dir)?;
+                let unit_out_dir = module_out_dir.join(unit_tag);
+                fs::create_dir(&unit_out_dir)?;
+                let exercise_out_dir = unit_out_dir.join("exercises");
+                fs::create_dir(&exercise_out_dir)?;
 
                 let template =
                     fs::read_to_string(module.path.parent().unwrap().join(&unit.template))?;
@@ -128,13 +134,34 @@ impl Track {
                     for item in &topic.data.summary {
                         topic_summary += &format!("- {}\n", item.trim());
                     }
+
+                    for (exercise, i_exercise) in topic.data.exercises.iter().zip(1..) {
+                        let exercise_dir = topic.path.parent().unwrap().join(&exercise.path);
+                        let content = fs_extra::dir::get_dir_content(&exercise_dir).unwrap();
+                        let exercise_tag = to_numbered_tag(&exercise.name, i_exercise);
+                        let mut globset = GlobSetBuilder::new();
+                        for include in &exercise.includes {
+                            globset.add(
+                                Glob::new(exercise_dir.join(include).to_str().unwrap()).unwrap(),
+                            );
+                        }
+                        let globset = globset.build().unwrap();
+                        for included_file in content.files.iter().filter(|f| globset.is_match(f)) {
+                            let file_relative = Path::new(&included_file)
+                                .strip_prefix(&exercise_dir)
+                                .unwrap();
+                            let dest = exercise_out_dir.join(&exercise_tag).join(file_relative);
+                            fs::create_dir_all(dest.parent().unwrap())?;
+                            fs::copy(included_file, dest)?;
+                        }
+                    }
                 }
 
                 let unit_content = template
                     .replace("#[modmod:content]\n", &topic_content)
                     .replace("#[modmod:objectives]", &topic_objectives)
                     .replace("#[modmod:summary]", &topic_summary);
-                let mut unit_slides = File::create(unit_dir.join("slides.md"))?;
+                let mut unit_slides = File::create(unit_out_dir.join("slides.md"))?;
                 write!(unit_slides, "{unit_content}")?;
             }
         }
@@ -163,10 +190,20 @@ pub struct PathTo<T> {
     pub path: PathBuf,
 }
 
-fn slides_md() -> PathBuf {
+fn topic_slides_md() -> PathBuf {
     PathBuf::from("slides.md")
 }
 
-fn template_md() -> PathBuf {
+fn unit_template_md() -> PathBuf {
     PathBuf::from("template.md")
+}
+
+fn exercise_description_md() -> PathBuf {
+    PathBuf::from("description.md")
+}
+
+fn exercise_includes() -> Vec<String> {
+    ["Cargo.toml", "Cargo.lock", "src/*/**"]
+        .map(String::from)
+        .to_vec()
 }
