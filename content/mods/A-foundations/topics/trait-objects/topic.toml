@@ -3,3 +3,10 @@ name = "Trait Objects"
 [[exercises]]
 name = "Config Reader"
 path = "exercises/config-reader"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "config.json",
+    "config.yml",
+]

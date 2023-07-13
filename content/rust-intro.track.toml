@@ -3,5 +3,5 @@ name = "Rust language introduction"
 modules = [
     "mods/0-intro/mod.toml",
     "mods/A-foundations/mod.toml",
-    # "mods/B-crate-engineering.mod.toml",
+    "mods/B-crate-engineering/mod.toml",
 ]

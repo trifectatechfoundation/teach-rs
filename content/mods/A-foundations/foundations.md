@@ -3,18 +3,18 @@ theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A1: Foundations"
+info: "Rust - A: Foundations of Rust"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust - A1: Foundations"
+title: "Rust - A: Foundations of Rust"
 ---
 
 # Rust programming
 
-Module A: Foundations
+Module A: Foundations of Rust
 
 ## Unit 1
 

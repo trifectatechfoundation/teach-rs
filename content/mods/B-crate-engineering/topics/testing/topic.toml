@@ -1,0 +1,12 @@
+name = "Testing"
+
+[[exercises]]
+name = "FizzBuzz"
+path = "exercises/fizzbuzz"
+includes = [
+    "src/**/*",
+    "Cargo.toml",
+    "Cargo.lock",
+    "benches/**/*",
+    "fizzbuzz.out",
+]
