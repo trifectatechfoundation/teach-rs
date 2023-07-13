@@ -71,8 +71,9 @@ impl Book {
                         subsection.title
                     )?;
                     writeln!(section_file)?;
+                    println!("{}:{}: Reading {:?}", file!(), line!(), subsection.content);
                     let content = fs::read_to_string(&subsection.content)?;
-
+                    println!("{}:{}: Done reading {:?}", file!(), line!(), subsection.content);
                     write!(section_file, "{content}")?;
                 }
             }

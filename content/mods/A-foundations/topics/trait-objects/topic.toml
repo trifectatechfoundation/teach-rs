@@ -1,0 +1,5 @@
+name = "Trait Objects"
+
+[[exercises]]
+name = "Config Reader"
+path = "exercises/config-reader"

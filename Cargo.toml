@@ -2,16 +2,6 @@
 members = [
     # Exercise scaffolding
     "exercises/0-intro",
-    "exercises/A/1-basic-syntax",
-    "exercises/A/2-move-semantics/",
-    "exercises/A/3-borrowing",
-    "exercises/A/4-error-propagating",
-    "exercises/A/5-slices",
-    "exercises/A/6-error-handling",
-    "exercises/A/7-boxed-data",
-    "exercises/A/8-bonus-ring-buffer",
-    "exercises/A/9-local-storage-vec/",
-    "exercises/A/10-config-reader",
 
     "exercises/B/1-my-serde-app",
     "exercises/B/3-fizzbuzz",

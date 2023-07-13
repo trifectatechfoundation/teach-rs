@@ -7,7 +7,7 @@ use globset::{Glob, GlobSetBuilder};
 use types::*;
 
 mod book;
-pub mod error;
+mod error;
 mod load;
 mod types;
 pub use error::{Error, OutputError, Result};
@@ -21,15 +21,12 @@ pub fn render(
 ) -> Result<()> {
     use std::io::Write;
     let output_dir = output_dir.as_ref();
-
     if clear_output {
         if output_dir.exists() {
-            println!("{}{}", file!(), line!());
             fs::remove_dir_all(output_dir)?;
         }
         fs::create_dir_all(output_dir)?;
     } else {
-        println!("{}{}", file!(), line!());
         if output_dir.exists() {
             let None = fs::read_dir(output_dir)?.next() else {
             return Err(OutputError::NotEmpty.into());
@@ -62,8 +59,10 @@ pub fn render(
             let mut topic_objectives = String::new();
             let mut topic_summary = String::new();
             for topic in topics {
+                println!("{}:{} - {topic:#?}", file!(), line!());
                 let topic_slides =
                     fs::read_to_string(topic.path.parent().unwrap().join(&topic.data.content))?;
+                    println!("{}:{}", file!(), line!());
                 topic_content += "---\n\n";
                 topic_content += topic_slides.trim();
                 topic_content += "\n";
@@ -75,41 +74,52 @@ pub fn render(
                 for item in &topic.data.summary {
                     topic_summary += &format!("- {}\n", item.trim());
                 }
-
+                println!("{}:{} - {}", file!(), line!(), topic.data.exercises.len());
                 for (exercise, i_exercise) in topic.data.exercises.iter().zip(1..) {
+                    println!("{}:{}: {i_exercise}", file!(), line!());
                     let exercise_dir = topic.path.parent().unwrap().join(&exercise.path);
                     section.subsection(&exercise.name, exercise_dir.join(&exercise.description));
                     let content = fs_extra::dir::get_dir_content(&exercise_dir).unwrap();
-                    let exercise_tag = to_numbered_tag(&exercise.name, i_exercise);
+                    println!("{}:{}", file!(), line!());
+                    let exercise_tag = to_tag(exercise.name.clone());
                     let mut globset = GlobSetBuilder::new();
                     for include in &exercise.includes {
                         globset
                             .add(Glob::new(exercise_dir.join(include).to_str().unwrap()).unwrap());
                     }
+                    println!("{}:{}", file!(), line!());
                     let globset = globset.build().unwrap();
                     for included_file in content.files.iter().filter(|f| globset.is_match(f)) {
+                        println!("{}:{}", file!(), line!());
                         let file_relative = Path::new(&included_file)
                             .strip_prefix(&exercise_dir)
                             .unwrap();
                         let dest = exercise_out_dir.join(&exercise_tag).join(file_relative);
                         fs::create_dir_all(dest.parent().unwrap())?;
+                        println!("{}:{}", file!(), line!());
                         fs::copy(included_file, dest)?;
+                        println!("{}:{}", file!(), line!());
                     }
+                    println!("{}:{}", file!(), line!());
                 }
             }
+            println!("{}:{}", file!(), line!());
             section.add();
 
             let unit_content = template
                 .replace("#[modmod:content]\n", &topic_content)
                 .replace("#[modmod:objectives]", &topic_objectives)
                 .replace("#[modmod:summary]", &topic_summary);
+            println!("{}:{}", file!(), line!());
             let mut unit_slides = File::create(unit_out_dir.join("slides.md"))?;
+            println!("{}:{}", file!(), line!());
             write!(unit_slides, "{unit_content}")?;
         }
         chapter.add();
     }
-
+    println!("{}:{}", file!(), line!());
     let book = dbg!(book_builder.build());
+    println!("{}:{}", file!(), line!());
     book.render(output_dir)?;
     Ok(())
 }

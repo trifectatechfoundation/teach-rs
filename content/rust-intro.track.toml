@@ -1,0 +1,6 @@
+
+name = "Rust language introduction"
+modules = [
+    "mods/A-foundations/mod.toml",
+    # "mods/B-crate-engineering.mod.toml",
+]

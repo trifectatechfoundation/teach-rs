@@ -1,0 +1,10 @@
+name = "Why Rust?"
+
+objectives = [
+    "Summarize the features of the Rust language"
+]
+
+summary = [
+    "Rust is a systems programming language",
+    "Rust provides memory safety"
+]

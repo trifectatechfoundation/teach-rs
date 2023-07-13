@@ -1,10 +1,7 @@
-use std::{
-    fs::{self, File},
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 
-use crate::{book::Book, error::OutputError, load::Load, to_numbered_tag, Result};
-use globset::{Glob, GlobSetBuilder};
+use crate::{load::Load, Result};
+
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -72,14 +69,11 @@ impl PathTo<Module> {
 pub struct Track {
     pub name: String,
     pub modules: Vec<PathBuf>,
+    #[serde(default)]
     pub excluded_topics: Vec<PathBuf>,
 }
 
 impl Track {
-    pub fn load_excluded_topics(&self) -> Result<Vec<Topic>> {
-        todo!()
-    }
-
     pub fn load(path: impl AsRef<Path>) -> Result<PathTo<Self>> {
         Load::load(path.as_ref(), None)
     }
@@ -118,7 +112,7 @@ fn exercise_description_md() -> PathBuf {
 }
 
 fn exercise_includes() -> Vec<String> {
-    ["Cargo.toml", "Cargo.lock", "src/*/**"]
+    ["Cargo.toml", "Cargo.lock", "src/**/*"]
         .map(String::from)
         .to_vec()
 }
