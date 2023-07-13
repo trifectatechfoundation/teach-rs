@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::{error::OutputError, load::Load, to_numbered_tag, Result, book::Book};
+use crate::{book::Book, error::OutputError, load::Load, to_numbered_tag, Result};
 use globset::{Glob, GlobSetBuilder};
 use serde::Deserialize;
 
@@ -141,7 +141,7 @@ impl Track {
 
                     for (exercise, i_exercise) in topic.data.exercises.iter().zip(1..) {
                         let exercise_dir = topic.path.parent().unwrap().join(&exercise.path);
-                        section.subsection(exercise_dir.join(&exercise.description));
+                        section.subsection(&exercise.name, exercise_dir.join(&exercise.description));
                         let content = fs_extra::dir::get_dir_content(&exercise_dir).unwrap();
                         let exercise_tag = to_numbered_tag(&exercise.name, i_exercise);
                         let mut globset = GlobSetBuilder::new();
@@ -172,8 +172,9 @@ impl Track {
             }
             chapter.add();
         }
-        
-        dbg!(book_builder.build());
+
+        let book = dbg!(book_builder.build());
+        book.render(&output_dir)?;
         Ok(())
     }
 }

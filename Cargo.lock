@@ -490,6 +490,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bfa799dd5ed20a7e349f3b4639aa80d74549c81716d9ec4f994c9b5815598306"
 
 [[package]]
+name = "indoc"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "761cde40c27e2a9877f8c928fd248b7eec9dd48623dd514b256858ca593fbba7"
+
+[[package]]
 name = "intro"
 version = "0.1.0"
 
@@ -586,6 +592,7 @@ version = "0.1.0"
 dependencies = [
  "fs_extra",
  "globset",
+ "indoc 2.0.2",
  "serde",
  "toml",
 ]
@@ -717,7 +724,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3b1ac5b3731ba34fdaa9785f8d74d17448cd18f30cf19e0c7e7b1fdb5272109"
 dependencies = [
  "cfg-if",
- "indoc",
+ "indoc 1.0.9",
  "libc",
  "memoffset 0.8.0",
  "parking_lot",
