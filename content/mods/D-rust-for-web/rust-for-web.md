@@ -16,8 +16,16 @@ title: "Rust - D: Rust for Web"
 
 Module D: Rust for Web
 
-#[docdoc:path="arewewebyet.md"]
-#[docdoc:path="axum.md"]
-#[docdoc:path="sqlx.md"]
-#[docdoc:path="wasm.md"]
-#[docdoc:path="nodejs-interop.md"]
+## Unit 1
+
+---
+# Learning objectives
+
+#[modmod:objectives]
+
+---
+# Actual content
+#[modmod:content]
+
+# Summary
+#[modmod:summary]

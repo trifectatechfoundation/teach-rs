@@ -1,0 +1,13 @@
+name = "Rust for Web"
+description = "Use Rust to write web applications"
+
+[[units]]
+name = "Rust for Web"
+template = "rust-for-web.md"
+topics = [
+    "topics/arewewebyet/topic.toml",
+    "topics/axum/topic.toml",
+    "topics/sqlx/topic.toml",
+    "topics/wasm/topic.toml",
+    "topics/nodejs-interop/topic.toml",
+]
