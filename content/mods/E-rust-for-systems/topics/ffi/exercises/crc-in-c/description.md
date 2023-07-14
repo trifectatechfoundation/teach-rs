@@ -1,3 +1,5 @@
+Use a CRC checksum function written in C in a Rust program
+
 ## prerequisites
 
 - A C compiler

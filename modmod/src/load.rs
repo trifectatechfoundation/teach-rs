@@ -1,15 +1,24 @@
-use std::{any::type_name, fmt, fs, path::Path};
+use std::{
+    any::type_name,
+    fmt, fs,
+    path::{Path, PathBuf},
+};
 
 use crate::{Module, PathTo, Topic, Track};
 use error_stack::{IntoReport, Result, ResultExt};
 use serde::de::DeserializeOwned;
 
 #[derive(Debug)]
-pub struct LoadError(&'static str);
+pub struct LoadError(&'static str, PathBuf);
 
 impl fmt::Display for LoadError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "unable to load item of type {}", self.0)
+        let LoadError(ty, path) = self;
+        write!(
+            f,
+            "unable to load item of type {ty} from path {path}",
+            path = path.to_string_lossy()
+        )
     }
 }
 
@@ -27,7 +36,7 @@ pub trait Load: DeserializeOwned + Sized + 'static {
                     path = path.to_string_lossy()
                 )
             })
-            .change_context(LoadError(type_name::<Self>()))?;
+            .change_context_lazy(|| LoadError(type_name::<Self>(), path.clone()))?;
         let content = fs::read_to_string(&path)
             .into_report()
             .attach_printable_lazy(|| {
@@ -36,11 +45,13 @@ pub trait Load: DeserializeOwned + Sized + 'static {
                     path = path.to_string_lossy()
                 )
             })
-            .change_context(LoadError(type_name::<Self>()))?;
+            .change_context_lazy(|| LoadError(type_name::<Self>(), path.clone()))?;
         let data = toml::from_str(&content)
             .into_report()
-            .attach_printable_lazy(|| format!("Unable to parse TOML file with contents {content}"))
-            .change_context(LoadError(type_name::<Self>()))?;
+            .attach_printable_lazy(|| {
+                format!("Unable to parse TOML file with contents '{content}'")
+            })
+            .change_context_lazy(|| LoadError(type_name::<Self>(), path.clone()))?;
         Ok(PathTo { path, data })
     }
 }

@@ -1,0 +1,5 @@
+name = "PyO3"
+
+[[exercises]]
+name = "PyO3"
+path = "exercises/pyo3"

@@ -1,0 +1,14 @@
+name = "Rust for Systems Programming"
+description = "Use Rust to program system software"
+
+[[units]]
+name = "Rust for Systems Programming"
+template = "rust-for-systems.md"
+topics = [
+    "topics/unsafe/topic.toml",
+    "topics/ffi/topic.toml",
+    "topics/abi/topic.toml",
+    "topics/unix-syscalls/topic.toml",
+    "topics/async-primitives/topic.toml",
+    "topics/linux-kernel/topic.toml",
+]

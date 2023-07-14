@@ -20,9 +20,12 @@ fn main() {
         clear_output_dir,
         track_toml_path,
     } = Args::parse();
-    modmod::render(&track_toml_path, &output_dir, clear_output_dir).unwrap();
-    println!(
-        "Done writing your track content to directory '{}'",
-        output_dir.to_string_lossy()
-    );
+
+    match modmod::render(&track_toml_path, &output_dir, clear_output_dir) {
+        Ok(()) => println!(
+            "Done writing your track content to directory '{}'",
+            output_dir.to_string_lossy()
+        ),
+        Err(e) => eprintln!("{e:?}"),
+    }
 }
