@@ -1,7 +1,5 @@
 [workspace]
 members = [
-    # Exercise scaffolding
-    "exercises/G/4-pyo3",
 
     "modmod",
 ]
