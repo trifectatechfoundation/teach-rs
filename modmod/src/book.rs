@@ -35,9 +35,9 @@ impl Book {
         }
     }
 
-    pub fn render(&self, root_dir: impl AsRef<Path>) -> Result<(), RenderBookError> {
-        let book_root_dir = root_dir.as_ref().join("book");
-        let book_src_dir = book_root_dir.join("src");
+    pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderBookError> {
+        let book_out_dir = out_dir.as_ref().join("book");
+        let book_src_dir = book_out_dir.join("src");
         fs::create_dir_all(&book_src_dir)
             .into_report()
             .attach_printable_lazy(|| {
@@ -47,7 +47,7 @@ impl Book {
                 )
             })
             .change_context(RenderBookError)?;
-        let book_toml_path = book_root_dir.join("book.toml");
+        let book_toml_path = book_out_dir.join("book.toml");
         let mut book_toml = File::create(&book_toml_path)
             .into_report()
             .attach_printable_lazy(|| {

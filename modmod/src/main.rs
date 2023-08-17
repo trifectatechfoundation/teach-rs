@@ -1,8 +1,10 @@
 use clap::Parser;
-use std::path::PathBuf;
+use error_stack::Result;
+use modmod::LoadTrackError;
+use std::{path::PathBuf, process::exit};
 
 #[derive(Parser)]
-pub struct Args {
+struct Args {
     #[arg(
         short = 'o',
         long = "output",
@@ -15,17 +17,23 @@ pub struct Args {
 }
 
 fn main() {
-    let Args {
-        output_dir,
-        clear_output_dir,
-        track_toml_path,
-    } = Args::parse();
+    let args = Args::parse();
 
-    match modmod::render(&track_toml_path, &output_dir, clear_output_dir) {
-        Ok(()) => println!(
-            "Done writing your track content to directory '{}'",
-            output_dir.to_string_lossy()
-        ),
-        Err(e) => eprintln!("{e:?}"),
+    fn run(args: Args) -> Result<(), LoadTrackError> {
+        let Args {
+            output_dir,
+            clear_output_dir,
+            track_toml_path,
+        } = args;
+        let track = modmod::Track::load_toml_def(track_toml_path)?;
+        track.render(output_dir, clear_output_dir)?;
+        Ok(())
     }
+
+    if let Err(e) = run(args) {
+        eprintln!("Error rendering track: {e:?}");
+        exit(1);
+    }
+
+    println!("Done!");
 }
