@@ -23,7 +23,7 @@ pub struct Track {
 impl Track {
     pub fn load_toml_def(path: impl AsRef<Path>) -> Result<Self, LoadTrackError> {
         let def = TrackDef::load(path.as_ref(), None).change_context(LoadTrackError)?;
-        def.hydrate().change_context(LoadTrackError)
+        def.resolve().change_context(LoadTrackError)
     }
 
     pub fn render(

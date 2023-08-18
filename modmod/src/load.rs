@@ -16,7 +16,7 @@ pub struct TrackDef {
 }
 
 impl PathTo<TrackDef> {
-    pub fn hydrate(self) -> Result<Track, HydrateTrackError> {
+    pub fn resolve(self) -> Result<Track, HydrateTrackError> {
         let PathTo {
             data,
             path: track_path,
@@ -32,7 +32,7 @@ impl PathTo<TrackDef> {
             modules.push(
                 ModuleDef::load(&module_path, Some(base_path))
                     .change_context(HydrateTrackError)?
-                    .hydrate()?,
+                    .resolve()?,
             );
         }
 
@@ -48,7 +48,7 @@ pub struct ModuleDef {
 }
 
 impl PathTo<ModuleDef> {
-    fn hydrate(self) -> Result<Module, HydrateTrackError> {
+    fn resolve(self) -> Result<Module, HydrateTrackError> {
         let PathTo {
             data: def,
             path: module_path,
@@ -62,7 +62,7 @@ impl PathTo<ModuleDef> {
         let mut units = Vec::with_capacity(unit_defs.len());
         let base_path = module_path.parent().unwrap();
         for unit_def in unit_defs {
-            units.push(unit_def.hydrate(base_path)?);
+            units.push(unit_def.resolve(base_path)?);
         }
 
         Ok(Module {
@@ -82,7 +82,7 @@ pub struct UnitDef {
 }
 
 impl UnitDef {
-    fn hydrate(self, base_path: &Path) -> Result<Unit, HydrateTrackError> {
+    fn resolve(self, base_path: &Path) -> Result<Unit, HydrateTrackError> {
         let UnitDef {
             name,
             template,
@@ -94,7 +94,7 @@ impl UnitDef {
             topics.push(
                 TopicDef::load(&topic_path, Some(base_path))
                     .change_context(HydrateTrackError)?
-                    .hydrate()?,
+                    .resolve()?,
             );
         }
         let template = base_path
@@ -126,7 +126,7 @@ pub struct TopicDef {
 }
 
 impl PathTo<TopicDef> {
-    fn hydrate(self) -> Result<Topic, HydrateTrackError> {
+    fn resolve(self) -> Result<Topic, HydrateTrackError> {
         let PathTo {
             data: def,
             path: topic_path,
@@ -144,7 +144,7 @@ impl PathTo<TopicDef> {
         let mut exercises = Vec::new();
         let base_path = topic_path.parent().unwrap();
         for exercise_def in exercise_defs {
-            exercises.push(exercise_def.hydrate(base_path)?)
+            exercises.push(exercise_def.resolve(base_path)?)
         }
 
         let content = base_path
@@ -174,7 +174,7 @@ pub struct ExerciseDef {
 }
 
 impl ExerciseDef {
-    fn hydrate(self, base_path: &Path) -> Result<Exercise, HydrateTrackError> {
+    fn resolve(self, base_path: &Path) -> Result<Exercise, HydrateTrackError> {
         let ExerciseDef {
             name,
             path: exercise_path,

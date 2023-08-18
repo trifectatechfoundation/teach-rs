@@ -71,7 +71,7 @@ impl Book {
                 write_fmt(
                     &summary_md,
                     format_args!(
-                        "- [{section_i} - {}]({})\n",
+                        "- [{chapter_i}.{section_i} - {}]({})\n",
                         section.title,
                         section_file_name.to_str().unwrap()
                     ),
@@ -94,6 +94,15 @@ impl Book {
                         ),
                     )?;
                     let content = read_to_string(&subsection.content)?;
+                    let content = content
+                        .replace("#[modmod:exercise_dir]", &format!(""))
+                        // Insert exercise references
+                        .replace(
+                            "#[modmod:exercise_ref]",
+                            &format!("{chapter_i}.{section_i}.{subsection_i}"),
+                        )
+                        // Convert exercise sections into subsubsections
+                        .replace("\n# ", "\n### ");
                     write_all(&section_file, content)?;
                 }
             }
