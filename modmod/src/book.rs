@@ -1,16 +1,17 @@
 use indoc::indoc;
 use std::{
     fmt,
-    fs::{self, File},
-    io::Write,
     path::{Path, PathBuf},
 };
 
-use error_stack::{IntoReport, Result, ResultExt};
+use error_stack::Result;
 
-use crate::to_tag;
+use crate::{
+    io::{create_dir_all, create_file, read_to_string, write_all, write_fmt},
+    to_tag,
+};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct RenderBookError;
 
 impl fmt::Display for RenderBookError {
@@ -38,188 +39,65 @@ impl Book {
     pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderBookError> {
         let book_out_dir = out_dir.as_ref().join("book");
         let book_src_dir = book_out_dir.join("src");
-        fs::create_dir_all(&book_src_dir)
-            .into_report()
-            .attach_printable_lazy(|| {
-                format!(
-                    "Unable to create book output directory at path {path}",
-                    path = book_src_dir.to_string_lossy()
-                )
-            })
-            .change_context(RenderBookError)?;
+        create_dir_all(&book_src_dir)?;
         let book_toml_path = book_out_dir.join("book.toml");
-        let mut book_toml = File::create(&book_toml_path)
-            .into_report()
-            .attach_printable_lazy(|| {
-                format!(
-                    "Unable to create book.toml file at {path}",
-                    path = book_toml_path.to_string_lossy()
-                )
-            })
-            .change_context(RenderBookError)?;
-        write!(
-            book_toml,
+        let mut book_toml = create_file(&book_toml_path)?;
+
+        write_all(
+            &mut book_toml,
             indoc! {r#"
-            [book]
-            language = "en"
-            multilingual = false
-            
-            [build]
-            build-dir = "./target"
-        "#}
-        )
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Unable to write into the book.toml file created at {path}",
-                path = book_toml_path.to_string_lossy()
-            )
-        })
-        .change_context(RenderBookError)?;
+                [book]
+                language = "en"
+                multilingual = false
+                
+                [build]
+                build-dir = "./target"
+            "#},
+        )?;
 
         let summary_md_path = book_src_dir.join("SUMMARY.md");
-        let mut summary_md = File::create(&summary_md_path)
-            .into_report()
-            .attach_printable_lazy(|| {
-                format!(
-                    "Unable to write into SUMMARY.md file at {path}",
-                    path = summary_md_path.to_string_lossy()
-                )
-            })
-            .change_context(RenderBookError)?;
+        let summary_md = create_file(&summary_md_path)?;
+        write_all(&summary_md, "# Summary\n\n")?;
 
-        writeln!(summary_md, "# Summary")
-            .into_report()
-            .attach_printable_lazy(|| {
-                format!(
-                    "Unable to write into SUMMARY.md file at {path}",
-                    path = summary_md_path.to_string_lossy()
-                )
-            })
-            .change_context(RenderBookError)?;
-        writeln!(summary_md)
-            .into_report()
-            .attach_printable_lazy(|| {
-                format!(
-                    "Unable to write into SUMMARY.md file at {path}",
-                    path = summary_md_path.to_string_lossy()
-                )
-            })
-            .change_context(RenderBookError)?;
         for (chapter, chapter_i) in self.chapters.iter().zip(1..) {
-            writeln!(summary_md, "# {chapter_i} - {}", chapter.title)
-                .into_report()
-                .attach_printable_lazy(|| {
-                    format!(
-                        "Unable to write into SUMMARY.md file at {path}",
-                        path = summary_md_path.to_string_lossy()
-                    )
-                })
-                .change_context(RenderBookError)?;
+            write_fmt(
+                &summary_md,
+                format_args!("# {chapter_i} - {}\n", chapter.title),
+            )?;
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
                 let section_file_name =
                     Path::new(&to_tag(section.title.clone())).with_extension("md");
-                writeln!(
-                    summary_md,
-                    "- [{section_i} - {}]({})",
-                    section.title,
-                    section_file_name.to_str().unwrap()
-                )
-                .into_report()
-                .attach_printable_lazy(|| {
-                    format!(
-                        "Unable to write into SUMMARY.md file at {path}",
-                        path = summary_md_path.to_string_lossy()
-                    )
-                })
-                .change_context(RenderBookError)?;
+                write_fmt(
+                    &summary_md,
+                    format_args!(
+                        "- [{section_i} - {}]({})\n",
+                        section.title,
+                        section_file_name.to_str().unwrap()
+                    ),
+                )?;
 
                 let section_file_path = book_src_dir.join(&section_file_name);
-                let mut section_file = File::create(&section_file_path)
-                    .into_report()
-                    .attach_printable_lazy(|| {
-                        format!(
-                            "Unable to write into section markdown file at {path}",
-                            path = section_file_path.to_string_lossy()
-                        )
-                    })
-                    .change_context(RenderBookError)?;
 
-                writeln!(
-                    section_file,
-                    "# Unit {chapter_i}.{section_i} - {}",
-                    section.title
-                )
-                .into_report()
-                .attach_printable_lazy(|| {
-                    format!(
-                        "Unable to write into section markdown file at {path}",
-                        path = section_file_path.to_string_lossy()
-                    )
-                })
-                .change_context(RenderBookError)?;
-                writeln!(section_file)
-                    .into_report()
-                    .attach_printable_lazy(|| {
-                        format!(
-                            "Unable to write into section markdown file at {path}",
-                            path = section_file_path.to_string_lossy()
-                        )
-                    })
-                    .change_context(RenderBookError)?;
+                let section_file = create_file(&section_file_path)?;
+                write_fmt(
+                    &section_file,
+                    format_args!("# Unit {chapter_i}.{section_i} - {}\n\n", section.title),
+                )?;
+
                 for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
-                    writeln!(
-                        section_file,
-                        "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}",
-                        subsection.title
-                    )
-                    .into_report()
-                    .attach_printable_lazy(|| {
-                        format!(
-                            "Unable to write into section markdown file at {path}",
-                            path = section_file_path.to_string_lossy()
-                        )
-                    })
-                    .change_context(RenderBookError)?;
-                    writeln!(section_file)
-                        .into_report()
-                        .attach_printable_lazy(|| {
-                            format!(
-                                "Unable to write into section markdown file at {path}",
-                                path = section_file_path.to_string_lossy()
-                            )
-                        })
-                        .change_context(RenderBookError)?;
-                    let content = fs::read_to_string(&subsection.content)
-                        .into_report()
-                        .attach_printable_lazy(|| {
-                            format!(
-                                "Unable read subsection content from path {path}",
-                                path = subsection.content.to_string_lossy()
-                            )
-                        })
-                        .change_context(RenderBookError)?;
-                    writeln!(section_file, "{content}")
-                        .into_report()
-                        .attach_printable_lazy(|| {
-                            format!(
-                                "Unable to write into section markdown file at {path}",
-                                path = section_file_path.to_string_lossy()
-                            )
-                        })
-                        .change_context(RenderBookError)?;
+                    write_fmt(
+                        &section_file,
+                        format_args!(
+                            "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
+                            subsection.title
+                        ),
+                    )?;
+                    let content = read_to_string(&subsection.content)?;
+                    write_all(&section_file, content)?;
                 }
             }
-            writeln!(summary_md)
-                .into_report()
-                .attach_printable_lazy(|| {
-                    format!(
-                        "Unable to write into SUMMARY.md file at {path}",
-                        path = summary_md_path.to_string_lossy()
-                    )
-                })
-                .change_context(RenderBookError)?;
+            write_all(&summary_md, "\n")?;
         }
 
         Ok(())

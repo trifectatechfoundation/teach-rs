@@ -1,4 +1,5 @@
 mod book;
+mod io;
 mod load;
 
 use self::{
@@ -6,11 +7,10 @@ use self::{
     load::{Load, TrackDef},
 };
 use error_stack::{IntoReport, Report, Result, ResultExt};
-use fs_extra::dir::DirContent;
+use io::{create_dir_all, read_to_string, create_file, write_all, get_dir_content, copy};
 use std::{
     fmt,
-    fs::{self, File},
-    io::Write,
+    fs::{self},
     path::{Path, PathBuf},
 };
 
@@ -46,7 +46,7 @@ impl Track {
             }
         }
         // Ensure output dir exists
-        create_dir(output_dir)?;
+        create_dir_all(output_dir)?;
 
         // Render the modules in the track
         let mut book_builder = Book::builder(&self.name);
@@ -77,7 +77,7 @@ impl Module {
     ) -> Result<(), LoadTrackError> {
         let module_tag = to_numbered_tag(&self.name, index);
         let module_out_dir = output_dir.as_ref().join(Path::new(&module_tag));
-        create_dir(&module_out_dir)?;
+        create_dir_all(&module_out_dir)?;
         let mut chapter = book_builder.chapter(&self.name);
 
         for (unit, index) in self.units.iter().zip(1..) {
@@ -105,10 +105,10 @@ impl Unit {
         let mut section = chapter.section(&self.name);
         let unit_tag = to_numbered_tag(&self.name, index);
         let unit_out_dir = output_dir.as_ref().join(unit_tag);
-        create_dir(&unit_out_dir)?;
+        create_dir_all(&unit_out_dir)?;
 
         let exercise_out_dir = unit_out_dir.join("exercises");
-        create_dir(&exercise_out_dir)?;
+        create_dir_all(&exercise_out_dir)?;
 
         let template_content = read_to_string(&self.template)?;
         let mut unit_content = String::new();
@@ -128,10 +128,8 @@ impl Unit {
             .replace("#[modmod:objectives]", &unit_objectives)
             .replace("#[modmod:summary]", &unit_summary);
         let unit_slides_path = unit_out_dir.join("slides.md");
-        let mut unit_slides_file = create_file(unit_slides_path)?;
-        write!(unit_slides_file, "{unit_content}")
-            .into_report()
-            .change_context(LoadTrackError)?;
+        let unit_slides_file = create_file(unit_slides_path)?;
+        write_all(&unit_slides_file, unit_content)?;
 
         section.add();
         Ok(())
@@ -219,7 +217,7 @@ impl Exercise {
                 .unwrap();
             let included_file_dest = exercise_out_dir.join(included_file_relative);
             let include_file_dest_dir = included_file_dest.parent().unwrap();
-            create_dir(include_file_dest_dir)?;
+            create_dir_all(include_file_dest_dir)?;
             copy(included_file, included_file_dest)?;
         }
 
@@ -227,7 +225,7 @@ impl Exercise {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct LoadTrackError;
 
 impl fmt::Display for LoadTrackError {
@@ -257,74 +255,4 @@ fn to_tag(mut s: String) -> String {
         tag.push_str(word);
     }
     tag
-}
-
-fn create_dir(path: impl AsRef<Path>) -> Result<(), LoadTrackError> {
-    let path = path.as_ref();
-    fs::create_dir_all(path)
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Error creating directory at path {path}",
-                path = path.to_string_lossy()
-            )
-        })
-        .change_context(LoadTrackError)
-}
-
-fn read_to_string(path: impl AsRef<Path>) -> Result<String, LoadTrackError> {
-    let path = path.as_ref();
-
-    fs::read_to_string(path)
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Error reading file at path {path}",
-                path = path.to_string_lossy()
-            )
-        })
-        .change_context(LoadTrackError)
-}
-
-fn create_file(path: impl AsRef<Path>) -> Result<File, LoadTrackError> {
-    let path = path.as_ref();
-
-    File::create(path)
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Error creating file at path {path}",
-                path = path.to_string_lossy()
-            )
-        })
-        .change_context(LoadTrackError)
-}
-
-fn get_dir_content(path: impl AsRef<Path>) -> Result<DirContent, LoadTrackError> {
-    let path = path.as_ref();
-    fs_extra::dir::get_dir_content(path)
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Error getting contents of directory at path {path}",
-                path = path.to_string_lossy()
-            )
-        })
-        .change_context(LoadTrackError)
-}
-
-fn copy(from: impl AsRef<Path>, to: impl AsRef<Path>) -> Result<(), LoadTrackError> {
-    let from = from.as_ref();
-    let to = to.as_ref();
-    fs::copy(from, to)
-        .into_report()
-        .attach_printable_lazy(|| {
-            format!(
-                "Error copying file from {from} to {to}",
-                from = from.to_string_lossy(),
-                to = to.to_string_lossy()
-            )
-        })
-        .change_context(LoadTrackError)?;
-    Ok(())
 }
