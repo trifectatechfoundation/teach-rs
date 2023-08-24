@@ -60,10 +60,9 @@ impl Book {
         write_all(&summary_md, "# Summary\n\n")?;
 
         for (chapter, chapter_i) in self.chapters.iter().zip(1..) {
-            write_fmt(
-                &summary_md,
-                format_args!("# {chapter_i} - {}\n", chapter.title),
-            )?;
+            // Sadly, at the time of writing, mdbook does not allow for custom section numbering.
+            // Therefore, we insert a draft chapter to keep the section numbering in sync
+            write_fmt(&summary_md, format_args!("- [{}]()\n", chapter.title))?;
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
                 let section_file_name =
@@ -71,7 +70,7 @@ impl Book {
                 write_fmt(
                     &summary_md,
                     format_args!(
-                        "- [{chapter_i}.{section_i} - {}]({})\n",
+                        "\t- [{}]({})\n",
                         section.title,
                         section_file_name.to_str().unwrap()
                     ),
@@ -95,7 +94,11 @@ impl Book {
                     )?;
                     let content = read_to_string(&subsection.content)?;
                     let content = content
-                        .replace("#[modmod:exercise_dir]", &format!(""))
+                        // Insert exercise directory paths
+                        .replace(
+                            "#[modmod:exercise_dir]",
+                            &subsection.out_dir.to_string_lossy(),
+                        )
                         // Insert exercise references
                         .replace(
                             "#[modmod:exercise_ref]",
@@ -103,7 +106,7 @@ impl Book {
                         )
                         // Convert exercise sections into subsubsections
                         .replace("\n# ", "\n### ");
-                    write_all(&section_file, content)?;
+                    write_fmt(&section_file, format_args!("{}\n", content.trim()))?;
                 }
             }
             write_all(&summary_md, "\n")?;
@@ -129,6 +132,7 @@ pub struct Section {
 pub struct SubSection {
     pub title: String,
     pub content: PathBuf,
+    pub out_dir: PathBuf,
 }
 
 pub struct BookBuilder {
@@ -196,10 +200,11 @@ impl<'bb, 'cb> SectionBuilder<'bb, 'cb> {
         chapter_builder
     }
 
-    pub fn subsection(&mut self, title: &str, content: PathBuf) {
+    pub fn subsection(&mut self, title: &str, content: PathBuf, out_dir: PathBuf) {
         self.subsections.push(SubSection {
             title: title.to_string(),
             content,
+            out_dir,
         });
     }
 }

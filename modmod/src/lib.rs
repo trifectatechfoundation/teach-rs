@@ -7,7 +7,7 @@ use self::{
     load::{Load, TrackDef},
 };
 use error_stack::{IntoReport, Report, Result, ResultExt};
-use io::{create_dir_all, read_to_string, create_file, write_all, get_dir_content, copy};
+use io::{copy, create_dir_all, create_file, get_dir_content, read_to_string, write_all};
 use std::{
     fmt,
     fs::{self},
@@ -193,10 +193,16 @@ impl Exercise {
         exercise_out_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
         let exercise_dir = output_dir.as_ref().join(&self.path);
-        section.subsection(&self.name, exercise_dir.join(&self.description));
+        let exercise_tag = to_tag(self.name.clone());
+        let exercise_out_dir = exercise_out_dir.as_ref().join(exercise_tag);
+
+        section.subsection(
+            &self.name,
+            exercise_dir.join(&self.description),
+            exercise_out_dir.strip_prefix(output_dir).unwrap().to_owned(),
+        );
 
         let content = get_dir_content(&exercise_dir)?;
-        let exercise_tag = to_tag(self.name.clone());
 
         // Create globset to match included files
         let mut globset = globset::GlobSetBuilder::new();
@@ -210,7 +216,6 @@ impl Exercise {
         }
         let globset = globset.build().unwrap();
 
-        let exercise_out_dir = exercise_out_dir.as_ref().join(exercise_tag);
         for included_file in content.files.iter().filter(|f| globset.is_match(f)) {
             let included_file_relative = Path::new(&included_file)
                 .strip_prefix(&exercise_dir)
