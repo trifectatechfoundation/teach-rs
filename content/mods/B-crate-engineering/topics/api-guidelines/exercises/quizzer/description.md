@@ -2,7 +2,7 @@ In this exercise, you will create a Rust crate that adheres to the guidelines th
 
 *This exercise should be done in groups of 2 people*
 
-### B.2.A Setting up ⭐
+# #[modmod:exercise_ref].A Setting up ⭐
 Create a new project using `cargo new --name quizzer`. Make sure it acts as both a binary and a library. That means there will be both a `src/lib.rs` and a `src/bin/quizzer/main.rs` file in your crate, where `quizzer` is the name of the binary:
 
 ```bash
@@ -43,7 +43,7 @@ serde_json = "1.0.87"
 
 For `clap` and `serde`, the non-standard `derive` feature of each these crates is enabled. For `clap`, it allows us to derive the `Parser` trait, which greatly simplifies creating a CLI. The `derive` feaure from `serde` allows us to derive the `Serialize` and `Deserialize` traits on any struct we wish to serialize or deserialize using `serde` and its backends, in our case `serde_json`.
 
-### B.2.B Quizzer ⭐⭐⭐
+# #[modmod:exercise_ref].B Quizzer ⭐⭐⭐
 This exercise is about both design and finding information. You'll have to figure out a model to represent your quiz questions, as well as a means to store them into a JSON file, and load them yourself. Also, you will have to find out how to parse the program arguments.
 
 We will use the project we just set up to write a quiz game creator and player. You may add other dependencies as needed. It has the following functional requirements:

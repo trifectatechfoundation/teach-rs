@@ -1,7 +1,3 @@
-Follow the instructions in the comments of `exercises/C/2-mutex/src/main.rs`!
-
-## C.3 Advanced Mutex (bonus) ⭐⭐⭐⭐
-
 The basic mutex performs a spin-loop while waiting to take the lock. That is terribly inefficient. Luckily, your operating system is able to wait until the lock becomes available, and will just put the thread to sleep in the meantime. 
 
 This functionality is exposed in the [atomic_wait crate](https://docs.rs/atomic-wait/latest/atomic_wait/index.html). The [section on implementing a mutex](https://marabos.nl/atomics/building-locks.html#mutex) from "Rust Atomics and Locks" explains how to use it.

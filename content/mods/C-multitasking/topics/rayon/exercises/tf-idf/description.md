@@ -1,1 +1,1 @@
-Follow the instructions in the comments of `exercises/C/1-tf-idf/src/main.rs`!
+Follow the instructions in the comments of `#[modmod:exercise_dir]/src/main.rs`!

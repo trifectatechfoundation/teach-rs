@@ -1,1 +1,1 @@
-Follow the instructions in the comments of `excercises/A/4-error-propagating/src/main.rs`!
+Follow the instructions in the comments of `#[modmod:exercise_dir]/src/main.rs`!

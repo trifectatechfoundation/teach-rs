@@ -1,1 +1,1 @@
-Follow the instructions in the comments of `exercises/F/3-tagged-union/src/main.rs`!
+Follow the instructions in the comments of `#[modmod:exercise_dir]/src/main.rs`!
