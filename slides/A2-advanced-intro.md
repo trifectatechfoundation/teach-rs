@@ -414,6 +414,22 @@ One of the more powerful kinds of types in Rust are enumerations
 
 ```rust {all|2|all}
 enum IpAddressType {
+  Ipv4,
+  Ipv6,
+}
+```
+
+* An enumeration (listing) of different *variants*
+* Each variant is an alternative value of the enum, you pick a single value to
+  create an instance
+
+---
+
+# Enumerations
+One of the more powerful kinds of types in Rust are enumerations
+
+```rust
+enum IpAddressType {
   Ipv4, // = 0 (default discriminant)
   Ipv6, // = 1 (default discriminant)
 }
