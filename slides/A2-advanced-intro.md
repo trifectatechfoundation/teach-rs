@@ -470,7 +470,9 @@ fn main() {
         </center>
     </template>
     <template #light>
-        <img src="/images/A2-enum-memory-light.drawio.svg"/>
+        <center>
+            <img src="/images/A2-enum-memory-light.drawio.svg"/>
+        </center>
     </template>
 </LightOrDark>
 
