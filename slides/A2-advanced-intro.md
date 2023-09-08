@@ -422,6 +422,7 @@ enum IpAddressType {
 * An enumeration (listing) of different *variants*
 * Each variant is an alternative value of the enum, you pick a single value to
   create an instance
+* Each variant has a discriminant, a numeric value (`isize` by default) used to determine the variant that the enumeration holds
 
 <v-click>
 
@@ -456,20 +457,20 @@ fn main() {
 }
 ```
 
-* Note: an enum always is as large as the largest variant
+* Note: an enum always is as large as the largest variant plus the size of the discriminant
 
 <!--<div class="relative">-->
 
-<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+<div style="margin-left:auto; margin-right:auto; display:block; width:100%;">
 
 <LightOrDark>
     <template #dark>
         <center>
-            <img src="/images/A2-enum-memory-dark.svg"/>
+            <img src="/images/A2-enum-memory-dark.drawio.svg"/>
         </center>
     </template>
     <template #light>
-        <img src="/images/A2-enum-memory-light.svg"/>
+        <img src="/images/A2-enum-memory-light.drawio.svg"/>
     </template>
 </LightOrDark>
 
