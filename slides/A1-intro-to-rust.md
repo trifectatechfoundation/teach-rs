@@ -394,6 +394,7 @@ fn main() {
 
 - `f32`: single precision (32-bit) floating point number
 - `f64`: double precision (64-bit) floating point number
+- `f128`: 128-bit floating point number
 
 <!--
 - Rust uses f64 by default
