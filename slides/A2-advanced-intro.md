@@ -412,17 +412,17 @@ fn main() {
 # Enumerations
 One of the more powerful kinds of types in Rust are enumerations
 
-```rust
+```rust {all|2|all}
 enum IpAddressType {
-  Ipv4,
-  Ipv6,
+  Ipv4, // = 0 (default discriminant)
+  Ipv6, // = 1 (default discriminant)
 }
 ```
 
 * An enumeration (listing) of different *variants*
 * Each variant is an alternative value of the enum, you pick a single value to
   create an instance
-* Each variant has a discriminant, a numeric value (`isize` by default) used to determine the variant that the enumeration holds
+* Each variant has a discriminant (hidden by default), a numeric value (`isize` by default) used to determine the variant that the enumeration holds
 
 <v-click>
 
@@ -442,8 +442,8 @@ it
 
 ```rust
 enum IpAddress {
-  Ipv4(u8, u8, u8, u8),
-  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),
+  Ipv4(u8, u8, u8, u8),                           // = 0 (default discriminant)
+  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),   // = 1 (default discriminant)
 }
 ```
 
