@@ -878,7 +878,7 @@ pointer (to the current stack frame) is decreased.
 There are two mechanisms at play here, generally known as the stack and the heap
 
 <div class="grid grid-cols-2">
-    <div class="flex flex-col rounded-md p-1 bg-teal-100 text-center w-md h-250px">
+    <div class="flex flex-col rounded-md p-1 bg-teal-100 text-center w-md h-350px">
         <div class="bg-red-100 rounded-t-md flex flex-col">
             <div class="bg-red-200 rounded-t-md p-1 border-red-500 border">Frame 1</div>
             <div class="bg-red-200 p-1 border-red-500 border border-t-0">Frame 2</div>
