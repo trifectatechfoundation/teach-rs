@@ -896,7 +896,7 @@ There are two mechanisms at play here, generally known as the stack and the heap
     </div>
     <div>
         <div class="relative top-19 left-6">← Stack pointer</div>
-        <div class="relative pl-27 top-20">
+        <div class="relative pl-7 top-20">
             A stack frame is allocated for every function call. It contains exactly
             enough space for all local variables, arguments and stores where the
             previous stack frame starts.
@@ -934,7 +934,7 @@ There are two mechanisms at play here, generally known as the stack and the heap
     </div>
     <div>
         <div class="relative top-12 left-6">← Stack pointer</div>
-        <div class="relative pl-27 top-13">
+        <div class="relative pl-7 top-13">
             Once a function call ends we just move back up, and everything below is
             available as free memory once more.
         </div>
