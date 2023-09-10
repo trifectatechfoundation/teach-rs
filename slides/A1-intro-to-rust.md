@@ -856,7 +856,7 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
     </div>
     <div>
-        <div class="relative top-12 left-26">🠔 Stack pointer</div>
+        <div class="relative top-12 left-6">← Stack pointer</div>
     </div>
 </div>
 
@@ -895,7 +895,7 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
     </div>
     <div>
-        <div class="relative top-19 left-26">🠔 Stack pointer</div>
+        <div class="relative top-19 left-6">← Stack pointer</div>
         <div class="relative pl-27 top-20">
             A stack frame is allocated for every function call. It contains exactly
             enough space for all local variables, arguments and stores where the
@@ -927,13 +927,13 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
         <div class="bg-yellow-100 rounded-b-md h-130px flex flex-col">
             <div class="text-gray-500 p-2">Heap</div>
-            <div class="bg-yellow-300 mb-3 h-5">Allocated</div>
+            <div class="bg-yellow-300 mb-3 h-7">Allocated</div>
             <div class="bg-yellow-300 mb-1 h-9"></div>
             <div class="bg-yellow-300 h-4"></div>
         </div>
     </div>
     <div>
-        <div class="relative top-12 left-26">🠔 Stack pointer</div>
+        <div class="relative top-12 left-6">← Stack pointer</div>
         <div class="relative pl-27 top-13">
             Once a function call ends we just move back up, and everything below is
             available as free memory once more.
