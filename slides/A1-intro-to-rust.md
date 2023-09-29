@@ -448,6 +448,7 @@ fn main() {
     let not = !no;
     let and = yes && no;
     let or = yes || no;
+    let xor = yes ^ no;
 }
 ```
 
