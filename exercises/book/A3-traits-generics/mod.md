@@ -42,7 +42,7 @@ pub enum LocalStorageVec<T, const N: usize> {
     // - `buf` is an array with elements of `T` of size `N`
     // - `len` is a field of type `usize`
     Stack { buf: [T; N], len: usize },
-    // Define a tuplle-like variant called `Heap`, containing a single field
+    // Define a tuple-like variant called `Heap`, containing a single field
     // of type `Vec<T>`, which is a heap-based growable, contiguous list of `T`
     Heap(Vec<T>),
 }
@@ -67,7 +67,12 @@ impl<T, const N: usize> From<Vec<T>> for LocalStorageVec<T, N> {
 Run `cargo test` to validate your implementation.
 
 ### A3.C `impl LocalStorageVec` ⭐⭐
-To make the `LocalStorageVec` more useful, we'll add more methods to it. Create an `impl`-block for `LocalStorageVec`. Don't forget to declare and provide the generic paramereters. For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`. First off, uncomment the test called `it_constructs`. Make it compile and pass by creating a associated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
+To make the `LocalStorageVec` more useful, we'll add more methods to it.
+Create an `impl`-block for `LocalStorageVec`.
+Don't forget to declare and provide the generic parameters.
+For now, to make implementations easier, we will add a bound `T`, requiring that it implements `Copy` and `Default`.
+First off, uncomment the test called `it_constructs`.
+Make it compile and pass by creating a associated function called `new` on `LocalStorageVec` that creates a new, empty `LocalStorageVec` instance without heap allocation.
 
 The next methods we'll implement are `len`, `push`, `pop`, `insert`, `remove` and `clear`:
 - `len` returns the length of the `LocalStorageVec`
@@ -152,14 +157,17 @@ First, implement this trait for `usize`, `RangeTo<usize>`, `RangeFrom<usize>`, a
 Next, replace the implementations from the previous exercise with a blanket implementation of `Index`. In English:
 
 *"For each type `T`, `I` and constant `N` of type `usize`,*
-*implement `Index<I>` for `LocalStorageVec<T, N>`, 
+*implement `Index<I>` for `LocalStorageVec<T, N>`,*
 *where `I` implements `LocalStorageVecIndex`*
 *and `[T]` implements `Index<I>`"*
 
 If you've done this correctly, `it_indexes` should again compile and pass.
 
 ### A3.J `Deref` and `DerefMut` ⭐⭐⭐⭐
-The next trait that makes our `LocalStorageVec` more flexible in use are [`Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html) and [`DerefMut`](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) that utilize the 'deref coercion' feature of Rust to allow types to be treated as if they were some type they look like. That would allow us to use any [method that is defined on `[T]`](https://doc.rust-lang.org/std/primitive.slice.html) by calling them on a `LocalStorageVec`. Before continueing, read the section ['Treating a Type Like a Reference by Implementing the Deref Trait'](https://doc.rust-lang.org/book/ch15-02-deref.html#treating-a-type-like-a-reference-by-implementing-the-deref-trait) from The Rust Programming Language (TRPL). **Don't confuse deref coercion with any kind of inheritance! Using `Deref` and `DerefMut` for inheritance is frowned upon in Rust.**
+The next trait that makes our `LocalStorageVec` more flexible in use are [`Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html) and [`DerefMut`](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) that utilize the 'deref coercion' feature of Rust to allow types to be treated as if they were some type they look like.
+That would allow us to use any [method that is defined on `[T]`](https://doc.rust-lang.org/std/primitive.slice.html) by calling them on a `LocalStorageVec`.
+Before continuing, read the section ['Treating a Type Like a Reference by Implementing the Deref Trait'](https://doc.rust-lang.org/book/ch15-02-deref.html#treating-a-type-like-a-reference-by-implementing-the-deref-trait) from The Rust Programming Language (TRPL).
+**Don't confuse deref coercion with any kind of inheritance! Using `Deref` and `DerefMut` for inheritance is frowned upon in Rust.**
 
 Below, an implementation of `Deref` and `DerefMut` is provided in terms of the `AsRef` and `AsMut` implementations. Notice the specific way in which `as_ref` and `as_mut` are called.
 
