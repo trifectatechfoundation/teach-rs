@@ -271,12 +271,12 @@ mod test {
     // #[test]
     // fn it_derefs() {
     //     use std::ops::{Deref, DerefMut};
-    //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128].as_slice());
+    //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128]);
     //     // `chunks` is a method that's defined for slices `[T]`, that we can use thanks to `Deref`
     //     let chunks = vec.chunks(4);
     //     let slice: &[_] = vec.deref();
     //
-    //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128].as_slice());
+    //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128]);
     //     let chunks = vec.chunks_mut(4);
     //     let slice: &mut [_] = vec.deref_mut();
     // }
