@@ -394,6 +394,7 @@ fn main() {
 
 - `f32`: single precision (32-bit) floating point number
 - `f64`: double precision (64-bit) floating point number
+- `f128`: 128-bit floating point number
 
 <!--
 - Rust uses f64 by default
@@ -447,6 +448,7 @@ fn main() {
     let not = !no;
     let and = yes && no;
     let or = yes || no;
+    let xor = yes ^ no;
 }
 ```
 
@@ -510,7 +512,7 @@ instead.
 # Strings
 ```rust
     // Owned, heap-allocated string *slice*
-    let s1: String = String::new("Hello, 🌍!");
+    let s1: String = String::from("Hello, 🌍!");
 ```
 
 - Rust strings are UTF-8-encoded

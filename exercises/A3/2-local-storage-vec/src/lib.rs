@@ -17,7 +17,7 @@ impl<T, const N: usize, const M: usize> From<[T; N]> for LocalStorageVec<T, M>
 where
     // We require that `T` implement `Default`, in case we need to fill up our
     // stack-based array without resorting to uninitialized memory. Once
-    // we are more proficient in working with unitialized memory, we'll be
+    // we are more proficient in working with uninitialized memory, we'll be
     // able to remove this bound.
     T: Default,
 {
@@ -81,7 +81,7 @@ mod test {
     // #[test]
     // fn it_from_vecs() {
     //     // The `vec!` macro creates a `Vec<T>` in a way that resembles
-    //     // array-initalization syntax.
+    //     // array-initialization syntax.
     //     let vec: LocalStorageVec<usize, 10> = LocalStorageVec::from(vec![1, 2, 3]);
     //     // Assert that the call to `from` indeed yields a `Heap` variant
     //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
@@ -263,7 +263,7 @@ mod test {
     //     ]);
     //     let iter = vec.iter();
     //     for _ in iter {}
-    //     // This requires the `vec` not be consumed by the call to `iter()`
+    //     // This requires the `vec` not to be consumed by the call to `iter()`
     //     drop(vec);
     // }
 
@@ -271,12 +271,12 @@ mod test {
     // #[test]
     // fn it_derefs() {
     //     use std::ops::{Deref, DerefMut};
-    //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128].as_slice());
+    //     let vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128]);
     //     // `chunks` is a method that's defined for slices `[T]`, that we can use thanks to `Deref`
     //     let chunks = vec.chunks(4);
     //     let slice: &[_] = vec.deref();
     //
-    //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128].as_slice());
+    //     let mut vec: LocalStorageVec<_, 128> = LocalStorageVec::from([0; 128]);
     //     let chunks = vec.chunks_mut(4);
     //     let slice: &mut [_] = vec.deref_mut();
     // }
