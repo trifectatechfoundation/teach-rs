@@ -412,7 +412,7 @@ fn main() {
 # Enumerations
 One of the more powerful kinds of types in Rust are enumerations
 
-```rust
+```rust {all|2|all}
 enum IpAddressType {
   Ipv4,
   Ipv6,
@@ -422,6 +422,25 @@ enum IpAddressType {
 * An enumeration (listing) of different *variants*
 * Each variant is an alternative value of the enum, you pick a single value to
   create an instance
+
+---
+
+# Enumerations
+One of the more powerful kinds of types in Rust are enumerations
+
+```rust
+enum IpAddressType {
+  Ipv4, // = 0 (default discriminant)
+  Ipv6, // = 1 (default discriminant)
+}
+```
+
+* An enumeration (listing) of different *variants*
+* Each variant is an alternative value of the enum, you pick a single value to
+  create an instance
+* Each variant has a discriminant (hidden by default)
+  * a numeric value (`isize` by default, can be changed by using `#[repr(numeric_type)]`) used to determine the variant that the enumeration holds 
+  * one cannot rely on the fact that the discriminant is an `isize`, the compiler may always decide to optimize it
 
 <v-click>
 
@@ -441,8 +460,8 @@ it
 
 ```rust
 enum IpAddress {
-  Ipv4(u8, u8, u8, u8),
-  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),
+  Ipv4(u8, u8, u8, u8),                           // = 0 (default discriminant)
+  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),   // = 1 (default discriminant)
 }
 ```
 
@@ -456,20 +475,22 @@ fn main() {
 }
 ```
 
-* Note: an enum always is as large as the largest variant
+* Note: an enum always is as large as the largest variant plus the size of the discriminant
 
 <!--<div class="relative">-->
 
-<div style="margin-left:auto; margin-right:auto; display:block; width:50%;">
+<div style="margin-left:auto; margin-right:auto; display:block; width:100%;">
 
 <LightOrDark>
     <template #dark>
         <center>
-            <img src="/images/A2-enum-memory-dark.svg"/>
+            <img src="/images/A2-enum-memory-dark.drawio.svg"/>
         </center>
     </template>
     <template #light>
-        <img src="/images/A2-enum-memory-light.svg"/>
+        <center>
+            <img src="/images/A2-enum-memory-light.drawio.svg"/>
+        </center>
     </template>
 </LightOrDark>
 
