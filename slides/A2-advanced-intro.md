@@ -438,7 +438,9 @@ enum IpAddressType {
 * An enumeration (listing) of different *variants*
 * Each variant is an alternative value of the enum, you pick a single value to
   create an instance
-* Each variant has a discriminant (hidden by default), a numeric value (`isize` by default) used to determine the variant that the enumeration holds
+* Each variant has a discriminant (hidden by default)
+  * a numeric value (`isize` by default, can be changed by using `#[repr(numeric_type)]`) used to determine the variant that the enumeration holds 
+  * one cannot rely on the fact that the discriminant is an `isize`, the compiler may always decide to optimize it
 
 <v-click>
 
