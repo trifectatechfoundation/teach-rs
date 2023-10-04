@@ -1,6 +1,8 @@
 mod book;
 mod io;
 mod load;
+mod exercises;
+mod slides;
 
 use self::{
     book::{Book, BookBuilder, ChapterBuilder, SectionBuilder},
@@ -8,9 +10,10 @@ use self::{
 };
 use error_stack::{IntoReport, Report, Result, ResultExt};
 use io::{copy, create_dir_all, create_file, get_dir_content, read_to_string, write_all};
+use slides::{SlidesPackage, SlidesPackageBuilder};
 use std::{
     fmt,
-    fs::{self},
+    fs,
     path::{Path, PathBuf},
 };
 
@@ -50,9 +53,14 @@ impl Track {
 
         // Render the modules in the track
         let mut book_builder = Book::builder(&self.name);
+        let mut slides_builder = SlidesPackage::builder(self.name);
         for (module, index) in self.modules.iter().zip(1..) {
-            module.render(&mut book_builder, index, output_dir)?;
+            module.render(&mut book_builder, &mut slides_builder, index, output_dir)?;
         }
+
+        // Build and render the slides package
+        let slides_package = slides_builder.build();
+        slides_package.render(output_dir).change_context(LoadTrackError)?;
 
         // Build and render the exercise book
         let book = book_builder.build();
@@ -72,16 +80,18 @@ impl Module {
     fn render(
         &self,
         book_builder: &mut BookBuilder,
+        slides: &mut SlidesPackageBuilder,
         index: i32,
         output_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
         let module_tag = to_numbered_tag(&self.name, index);
         let module_out_dir = output_dir.as_ref().join(Path::new(&module_tag));
         create_dir_all(&module_out_dir)?;
+
         let mut chapter = book_builder.chapter(&self.name);
 
         for (unit, index) in self.units.iter().zip(1..) {
-            unit.render(&mut chapter, index, &module_out_dir)?;
+            unit.render(&mut chapter, slides, index, &module_out_dir)?;
         }
         chapter.add();
         Ok(())
@@ -99,9 +109,11 @@ impl Unit {
     fn render(
         &self,
         chapter: &mut ChapterBuilder,
+        slides: &mut SlidesPackageBuilder,
         index: i32,
         output_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
+        let mut deck = slides.deck(&self.name, self.template.clone());
         let mut section = chapter.section(&self.name);
         let unit_tag = to_numbered_tag(&self.name, index);
         let unit_out_dir = output_dir.as_ref().join(unit_tag);

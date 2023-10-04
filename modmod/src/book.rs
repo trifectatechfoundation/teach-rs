@@ -12,6 +12,7 @@ use crate::{
 };
 
 #[derive(Debug, Default)]
+#[non_exhaustive]
 pub struct RenderBookError;
 
 impl fmt::Display for RenderBookError {
