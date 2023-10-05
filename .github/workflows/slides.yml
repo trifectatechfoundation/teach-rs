@@ -24,6 +24,9 @@ jobs:
       - name: Build Module A1
         working-directory: slides
         run: yarn run build-A1
+      - name: Build Module A2 Tools
+        working-directory: slides
+        run: yarn run build-A2-tools
       - name: Build Module A2
         working-directory: slides
         run: yarn run build-A2
@@ -45,8 +48,8 @@ jobs:
       - name: Build Module F
         working-directory: slides
         run: yarn run build-F
-      # - name: Deploy Architecture Preview 🚀
-      #   uses: rossjrw/pr-preview-action@v1
-      #   with:
-      #     source-dir: build/
-      #     umbrella-dir: pr-preview
+      - name: Deploy Slides Preview 🚀
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: slides/dist/
+          umbrella-dir: slides/pr-preview
