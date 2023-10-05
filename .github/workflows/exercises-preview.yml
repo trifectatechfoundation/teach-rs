@@ -1,10 +1,10 @@
-name: exercises
+name: exercises-preview
 
 on: 
   pull_request:
 
 jobs:
-  exercises-build:
+  exercises-preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
