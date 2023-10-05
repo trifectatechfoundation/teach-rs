@@ -1,4 +1,4 @@
-name: slides-build
+name: slides
 
 on: 
   pull_request:
@@ -6,7 +6,7 @@ on:
   merge_group:
 
 jobs:
-  build-architecture-preview:
+  slides-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
