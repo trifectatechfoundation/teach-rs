@@ -32,8 +32,10 @@ pub struct Book {
 impl Book {
     pub fn builder(title: &str) -> BookBuilder {
         BookBuilder {
-            title: title.to_string(),
-            chapters: vec![],
+            book: Book {
+                title: title.to_string(),
+                chapters: vec![],
+            },
         }
     }
 
@@ -137,75 +139,63 @@ pub struct SubSection {
 }
 
 pub struct BookBuilder {
-    title: String,
-    chapters: Vec<Chapter>,
+    book: Book,
 }
 
 impl BookBuilder {
     pub fn chapter(&mut self, title: &str) -> ChapterBuilder {
         ChapterBuilder {
             book_builder: self,
-            title: title.to_string(),
-            sections: vec![],
+            chapter: Chapter {
+                title: title.to_string(),
+                sections: vec![],
+            },
         }
     }
 
     pub fn build(self) -> Book {
-        let BookBuilder { title, chapters } = self;
-        Book { title, chapters }
+        self.book
     }
 }
 
-pub struct ChapterBuilder<'bb> {
-    book_builder: &'bb mut BookBuilder,
-    title: String,
-    sections: Vec<Section>,
+pub struct ChapterBuilder<'b> {
+    book_builder: &'b mut BookBuilder,
+    chapter: Chapter,
 }
 
-impl<'bb> ChapterBuilder<'bb> {
-    pub fn add(self) -> &'bb mut BookBuilder {
-        let ChapterBuilder {
-            book_builder,
-            title,
-            sections,
-        } = self;
-        book_builder.chapters.push(Chapter { title, sections });
-        book_builder
-    }
-
-    pub fn section<'cb>(&'cb mut self, title: &str) -> SectionBuilder<'bb, 'cb> {
+impl<'b> ChapterBuilder<'b> {
+    pub fn section<'c>(&'c mut self, title: &str) -> SectionBuilder<'b, 'c> {
         SectionBuilder {
             chapter_builder: self,
-            title: title.to_string(),
-            subsections: vec![],
+            section: Section {
+                title: title.to_string(),
+                subsections: vec![],
+            },
         }
     }
-}
 
-pub struct SectionBuilder<'bb, 'cb> {
-    chapter_builder: &'cb mut ChapterBuilder<'bb>,
-    title: String,
-    subsections: Vec<SubSection>,
-}
-
-impl<'bb, 'cb> SectionBuilder<'bb, 'cb> {
-    pub fn add(self) -> &'cb mut ChapterBuilder<'bb> {
-        let SectionBuilder {
-            chapter_builder,
-            title,
-            subsections,
-        } = self;
-        chapter_builder
-            .sections
-            .push(Section { title, subsections });
-        chapter_builder
+    pub fn add(self) -> &'b mut BookBuilder {
+        self.book_builder.book.chapters.push(self.chapter);
+        self.book_builder
     }
+}
 
+pub struct SectionBuilder<'b, 'c> {
+    chapter_builder: &'c mut ChapterBuilder<'b>,
+    section: Section,
+}
+
+impl<'b, 'c> SectionBuilder<'b, 'c> {
     pub fn subsection(&mut self, title: &str, content: PathBuf, out_dir: PathBuf) {
-        self.subsections.push(SubSection {
+        self.section.subsections.push(SubSection {
             title: title.to_string(),
             content,
             out_dir,
-        });
+        })
+    }
+
+    pub fn add(self) -> &'c mut ChapterBuilder<'b> {
+        self.chapter_builder.chapter.sections.push(self.section);
+        self.chapter_builder
     }
 }

@@ -1,9 +1,8 @@
 #![allow(dead_code)]
-use std::path::{PathBuf, Path};
 use std::fmt;
+use std::path::{Path, PathBuf};
 
 use error_stack::Result;
-
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
@@ -79,8 +78,8 @@ pub struct SlideDeckBuilder<'p> {
 }
 
 impl<'p> SlideDeckBuilder<'p> {
-    fn section(&mut self, content: PathBuf) -> SectionBuilder<'p, '_> {
-        SectionBuilder {
+    pub fn section(&mut self, content: PathBuf) -> SlidesSectionBuilder<'p, '_> {
+        SlidesSectionBuilder {
             deck_builder: self,
             section: Section {
                 content,
@@ -91,18 +90,18 @@ impl<'p> SlideDeckBuilder<'p> {
         }
     }
 
-    fn add(self) -> &'p mut SlidesPackageBuilder {
+    pub fn add(self) -> &'p mut SlidesPackageBuilder {
         self.package_builder.package.decks.push(self.slide_deck);
         self.package_builder
     }
 }
 
-pub struct SectionBuilder<'p, 'd> {
+pub struct SlidesSectionBuilder<'p, 'd> {
     deck_builder: &'d mut SlideDeckBuilder<'p>,
     section: Section,
 }
 
-impl<'p, 'd> SectionBuilder<'p, 'd> {
+impl<'p, 'd> SlidesSectionBuilder<'p, 'd> {
     pub fn objective(&mut self, objective: &str) {
         self.section.objectives.push(objective.to_string());
     }

@@ -1,7 +1,7 @@
 mod book;
+mod exercises;
 mod io;
 mod load;
-mod exercises;
 mod slides;
 
 use self::{
@@ -9,11 +9,15 @@ use self::{
     load::{Load, TrackDef},
 };
 use error_stack::{IntoReport, Report, Result, ResultExt};
+use exercises::{
+    ExerciseCollection, ExerciseCollectionBuilder, ModuleExercisesBuilder, UnitExercisesBuilder,
+};
 use io::{copy, create_dir_all, create_file, get_dir_content, read_to_string, write_all};
-use slides::{SlidesPackage, SlidesPackageBuilder};
+use slides::{
+    SlideDeck, SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder, SlidesSectionBuilder,
+};
 use std::{
-    fmt,
-    fs,
+    fmt, fs,
     path::{Path, PathBuf},
 };
 
@@ -43,8 +47,13 @@ impl Track {
                     .change_context(LoadTrackError)?;
             } else {
                 // Return error if output dir is not empty
-                let None = fs::read_dir(output_dir).into_report().change_context(LoadTrackError)?.next() else {
-                    return Err(Report::new(LoadTrackError).attach_printable("Output directory is not empty"));
+                let None = fs::read_dir(output_dir)
+                    .into_report()
+                    .change_context(LoadTrackError)?
+                    .next()
+                else {
+                    return Err(Report::new(LoadTrackError)
+                        .attach_printable("Output directory is not empty"));
                 };
             }
         }
@@ -53,18 +62,34 @@ impl Track {
 
         // Render the modules in the track
         let mut book_builder = Book::builder(&self.name);
-        let mut slides_builder = SlidesPackage::builder(self.name);
+        let mut slides_builder = SlidesPackage::builder(&self.name);
+        let mut exercises_builder = ExerciseCollection::builder();
         for (module, index) in self.modules.iter().zip(1..) {
-            module.render(&mut book_builder, &mut slides_builder, index, output_dir)?;
+            module.render(
+                &mut book_builder,
+                &mut slides_builder,
+                &mut exercises_builder,
+                index,
+                output_dir,
+            )?;
         }
 
         // Build and render the slides package
         let slides_package = slides_builder.build();
-        slides_package.render(output_dir).change_context(LoadTrackError)?;
+        slides_package
+            .render(output_dir)
+            .change_context(LoadTrackError)?;
 
         // Build and render the exercise book
         let book = book_builder.build();
         book.render(output_dir).change_context(LoadTrackError)?;
+
+        // Build and render exercise packages
+        let exercises = exercises_builder.build();
+        exercises
+            .render(output_dir)
+            .change_context(LoadTrackError)?;
+
         Ok(())
     }
 }
@@ -81,6 +106,7 @@ impl Module {
         &self,
         book_builder: &mut BookBuilder,
         slides: &mut SlidesPackageBuilder,
+        exercises: &mut ExerciseCollectionBuilder,
         index: i32,
         output_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
@@ -89,11 +115,20 @@ impl Module {
         create_dir_all(&module_out_dir)?;
 
         let mut chapter = book_builder.chapter(&self.name);
+        let mut module_exercises = exercises.module(&self.name);
 
+        // Render all units in this module
         for (unit, index) in self.units.iter().zip(1..) {
-            unit.render(&mut chapter, slides, index, &module_out_dir)?;
+            unit.render(
+                &mut chapter,
+                slides,
+                &mut module_exercises,
+                index,
+                &module_out_dir,
+            )?;
         }
         chapter.add();
+        module_exercises.add();
         Ok(())
     }
 }
@@ -110,11 +145,14 @@ impl Unit {
         &self,
         chapter: &mut ChapterBuilder,
         slides: &mut SlidesPackageBuilder,
+        module_exercises: &mut ModuleExercisesBuilder,
         index: i32,
         output_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
-        let mut deck = slides.deck(&self.name, self.template.clone());
         let mut section = chapter.section(&self.name);
+        let mut deck = slides.deck(&self.name, self.template.clone());
+        let mut unit_exercises = module_exercises.unit(&self.name);
+
         let unit_tag = to_numbered_tag(&self.name, index);
         let unit_out_dir = output_dir.as_ref().join(unit_tag);
         create_dir_all(&unit_out_dir)?;
@@ -122,28 +160,20 @@ impl Unit {
         let exercise_out_dir = unit_out_dir.join("exercises");
         create_dir_all(&exercise_out_dir)?;
 
-        let template_content = read_to_string(&self.template)?;
-        let mut unit_content = String::new();
-        let mut unit_objectives = String::new();
-        let mut unit_summary = String::new();
-
-        for topic in &self.topics {
-            let (topic_content, topic_objectives, topic_summary) =
-                topic.render(&mut section, &output_dir, &exercise_out_dir)?;
-            unit_content += &topic_content;
-            unit_objectives += &topic_objectives;
-            unit_summary += &topic_summary;
+        for topic in self.topics.iter() {
+            topic.render(
+                &mut section,
+                &mut deck,
+                &mut unit_exercises,
+                unit_out_dir.clone(),
+                exercise_out_dir.clone(),
+            )?;
         }
 
-        let unit_content = template_content
-            .replace("#[modmod:content]\n", &unit_content)
-            .replace("#[modmod:objectives]", &unit_objectives)
-            .replace("#[modmod:summary]", &unit_summary);
-        let unit_slides_path = unit_out_dir.join("slides.md");
-        let unit_slides_file = create_file(unit_slides_path)?;
-        write_all(&unit_slides_file, unit_content)?;
-
         section.add();
+        deck.add();
+        unit_exercises.add();
+
         Ok(())
     }
 }
@@ -162,30 +192,20 @@ impl Topic {
     fn render(
         &self,
         section: &mut SectionBuilder,
+        deck: &mut SlideDeckBuilder,
+        unit_exercises: &mut UnitExercisesBuilder,
         output_dir: impl AsRef<Path>,
         exercise_out_dir: impl AsRef<Path>,
-    ) -> Result<(String, String, String), LoadTrackError> {
-        let mut topic_content = String::from("---\n\n");
-        let mut topic_objectives = String::new();
-        let mut topic_summary = String::new();
-
-        let topic_slides = read_to_string(&self.content)?;
-        topic_content += topic_slides.trim();
-        topic_content += "\n";
-
-        for objective in &self.objectives {
-            topic_objectives += &format!("- {}\n", objective.trim());
-        }
-
-        for summary_item in &self.summary {
-            topic_summary += &format!("- {}\n", summary_item.trim());
-        }
+    ) -> Result<(), LoadTrackError> {
+        let slides_section = deck.section(self.content.clone());
 
         for exercise in &self.exercises {
-            exercise.render(section, &output_dir, &exercise_out_dir)?;
+            exercise.render(section, unit_exercises, &output_dir, &exercise_out_dir)?;
         }
 
-        Ok((topic_content, topic_objectives, topic_summary))
+        slides_section.add();
+
+        Ok(())
     }
 }
 
@@ -201,6 +221,7 @@ impl Exercise {
     fn render(
         &self,
         section: &mut SectionBuilder,
+        unit_exercises: &mut UnitExercisesBuilder,
         output_dir: impl AsRef<Path>,
         exercise_out_dir: impl AsRef<Path>,
     ) -> Result<(), LoadTrackError> {
@@ -211,32 +232,13 @@ impl Exercise {
         section.subsection(
             &self.name,
             exercise_dir.join(&self.description),
-            exercise_out_dir.strip_prefix(output_dir).unwrap().to_owned(),
+            exercise_out_dir
+                .strip_prefix(output_dir)
+                .unwrap()
+                .to_owned(),
         );
 
-        let content = get_dir_content(&exercise_dir)?;
-
-        // Create globset to match included files
-        let mut globset = globset::GlobSetBuilder::new();
-        for include in &self.includes {
-            globset.add(
-                globset::Glob::new(exercise_dir.join(include).to_str().unwrap())
-                    .into_report()
-                    .attach_printable_lazy(|| format!("Error parsing include glob '{include}'"))
-                    .change_context(LoadTrackError)?,
-            );
-        }
-        let globset = globset.build().unwrap();
-
-        for included_file in content.files.iter().filter(|f| globset.is_match(f)) {
-            let included_file_relative = Path::new(&included_file)
-                .strip_prefix(&exercise_dir)
-                .unwrap();
-            let included_file_dest = exercise_out_dir.join(included_file_relative);
-            let include_file_dest_dir = included_file_dest.parent().unwrap();
-            create_dir_all(include_file_dest_dir)?;
-            copy(included_file, included_file_dest)?;
-        }
+        unit_exercises.package(&self.name, self.path.clone(), self.includes.clone());
 
         Ok(())
     }
