@@ -36,7 +36,7 @@ jobs:
         run: npx slidev build --out dist/B --base slides/pr-preview/pr-${{ github.event.number }}/B B-application-programming.md
       - name: Build Module C
         working-directory: slides
-        run: npx slidev build --out dist/C --base slides/pr-preview/pr-${{ github.event.number }}/C C-concurrency-parallelism.m
+        run: npx slidev build --out dist/C --base slides/pr-preview/pr-${{ github.event.number }}/C C-concurrency-parallelism.md
       - name: Build Module D
         working-directory: slides
         run: npx slidev build --out dist/D --base slides/pr-preview/pr-${{ github.event.number }}/D D-trait-objects-patterns.md
