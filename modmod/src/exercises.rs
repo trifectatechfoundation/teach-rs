@@ -1,6 +1,15 @@
-use std::{fmt, path::Path};
+use std::{
+    collections::HashMap,
+    fmt,
+    path::{Path, PathBuf},
+};
 
-use error_stack::Result;
+use error_stack::{IntoReport, Result, ResultExt};
+
+use crate::{
+    io::{copy, create_dir_all, get_dir_content},
+    to_tag, LoadTrackError,
+};
 
 #[non_exhaustive]
 #[derive(Debug, Default)]
@@ -16,18 +25,85 @@ impl error_stack::Context for RenderExercisesError {}
 
 #[derive(Debug)]
 pub struct ExerciseCollection<'track> {
-    modules: Vec<ModuleExercises<'track>>,
+    module_exercises: Vec<ModuleExercises<'track>>,
 }
 
 impl<'track> ExerciseCollection<'track> {
     pub fn builder() -> ExerciseCollectionBuilder<'track> {
         ExerciseCollectionBuilder {
-            collection: ExerciseCollection { modules: vec![] },
+            collection: ExerciseCollection {
+                module_exercises: vec![],
+            },
         }
     }
 
-    pub fn render(&self, output_dir: impl AsRef<Path>) -> Result<(), RenderExercisesError> {
-        Ok(())
+    pub fn render(
+        &self,
+        output_dir: impl AsRef<Path>,
+    ) -> Result<HashMap<PathBuf, PathBuf>, RenderExercisesError> {
+        let exercise_root_dir = output_dir.as_ref().join("exercises");
+        create_dir_all(&exercise_root_dir)?;
+        let mut exercise_output_paths = HashMap::new();
+
+        for mod_ex in self.module_exercises.iter() {
+            let mod_ex_out_dir = {
+                let mut d = exercise_root_dir.clone();
+                d.push(to_tag(&mod_ex.name));
+                d
+            };
+
+            create_dir_all(&mod_ex_out_dir)?;
+
+            for unit_ex in mod_ex.unit_exercises.iter() {
+                let unit_ex_out_dir = {
+                    let mut d = mod_ex_out_dir.clone();
+                    d.push(to_tag(unit_ex.name));
+                    d
+                };
+
+                create_dir_all(&unit_ex_out_dir)?;
+
+                for ex_pack in unit_ex.exercises.iter() {
+                    let ex_pack_out_dir = {
+                        let mut d = unit_ex_out_dir.clone();
+                        d.push(to_tag(ex_pack.name));
+                        d
+                    };
+
+                    create_dir_all(&ex_pack_out_dir)?;
+
+                    let content = get_dir_content(ex_pack.path)?;
+
+                    // Create globset to match included files
+                    let mut globset = globset::GlobSetBuilder::new();
+                    for include in ex_pack.includes {
+                        globset.add(
+                            globset::Glob::new(ex_pack.path.join(include).to_str().unwrap())
+                                .into_report()
+                                .attach_printable_lazy(|| {
+                                    format!("Error parsing include glob '{include}'")
+                                })
+                                .change_context(RenderExercisesError)?,
+                        );
+                    }
+                    let globset = globset.build().unwrap();
+
+                    for included_file in content.files.iter().filter(|f| globset.is_match(f)) {
+                        let included_file_relative = Path::new(&included_file)
+                            .strip_prefix(ex_pack.path)
+                            .unwrap();
+                        let included_file_dest = ex_pack_out_dir.join(included_file_relative);
+                        let include_file_dest_dir = included_file_dest.parent().unwrap();
+                        create_dir_all(include_file_dest_dir)?;
+                        copy(included_file, included_file_dest)?;
+                    }
+
+                    exercise_output_paths.insert(ex_pack.path.to_path_buf(), ex_pack_out_dir);
+                }
+            }
+        }
+
+        Ok(exercise_output_paths)
     }
 }
 
@@ -89,7 +165,7 @@ impl<'track, 'c> ModuleExercisesBuilder<'track, 'c> {
     pub fn add(self) -> &'c mut ExerciseCollectionBuilder<'track> {
         self.collection_buider
             .collection
-            .modules
+            .module_exercises
             .push(self.module_exercises);
         self.collection_buider
     }

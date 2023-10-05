@@ -62,7 +62,7 @@ impl Track {
         let mut book_builder = Book::builder(&self.name);
         let mut slides_builder = SlidesPackage::builder(&self.name);
         let mut exercises_builder = ExerciseCollection::builder();
-        for (module, index) in self.modules.iter().zip(1..) {
+        for module in self.modules.iter() {
             module.render(
                 &mut book_builder,
                 &mut slides_builder,
@@ -70,9 +70,15 @@ impl Track {
             )?;
         }
 
+        // Build and render exercise packages
+        let exercises = exercises_builder.build();
+        let exercise_paths = exercises
+            .render(output_dir)
+            .change_context(LoadTrackError)?;
         // Build and render the exercise book
         let book = book_builder.build();
-        book.render(output_dir).change_context(LoadTrackError)?;
+        book.render(&exercise_paths, output_dir)
+            .change_context(LoadTrackError)?;
 
         // Build and render the slides package
         let slides_package = slides_builder.build();
@@ -80,11 +86,6 @@ impl Track {
             .render(output_dir)
             .change_context(LoadTrackError)?;
 
-        // Build and render exercise packages
-        let exercises = exercises_builder.build();
-        exercises
-            .render(output_dir)
-            .change_context(LoadTrackError)?;
         dbg!(slides_package);
         dbg!(book);
         dbg!(exercises);
@@ -223,11 +224,19 @@ impl fmt::Display for LoadTrackError {
 
 impl error_stack::Context for LoadTrackError {}
 
-fn to_numbered_tag(s: &str, i: i32) -> String {
+fn to_numbered_tag<S>(s: S, i: i32) -> String
+where
+    S: ToString,
+{
+    let s = s.to_string();
     to_tag(format!("{i}-{s}"))
 }
 
-fn to_tag(mut s: String) -> String {
+fn to_tag<S>(s: S) -> String
+where
+    S: ToString,
+{
+    let mut s = s.to_string();
     s.make_ascii_lowercase();
     let mut tag = String::new();
     let mut words = s.split_whitespace();

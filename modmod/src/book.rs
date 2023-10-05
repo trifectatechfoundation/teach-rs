@@ -1,5 +1,6 @@
 use indoc::indoc;
 use std::{
+    collections::HashMap,
     fmt,
     path::{Path, PathBuf},
 };
@@ -39,7 +40,11 @@ impl<'track> Book<'track> {
         }
     }
 
-    pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderBookError> {
+    pub fn render(
+        &self,
+        exercise_paths: &HashMap<PathBuf, PathBuf>,
+        out_dir: impl AsRef<Path>,
+    ) -> Result<(), RenderBookError> {
         let book_out_dir = out_dir.as_ref().join("book");
         let book_src_dir = book_out_dir.join("src");
         create_dir_all(&book_src_dir)?;
@@ -68,8 +73,7 @@ impl<'track> Book<'track> {
             write_fmt(&summary_md, format_args!("- [{}]()\n", chapter.title))?;
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
-                let section_file_name =
-                    Path::new(&to_tag(section.title.to_string())).with_extension("md");
+                let section_file_name = Path::new(&to_tag(section.title)).with_extension("md");
                 write_fmt(
                     &summary_md,
                     format_args!(
