@@ -1,0 +1,52 @@
+name: slides-build
+
+on: 
+  pull_request:
+  push:
+  merge_group:
+
+jobs:
+  build-architecture-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install
+        working-directory: slides
+        run: yarn
+      - name: Build Course Information
+        working-directory: slides
+        run: run yarn build-0
+      - name: Build Module A1
+        working-directory: slides
+        run: run yarn build-A1
+      - name: Build Module A2
+        working-directory: slides
+        run: run yarn build-A2
+      - name: Build Module A3
+        working-directory: slides
+        run: run yarn build-A3
+      - name: Build Module B
+        working-directory: slides
+        run: run yarn build-B
+      - name: Build Module C
+        working-directory: slides
+        run: run yarn build-C
+      - name: Build Module D
+        working-directory: slides
+        run: run yarn build-D
+      - name: Build Module E
+        working-directory: slides
+        run: run yarn build-E
+      - name: Build Module F
+        working-directory: slides
+        run: run yarn build-F
+      # - name: Deploy Architecture Preview 🚀
+      #   uses: rossjrw/pr-preview-action@v1
+      #   with:
+      #     source-dir: build/
+      #     umbrella-dir: pr-preview
