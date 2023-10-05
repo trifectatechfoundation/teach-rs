@@ -24,16 +24,16 @@ impl fmt::Display for RenderBookError {
 impl error_stack::Context for RenderBookError {}
 
 #[derive(Debug)]
-pub struct Book {
-    pub title: String,
-    pub chapters: Vec<Chapter>,
+pub struct Book<'track> {
+    pub title: &'track str,
+    pub chapters: Vec<Chapter<'track>>,
 }
 
-impl Book {
-    pub fn builder(title: &str) -> BookBuilder {
+impl<'track> Book<'track> {
+    pub fn builder(title: &'track str) -> BookBuilder {
         BookBuilder {
             book: Book {
-                title: title.to_string(),
+                title,
                 chapters: vec![],
             },
         }
@@ -69,7 +69,7 @@ impl Book {
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
                 let section_file_name =
-                    Path::new(&to_tag(section.title.clone())).with_extension("md");
+                    Path::new(&to_tag(section.title.to_string())).with_extension("md");
                 write_fmt(
                     &summary_md,
                     format_args!(
@@ -97,11 +97,12 @@ impl Book {
                     )?;
                     let content = read_to_string(&subsection.content)?;
                     let content = content
-                        // Insert exercise directory paths
-                        .replace(
-                            "#[modmod:exercise_dir]",
-                            &subsection.out_dir.to_string_lossy(),
-                        )
+                        // TODO: this v
+                        // // Insert exercise directory paths
+                        // .replace(
+                        //     "#[modmod:exercise_dir]",
+                        //     &subsection.out_dir.to_string_lossy(),
+                        // )
                         // Insert exercise references
                         .replace(
                             "#[modmod:exercise_ref]",
@@ -120,81 +121,76 @@ impl Book {
 }
 
 #[derive(Debug)]
-pub struct Chapter {
-    pub title: String,
-    pub sections: Vec<Section>,
+pub struct Chapter<'track> {
+    pub title: &'track str,
+    pub sections: Vec<Section<'track>>,
 }
 
 #[derive(Debug)]
-pub struct Section {
-    pub title: String,
-    pub subsections: Vec<SubSection>,
+pub struct Section<'track> {
+    pub title: &'track str,
+    pub subsections: Vec<SubSection<'track>>,
 }
 
 #[derive(Debug)]
-pub struct SubSection {
-    pub title: String,
-    pub content: PathBuf,
-    pub out_dir: PathBuf,
+pub struct SubSection<'track> {
+    pub title: &'track str,
+    pub content: &'track Path,
 }
 
-pub struct BookBuilder {
-    book: Book,
+pub struct BookBuilder<'track> {
+    book: Book<'track>,
 }
 
-impl BookBuilder {
-    pub fn chapter(&mut self, title: &str) -> ChapterBuilder {
+impl<'track> BookBuilder<'track> {
+    pub fn chapter<'b>(&'b mut self, title: &'track str) -> ChapterBuilder<'track, 'b> {
         ChapterBuilder {
             book_builder: self,
             chapter: Chapter {
-                title: title.to_string(),
+                title,
                 sections: vec![],
             },
         }
     }
 
-    pub fn build(self) -> Book {
+    pub fn build(self) -> Book<'track> {
         self.book
     }
 }
 
-pub struct ChapterBuilder<'b> {
-    book_builder: &'b mut BookBuilder,
-    chapter: Chapter,
+pub struct ChapterBuilder<'track, 'b> {
+    book_builder: &'b mut BookBuilder<'track>,
+    chapter: Chapter<'track>,
 }
 
-impl<'b> ChapterBuilder<'b> {
-    pub fn section<'c>(&'c mut self, title: &str) -> SectionBuilder<'b, 'c> {
+impl<'track, 'b> ChapterBuilder<'track, 'b> {
+    pub fn section<'c>(&'c mut self, title: &'track str) -> SectionBuilder<'track, 'b, 'c> {
         SectionBuilder {
             chapter_builder: self,
             section: Section {
-                title: title.to_string(),
+                title,
                 subsections: vec![],
             },
         }
     }
 
-    pub fn add(self) -> &'b mut BookBuilder {
+    pub fn add(self) -> &'b mut BookBuilder<'track> {
         self.book_builder.book.chapters.push(self.chapter);
         self.book_builder
     }
 }
 
-pub struct SectionBuilder<'b, 'c> {
-    chapter_builder: &'c mut ChapterBuilder<'b>,
-    section: Section,
+pub struct SectionBuilder<'track, 'b, 'c> {
+    chapter_builder: &'c mut ChapterBuilder<'track, 'b>,
+    section: Section<'track>,
 }
 
-impl<'b, 'c> SectionBuilder<'b, 'c> {
-    pub fn subsection(&mut self, title: &str, content: PathBuf, out_dir: PathBuf) {
-        self.section.subsections.push(SubSection {
-            title: title.to_string(),
-            content,
-            out_dir,
-        })
+impl<'track, 'b, 'c> SectionBuilder<'track, 'b, 'c> {
+    pub fn subsection(&mut self, title: &'track str, content: &'track Path) {
+        self.section.subsections.push(SubSection { title, content })
     }
 
-    pub fn add(self) -> &'c mut ChapterBuilder<'b> {
+    pub fn add(self) -> &'c mut ChapterBuilder<'track, 'b> {
         self.chapter_builder.chapter.sections.push(self.section);
         self.chapter_builder
     }

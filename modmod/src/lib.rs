@@ -12,10 +12,8 @@ use error_stack::{IntoReport, Report, Result, ResultExt};
 use exercises::{
     ExerciseCollection, ExerciseCollectionBuilder, ModuleExercisesBuilder, UnitExercisesBuilder,
 };
-use io::{copy, create_dir_all, create_file, get_dir_content, read_to_string, write_all};
-use slides::{
-    SlideDeck, SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder, SlidesSectionBuilder,
-};
+use io::create_dir_all;
+use slides::{SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder};
 use std::{
     fmt, fs,
     path::{Path, PathBuf},
@@ -69,10 +67,12 @@ impl Track {
                 &mut book_builder,
                 &mut slides_builder,
                 &mut exercises_builder,
-                index,
-                output_dir,
             )?;
         }
+
+        // Build and render the exercise book
+        let book = book_builder.build();
+        book.render(output_dir).change_context(LoadTrackError)?;
 
         // Build and render the slides package
         let slides_package = slides_builder.build();
@@ -80,16 +80,14 @@ impl Track {
             .render(output_dir)
             .change_context(LoadTrackError)?;
 
-        // Build and render the exercise book
-        let book = book_builder.build();
-        book.render(output_dir).change_context(LoadTrackError)?;
-
         // Build and render exercise packages
         let exercises = exercises_builder.build();
         exercises
             .render(output_dir)
             .change_context(LoadTrackError)?;
-
+        dbg!(slides_package);
+        dbg!(book);
+        dbg!(exercises);
         Ok(())
     }
 }
@@ -102,30 +100,18 @@ pub struct Module {
 }
 
 impl Module {
-    fn render(
-        &self,
-        book_builder: &mut BookBuilder,
-        slides: &mut SlidesPackageBuilder,
-        exercises: &mut ExerciseCollectionBuilder,
-        index: i32,
-        output_dir: impl AsRef<Path>,
+    fn render<'me>(
+        &'me self,
+        book_builder: &mut BookBuilder<'me>,
+        slides: &mut SlidesPackageBuilder<'me>,
+        exercises: &mut ExerciseCollectionBuilder<'me>,
     ) -> Result<(), LoadTrackError> {
-        let module_tag = to_numbered_tag(&self.name, index);
-        let module_out_dir = output_dir.as_ref().join(Path::new(&module_tag));
-        create_dir_all(&module_out_dir)?;
-
         let mut chapter = book_builder.chapter(&self.name);
         let mut module_exercises = exercises.module(&self.name);
 
         // Render all units in this module
-        for (unit, index) in self.units.iter().zip(1..) {
-            unit.render(
-                &mut chapter,
-                slides,
-                &mut module_exercises,
-                index,
-                &module_out_dir,
-            )?;
+        for unit in self.units.iter() {
+            unit.render(&mut chapter, slides, &mut module_exercises)?;
         }
         chapter.add();
         module_exercises.add();
@@ -141,33 +127,18 @@ pub struct Unit {
 }
 
 impl Unit {
-    fn render(
-        &self,
-        chapter: &mut ChapterBuilder,
-        slides: &mut SlidesPackageBuilder,
-        module_exercises: &mut ModuleExercisesBuilder,
-        index: i32,
-        output_dir: impl AsRef<Path>,
+    fn render<'me>(
+        &'me self,
+        chapter: &mut ChapterBuilder<'me, '_>,
+        slides: &mut SlidesPackageBuilder<'me>,
+        module_exercises: &mut ModuleExercisesBuilder<'me, '_>,
     ) -> Result<(), LoadTrackError> {
         let mut section = chapter.section(&self.name);
-        let mut deck = slides.deck(&self.name, self.template.clone());
+        let mut deck = slides.deck(&self.name, &self.template);
         let mut unit_exercises = module_exercises.unit(&self.name);
 
-        let unit_tag = to_numbered_tag(&self.name, index);
-        let unit_out_dir = output_dir.as_ref().join(unit_tag);
-        create_dir_all(&unit_out_dir)?;
-
-        let exercise_out_dir = unit_out_dir.join("exercises");
-        create_dir_all(&exercise_out_dir)?;
-
         for topic in self.topics.iter() {
-            topic.render(
-                &mut section,
-                &mut deck,
-                &mut unit_exercises,
-                unit_out_dir.clone(),
-                exercise_out_dir.clone(),
-            )?;
+            topic.render(&mut section, &mut deck, &mut unit_exercises)?;
         }
 
         section.add();
@@ -189,18 +160,28 @@ pub struct Topic {
 }
 
 impl Topic {
-    fn render(
-        &self,
-        section: &mut SectionBuilder,
-        deck: &mut SlideDeckBuilder,
-        unit_exercises: &mut UnitExercisesBuilder,
-        output_dir: impl AsRef<Path>,
-        exercise_out_dir: impl AsRef<Path>,
+    fn render<'me>(
+        &'me self,
+        section: &mut SectionBuilder<'me, '_, '_>,
+        deck: &mut SlideDeckBuilder<'me, '_>,
+        unit_exercises: &mut UnitExercisesBuilder<'me, '_, '_>,
     ) -> Result<(), LoadTrackError> {
-        let slides_section = deck.section(self.content.clone());
+        let mut slides_section = deck.section(&self.content);
+
+        for item in self.summary.iter() {
+            slides_section.summary(item);
+        }
+
+        for obj in self.objectives.iter() {
+            slides_section.objective(obj);
+        }
+
+        for item in self.further_reading.iter() {
+            slides_section.further_reading(item);
+        }
 
         for exercise in &self.exercises {
-            exercise.render(section, unit_exercises, &output_dir, &exercise_out_dir)?;
+            exercise.render(section, unit_exercises)?;
         }
 
         slides_section.add();
@@ -218,27 +199,14 @@ pub struct Exercise {
 }
 
 impl Exercise {
-    fn render(
-        &self,
-        section: &mut SectionBuilder,
-        unit_exercises: &mut UnitExercisesBuilder,
-        output_dir: impl AsRef<Path>,
-        exercise_out_dir: impl AsRef<Path>,
+    fn render<'me>(
+        &'me self,
+        section: &mut SectionBuilder<'me, '_, '_>,
+        unit_exercises: &mut UnitExercisesBuilder<'me, '_, '_>,
     ) -> Result<(), LoadTrackError> {
-        let exercise_dir = output_dir.as_ref().join(&self.path);
-        let exercise_tag = to_tag(self.name.clone());
-        let exercise_out_dir = exercise_out_dir.as_ref().join(exercise_tag);
+        section.subsection(&self.name, &self.description);
 
-        section.subsection(
-            &self.name,
-            exercise_dir.join(&self.description),
-            exercise_out_dir
-                .strip_prefix(output_dir)
-                .unwrap()
-                .to_owned(),
-        );
-
-        unit_exercises.package(&self.name, self.path.clone(), self.includes.clone());
+        unit_exercises.package(&self.name, &self.path, &self.includes);
 
         Ok(())
     }

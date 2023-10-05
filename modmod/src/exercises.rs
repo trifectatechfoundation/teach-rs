@@ -1,11 +1,6 @@
-use std::{
-    fmt,
-    path::{Path, PathBuf},
-};
+use std::{fmt, path::Path};
 
 use error_stack::Result;
-
-use crate::Exercise;
 
 #[non_exhaustive]
 #[derive(Debug, Default)]
@@ -19,75 +14,79 @@ impl fmt::Display for RenderExercisesError {
 
 impl error_stack::Context for RenderExercisesError {}
 
-pub struct ExerciseCollection {
-    modules: Vec<ModuleExercises>,
+#[derive(Debug)]
+pub struct ExerciseCollection<'track> {
+    modules: Vec<ModuleExercises<'track>>,
 }
 
-impl ExerciseCollection {
-    pub fn builder() -> ExerciseCollectionBuilder {
+impl<'track> ExerciseCollection<'track> {
+    pub fn builder() -> ExerciseCollectionBuilder<'track> {
         ExerciseCollectionBuilder {
             collection: ExerciseCollection { modules: vec![] },
         }
     }
 
     pub fn render(&self, output_dir: impl AsRef<Path>) -> Result<(), RenderExercisesError> {
-        todo!();
+        Ok(())
     }
 }
 
-pub struct ModuleExercises {
-    name: String,
-    unit_exercises: Vec<UnitExercises>,
+#[derive(Debug)]
+pub struct ModuleExercises<'track> {
+    name: &'track str,
+    unit_exercises: Vec<UnitExercises<'track>>,
 }
 
-pub struct UnitExercises {
-    name: String,
-    exercises: Vec<ExercisePackage>,
+#[derive(Debug)]
+pub struct UnitExercises<'track> {
+    name: &'track str,
+    exercises: Vec<ExercisePackage<'track>>,
 }
 
-pub struct ExercisePackage {
-    name: String,
-    path: PathBuf,
-    includes: Vec<String>,
+#[derive(Debug)]
+pub struct ExercisePackage<'track> {
+    name: &'track str,
+    path: &'track Path,
+    includes: &'track [String],
 }
 
-pub struct ExerciseCollectionBuilder {
-    collection: ExerciseCollection,
+pub struct ExerciseCollectionBuilder<'track> {
+    collection: ExerciseCollection<'track>,
 }
 
-impl ExerciseCollectionBuilder {
-    pub fn module(&mut self, name: &str) -> ModuleExercisesBuilder {
+impl<'track> ExerciseCollectionBuilder<'track> {
+    pub fn module(&mut self, name: &'track str) -> ModuleExercisesBuilder<'track, '_> {
         ModuleExercisesBuilder {
             collection_buider: self,
             module_exercises: ModuleExercises {
-                name: name.to_string(),
+                name,
                 unit_exercises: vec![],
             },
         }
     }
 
-    pub fn build(self) -> ExerciseCollection {
+    pub fn build(self) -> ExerciseCollection<'track> {
         self.collection
     }
 }
 
-pub struct ModuleExercisesBuilder<'c> {
-    collection_buider: &'c mut ExerciseCollectionBuilder,
-    module_exercises: ModuleExercises,
+pub struct ModuleExercisesBuilder<'track, 'c> {
+    collection_buider: &'c mut ExerciseCollectionBuilder<'track>,
+    module_exercises: ModuleExercises<'track>,
 }
 
-impl<'c> ModuleExercisesBuilder<'c> {
-    pub fn unit<'m>(&'m mut self, name: &str) -> UnitExercisesBuilder<'c, 'm> {
+impl<'track, 'c> ModuleExercisesBuilder<'track, 'c> {
+    pub fn unit<'m>(&'m mut self, name: &'track str) -> UnitExercisesBuilder<'track, 'c, 'm> {
         UnitExercisesBuilder {
             module_builder: self,
             unit_exercises: UnitExercises {
-                name: name.to_string(),
+                name,
                 exercises: vec![],
             },
         }
     }
 
-    pub fn add(self) -> &'c mut ExerciseCollectionBuilder {
+    pub fn add(self) -> &'c mut ExerciseCollectionBuilder<'track> {
         self.collection_buider
             .collection
             .modules
@@ -96,21 +95,21 @@ impl<'c> ModuleExercisesBuilder<'c> {
     }
 }
 
-pub struct UnitExercisesBuilder<'c, 'm> {
-    module_builder: &'m mut ModuleExercisesBuilder<'c>,
-    unit_exercises: UnitExercises,
+pub struct UnitExercisesBuilder<'track, 'c, 'm> {
+    module_builder: &'m mut ModuleExercisesBuilder<'track, 'c>,
+    unit_exercises: UnitExercises<'track>,
 }
 
-impl<'c, 'm> UnitExercisesBuilder<'c, 'm> {
-    pub fn package(&mut self, name: &str, path: PathBuf, includes: Vec<String>) {
+impl<'track, 'c, 'm> UnitExercisesBuilder<'track, 'c, 'm> {
+    pub fn package(&mut self, name: &'track str, path: &'track Path, includes: &'track [String]) {
         self.unit_exercises.exercises.push(ExercisePackage {
-            name: name.to_string(),
+            name,
             path,
             includes,
         })
     }
 
-    pub fn add(self) -> &'m mut ModuleExercisesBuilder<'c> {
+    pub fn add(self) -> &'m mut ModuleExercisesBuilder<'track, 'c> {
         self.module_builder
             .module_exercises
             .unit_exercises

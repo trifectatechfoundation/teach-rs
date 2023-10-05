@@ -16,69 +16,76 @@ impl fmt::Display for RenderSlidesError {
 
 impl error_stack::Context for RenderSlidesError {}
 
-pub struct SlidesPackage {
+#[derive(Debug)]
+pub struct SlidesPackage<'track> {
     /// Name of the package, corresponds to the name of the track
-    name: String,
-    decks: Vec<SlideDeck>,
+    name: &'track str,
+    decks: Vec<SlideDeck<'track>>,
 }
 
-impl SlidesPackage {
-    pub fn builder(name: &str) -> SlidesPackageBuilder {
+impl<'track> SlidesPackage<'track> {
+    pub fn builder(name: &'track str) -> SlidesPackageBuilder<'track> {
         SlidesPackageBuilder {
             package: SlidesPackage {
-                name: name.to_string(),
+                name,
                 decks: vec![],
             },
         }
     }
 
     pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderSlidesError> {
-        todo!()
+        Ok(())
     }
 }
 
-pub struct SlideDeck {
+#[derive(Debug)]
+pub struct SlideDeck<'track> {
     /// Name of the slide deck, corresponds to the name of the unit in the module
-    name: String,
-    template: PathBuf,
-    sections: Vec<Section>,
+    name: &'track str,
+    template: &'track Path,
+    sections: Vec<Section<'track>>,
 }
 
-pub struct Section {
-    content: PathBuf,
-    objectives: Vec<String>,
-    summary: Vec<String>,
-    further_reading: Vec<String>,
+#[derive(Debug)]
+pub struct Section<'track> {
+    content: &'track Path,
+    objectives: Vec<&'track str>,
+    summary: Vec<&'track str>,
+    further_reading: Vec<&'track str>,
 }
 
-pub struct SlidesPackageBuilder {
-    package: SlidesPackage,
+pub struct SlidesPackageBuilder<'track> {
+    package: SlidesPackage<'track>,
 }
 
-impl SlidesPackageBuilder {
-    pub fn deck(&mut self, name: &str, template: PathBuf) -> SlideDeckBuilder<'_> {
+impl<'track> SlidesPackageBuilder<'track> {
+    pub fn deck(
+        &mut self,
+        name: &'track str,
+        template: &'track Path,
+    ) -> SlideDeckBuilder<'track, '_> {
         SlideDeckBuilder {
             package_builder: self,
             slide_deck: SlideDeck {
-                name: name.to_string(),
+                name,
                 template,
                 sections: vec![],
             },
         }
     }
 
-    pub fn build(self) -> SlidesPackage {
+    pub fn build(self) -> SlidesPackage<'track> {
         self.package
     }
 }
 
-pub struct SlideDeckBuilder<'p> {
-    package_builder: &'p mut SlidesPackageBuilder,
-    slide_deck: SlideDeck,
+pub struct SlideDeckBuilder<'track, 'p> {
+    package_builder: &'p mut SlidesPackageBuilder<'track>,
+    slide_deck: SlideDeck<'track>,
 }
 
-impl<'p> SlideDeckBuilder<'p> {
-    pub fn section(&mut self, content: PathBuf) -> SlidesSectionBuilder<'p, '_> {
+impl<'track, 'p> SlideDeckBuilder<'track, 'p> {
+    pub fn section(&mut self, content: &'track Path) -> SlidesSectionBuilder<'track, 'p, '_> {
         SlidesSectionBuilder {
             deck_builder: self,
             section: Section {
@@ -90,31 +97,31 @@ impl<'p> SlideDeckBuilder<'p> {
         }
     }
 
-    pub fn add(self) -> &'p mut SlidesPackageBuilder {
+    pub fn add(self) -> &'p mut SlidesPackageBuilder<'track> {
         self.package_builder.package.decks.push(self.slide_deck);
         self.package_builder
     }
 }
 
-pub struct SlidesSectionBuilder<'p, 'd> {
-    deck_builder: &'d mut SlideDeckBuilder<'p>,
-    section: Section,
+pub struct SlidesSectionBuilder<'track, 'p, 'd> {
+    deck_builder: &'d mut SlideDeckBuilder<'track, 'p>,
+    section: Section<'track>,
 }
 
-impl<'p, 'd> SlidesSectionBuilder<'p, 'd> {
-    pub fn objective(&mut self, objective: &str) {
-        self.section.objectives.push(objective.to_string());
+impl<'track, 'p, 'd> SlidesSectionBuilder<'track, 'p, 'd> {
+    pub fn objective(&mut self, objective: &'track str) {
+        self.section.objectives.push(objective);
     }
 
-    pub fn summary(&mut self, summary: String) {
+    pub fn summary(&mut self, summary: &'track str) {
         self.section.summary.push(summary);
     }
 
-    pub fn further_reading(&mut self, further_reading: String) {
+    pub fn further_reading(&mut self, further_reading: &'track str) {
         self.section.further_reading.push(further_reading);
     }
 
-    pub fn add(self) -> &'d mut SlideDeckBuilder<'p> {
+    pub fn add(self) -> &'d mut SlideDeckBuilder<'track, 'p> {
         self.deck_builder.slide_deck.sections.push(self.section);
         self.deck_builder
     }
