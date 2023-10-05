@@ -45,8 +45,3 @@ jobs:
       - name: Build Module F
         working-directory: slides
         run: yarn run build-F
-      # - name: Deploy Architecture Preview 🚀
-      #   uses: rossjrw/pr-preview-action@v1
-      #   with:
-      #     source-dir: build/
-      #     umbrella-dir: pr-preview
