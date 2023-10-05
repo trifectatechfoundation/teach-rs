@@ -1,0 +1,26 @@
+name: slides-build
+
+on: 
+  pull_request:
+  push:
+  merge_group:
+
+jobs:
+  build-architecture-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup RUST Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install mdBook
+        run: cargo install mdbook
+      - name: Build
+        working-directory: exercises
+        run: mdbook build
+      # - name: Deploy Architecture Preview 🚀
+      #   uses: rossjrw/pr-preview-action@v1
+      #   with:
+      #     source-dir: build/
+      #     umbrella-dir: pr-preview
