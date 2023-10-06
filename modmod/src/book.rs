@@ -99,14 +99,14 @@ impl<'track> Book<'track> {
                             subsection.title
                         ),
                     )?;
+                    let exercise_out_dir = &exercise_paths[subsection.exercise_path];
                     let content = read_to_string(&subsection.content)?;
                     let content = content
-                        // TODO: this v
-                        // // Insert exercise directory paths
-                        // .replace(
-                        //     "#[modmod:exercise_dir]",
-                        //     &subsection.out_dir.to_string_lossy(),
-                        // )
+                        // Insert exercise directory paths
+                        .replace(
+                            "#[modmod:exercise_dir]",
+                            &exercise_out_dir.to_string_lossy(),
+                        )
                         // Insert exercise references
                         .replace(
                             "#[modmod:exercise_ref]",
@@ -140,6 +140,7 @@ pub struct Section<'track> {
 pub struct SubSection<'track> {
     pub title: &'track str,
     pub content: &'track Path,
+    pub exercise_path: &'track Path,
 }
 
 pub struct BookBuilder<'track> {
@@ -190,8 +191,17 @@ pub struct SectionBuilder<'track, 'b, 'c> {
 }
 
 impl<'track, 'b, 'c> SectionBuilder<'track, 'b, 'c> {
-    pub fn subsection(&mut self, title: &'track str, content: &'track Path) {
-        self.section.subsections.push(SubSection { title, content })
+    pub fn subsection(
+        &mut self,
+        title: &'track str,
+        content: &'track Path,
+        exercise_path: &'track Path,
+    ) {
+        self.section.subsections.push(SubSection {
+            title,
+            content,
+            exercise_path,
+        })
     }
 
     pub fn add(self) -> &'c mut ChapterBuilder<'track, 'b> {

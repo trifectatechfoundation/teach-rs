@@ -1,8 +1,10 @@
 #![allow(dead_code)]
 use std::fmt;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use error_stack::Result;
+
+use crate::io::{create_dir_all, create_file, read_to_string, write_all};
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
@@ -34,6 +36,46 @@ impl<'track> SlidesPackage<'track> {
     }
 
     pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderSlidesError> {
+        let output_dir = out_dir.as_ref();
+        let slides_output_dir = output_dir.join("slides");
+        create_dir_all(&slides_output_dir)?;
+
+        for (deck, i) in self.decks.iter().zip(1..) {
+            let deck_output = {
+                let mut o = slides_output_dir.join(crate::to_prefixed_tag(deck.name, i));
+                o.set_extension("md");
+                o
+            };
+            let deck_file = create_file(&deck_output)?;
+
+            let template_content = read_to_string(&deck.template)?;
+            let mut unit_content = String::new();
+            let mut unit_objectives = String::new();
+            let mut unit_summary = String::new();
+
+            for section in deck.sections.iter() {
+                let topic_content = read_to_string(section.content)?;
+                let topic_content = topic_content.trim();
+                let topic_content = format!("---\n\n{topic_content}\n");
+                unit_content += &topic_content;
+
+                for objective in section.objectives.iter() {
+                    unit_objectives += &format!("- {}\n", objective.trim());
+                }
+
+                for item in section.summary.iter() {
+                    unit_summary += &format!("- {}\n", item.trim());
+                }
+            }
+
+            let slides_content = template_content
+                .replace("#[modmod:content]", &unit_content)
+                .replace("#[modmod:objectives]", &unit_objectives)
+                .replace("#[modmod:summary]", &unit_summary);
+
+            write_all(&deck_file, slides_content)?;
+        }
+
         Ok(())
     }
 }

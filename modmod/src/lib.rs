@@ -15,7 +15,8 @@ use exercises::{
 use io::create_dir_all;
 use slides::{SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder};
 use std::{
-    fmt, fs,
+    fmt::{self, Display},
+    fs,
     path::{Path, PathBuf},
 };
 
@@ -37,6 +38,12 @@ impl Track {
         clear_output: bool,
     ) -> Result<(), LoadTrackError> {
         let output_dir = output_dir.as_ref();
+        io::create_dir_all(output_dir)?;
+        let output_dir = &output_dir
+            .canonicalize()
+            .into_report()
+            .change_context(LoadTrackError)?;
+
         if output_dir.exists() {
             if clear_output {
                 // remove output dir and contents
@@ -62,11 +69,12 @@ impl Track {
         let mut book_builder = Book::builder(&self.name);
         let mut slides_builder = SlidesPackage::builder(&self.name);
         let mut exercises_builder = ExerciseCollection::builder();
-        for module in self.modules.iter() {
+        for (module, i) in self.modules.iter().zip(1..) {
             module.render(
                 &mut book_builder,
                 &mut slides_builder,
                 &mut exercises_builder,
+                i,
             )?;
         }
 
@@ -106,13 +114,14 @@ impl Module {
         book_builder: &mut BookBuilder<'me>,
         slides: &mut SlidesPackageBuilder<'me>,
         exercises: &mut ExerciseCollectionBuilder<'me>,
+        index: usize,
     ) -> Result<(), LoadTrackError> {
         let mut chapter = book_builder.chapter(&self.name);
-        let mut module_exercises = exercises.module(&self.name);
+        let mut module_exercises = exercises.module(&self.name, index);
 
         // Render all units in this module
-        for unit in self.units.iter() {
-            unit.render(&mut chapter, slides, &mut module_exercises)?;
+        for (unit, i) in self.units.iter().zip(1..) {
+            unit.render(&mut chapter, slides, &mut module_exercises, i)?;
         }
         chapter.add();
         module_exercises.add();
@@ -133,10 +142,11 @@ impl Unit {
         chapter: &mut ChapterBuilder<'me, '_>,
         slides: &mut SlidesPackageBuilder<'me>,
         module_exercises: &mut ModuleExercisesBuilder<'me, '_>,
+        index: usize,
     ) -> Result<(), LoadTrackError> {
         let mut section = chapter.section(&self.name);
         let mut deck = slides.deck(&self.name, &self.template);
-        let mut unit_exercises = module_exercises.unit(&self.name);
+        let mut unit_exercises = module_exercises.unit(&self.name, index);
 
         for topic in self.topics.iter() {
             topic.render(&mut section, &mut deck, &mut unit_exercises)?;
@@ -181,7 +191,7 @@ impl Topic {
             slides_section.further_reading(item);
         }
 
-        for exercise in &self.exercises {
+        for exercise in self.exercises.iter() {
             exercise.render(section, unit_exercises)?;
         }
 
@@ -205,7 +215,7 @@ impl Exercise {
         section: &mut SectionBuilder<'me, '_, '_>,
         unit_exercises: &mut UnitExercisesBuilder<'me, '_, '_>,
     ) -> Result<(), LoadTrackError> {
-        section.subsection(&self.name, &self.description);
+        section.subsection(&self.name, &self.description, &self.path);
 
         unit_exercises.package(&self.name, &self.path, &self.includes);
 
@@ -224,12 +234,12 @@ impl fmt::Display for LoadTrackError {
 
 impl error_stack::Context for LoadTrackError {}
 
-fn to_numbered_tag<S>(s: S, i: i32) -> String
+fn to_prefixed_tag<S, P>(s: S, p: P) -> String
 where
-    S: ToString,
+    S: Display,
+    P: Display,
 {
-    let s = s.to_string();
-    to_tag(format!("{i}-{s}"))
+    to_tag(format!("{p}-{s}"))
 }
 
 fn to_tag<S>(s: S) -> String

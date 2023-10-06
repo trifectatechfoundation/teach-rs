@@ -8,7 +8,7 @@ use error_stack::{IntoReport, Result, ResultExt};
 
 use crate::{
     io::{copy, create_dir_all, get_dir_content},
-    to_tag, LoadTrackError,
+    to_prefixed_tag,
 };
 
 #[non_exhaustive]
@@ -41,35 +41,32 @@ impl<'track> ExerciseCollection<'track> {
         &self,
         output_dir: impl AsRef<Path>,
     ) -> Result<HashMap<PathBuf, PathBuf>, RenderExercisesError> {
-        let exercise_root_dir = output_dir.as_ref().join("exercises");
+        let output_dir = output_dir.as_ref();
+        let exercise_root_dir = output_dir.join("exercises");
         create_dir_all(&exercise_root_dir)?;
         let mut exercise_output_paths = HashMap::new();
-
         for mod_ex in self.module_exercises.iter() {
             let mod_ex_out_dir = {
                 let mut d = exercise_root_dir.clone();
-                d.push(to_tag(&mod_ex.name));
+                d.push(to_prefixed_tag(&mod_ex.name, mod_ex.index));
                 d
             };
-
             create_dir_all(&mod_ex_out_dir)?;
 
             for unit_ex in mod_ex.unit_exercises.iter() {
                 let unit_ex_out_dir = {
                     let mut d = mod_ex_out_dir.clone();
-                    d.push(to_tag(unit_ex.name));
+                    d.push(to_prefixed_tag(unit_ex.name, unit_ex.index));
                     d
                 };
-
                 create_dir_all(&unit_ex_out_dir)?;
 
                 for ex_pack in unit_ex.exercises.iter() {
                     let ex_pack_out_dir = {
                         let mut d = unit_ex_out_dir.clone();
-                        d.push(to_tag(ex_pack.name));
+                        d.push(to_prefixed_tag(ex_pack.name, ex_pack.index));
                         d
                     };
-
                     create_dir_all(&ex_pack_out_dir)?;
 
                     let content = get_dir_content(ex_pack.path)?;
@@ -98,6 +95,10 @@ impl<'track> ExerciseCollection<'track> {
                         copy(included_file, included_file_dest)?;
                     }
 
+                    let ex_pack_out_dir = ex_pack_out_dir
+                        .strip_prefix(output_dir)
+                        .unwrap()
+                        .to_path_buf();
                     exercise_output_paths.insert(ex_pack.path.to_path_buf(), ex_pack_out_dir);
                 }
             }
@@ -109,18 +110,21 @@ impl<'track> ExerciseCollection<'track> {
 
 #[derive(Debug)]
 pub struct ModuleExercises<'track> {
+    index: usize,
     name: &'track str,
     unit_exercises: Vec<UnitExercises<'track>>,
 }
 
 #[derive(Debug)]
 pub struct UnitExercises<'track> {
+    index: usize,
     name: &'track str,
     exercises: Vec<ExercisePackage<'track>>,
 }
 
 #[derive(Debug)]
 pub struct ExercisePackage<'track> {
+    index: usize,
     name: &'track str,
     path: &'track Path,
     includes: &'track [String],
@@ -131,10 +135,15 @@ pub struct ExerciseCollectionBuilder<'track> {
 }
 
 impl<'track> ExerciseCollectionBuilder<'track> {
-    pub fn module(&mut self, name: &'track str) -> ModuleExercisesBuilder<'track, '_> {
+    pub fn module(
+        &mut self,
+        name: &'track str,
+        index: usize,
+    ) -> ModuleExercisesBuilder<'track, '_> {
         ModuleExercisesBuilder {
             collection_buider: self,
             module_exercises: ModuleExercises {
+                index,
                 name,
                 unit_exercises: vec![],
             },
@@ -152,10 +161,15 @@ pub struct ModuleExercisesBuilder<'track, 'c> {
 }
 
 impl<'track, 'c> ModuleExercisesBuilder<'track, 'c> {
-    pub fn unit<'m>(&'m mut self, name: &'track str) -> UnitExercisesBuilder<'track, 'c, 'm> {
+    pub fn unit<'m>(
+        &'m mut self,
+        name: &'track str,
+        index: usize,
+    ) -> UnitExercisesBuilder<'track, 'c, 'm> {
         UnitExercisesBuilder {
             module_builder: self,
             unit_exercises: UnitExercises {
+                index,
                 name,
                 exercises: vec![],
             },
@@ -178,7 +192,9 @@ pub struct UnitExercisesBuilder<'track, 'c, 'm> {
 
 impl<'track, 'c, 'm> UnitExercisesBuilder<'track, 'c, 'm> {
     pub fn package(&mut self, name: &'track str, path: &'track Path, includes: &'track [String]) {
+        let index = self.unit_exercises.exercises.len() + 1;
         self.unit_exercises.exercises.push(ExercisePackage {
+            index,
             name,
             path,
             includes,
