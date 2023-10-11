@@ -94,9 +94,6 @@ impl Track {
             .render(output_dir)
             .change_context(LoadTrackError)?;
 
-        dbg!(slides_package);
-        dbg!(book);
-        dbg!(exercises);
         Ok(())
     }
 }
