@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "dependencies": {
+    "@slidev/cli": "^0.42",
+    "@slidev/theme-default": "*",
+    "@slidev/theme-seriph": "*"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.31.1"
+  }
+}

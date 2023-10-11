@@ -3,8 +3,16 @@ use std::fmt;
 use std::path::Path;
 
 use error_stack::Result;
+use serde_json::Value as JsonValue;
 
-use crate::io::{create_dir_all, create_file, read_to_string, write_all};
+type JsonObject = serde_json::Map<String, JsonValue>;
+
+use crate::{
+    io::{create_dir_all, create_file, read_to_string, write_all},
+    to_prefixed_tag, to_tag,
+};
+
+const PACKAGE_JSON_CONTENT_STUB: &str = include_str!("../include/slides/package.json");
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
@@ -36,17 +44,44 @@ impl<'track> SlidesPackage<'track> {
     }
 
     pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderSlidesError> {
+        let mut package_json: JsonObject = serde_json::from_str(PACKAGE_JSON_CONTENT_STUB).unwrap();
+        package_json.insert("name".into(), to_tag(self.name).into());
+        let mut package_scripts = JsonObject::new();
+
         let output_dir = out_dir.as_ref();
         let slides_output_dir = output_dir.join("slides");
         create_dir_all(&slides_output_dir)?;
 
         for (deck, i) in self.decks.iter().zip(1..) {
             let deck_output = {
-                let mut o = slides_output_dir.join(crate::to_prefixed_tag(deck.name, i));
+                let mut o = slides_output_dir.join(to_prefixed_tag(deck.name, i));
                 o.set_extension("md");
                 o
             };
             let deck_file = create_file(&deck_output)?;
+
+            {
+                let deck_output_str = deck_output
+                    .strip_prefix(&slides_output_dir)
+                    .unwrap()
+                    .to_str()
+                    .unwrap();
+
+                package_scripts.insert(
+                    format!("dev-{i}"),
+                    format!("slidev {deck_output_str}").into(),
+                );
+
+                package_scripts.insert(
+                    format!("build-{i}"),
+                    format!("slidev build --out dist-{i} --base /slides/{i}/ {deck_output_str}")
+                        .into(),
+                );
+                package_scripts.insert(
+                    format!("export-{i}"),
+                    format!("slidev export {deck_output_str}").into(),
+                );
+            }
 
             let template_content = read_to_string(&deck.template)?;
             let mut unit_content = String::new();
@@ -75,6 +110,12 @@ impl<'track> SlidesPackage<'track> {
 
             write_all(&deck_file, slides_content)?;
         }
+
+        package_json.insert("scripts".into(), package_scripts.into());
+        let package_json = serde_json::to_string_pretty(&package_json).unwrap();
+        let package_json_file = slides_output_dir.join("package.json");
+        let package_json_file = create_file(&package_json_file)?;
+        write_all(&package_json_file, package_json)?;
 
         Ok(())
     }
