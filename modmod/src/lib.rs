@@ -69,14 +69,15 @@ impl Track {
         let mut book_builder = Book::builder(&self.name);
         let mut slides_builder = SlidesPackage::builder(&self.name);
         let mut exercises_builder = ExerciseCollection::builder();
-        for (module, i) in self.modules.iter().zip(1..) {
+
+        self.modules.iter().zip(1..).try_for_each(|(module, i)| {
             module.render(
                 &mut book_builder,
                 &mut slides_builder,
                 &mut exercises_builder,
                 i,
-            )?;
-        }
+            )
+        })?;
 
         // Build and render exercise packages
         let exercises = exercises_builder.build();
@@ -117,9 +118,10 @@ impl Module {
         let mut module_exercises = exercises.module(&self.name, index);
 
         // Render all units in this module
-        for (unit, i) in self.units.iter().zip(1..) {
-            unit.render(&mut chapter, slides, &mut module_exercises, i)?;
-        }
+        self.units.iter().zip(1..).try_for_each(|(unit, i)| {
+            unit.render(&mut chapter, slides, &mut module_exercises, i)
+        })?;
+
         chapter.add();
         module_exercises.add();
         Ok(())
@@ -145,9 +147,9 @@ impl Unit {
         let mut deck = slides.deck(&self.name, &self.template);
         let mut unit_exercises = module_exercises.unit(&self.name, index);
 
-        for topic in self.topics.iter() {
-            topic.render(&mut section, &mut deck, &mut unit_exercises)?;
-        }
+        self.topics
+            .iter()
+            .try_for_each(|topic| topic.render(&mut section, &mut deck, &mut unit_exercises))?;
 
         section.add();
         deck.add();
@@ -176,21 +178,21 @@ impl Topic {
     ) -> Result<(), LoadTrackError> {
         let mut slides_section = deck.section(&self.content);
 
-        for item in self.summary.iter() {
-            slides_section.summary(item);
-        }
+        self.summary
+            .iter()
+            .for_each(|item| slides_section.summary(item));
 
-        for obj in self.objectives.iter() {
-            slides_section.objective(obj);
-        }
+        self.objectives
+            .iter()
+            .for_each(|obj| slides_section.objective(obj));
 
-        for item in self.further_reading.iter() {
-            slides_section.further_reading(item);
-        }
+        self.further_reading
+            .iter()
+            .for_each(|item| slides_section.further_reading(item));
 
-        for exercise in self.exercises.iter() {
-            exercise.render(section, unit_exercises)?;
-        }
+        self.exercises
+            .iter()
+            .try_for_each(|exercise| exercise.render(section, unit_exercises))?;
 
         slides_section.add();
 

@@ -45,6 +45,7 @@ impl<'track> ExerciseCollection<'track> {
         let exercise_root_dir = output_dir.join("exercises");
         create_dir_all(&exercise_root_dir)?;
         let mut exercise_output_paths = HashMap::new();
+
         for mod_ex in self.module_exercises.iter() {
             let mod_ex_out_dir = {
                 let mut d = exercise_root_dir.clone();
