@@ -48,7 +48,7 @@ impl<'track> ExerciseCollection<'track> {
         for mod_ex in self.module_exercises.iter() {
             let mod_ex_out_dir = {
                 let mut d = exercise_root_dir.clone();
-                d.push(to_prefixed_tag(&mod_ex.name, mod_ex.index));
+                d.push(to_prefixed_tag(mod_ex.name, mod_ex.index));
                 d
             };
             create_dir_all(&mod_ex_out_dir)?;

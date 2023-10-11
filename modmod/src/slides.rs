@@ -83,7 +83,7 @@ impl<'track> SlidesPackage<'track> {
                 );
             }
 
-            let template_content = read_to_string(&deck.template)?;
+            let template_content = read_to_string(deck.template)?;
             let mut unit_content = String::new();
             let mut unit_objectives = String::new();
             let mut unit_summary = String::new();
@@ -114,7 +114,7 @@ impl<'track> SlidesPackage<'track> {
         package_json.insert("scripts".into(), package_scripts.into());
         let package_json = serde_json::to_string_pretty(&package_json).unwrap();
         let package_json_file = slides_output_dir.join("package.json");
-        let package_json_file = create_file(&package_json_file)?;
+        let package_json_file = create_file(package_json_file)?;
         write_all(&package_json_file, package_json)?;
 
         Ok(())

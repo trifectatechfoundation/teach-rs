@@ -100,7 +100,7 @@ impl<'track> Book<'track> {
                         ),
                     )?;
                     let exercise_out_dir = &exercise_paths[subsection.exercise_path];
-                    let content = read_to_string(&subsection.content)?;
+                    let content = read_to_string(subsection.content)?;
                     let content = content
                         // Insert exercise directory paths
                         .replace(
