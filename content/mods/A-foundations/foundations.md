@@ -1,5 +1,5 @@
 ---
-theme: default
+theme: 101-rs
 class: text-center
 highlighter: shiki
 lineNumbers: true
