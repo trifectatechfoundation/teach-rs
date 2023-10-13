@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="87.957924mm"
+   height="20.298042mm"
+   viewBox="0 0 87.957924 20.298042"
+   version="1.1"
+   id="svg22455"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview22457"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false" />
+  <defs
+     id="defs22452">
+    <marker
+       style="overflow:visible"
+       id="Arrow2_Fnone_S-000000"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow2"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:#000000;fill-rule:evenodd;stroke:none"
+         id="path22624" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-10.444085,-32.315162)">
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'JetBrainsMono Nerd Font';-inkscape-font-specification:'JetBrainsMono Nerd Font';stroke-width:0.264583"
+       x="39.306965"
+       y="43.772659"
+       id="text9113"><tspan
+         sodipodi:role="line"
+         id="tspan9111"
+         style="stroke-width:0.264583"
+         x="39.306965"
+         y="43.772659">ptr</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'JetBrainsMono Nerd Font';-inkscape-font-specification:'JetBrainsMono Nerd Font';stroke-width:0.264583"
+       x="83.528175"
+       y="44.219273"
+       id="text9113-4"><tspan
+         sodipodi:role="line"
+         id="tspan9111-9"
+         style="stroke-width:0.264583"
+         x="83.528175"
+         y="44.219273">T</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
+       id="rect9274-5"
+       width="27.007669"
+       height="6.6227932"
+       x="29.668163"
+       y="39.360596" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
+       id="rect9274-5-6"
+       width="27.007669"
+       height="6.6227932"
+       x="71.294342"
+       y="39.360596" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;marker-end:url(#Arrow2_Fnone_S-000000)"
+       d="m 56.675831,42.671992 12.8373,-1e-6"
+       id="path17492"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'JetBrainsMono Nerd Font';-inkscape-font-specification:'JetBrainsMono Nerd Font';stroke-width:0.264583"
+       x="36.762737"
+       y="35.714527"
+       id="text9113-7"><tspan
+         sodipodi:role="line"
+         id="tspan9111-2"
+         style="font-weight:bold;stroke-width:0.264583"
+         x="36.762737"
+         y="35.714527">Stack</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'JetBrainsMono Nerd Font';-inkscape-font-specification:'JetBrainsMono Nerd Font';stroke-width:0.264583"
+       x="10.130818"
+       y="44.209274"
+       id="text9113-7-1"><tspan
+         sodipodi:role="line"
+         id="tspan9111-2-0"
+         style="font-weight:bold;stroke-width:0.264583"
+         x="10.130818"
+         y="44.209274">Box&lt;T&gt;</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'JetBrainsMono Nerd Font';-inkscape-font-specification:'JetBrainsMono Nerd Font';stroke-width:0.264583"
+       x="79.688545"
+       y="35.363159"
+       id="text9113-7-2"><tspan
+         sodipodi:role="line"
+         id="tspan9111-2-6"
+         style="font-weight:bold;stroke-width:0.264583"
+         x="79.688545"
+         y="35.363159">Heap</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.29865;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 27.754399,39.362934 c 0,0 -0.881067,2.225133 -0.881067,3.343508 0,1.118375 0.881067,3.343508 0.881067,3.343508"
+       id="path18945"
+       sodipodi:nodetypes="czc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 71.294342,32.730783 V 52.613204"
+       id="path22806" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 98.30201,32.730783 V 52.613204"
+       id="path22806-1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 56.675835,32.730783 V 52.613204"
+       id="path22806-5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:0.8, 0.2;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 29.668163,32.730783 V 52.613204"
+       id="path22806-9" />
+  </g>
+</svg>
