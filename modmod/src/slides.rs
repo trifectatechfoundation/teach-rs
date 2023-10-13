@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use std::fmt;
+use std::fmt::{self, Write};
 use std::path::Path;
 
 use error_stack::Result;
@@ -94,8 +94,12 @@ impl<'track> SlidesPackage<'track> {
             for section in deck.sections.iter() {
                 let topic_content = read_to_string(section.content)?;
                 let topic_content = topic_content.trim();
-                let topic_content = format!("---\n\n{topic_content}\n");
-                unit_content += &topic_content;
+
+                if !topic_content.starts_with("---") {
+                    unit_content.write_str("---\n\n").unwrap();
+                }
+                unit_content.write_str(topic_content).unwrap();
+                unit_content.write_str("\n").unwrap();
 
                 for objective in section.objectives.iter() {
                     unit_objectives += &format!("- {}\n", objective.trim());
