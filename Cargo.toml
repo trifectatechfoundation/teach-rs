@@ -1,9 +1,0 @@
-[workspace]
-resolver = "2"
-members = [
-    "modmod",
-]
-
-exclude = [
-    "exercises/book"
-]
