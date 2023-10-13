@@ -52,6 +52,9 @@ impl<'track> SlidesPackage<'track> {
         let slides_output_dir = output_dir.join("slides");
         create_dir_all(&slides_output_dir)?;
 
+        let slide_images_dir = slides_output_dir.join("images");
+        create_dir_all(slide_images_dir)?;
+
         for (deck, i) in self.decks.iter().zip(1..) {
             let deck_output = {
                 let mut o = slides_output_dir.join(to_prefixed_tag(deck.name, i));

@@ -167,6 +167,7 @@ pub struct Topic {
     pub objectives: Vec<String>,
     pub content: PathBuf,
     pub further_reading: Vec<String>,
+    pub images: Vec<PathBuf>,
 }
 
 impl Topic {

@@ -7,6 +7,8 @@ use std::{
 use error_stack::{IntoReport, Result, ResultExt};
 use serde::{de::DeserializeOwned, Deserialize};
 
+use crate::io::get_dir_content;
+
 use super::{Exercise, Module, Topic, Track, Unit};
 
 #[derive(Debug, Deserialize)]
@@ -152,6 +154,21 @@ impl PathTo<TopicDef> {
             .canonicalize()
             .into_report()
             .change_context(HydrateTrackError)?;
+
+        let images = base_path.join("images");
+        let images = images
+            .is_dir()
+            .then_some(get_dir_content(&images).map(|c| {
+                c.files
+                    .into_iter()
+                    .chain(c.directories.into_iter())
+                    .map(PathBuf::from)
+            }))
+            .transpose()?
+            .into_iter()
+            .flatten()
+            .collect();
+
         Ok(Topic {
             name,
             exercises,
@@ -159,6 +176,7 @@ impl PathTo<TopicDef> {
             objectives,
             content,
             further_reading,
+            images,
         })
     }
 }
@@ -258,7 +276,7 @@ pub struct PathTo<T> {
     pub path: PathBuf,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct HydrateTrackError;
 
 impl fmt::Display for HydrateTrackError {
