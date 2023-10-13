@@ -158,12 +158,7 @@ impl PathTo<TopicDef> {
         let images = base_path.join("images");
         let images = images
             .is_dir()
-            .then_some(get_dir_content(&images).map(|c| {
-                c.files
-                    .into_iter()
-                    .chain(c.directories.into_iter())
-                    .map(PathBuf::from)
-            }))
+            .then_some(get_dir_content(&images).map(|c| c.files.into_iter().map(PathBuf::from)))
             .transpose()?
             .into_iter()
             .flatten()

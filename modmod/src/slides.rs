@@ -53,7 +53,7 @@ impl<'track> SlidesPackage<'track> {
         create_dir_all(&slides_output_dir)?;
 
         let slide_images_dir = slides_output_dir.join("images");
-        create_dir_all(slide_images_dir)?;
+        create_dir_all(&slide_images_dir)?;
 
         for (deck, i) in self.decks.iter().zip(1..) {
             let deck_output = {
@@ -104,6 +104,14 @@ impl<'track> SlidesPackage<'track> {
                 for item in section.summary.iter() {
                     unit_summary += &format!("- {}\n", item.trim());
                 }
+
+                section
+                    .images
+                    .iter()
+                    .filter_map(|path| path.file_name().map(|name| (path, name)))
+                    .try_for_each(|(path, name)| {
+                        crate::io::copy(path, slide_images_dir.join(name))
+                    })?;
             }
 
             let slides_content = template_content
@@ -138,6 +146,7 @@ pub struct Section<'track> {
     objectives: Vec<&'track str>,
     summary: Vec<&'track str>,
     further_reading: Vec<&'track str>,
+    images: Vec<&'track Path>,
 }
 
 pub struct SlidesPackageBuilder<'track> {
@@ -179,6 +188,7 @@ impl<'track, 'p> SlideDeckBuilder<'track, 'p> {
                 objectives: vec![],
                 summary: vec![],
                 further_reading: vec![],
+                images: vec![],
             },
         }
     }
@@ -205,6 +215,10 @@ impl<'track, 'p, 'd> SlidesSectionBuilder<'track, 'p, 'd> {
 
     pub fn further_reading(&mut self, further_reading: &'track str) {
         self.section.further_reading.push(further_reading);
+    }
+
+    pub fn image(&mut self, image: &'track Path) {
+        self.section.images.push(image);
     }
 
     pub fn add(self) -> &'d mut SlideDeckBuilder<'track, 'p> {

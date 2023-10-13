@@ -191,6 +191,10 @@ impl Topic {
             .iter()
             .for_each(|item| slides_section.further_reading(item));
 
+        self.images
+            .iter()
+            .for_each(|image| slides_section.image(image));
+
         self.exercises
             .iter()
             .try_for_each(|exercise| exercise.render(section, unit_exercises))?;
