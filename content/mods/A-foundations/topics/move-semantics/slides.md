@@ -59,13 +59,13 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
         <div class="bg-yellow-100 rounded-b-md h-130px flex flex-col">
             <div class="text-gray-500 p-2">Heap</div>
-            <div class="bg-yellow-300 mb-3 h-5">Allocated</div>
+            <div class="bg-yellow-300 mb-3 h-7">Allocated</div>
             <div class="bg-yellow-300 mb-1 h-9"></div>
             <div class="bg-yellow-300 h-4"></div>
         </div>
     </div>
     <div>
-        <div class="relative top-12 left-26">🠔 Stack pointer</div>
+        <div class="relative top-12 left-6">🠔 Stack pointer</div>
     </div>
 </div>
 
@@ -87,7 +87,7 @@ pointer (to the current stack frame) is decreased.
 There are two mechanisms at play here, generally known as the stack and the heap
 
 <div class="grid grid-cols-2">
-    <div class="flex flex-col rounded-md p-1 bg-teal-100 text-center w-md h-300px">
+    <div class="flex flex-col rounded-md p-1 bg-teal-100 text-center w-md h-350px">
         <div class="bg-red-100 rounded-t-md flex flex-col">
             <div class="bg-red-200 rounded-t-md p-1 border-red-500 border">Frame 1</div>
             <div class="bg-red-200 p-1 border-red-500 border border-t-0">Frame 2</div>
@@ -98,14 +98,14 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
         <div class="bg-yellow-100 rounded-b-md h-130px flex flex-col">
             <div class="text-gray-500 p-2">Heap</div>
-            <div class="bg-yellow-300 mb-3 h-5">Allocated</div>
+            <div class="bg-yellow-300 mb-3 h-7">Allocated</div>
             <div class="bg-yellow-300 mb-1 h-9"></div>
             <div class="bg-yellow-300 h-4"></div>
         </div>
     </div>
     <div>
-        <div class="relative top-19 left-26">🠔 Stack pointer</div>
-        <div class="relative pl-27 top-20">
+        <div class="relative top-19 left-6">🠔 Stack pointer</div>
+        <div class="relative pl-7 top-20">
             A stack frame is allocated for every function call. It contains exactly
             enough space for all local variables, arguments and stores where the
             previous stack frame starts.
@@ -136,14 +136,14 @@ There are two mechanisms at play here, generally known as the stack and the heap
         </div>
         <div class="bg-yellow-100 rounded-b-md h-130px flex flex-col">
             <div class="text-gray-500 p-2">Heap</div>
-            <div class="bg-yellow-300 mb-3 h-5">Allocated</div>
+            <div class="bg-yellow-300 mb-3 h-7">Allocated</div>
             <div class="bg-yellow-300 mb-1 h-9"></div>
             <div class="bg-yellow-300 h-4"></div>
         </div>
     </div>
     <div>
-        <div class="relative top-12 left-26">🠔 Stack pointer</div>
-        <div class="relative pl-27 top-13">
+        <div class="relative top-12 left-6">🠔 Stack pointer</div>
+        <div class="relative pl-7 top-13">
             Once a function call ends we just move back up, and everything below is
             available as free memory once more.
         </div>

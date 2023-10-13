@@ -107,16 +107,23 @@ fn main() {
 # Enumerations
 One of the more powerful kinds of types in Rust are enumerations
 
-```rust
+```rust{all|2|all}
 enum IpAddressType {
   Ipv4,
   Ipv6,
 }
 ```
 
+<v-click>
+
 * An enumeration (listing) of different *variants*
 * Each variant is an alternative value of the enum, you pick a single value to
   create an instance
+* Each variant has a discriminant (hidden by default)
+  * a numeric value (`isize` by default, can be changed by using `#[repr(numeric_type)]`) used to determine the variant that the enumeration holds 
+  * one cannot rely on the fact that the discriminant is an `isize`, the compiler may always decide to optimize it
+
+<v-click>
 
 <v-click>
 
@@ -135,9 +142,9 @@ Enums get more powerful, because each variant can have associated data with
 it
 
 ```rust
-enum IpAddress {
-  Ipv4(u8, u8, u8, u8),
-  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),
+enum IpAddress { 
+  Ipv4(u8, u8, u8, u8),                           // = 0 (default discriminant)
+  Ipv6(u16, u16, u16, u16, u16, u16, u16, u16),   // = 1 (default discriminant)
 }
 ```
 
@@ -151,19 +158,19 @@ fn main() {
 }
 ```
 
-* An enum always is as large as the largest variant + tag
+* An enum always is as large as the largest variant plus the size of the discriminant
 
 <div style="margin-left:auto; margin-right:auto; display:block; width:100%;">
 
 <LightOrDark>
     <template #dark>
         <div style="padding: 20px; background-color:#1b1b1b; border-radius: var(--slidev-code-radius) !important;">
-            <img src="/images/A2-enum-memory-dark.svg"/>
+            <img src="/images/A2-enum-memory-dark.drawio.svg"/>
         </div>
     </template>
     <template #light>
         <div style="padding: 20px; background-color:#F8F8F8; border-radius: var(--slidev-code-radius) !important;">
-          <img src="/images/A2-enum-memory-light.svg"/>
+          <img src="/images/A2-enum-memory-light.drawio.svg"/>
         </div>
     </template>
 </LightOrDark>
