@@ -20,39 +20,40 @@ jobs:
         run: yarn
       - name: Build Course Information
         working-directory: slides
-        run: npx slidev build --out dist/0 --base /101-rs/0 0-intro.md
+        run: npx slidev build --out dist/0 --base /101-rs/slides/0 0-intro.md
       - name: Build Module A1
         working-directory: slides
-        run: npx slidev build --out dist/A1 --base /101-rs/A1 A1-intro-to-rust.md
+        run: npx slidev build --out dist/A1 --base /101-rs/slides/A1 A1-intro-to-rust.md
       - name: Build Module A2 Tools
         working-directory: slides
-        run: npx slidev build --out dist/A2-tools --base /101-rs/A2-tools A2-tools.md
+        run: npx slidev build --out dist/A2-tools --base /101-rs/slides/A2-tools A2-tools.md
       - name: Build Module A2
         working-directory: slides
-        run: npx slidev build --out dist/A2 --base /101-rs/A2 A2-advanced-intro.md
+        run: npx slidev build --out dist/A2 --base /101-rs/slides/A2 A2-advanced-intro.md
       - name: Build Module A3
         working-directory: slides
-        run: npx slidev build --out dist/A3 --base /101-rs/A3 A3-traits-generics.md
+        run: npx slidev build --out dist/A3 --base /101-rs/slides/A3 A3-traits-generics.md
       - name: Build Module B
         working-directory: slides
-        run: npx slidev build --out dist/B --base /101-rs/B B-application-programming.md
+        run: npx slidev build --out dist/B --base /101-rs/slides/B B-application-programming.md
       - name: Build Module C
         working-directory: slides
-        run: npx slidev build --out dist/C --base /101-rs/C C-concurrency-parallelism.md
+        run: npx slidev build --out dist/C --base /101-rs/slides/C C-concurrency-parallelism.md
       - name: Build Module D
         working-directory: slides
-        run: npx slidev build --out dist/D --base /101-rs/D D-trait-objects-patterns.md
+        run: npx slidev build --out dist/D --base /101-rs/slides/D D-trait-objects-patterns.md
       - name: Build Module E
         working-directory: slides
-        run: npx slidev build --out dist/E --base /101-rs/E E-async-web.md
+        run: npx slidev build --out dist/E --base /101-rs/slides/E E-async-web.md
       - name: Build Module F
         working-directory: slides
-        run: npx slidev build --out dist/F --base /101-rs/F F-safe-unsafe-rust.md
+        run: npx slidev build --out dist/F --base /101-rs/slides/F F-safe-unsafe-rust.md
       - name: Build Module G
         working-directory: slides
-        run: npx slidev build --out dist/G --base /101-rs/G G-ffi.md
+        run: npx slidev build --out dist/G --base /101-rs/slides/G G-ffi.md
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: slides # The folder the action should deploy.
+          folder: dist # The folder the action should deploy.
+          target-folder: slides
           clean-exclude: pr-preview
