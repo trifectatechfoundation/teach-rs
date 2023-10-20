@@ -1,4 +1,4 @@
-name = "Rust for Systems programming"
+name = "Scientific Rust"
 modules = [
     "mods/0-intro/mod.toml",
     "mods/A-foundations/mod.toml",
