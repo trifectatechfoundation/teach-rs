@@ -1,0 +1,26 @@
+name = "Foundations of Rust"
+description = "Get to learn the Rust programming language"
+
+[[units]]
+name = "Foundations of Rust"
+template = "foundations.md"
+topics = [
+    "topics/why-rust/topic.toml",
+    "topics/first-project/topic.toml",
+    "topics/basic-syntax/topic.toml",
+    "topics/move-semantics/topic.toml",
+    "topics/ownership-borrowing/topic.toml",
+    "topics/composite-types/topic.toml",
+    "topics/pattern-matching/topic.toml",
+    "topics/impl-blocks/topic.toml",
+    "topics/optionals-errors/topic.toml",
+    "topics/vec/topic.toml",
+    "topics/slices/topic.toml",
+    "topics/traits-generics/topic.toml",
+    "topics/lifetime-annotations/topic.toml",
+    "topics/std-traits/topic.toml",
+    "topics/closures/topic.toml",
+    "topics/smart-pointers/topic.toml",
+    "topics/trait-objects/topic.toml",
+    "topics/interior-mutability/topic.toml",
+]

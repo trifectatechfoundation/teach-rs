@@ -1,0 +1,7 @@
+name = "Rust for Systems programming"
+modules = [
+    "mods/0-intro/mod.toml",
+    "mods/A-foundations/mod.toml",
+    "mods/C-multitasking/mod.toml",
+    "mods/E-rust-for-systems/mod.toml"
+]

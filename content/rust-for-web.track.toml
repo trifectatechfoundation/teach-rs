@@ -1,0 +1,8 @@
+name = "Rust for the Web"
+modules = [
+    "mods/0-intro/mod.toml",
+    "mods/A-foundations/mod.toml",
+    "mods/B-crate-engineering/mod.toml",
+    "mods/C-multitasking/mod.toml",
+    "mods/D-rust-for-web/mod.toml"
+]

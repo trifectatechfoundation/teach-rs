@@ -1,0 +1,16 @@
+name = "Design Patterns"
+
+[[exercises]]
+name = "BSN"
+path = "exercises/bsn"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "invalid_bsns.in",
+    "valid_bsns.in",
+]
+
+[[exercises]]
+name = "3D Printer"
+path = "exercises/3d-printer"

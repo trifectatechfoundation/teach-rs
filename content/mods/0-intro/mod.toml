@@ -1,0 +1,10 @@
+name = "Course Introduction"
+description = "Introdution of the Rust Programming course and setup instructions"
+
+[[units]]
+name = "Introduction"
+template = "intro.md"
+topics = [
+    "topics/setup/topic.toml",
+    "topics/why-rust/topic.toml",
+]

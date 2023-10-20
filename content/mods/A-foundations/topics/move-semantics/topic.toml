@@ -1,0 +1,14 @@
+name = "Move Semantics"
+
+
+dependencies = [
+    "../basic-syntax/topic.toml"
+]
+
+objectives = [
+    "Understand Move Semantics"
+]
+
+[[exercises]]
+name = "Move Semantics"
+path = "exercises/move-semantics"
