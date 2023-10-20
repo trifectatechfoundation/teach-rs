@@ -61,9 +61,11 @@ If you'd like to improve Rust 101, either by doing touchups, restructuring a mod
 #### Founding sponsors
 
 ![Logo STU FIIT](./assets/STU_FIIT_logo_100_color.png)
+![Logo TG](./assets/TG_100.png)
+![Logo Rust Edu](./assets/rust-edu-banner_100.png)
 ![Logo RF](./assets/Rust_Foundation_logo_100_color.png)
 
-The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course.
+The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of Rust 101.
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
 
