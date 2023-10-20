@@ -8,7 +8,7 @@ use std::{
 use error_stack::Result;
 
 use crate::{
-    io::{write_all, write_fmt, PathExt},
+    io::{PathExt, WriteExt},
     to_tag,
 };
 
@@ -51,55 +51,45 @@ impl<'track> Book<'track> {
 
         let book_toml_path = book_out_dir.join("book.toml");
         let mut book_toml = book_toml_path.create_file()?;
-
-        write_all(
-            &mut book_toml,
-            indoc! {r#"
+        book_toml.write_all(indoc! {r#"
                 [book]
                 language = "en"
                 multilingual = false
                 
                 [build]
                 build-dir = "./target"
-            "#},
-        )?;
+            "#})?;
 
         let summary_md_path = book_src_dir.join("SUMMARY.md");
 
-        let summary_md = summary_md_path.create_file()?;
-        write_all(&summary_md, "# Summary\n\n")?;
+        let mut summary_md = summary_md_path.create_file()?;
+        summary_md.write_all("# Summary\n\n")?;
 
         for (chapter, chapter_i) in self.chapters.iter().zip(1..) {
             // Sadly, at the time of writing, mdbook does not allow for custom section numbering.
             // Therefore, we insert a draft chapter to keep the section numbering in sync
-            write_fmt(&summary_md, format_args!("- [{}]()\n", chapter.title))?;
+            summary_md.write_fmt(format_args!("- [{}]()\n", chapter.title))?;
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
                 let section_file_name = Path::new(&to_tag(section.title)).with_extension("md");
-                write_fmt(
-                    &summary_md,
-                    format_args!(
-                        "\t- [{}]({})\n",
-                        section.title,
-                        section_file_name.to_str().unwrap()
-                    ),
-                )?;
+                summary_md.write_fmt(format_args!(
+                    "\t- [{}]({})\n",
+                    section.title,
+                    section_file_name.to_str().unwrap()
+                ))?;
 
                 let section_file_path = book_src_dir.join(&section_file_name);
-                let section_file = section_file_path.create_file()?;
-                write_fmt(
-                    &section_file,
-                    format_args!("# Unit {chapter_i}.{section_i} - {}\n\n", section.title),
-                )?;
+                let mut section_file = section_file_path.create_file()?;
+                section_file.write_fmt(format_args!(
+                    "# Unit {chapter_i}.{section_i} - {}\n\n",
+                    section.title
+                ))?;
 
                 for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
-                    write_fmt(
-                        &section_file,
-                        format_args!(
-                            "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
-                            subsection.title
-                        ),
-                    )?;
+                    section_file.write_fmt(format_args!(
+                        "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
+                        subsection.title
+                    ))?;
                     let exercise_out_dir = &exercise_paths[subsection.exercise_path];
                     let content = subsection.content.read_to_string()?;
                     let content = content
@@ -115,10 +105,10 @@ impl<'track> Book<'track> {
                         )
                         // Convert exercise sections into subsubsections
                         .replace("\n# ", "\n### ");
-                    write_fmt(&section_file, format_args!("{}\n", content.trim()))?;
+                    section_file.write_fmt(format_args!("{}\n", content.trim()))?;
                 }
             }
-            write_all(&summary_md, "\n")?;
+            summary_md.write_all("\n")?;
         }
 
         Ok(())

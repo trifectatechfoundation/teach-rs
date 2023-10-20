@@ -88,20 +88,21 @@ impl<T: AsRef<Path>> PathExt for T {
     }
 }
 
-pub fn write_fmt<C: Context + Default, W: io::Write>(
-    mut dest: W,
-    fmt: fmt::Arguments,
-) -> Result<(), C> {
-    dest.write_fmt(fmt)
-        .into_report()
-        .change_context(C::default())
+pub trait WriteExt {
+    fn write_fmt<C: Context + Default>(&mut self, fmt: fmt::Arguments) -> Result<(), C>;
+    fn write_all<C: Context + Default>(&mut self, content: impl AsRef<[u8]>) -> Result<(), C>;
 }
 
-pub fn write_all<C: Context + Default, W: io::Write>(
-    mut dest: W,
-    content: impl AsRef<[u8]>,
-) -> Result<(), C> {
-    dest.write_all(content.as_ref())
-        .into_report()
-        .change_context(C::default())
+impl<W: io::Write> WriteExt for W {
+    fn write_fmt<C: Context + Default>(&mut self, fmt: fmt::Arguments) -> Result<(), C> {
+        io::Write::write_fmt(self, fmt)
+            .into_report()
+            .change_context(C::default())
+    }
+
+    fn write_all<C: Context + Default>(&mut self, content: impl AsRef<[u8]>) -> Result<(), C> {
+        io::Write::write_all(self, content.as_ref())
+            .into_report()
+            .change_context(C::default())
+    }
 }

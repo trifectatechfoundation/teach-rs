@@ -8,7 +8,7 @@ use serde_json::Value as JsonValue;
 type JsonObject = serde_json::Map<String, JsonValue>;
 
 use crate::{
-    io::{write_all, PathExt},
+    io::{PathExt, WriteExt},
     to_prefixed_tag, to_tag,
 };
 
@@ -61,7 +61,7 @@ impl<'track> SlidesPackage<'track> {
                 o.set_extension("md");
                 o
             };
-            let deck_file = deck_output.create_file()?;
+            let mut deck_file = deck_output.create_file()?;
 
             {
                 let deck_output_str = deck_output
@@ -121,14 +121,14 @@ impl<'track> SlidesPackage<'track> {
                 .replace("#[modmod:objectives]", &unit_objectives)
                 .replace("#[modmod:summary]", &unit_summary);
 
-            write_all(&deck_file, slides_content)?;
+            deck_file.write_all(slides_content)?;
         }
 
         package_json.insert("scripts".into(), package_scripts.into());
         let package_json = serde_json::to_string_pretty(&package_json).unwrap();
         let package_json_file = slides_output_dir.join("package.json");
-        let package_json_file = package_json_file.create_file()?;
-        write_all(&package_json_file, package_json)?;
+        let mut package_json_file = package_json_file.create_file()?;
+        package_json_file.write_all(package_json)?;
 
         Ok(())
     }
