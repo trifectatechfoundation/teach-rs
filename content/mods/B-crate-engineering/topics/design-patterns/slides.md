@@ -258,7 +258,7 @@ impl CoffeeMachine<Idle> {
 impl CoffeeMachine<ItemSelected> {
     fn insert_money(self) -> CoffeeMachine<MoneyInserted> {
         println!("Money inserted!");
-        self.insert_money()
+        self.into_state()
     }
 }
 

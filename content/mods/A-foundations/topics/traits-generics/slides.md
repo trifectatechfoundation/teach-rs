@@ -268,7 +268,7 @@ pub struct BigNumber(u64);
 impl std::ops::Add<u32> for BigNumber {
   type Output = u128;
   
-  fn add(self, rhs: Self) -> Self::Output {
+  fn add(self, rhs: u32) -> Self::Output {
       (self.0 as u128) + (rhs as u128)
   }
 }
