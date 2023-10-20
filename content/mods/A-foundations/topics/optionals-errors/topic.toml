@@ -1,0 +1,10 @@
+name = "Optional Data and Errors"
+
+
+[[exercises]]
+name = "Error propagation"
+path = "exercises/error-propagation"
+
+[[exercises]]
+name = "Error handling"
+path = "exercises/error-handling"

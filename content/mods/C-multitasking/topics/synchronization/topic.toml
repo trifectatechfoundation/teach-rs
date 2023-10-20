@@ -1,0 +1,5 @@
+name = "Synchronization"
+
+[[exercises]]
+name = "Mutex"
+path = "exercises/mutex"

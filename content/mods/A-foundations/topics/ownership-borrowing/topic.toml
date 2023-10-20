@@ -1,0 +1,14 @@
+name = "Ownership and Borrowing"
+
+
+dependencies = [
+    "../move-semantics/topic.toml"
+]
+
+objectives = [
+    "Reason about Rust's ownership and borrowing model"
+]
+
+[[exercises]]
+name = "Borrowing"
+path = "exercises/borrowing"

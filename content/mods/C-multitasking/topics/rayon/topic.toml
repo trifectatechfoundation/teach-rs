@@ -1,0 +1,11 @@
+name = "Parallelism with Rayon"
+
+[[exercises]]
+name = "TF-IDF"
+path = "exercises/tf-idf"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "documents/**/*",   
+]

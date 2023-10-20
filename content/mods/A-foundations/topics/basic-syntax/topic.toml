@@ -1,0 +1,14 @@
+name = "Basic Syntax"
+
+
+dependencies = [
+    "../why-rust/topic.toml"
+]
+
+objectives = [
+    "Understand basic Rust syntax"
+]
+
+[[exercises]]
+name = "Basic Syntax"
+path = "exercises/basic-syntax"

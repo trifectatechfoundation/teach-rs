@@ -1,0 +1,5 @@
+name = "Smart Pointers"
+
+[[exercises]]
+name = "Boxed Data"
+path = "exercises/boxed-data"

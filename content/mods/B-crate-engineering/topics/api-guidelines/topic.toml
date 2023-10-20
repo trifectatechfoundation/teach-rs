@@ -1,0 +1,9 @@
+name = "API Guidelines"
+
+[[exercises]]
+name = "My Serde App"
+path = "exercises/my-serde-app"
+
+[[exercises]]
+name = "Quizzer"
+path = "exercises/quizzer"

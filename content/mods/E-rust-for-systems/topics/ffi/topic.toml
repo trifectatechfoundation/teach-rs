@@ -1,0 +1,33 @@
+name = "Foreign Function Interface"
+
+[[exercises]]
+name = "CRC in C"
+path = "exercises/crc-in-c"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "crc32.c",
+    "crc32.h",
+    "README.md",
+]
+
+[[exercises]]
+name = "CRC in Rust"
+path = "exercises/crc-in-rust"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "README.md"
+]
+
+[[exercises]]
+name = "TweetNaCl Bindgen"
+path = "exercises/tweetnacl-bindgen"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    
+]

@@ -1,0 +1,9 @@
+name = "Scientific Computing with Rust"
+description = "Use Rust to program system software"
+
+[[units]]
+name = "Scientific Computing with Rust"
+template = "scientific-rust.md"
+topics = [
+    "topics/pyo3/topic.toml",
+]

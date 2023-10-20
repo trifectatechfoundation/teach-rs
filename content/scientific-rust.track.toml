@@ -1,0 +1,7 @@
+name = "Scientific Rust"
+modules = [
+    "mods/0-intro/mod.toml",
+    "mods/A-foundations/mod.toml",
+    "mods/C-multitasking/mod.toml",
+    "mods/G-scientific-rust/mod.toml"
+]
