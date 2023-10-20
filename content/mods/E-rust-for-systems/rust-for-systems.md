@@ -19,13 +19,19 @@ Module E: Rust for System Programming
 ## Unit 1
 
 ---
+
 # Learning objectives
 
 #[modmod:objectives]
 
 ---
+
 # Actual content
+
 #[modmod:content]
 
+---
+
 # Summary
+
 #[modmod:summary]

@@ -19,13 +19,17 @@ Module A: Foundations of Rust
 ## Unit 1
 
 ---
+
 # Learning objectives
 
 #[modmod:objectives]
 
 ---
+
 # Actual content
 #[modmod:content]
+
+---
 
 # Summary
 #[modmod:summary]

@@ -19,13 +19,19 @@ Module B: Crate Engineering
 ## Unit 1
 
 ---
+
 # Learning objectives
 
 #[modmod:objectives]
 
 ---
+
 # Actual content
+
 #[modmod:content]
 
+---
+
 # Summary
+
 #[modmod:summary]

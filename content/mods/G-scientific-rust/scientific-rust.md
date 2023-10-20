@@ -14,7 +14,7 @@ title: "Rust - G: Scientific Computing with Rust"
 
 # Rust programming
 
-Module G: Scientific Computin with Rustg
+Module G: Scientific Computing with Rust
 
 ## Unit 1
 
@@ -24,8 +24,13 @@ Module G: Scientific Computin with Rustg
 #[modmod:objectives]
 
 ---
+
 # Actual content
+
 #[modmod:content]
 
+---
+
 # Summary
+
 #[modmod:summary]
