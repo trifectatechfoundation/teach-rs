@@ -11,6 +11,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 *Currently highly in flux, and incomplete, but feedback and [contributions](./CONTRIBUTING.md) are welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/tweedegolf).*
 
 ## Usage
+The teacher's guide can be found [here](./teachers_guide.md).
 Have a look at the [ModMod Readme](./modmod/README.md) for instructions on how to render the content of a track.
 
 ## Structure
