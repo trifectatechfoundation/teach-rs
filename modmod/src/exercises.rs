@@ -6,10 +6,7 @@ use std::{
 
 use error_stack::{IntoReport, Result, ResultExt};
 
-use crate::{
-    io::{copy, create_dir_all, get_dir_content},
-    to_prefixed_tag,
-};
+use crate::{io::PathExt, to_prefixed_tag};
 
 #[non_exhaustive]
 #[derive(Debug, Default)]
@@ -43,7 +40,7 @@ impl<'track> ExerciseCollection<'track> {
     ) -> Result<HashMap<PathBuf, PathBuf>, RenderExercisesError> {
         let output_dir = output_dir.as_ref();
         let exercise_root_dir = output_dir.join("exercises");
-        create_dir_all(&exercise_root_dir)?;
+        exercise_root_dir.create_dir_all()?;
         let mut exercise_output_paths = HashMap::new();
 
         for mod_ex in self.module_exercises.iter() {
@@ -52,7 +49,7 @@ impl<'track> ExerciseCollection<'track> {
                 d.push(to_prefixed_tag(mod_ex.name, mod_ex.index));
                 d
             };
-            create_dir_all(&mod_ex_out_dir)?;
+            mod_ex_out_dir.create_dir_all()?;
 
             for unit_ex in mod_ex.unit_exercises.iter() {
                 let unit_ex_out_dir = {
@@ -60,7 +57,7 @@ impl<'track> ExerciseCollection<'track> {
                     d.push(to_prefixed_tag(unit_ex.name, unit_ex.index));
                     d
                 };
-                create_dir_all(&unit_ex_out_dir)?;
+                unit_ex_out_dir.create_dir_all()?;
 
                 for ex_pack in unit_ex.exercises.iter() {
                     let ex_pack_out_dir = {
@@ -68,9 +65,9 @@ impl<'track> ExerciseCollection<'track> {
                         d.push(to_prefixed_tag(ex_pack.name, ex_pack.index));
                         d
                     };
-                    create_dir_all(&ex_pack_out_dir)?;
+                    ex_pack_out_dir.create_dir_all()?;
 
-                    let content = get_dir_content(ex_pack.path)?;
+                    let content = ex_pack.path.get_dir_content()?;
 
                     // Create globset to match included files
                     let mut globset = globset::GlobSetBuilder::new();
@@ -92,8 +89,8 @@ impl<'track> ExerciseCollection<'track> {
                             .unwrap();
                         let included_file_dest = ex_pack_out_dir.join(included_file_relative);
                         let include_file_dest_dir = included_file_dest.parent().unwrap();
-                        create_dir_all(include_file_dest_dir)?;
-                        copy(included_file, included_file_dest)?;
+                        include_file_dest_dir.create_dir_all()?;
+                        included_file.copy(included_file_dest)?;
                     }
 
                     let ex_pack_out_dir = ex_pack_out_dir

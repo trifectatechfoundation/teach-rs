@@ -12,7 +12,7 @@ use error_stack::{IntoReport, Report, Result, ResultExt};
 use exercises::{
     ExerciseCollection, ExerciseCollectionBuilder, ModuleExercisesBuilder, UnitExercisesBuilder,
 };
-use io::create_dir_all;
+use io::PathExt;
 use slides::{SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder};
 use std::{
     fmt::{self, Display},
@@ -38,7 +38,7 @@ impl Track {
         clear_output: bool,
     ) -> Result<(), LoadTrackError> {
         let output_dir = output_dir.as_ref();
-        io::create_dir_all(output_dir)?;
+        output_dir.create_dir_all()?;
         let output_dir = &output_dir
             .canonicalize()
             .into_report()
@@ -63,7 +63,7 @@ impl Track {
             }
         }
         // Ensure output dir exists
-        create_dir_all(output_dir)?;
+        output_dir.create_dir_all()?;
 
         // Render the modules in the track
         let mut book_builder = Book::builder(&self.name);

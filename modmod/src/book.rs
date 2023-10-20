@@ -8,7 +8,7 @@ use std::{
 use error_stack::Result;
 
 use crate::{
-    io::{create_dir_all, create_file, read_to_string, write_all, write_fmt},
+    io::{write_all, write_fmt, PathExt},
     to_tag,
 };
 
@@ -47,9 +47,10 @@ impl<'track> Book<'track> {
     ) -> Result<(), RenderBookError> {
         let book_out_dir = out_dir.as_ref().join("book");
         let book_src_dir = book_out_dir.join("src");
-        create_dir_all(&book_src_dir)?;
+        book_src_dir.create_dir_all()?;
+
         let book_toml_path = book_out_dir.join("book.toml");
-        let mut book_toml = create_file(&book_toml_path)?;
+        let mut book_toml = book_toml_path.create_file()?;
 
         write_all(
             &mut book_toml,
@@ -64,7 +65,8 @@ impl<'track> Book<'track> {
         )?;
 
         let summary_md_path = book_src_dir.join("SUMMARY.md");
-        let summary_md = create_file(&summary_md_path)?;
+
+        let summary_md = summary_md_path.create_file()?;
         write_all(&summary_md, "# Summary\n\n")?;
 
         for (chapter, chapter_i) in self.chapters.iter().zip(1..) {
@@ -84,8 +86,7 @@ impl<'track> Book<'track> {
                 )?;
 
                 let section_file_path = book_src_dir.join(&section_file_name);
-
-                let section_file = create_file(&section_file_path)?;
+                let section_file = section_file_path.create_file()?;
                 write_fmt(
                     &section_file,
                     format_args!("# Unit {chapter_i}.{section_i} - {}\n\n", section.title),
@@ -100,7 +101,7 @@ impl<'track> Book<'track> {
                         ),
                     )?;
                     let exercise_out_dir = &exercise_paths[subsection.exercise_path];
-                    let content = read_to_string(subsection.content)?;
+                    let content = subsection.content.read_to_string()?;
                     let content = content
                         // Insert exercise directory paths
                         .replace(

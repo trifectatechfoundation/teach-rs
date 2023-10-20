@@ -8,7 +8,7 @@ use serde_json::Value as JsonValue;
 type JsonObject = serde_json::Map<String, JsonValue>;
 
 use crate::{
-    io::{create_dir_all, create_file, read_to_string, write_all},
+    io::{write_all, PathExt},
     to_prefixed_tag, to_tag,
 };
 
@@ -50,10 +50,10 @@ impl<'track> SlidesPackage<'track> {
 
         let output_dir = out_dir.as_ref();
         let slides_output_dir = output_dir.join("slides");
-        create_dir_all(&slides_output_dir)?;
+        slides_output_dir.create_dir_all()?;
 
         let slide_images_dir = slides_output_dir.join("images");
-        create_dir_all(&slide_images_dir)?;
+        slide_images_dir.create_dir_all()?;
 
         for (deck, i) in self.decks.iter().zip(1..) {
             let deck_output = {
@@ -61,7 +61,7 @@ impl<'track> SlidesPackage<'track> {
                 o.set_extension("md");
                 o
             };
-            let deck_file = create_file(&deck_output)?;
+            let deck_file = deck_output.create_file()?;
 
             {
                 let deck_output_str = deck_output
@@ -86,13 +86,13 @@ impl<'track> SlidesPackage<'track> {
                 );
             }
 
-            let template_content = read_to_string(deck.template)?;
+            let template_content = deck.template.read_to_string()?;
             let mut unit_content = String::new();
             let mut unit_objectives = String::new();
             let mut unit_summary = String::new();
 
             for section in deck.sections.iter() {
-                let topic_content = read_to_string(section.content)?;
+                let topic_content = section.content.read_to_string()?;
                 let topic_content = topic_content.trim();
 
                 if !topic_content.starts_with("---") {
@@ -113,9 +113,7 @@ impl<'track> SlidesPackage<'track> {
                     .images
                     .iter()
                     .filter_map(|path| path.file_name().map(|name| (path, name)))
-                    .try_for_each(|(path, name)| {
-                        crate::io::copy(path, slide_images_dir.join(name))
-                    })?;
+                    .try_for_each(|(path, name)| path.copy(slide_images_dir.join(name)))?;
             }
 
             let slides_content = template_content
@@ -129,7 +127,7 @@ impl<'track> SlidesPackage<'track> {
         package_json.insert("scripts".into(), package_scripts.into());
         let package_json = serde_json::to_string_pretty(&package_json).unwrap();
         let package_json_file = slides_output_dir.join("package.json");
-        let package_json_file = create_file(package_json_file)?;
+        let package_json_file = package_json_file.create_file()?;
         write_all(&package_json_file, package_json)?;
 
         Ok(())
