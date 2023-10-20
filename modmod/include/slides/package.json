@@ -4,6 +4,6 @@
     "@slidev/cli": "^0.42",
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*",
-    "slidev-theme-101-rs": "0.0.1"
+    "slidev-theme-101-rs": "0.0.2"
   }
 }
