@@ -62,9 +62,13 @@ If you'd like to improve Rust 101, either by doing touchups, restructuring a mod
 #### Founding sponsors
 
 <img style="margin: 1rem 5% 1rem 5%;" src="./assets/STU_FIIT_logo_100_color.png" alt="Logo STU FIIT"  width="200px" />
+
 <img style="margin: 1rem 5% 1rem 5%;" src="https://tweedegolf.nl/images/tweedegolf-logo-2022-1.png" alt="Logo TG"  width="200px" />
+
 <img style="margin: 1rem 5% 1rem 5%;" src="./assets/rust-edu-banner_100.png" alt="Logo Rust Edu"  width="200px" />
+
 <img style="margin: 1rem 5% 1rem 5%;" src="./assets/Rust_Foundation_logo_100_color.png" alt="Logo RF"  width="200px" />
+
 
 The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of Rust 101.
 
