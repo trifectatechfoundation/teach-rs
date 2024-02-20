@@ -28,7 +28,7 @@ $ cargo run
 <div class="no-line-numbers">
 
 ```text
-Compiling hello-world v0.1.0 (/home/101-rs/Projects/hello-world)
+Compiling hello-world v0.1.0 (/home/teach-rs/Projects/hello-world)
 Finished dev [unoptimized + debuginfo] target(s) in 0.74s
 Running `target/debug/hello-world`
 Hello, world!
@@ -62,7 +62,7 @@ fn fib(n: u64) -> u64 {
 <div class="no-line-numbers">
 
 ```text
-Compiling hello-world v0.1.0 (/home/101-rs/Projects/hello-world)
+Compiling hello-world v0.1.0 (/home/teach-rs/Projects/hello-world)
 Finished dev [unoptimized + debuginfo] target(s) in 0.28s
 Running `target/debug/hello-world`
 Hello, world! fib(6) = 8

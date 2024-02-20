@@ -21,4 +21,4 @@ layout: default
 
 # To do
 
-Issue: [tweedegolf/101-rs#74](https://github.com/tweedegolf/101-rs/issues/74)
+Issue: [tweedegolf/teach-rs#74](https://github.com/tweedegolf/teach-rs/issues/74)

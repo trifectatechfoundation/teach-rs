@@ -86,7 +86,7 @@ More info: <https://www.youtube.com/playlist?list=PLg7s6cbtAD15G8lNyoaYDuKZSKyJr
 
 ## Course code
 Now that everything is installed, you can clone the source code repository.
-The repository can be found here: <https://github.com/tweedegolf/101-rs>.
+The repository can be found here: <https://github.com/tweedegolf/teach-rs>.
 
 
 Instructions on cloning the repository can be found here: <https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls>

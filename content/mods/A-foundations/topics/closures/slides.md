@@ -39,4 +39,4 @@ let evens: Vec<_> = some_iterator.filter(|x| x % 2 == 0).collect();
 
 # To do
 
-Issue: [tweedegolf/101-rs#66](https://github.com/tweedegolf/101-rs/issues/66)
+Issue: [tweedegolf/teach-rs#66](https://github.com/tweedegolf/teach-rs/issues/66)

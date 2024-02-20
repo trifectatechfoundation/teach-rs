@@ -9,4 +9,4 @@ layout: section
 
 # To do:
 
-Issue: [tweedegolf/101-rs#67](https://github.com/tweedegolf/101-rs/issues/67)
+Issue: [tweedegolf/teach-rs#67](https://github.com/tweedegolf/teach-rs/issues/67)

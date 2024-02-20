@@ -1,6 +1,6 @@
-# Rust 101 ModMod
+# Teach-rs ModMod
 
-`modmod` is a tool that stitches together the Rust 101 content into a collection of exercise scaffolding, the exercise decription book, and Sli.dev slides.
+`modmod` is a tool that stitches together the teach-rs content into a collection of exercise scaffolding, the exercise decription book, and Sli.dev slides.
 Provide it with a track definition TOML file, and it will collect everything that's needed to run your custom course.
 
 ## Usage

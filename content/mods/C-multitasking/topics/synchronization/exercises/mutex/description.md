@@ -6,4 +6,4 @@ This functionality is exposed in the [atomic_wait crate](https://docs.rs/atomic-
 - implement `lock`. Be careful about spurious wakes: after `wait` returns, you must stil check the condition
 - implement unlocking (`Drop for MutexGuard<T>` using `wake_one`.
 
-The linked chapter goes on to further optimize the mutex. This really is no longer part of a 101 course, but we won't stop you if you try (and will still try to help if you get stuck)!
+The linked chapter goes on to further optimize the mutex. This is technically out of scope for this course, but we won't stop you if you try (and will still try to help if you get stuck)!

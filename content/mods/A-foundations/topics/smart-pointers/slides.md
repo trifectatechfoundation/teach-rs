@@ -69,4 +69,4 @@ struct Node {
 
 # To Do
 
-Issue: [tweedegolf/101-rs#68](https://github.com/tweedegolf/101-rs/issues/68)
+Issue: [tweedegolf/teach-rs#68](https://github.com/tweedegolf/teach-rs/issues/68)
