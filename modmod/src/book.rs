@@ -27,14 +27,16 @@ impl error_stack::Context for RenderBookError {}
 #[derive(Debug)]
 pub struct Book<'track> {
     pub title: &'track str,
+    pub base_path: &'track str,
     pub chapters: Vec<Chapter<'track>>,
 }
 
 impl<'track> Book<'track> {
-    pub fn builder(title: &'track str) -> BookBuilder {
+    pub fn builder(title: &'track str, base_path: &'track str) -> BookBuilder<'track> {
         BookBuilder {
             book: Book {
                 title,
+                base_path,
                 chapters: vec![],
             },
         }
@@ -63,33 +65,40 @@ impl<'track> Book<'track> {
         let summary_md_path = book_src_dir.join("SUMMARY.md");
 
         let mut summary_md = summary_md_path.create_file()?;
-        summary_md.write_all("# Summary\n\n")?;
+        write!(summary_md, "# Summary\n\n")?;
 
         for (chapter, chapter_i) in self.chapters.iter().zip(1..) {
             // Sadly, at the time of writing, mdbook does not allow for custom section numbering.
             // Therefore, we insert a draft chapter to keep the section numbering in sync
-            summary_md.write_fmt(format_args!("- [{}]()\n", chapter.title))?;
+            write!(summary_md, "- [{}]()\n", chapter.title)?;
 
             for (section, section_i) in chapter.sections.iter().zip(1..) {
                 let section_file_name = Path::new(&to_tag(section.title)).with_extension("md");
-                summary_md.write_fmt(format_args!(
+                write!(
+                    summary_md,
                     "\t- [{}]({})\n",
                     section.title,
                     section_file_name.to_str().unwrap()
-                ))?;
+                )?;
 
                 let section_file_path = book_src_dir.join(&section_file_name);
                 let mut section_file = section_file_path.create_file()?;
-                section_file.write_fmt(format_args!(
+                write!(
+                    section_file,
                     "# Unit {chapter_i}.{section_i} - {}\n\n",
                     section.title
-                ))?;
+                )?;
+
+                let slides_path = format!("{base_path}/slides/{chapter_i}", base_path = self.base_path);
+
+                write!(section_file, "[Slides]({slides_path})\n")?;
 
                 for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
-                    section_file.write_fmt(format_args!(
+                    write!(
+                        section_file,
                         "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
                         subsection.title
-                    ))?;
+                    )?;
                     let exercise_out_dir = &exercise_paths[subsection.exercise_path];
                     let content = subsection.content.read_to_string()?;
                     let content = content
@@ -105,10 +114,10 @@ impl<'track> Book<'track> {
                         )
                         // Convert exercise sections into subsubsections
                         .replace("\n# ", "\n### ");
-                    section_file.write_fmt(format_args!("{}\n", content.trim()))?;
+                    write!(section_file, "{}\n", content.trim())?;
                 }
             }
-            summary_md.write_all("\n")?;
+            write!(summary_md, "\n")?;
         }
 
         Ok(())

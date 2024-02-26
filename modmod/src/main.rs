@@ -13,6 +13,8 @@ struct Args {
     output_dir: PathBuf,
     #[arg(short = 'c', long = "clear", help = "Clear the output folder")]
     clear_output_dir: bool,
+    #[arg(short = 'b', long = "base", help = "The base path for the slide assets")]
+    base_path: String,
     track_toml_path: PathBuf,
 }
 
@@ -23,10 +25,11 @@ fn main() {
         let Args {
             output_dir,
             clear_output_dir,
+            base_path,
             track_toml_path,
         } = args;
         let track = modmod::Track::load_toml_def(track_toml_path)?;
-        track.render(output_dir, clear_output_dir)?;
+        track.render(output_dir, base_path, clear_output_dir)?;
         Ok(())
     }
 

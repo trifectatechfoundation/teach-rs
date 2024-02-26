@@ -35,6 +35,7 @@ impl Track {
     pub fn render(
         &self,
         output_dir: impl AsRef<Path>,
+        base_path: String,
         clear_output: bool,
     ) -> Result<(), LoadTrackError> {
         let output_dir = output_dir.as_ref();
@@ -66,8 +67,8 @@ impl Track {
         output_dir.create_dir_all()?;
 
         // Render the modules in the track
-        let mut book_builder = Book::builder(&self.name);
-        let mut slides_builder = SlidesPackage::builder(&self.name);
+        let mut book_builder = Book::builder(&self.name, &base_path);
+        let mut slides_builder = SlidesPackage::builder(&self.name, &base_path);
         let mut exercises_builder = ExerciseCollection::builder();
 
         self.modules.iter().zip(1..).try_for_each(|(module, i)| {

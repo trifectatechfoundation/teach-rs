@@ -16,7 +16,7 @@ title: "Rust -0: Course introduction"
 
 Module 0: Course introduction
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 

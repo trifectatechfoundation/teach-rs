@@ -16,7 +16,7 @@ title: "Rust - G: Scientific Computing with Rust"
 
 Module G: Scientific Computing with Rust
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 # Learning objectives

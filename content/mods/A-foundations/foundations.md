@@ -16,7 +16,7 @@ title: "Rust - A: Foundations of Rust"
 
 Module A: Foundations of Rust
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 

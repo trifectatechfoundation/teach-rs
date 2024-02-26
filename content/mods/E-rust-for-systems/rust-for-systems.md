@@ -16,7 +16,7 @@ title: "Rust - E: Rust for System Programming"
 
 Module E: Rust for System Programming
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 

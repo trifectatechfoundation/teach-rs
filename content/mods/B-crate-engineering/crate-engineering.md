@@ -16,7 +16,7 @@ title: "Rust - B: Crate Engineering"
 
 Module B: Crate Engineering
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 

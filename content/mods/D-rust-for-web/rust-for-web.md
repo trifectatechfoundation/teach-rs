@@ -16,7 +16,7 @@ title: "Rust - D: Rust for Web"
 
 Module D: Rust for Web
 
-## Unit 1
+## Unit #[modmod:unit]
 
 ---
 

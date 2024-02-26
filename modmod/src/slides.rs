@@ -30,14 +30,16 @@ impl error_stack::Context for RenderSlidesError {}
 pub struct SlidesPackage<'track> {
     /// Name of the package, corresponds to the name of the track
     name: &'track str,
+    base_path: &'track str,
     decks: Vec<SlideDeck<'track>>,
 }
 
 impl<'track> SlidesPackage<'track> {
-    pub fn builder(name: &'track str) -> SlidesPackageBuilder<'track> {
+    pub fn builder(name: &'track str, base_path: &'track str) -> SlidesPackageBuilder<'track> {
         SlidesPackageBuilder {
             package: SlidesPackage {
                 name,
+                base_path,
                 decks: vec![],
             },
         }
@@ -77,7 +79,7 @@ impl<'track> SlidesPackage<'track> {
 
                 package_scripts.insert(
                     format!("build-{i}"),
-                    format!("slidev build --out dist-{i} --base /slides/{i}/ {deck_output_str}")
+                    format!("slidev build --out dist-{i} --base {base_path}/slides/{i}/ {deck_output_str}", base_path = self.base_path)
                         .into(),
                 );
                 package_scripts.insert(
@@ -90,16 +92,18 @@ impl<'track> SlidesPackage<'track> {
             let mut unit_content = String::new();
             let mut unit_objectives = String::new();
             let mut unit_summary = String::new();
+            let unit_title = format!("{i}: {unit_name}", unit_name = deck.name);
 
             for section in deck.sections.iter() {
                 let topic_content = section.content.read_to_string()?;
                 let topic_content = topic_content.trim();
 
+                // As unit_content is a String, failing to write to it is serious enough for a panic.
                 if !topic_content.starts_with("---") {
-                    unit_content.write_str("---\n\n").unwrap();
+                    write!(unit_content, "---\n\n").unwrap();
                 }
-                unit_content.write_str(topic_content).unwrap();
-                unit_content.write_str("\n").unwrap();
+                write!(unit_content, "{topic_content}").unwrap();
+                write!(unit_content, "\n").unwrap();
 
                 for objective in section.objectives.iter() {
                     unit_objectives += &format!("- {}\n", objective.trim());
@@ -117,18 +121,19 @@ impl<'track> SlidesPackage<'track> {
             }
 
             let slides_content = template_content
+                .replace("#[modmod:unit]", &unit_title)
                 .replace("#[modmod:content]", &unit_content)
                 .replace("#[modmod:objectives]", &unit_objectives)
                 .replace("#[modmod:summary]", &unit_summary);
 
-            deck_file.write_all(slides_content)?;
+            write!(deck_file, "{slides_content}")?;
         }
 
         package_json.insert("scripts".into(), package_scripts.into());
         let package_json = serde_json::to_string_pretty(&package_json).unwrap();
         let package_json_file = slides_output_dir.join("package.json");
         let mut package_json_file = package_json_file.create_file()?;
-        package_json_file.write_all(package_json)?;
+        write!(package_json_file, "{package_json}")?;
 
         Ok(())
     }
