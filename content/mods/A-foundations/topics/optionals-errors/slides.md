@@ -127,7 +127,7 @@ fn divide(x: i64, y: i64) -> i64 {
 * A panic error is an all or nothing kind of error
 * A panic will immediately stop running the current thread/program and instead
   immediately work to shut it down, using one of two methods:
-  * Unwinding: going up throught the stack and making sure that each value
+  * Unwinding: going up through the stack and making sure that each value
     is cleaned up
   * Aborting: ignore everything and immediately exit the thread/program
 * Only use panic in small programs if normal error handling would also exit
@@ -144,7 +144,7 @@ fn divide(x: i64, y: i64) -> i64 {
 * Rust programs are compiled such that if a panic does not occur, it doesn't
   add any extra cost, but that does mean that if a panic does occur, it isn't
   very fast
-* Generally panicing should be avoided as much as possible
+* Generally panicking should be avoided as much as possible
 * The panic! macro is not the only way to trigger a panic, so beware, we will
   see some ways we can also trigger a panic very soon
 * Note that if the main thread panics, the entire program will always exit
@@ -277,10 +277,10 @@ Results are so common that there is a special operator associated with them, the
 `?` operator
 
 ```rust
-fn can_fail() -> Result<i64, Error> {
+fn can_fail() -> Result<i64, DivideError> {
   let intermediate_result = match divide(10, 0) {
     Ok(ir) => ir,
-    Err(e) => return Err(e);
+    Err(e) => return Err(e),
   };
 
   match divide(intermediate_result, 0) {
@@ -295,7 +295,7 @@ fn can_fail() -> Result<i64, Error> {
 Look how this function changes if we use the `?` operator
 
 ```rust
-fn can_fail() -> Result<i64, Error> {
+fn can_fail() -> Result<i64, DivideError> {
   let intermediate_result = divide(10, 0)?;
   Ok(divide(intermediate_result, 0)? * 2)
 }
@@ -308,7 +308,7 @@ fn can_fail() -> Result<i64, Error> {
 # Result and the `?` operator
 
 ```rust
-fn can_fail() -> Result<i64, Error> {
+fn can_fail() -> Result<i64, DivideError> {
   let intermediate_result = divide(10, 0)?;
   Ok(divide(intermediate_result, 0)? * 2)
 }
