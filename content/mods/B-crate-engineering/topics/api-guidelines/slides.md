@@ -284,7 +284,7 @@ fn load_page(url: &str) -> String {
 }
 
 fn main() {
-  let page = load_page("https://101-rs.tweede.golf");
+  let page = load_page("https://teach-rs.tweede.golf");
   let crab = load_page("🦀"); // Ouch!
 }
 ```

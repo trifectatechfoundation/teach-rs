@@ -3,4 +3,4 @@
 
 # To do
 
-Issue: [tweedegolf/101-rs#77](https://github.com/tweedegolf/101-rs/issues/77)
+Issue: [tweedegolf/teach-rs#77](https://github.com/tweedegolf/teach-rs/issues/77)

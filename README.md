@@ -1,14 +1,14 @@
-# Rust 101
+# Teach-rs
 
-![Rust 101](https://tweedegolf.nl/images/rust-101-logo.jpg)
+![Teach-rs](https://tweedegolf.nl/images/teach-rs-logo.png)
 
-Rust 101 is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
+Teach-rs is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
 Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/80/rust-101-open-source-university-course) introducing the course.
 
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
 
-*Currently highly in flux, and incomplete, but feedback and [contributions](./CONTRIBUTING.md) are welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/tweedegolf).*
+*While all the available material is user-ready, this repo is not yet as exhaustive as we'd like, so feedback and [contributions](./CONTRIBUTING.md) are welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/tweedegolf).*
 
 ## Usage
 The teacher's guide can be found [here](./teachers_guide.md).
@@ -34,7 +34,7 @@ Tracks, Modules, Units, and Topics and the files they refer to are described in 
 *Note: although the outline of the tracks is mostly complete, the tracks may still contain TODOs. You're invited to contribute your own content to fix these!*
 
 ## High-level goals
-Rust 101 aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution.
+Teach-rs aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution.
 Use one of the pre-defined tracks, or compose your own with the content we provide and your own.
 
 1. Provide a modular, resuable basis for live-taught Rust courses
@@ -55,7 +55,7 @@ We're very happy with support in developing the course material from:
 - Jonathan Donszelmann, TU Delft
 
 ## Contributing
-If you'd like to improve Rust 101, either by doing touchups, restructuring a module, or even adding a module, please refer to the [contributing guidelines](./CONTRIBUTING.md) before you get started.
+If you'd like to improve teach-rs, either by doing touchups, restructuring a module, or even adding a module, please refer to the [contributing guidelines](./CONTRIBUTING.md) before you get started.
 
 ### Our sponsors
 
@@ -70,7 +70,7 @@ If you'd like to improve Rust 101, either by doing touchups, restructuring a mod
 <img style="margin: 1rem 5% 1rem 5%;" src="./assets/Rust_Foundation_logo_100_color.png" alt="Logo RF"  width="200px" />
 
 
-The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of Rust 101.
+The initial sponsor of the project is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to layout the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of teach-rs.
 
 In addition, lead developer Henk has received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
 
@@ -81,6 +81,6 @@ And a big thank you to our Silver sponsors:
 - [Gofore](https://gofore.com/en/)
 - [RustJobs.dev](https://rustjobs.dev/)
 
-### Support Rust 101
+### Support teach-rs
 
 We are in search of further funding for this project. Contact us if you´re interested, or [sponsor](https://github.com/sponsors/tweedegolf) our work. At the moment, any one-time or montly donation would support the maintenance of the project. Larger donations would enable us to create new modules and improve existing course material. 

@@ -9,11 +9,11 @@ PyO3 makes it easy to write python extensions in rust. The code for this exercis
 you should be able to run this example like so from the repository root: 
 
 ```sh
-folkertdev@folkertdev ~/t/101-rs (mod-g)> cargo build -p pyo3-simd
-   Compiling pyo3-simd v0.1.0 (/home/folkertdev/tg/101-rs/exercises/G/4-pyo3)
+folkertdev@folkertdev ~/t/teach-rs (mod-g)> cargo build -p pyo3-simd
+   Compiling pyo3-simd v0.1.0 (/home/folkertdev/tg/teach-rs/exercises/G/4-pyo3)
     Finished dev [unoptimized + debuginfo] target(s) in 0.19s
-folkertdev@folkertdev ~/t/101-rs (mod-g)> cp target/debug/libpointwise_simd.so pointwise_simd.so
-folkertdev@folkertdev ~/t/101-rs (mod-g)> python3
+folkertdev@folkertdev ~/t/teach-rs (mod-g)> cp target/debug/libpointwise_simd.so pointwise_simd.so
+folkertdev@folkertdev ~/t/teach-rs (mod-g)> python3
 Python 3.8.5 (default, May 27 2021, 13:30:53) 
 [GCC 9.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.

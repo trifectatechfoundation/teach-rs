@@ -1,4 +1,4 @@
 
 # To do
 
-Issue: [tweedegolf/101-rs#58](https://github.com/tweedegolf/101-rs/issues/58)
+Issue: [tweedegolf/teach-rs#58](https://github.com/tweedegolf/teach-rs/issues/58)

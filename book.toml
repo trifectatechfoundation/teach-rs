@@ -1,6 +1,6 @@
 [book]
 authors = ["Henk Oordt", "Marc Schoolderman", "Folkert de Vries", "Ruben Nijveld"]
-title = "Rust 101 - Exercises"
+title = "Teach-rs - Exercises"
 
 src = "book"
 language = "en"

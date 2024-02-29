@@ -1,22 +1,22 @@
-Teacher's companion to Rust-101
+Teacher's companion to teach-rs
 ===============================
 
-If you have decided to try Rust 101 for your students, you will probably run into two problems:
+If you have decided to try teach-rs for your students, you will probably run into two problems:
 
 1. As an academic, you may feel your own practical knowledge of Rust is lacking.
 
 2. You will have to make a selection of subjects to fit practical constraints.
 
-So what parts of Rust 101 should you invest time in to teach to your students? And how much time is required?
+So what parts of teach-rs should you invest time in to teach to your students? And how much time is required?
 
-We assume you have a clear idea of your learning outcomes, and your target audience. Rust 101 can be used for first-year
+We assume you have a clear idea of your learning outcomes, and your target audience. Teach-rs can be used for first-year
 students at university, for master's students, or even for an internal training for senior engineers at your software company, but obviously different
 groups would require a different approach!
 
-Rust 101 is a modular course
+Teach-rs is a modular course
 ============================
 We have defined particular *tracks*, which consists of selections of modules that go
-well together given a certain learning outcome and target audience, for example Rust 101 focussed on Web programming or Rust-101
+well together given a certain learning outcome and target audience, for example teach-rs focussed on Web programming or teach-rs
 focussed on Embedded Devices; you can see the full list of tracks [here](./README.md#pre-defined-tracks):
 
 Finer-grained modularity
@@ -28,7 +28,7 @@ you should still end up with a coherent course.
 
 If you take this route, however, you have to take more responsibility that the study load remains balanced, as (unlike with modules), 
 *topics* don't have a fixed study time associated with them. For example (again), the `why-rust` topic will require less time (and has no
-partical exercises attached to it) than the `basic-syntax` topic. Since Rust 101 is in active development, we cannot give
+partical exercises attached to it) than the `basic-syntax` topic. Since teach-rs is in active development, we cannot give
 time estimates per topic and are focussing more on balancing the study load for the full course and the pre-defined *tracks*.
 
 Overview of modules and topics
@@ -54,4 +54,4 @@ Several online resources exists that can provide valuable background material fo
 
 Exercise solutions
 ------------------
-Rust 101 is provided without answers to exercises. If you have need of those, please [contact us](mailto:henk@tweedegolf.com).
+Teach-rs is provided without answers to exercises. If you have need of those, please [contact us](mailto:henk@tweedegolf.com).

@@ -23,7 +23,7 @@ fn main() {
 <div class="no-line-numbers">
 
 ```text
-Compiling hello-world v0.1.0 (/home/101-rs/Projects/hello-world)
+Compiling hello-world v0.1.0 (/home/teach-rs/Projects/hello-world)
 error[E0384]: cannot assign twice to immutable variable `some_x`
 --> src/main.rs:4:5
   |
@@ -68,7 +68,7 @@ fn main() {
 <div class="no-line-numbers">
 
 ```text
-Compiling hello-world v0.1.0 (/home/101-rs/Projects/hello-world)
+Compiling hello-world v0.1.0 (/home/teach-rs/Projects/hello-world)
 Finished dev [unoptimized + debuginfo] target(s) in 0.26s
 Running `target/debug/hello-world`
 some_x = 5

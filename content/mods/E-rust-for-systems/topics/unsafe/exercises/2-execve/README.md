@@ -34,7 +34,7 @@ If the argument is supplied correctly, `cargo run` should show something similar
 
 ```
 arguments:
-  /home/folkertdev/tg/101-rs/target/debug/log
+  /home/folkertdev/tg/teach-rs/target/debug/log
 
 variables:
 ```
@@ -45,7 +45,7 @@ Create a new `CString` that represents a path (e.g. `CString::new("FOO=bar")`), 
 
 ```
 arguments:
-  /home/folkertdev/tg/101-rs/target/debug/log
+  /home/folkertdev/tg/teach-rs/target/debug/log
 
 variables:
   FOO: bar
@@ -63,7 +63,7 @@ In the end you should see something like this
 ```txt
 > cargo run -- a b c
 arguments:
-  /home/folkertdev/tg/101-rs/target/debug/F2-execve
+  /home/folkertdev/tg/teach-rs/target/debug/F2-execve
   a
   b
   c
@@ -72,5 +72,5 @@ variables:
   BASE16_THEME:
   CARGO: /home/folkertdev/.rustup/toolchains/1.64.0-x86_64-unknown-linux-gnu/bin/cargo
   CARGO_HOME: /home/folkertdev/.cargo
-  CARGO_MANIFEST_DIR: /home/folkertdev/tg/101-rs/exercises/F2-execve
+  CARGO_MANIFEST_DIR: /home/folkertdev/tg/teach-rs/exercises/F2-execve
 ```
