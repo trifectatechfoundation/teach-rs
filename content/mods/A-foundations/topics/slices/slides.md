@@ -244,7 +244,7 @@ little deeper
 * A String is almost the same as `Vec<u8>` with extra checks to prevent
   creating invalid text
 <!--
-- We store data on the heap so we can easily have strings of variable sizes
+- We store data on the heap, so we can easily have strings of variable sizes
   and grow and shrink them as needed when they are modified.
 - In general we really don't care about the exact length of the string
 -->
