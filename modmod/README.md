@@ -72,7 +72,7 @@ cd /path/to/course/slides
 npm install
 
 # Build the slides of unit 1
-npm build-1
+npm run build-1
 
 # Render the slides of unit 1
 npm run dev-1
