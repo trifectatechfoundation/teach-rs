@@ -265,7 +265,7 @@ Hello, henkdieter!
 
 <!--
 - If you're writing a library, adding a couple of examples helps your users get started. In fact, many libraries are accompanied with examples defined in their Git repositories.
-- Run exaples with the `--example` option, specifying the binary
+- Run examples with the `--example` option, specifying the binary
 -->
 
 
