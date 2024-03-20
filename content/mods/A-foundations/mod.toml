@@ -5,7 +5,6 @@ description = "Get to learn the Rust programming language"
 name = "Foundations of Rust"
 template = "foundations.md"
 topics = [
-    "topics/why-rust/topic.toml",
     "topics/first-project/topic.toml",
     "topics/basic-syntax/topic.toml",
     "topics/move-semantics/topic.toml",
