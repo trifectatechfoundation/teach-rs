@@ -45,7 +45,7 @@ layout: default
 /// Set up a tokio Runtime and spawn the Future returned by `main`
 #[tokio::main]
 async fn main() {
-    do_stuff.await;
+    do_stuff().await;
 }
 ```
 
