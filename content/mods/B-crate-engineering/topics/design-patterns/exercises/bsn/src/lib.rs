@@ -58,7 +58,7 @@ impl<'de> Deserialize<'de> for Bsn {
     where
         D: serde::Deserializer<'de>,
     {
-        /// A vistitor for deserializing strings into `Bns`
+        /// A visitor for deserializing strings into `Bns`
         struct BsnVisitor;
 
         impl<'d> Visitor<'d> for BsnVisitor {
@@ -69,7 +69,7 @@ impl<'de> Deserialize<'de> for Bsn {
             }
 
             // TODO: Override the correct `Visitor::visit_*` to validate the input and output a new `BSN`
-            // if the input represents a valid BSN. Note that we do not need to override all default methos
+            // if the input represents a valid BSN. Note that we do not need to override all default methods
         }
 
         todo!("use `deserializer` to deserialize a str using a `BsnVisitor`");

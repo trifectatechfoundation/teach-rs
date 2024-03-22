@@ -29,7 +29,7 @@ layout: default
 
 - [`smol`](https://github.com/smol-rs/smol): Small
 - [`async-std`](https://async.rs/): API resembles `std`
-- [`tokio`](https://tokio.rs): Bery commonly used
+- [`tokio`](https://tokio.rs): Very commonly used
 - [`embassy`](https://embassy.dev/): Embedded
 - Create your own?
 
@@ -45,7 +45,7 @@ layout: default
 /// Set up a tokio Runtime and spawn the Future returned by `main`
 #[tokio::main]
 async fn main() {
-    do_stuff.await();
+    do_stuff().await;
 }
 ```
 

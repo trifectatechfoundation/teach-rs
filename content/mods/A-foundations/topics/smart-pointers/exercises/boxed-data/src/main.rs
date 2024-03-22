@@ -5,7 +5,7 @@
 ///
 /// - Add support for multiplication and division
 ///
-/// - We have added the the form "Summation(Vec<Expr>)", representing the sum of a list of expressions.
+/// - We have added the form "Summation(Vec<Expr>)", representing the sum of a list of expressions.
 /// Question: why can we get away with Vec<Expr> enough in that case, instead of Box<Vec<Expr>> ?
 ///
 /// - EXTRA: Since division can fail, the function eval needs to return an Option<i64>, where None indicates that a division by

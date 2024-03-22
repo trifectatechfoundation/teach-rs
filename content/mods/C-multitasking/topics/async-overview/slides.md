@@ -101,7 +101,7 @@ What you can expect doing `async` Rust
 - More interaction with advanced language features
 - Compatibility issues (re: colored functions)
 - Faster evolving ecosystem
-- `async fn` in Traits not stable
+- `async fn` in traits stable since Rust 1.75
 
 *But still a work in progress*
 
