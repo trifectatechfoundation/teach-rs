@@ -1,7 +1,7 @@
 mod book;
 mod exercises;
-mod io;
-mod load;
+pub mod io;
+pub mod load;
 mod slides;
 
 use self::{
