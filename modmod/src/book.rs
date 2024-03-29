@@ -85,27 +85,31 @@ impl<'track> Book<'track> {
                     section.title
                 ))?;
 
-                for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
-                    section_file.write_fmt(format_args!(
-                        "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
-                        subsection.title
-                    ))?;
-                    let exercise_out_dir = &exercise_paths[subsection.exercise_path];
-                    let content = subsection.content.read_to_string()?;
-                    let content = content
-                        // Insert exercise directory paths
-                        .replace(
-                            "#[modmod:exercise_dir]",
-                            &exercise_out_dir.to_string_lossy(),
-                        )
-                        // Insert exercise references
-                        .replace(
-                            "#[modmod:exercise_ref]",
-                            &format!("{chapter_i}.{section_i}.{subsection_i}"),
-                        )
-                        // Convert exercise sections into subsubsections
-                        .replace("\n# ", "\n### ");
-                    section_file.write_fmt(format_args!("{}\n", content.trim()))?;
+                if !section.subsections.is_empty() {
+                    for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
+                        section_file.write_fmt(format_args!(
+                            "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
+                            subsection.title
+                        ))?;
+                        let exercise_out_dir = &exercise_paths[subsection.exercise_path];
+                        let content = subsection.content.read_to_string()?;
+                        let content = content
+                            // Insert exercise directory paths
+                            .replace(
+                                "#[modmod:exercise_dir]",
+                                &exercise_out_dir.to_string_lossy(),
+                            )
+                            // Insert exercise references
+                            .replace(
+                                "#[modmod:exercise_ref]",
+                                &format!("{chapter_i}.{section_i}.{subsection_i}"),
+                            )
+                            // Convert exercise sections into subsubsections
+                            .replace("\n# ", "\n### ");
+                        section_file.write_fmt(format_args!("{}\n", content.trim()))?;
+                    }
+                } else {
+                    section_file.write_all("*There are no exercises for this unit*")?;
                 }
             }
             summary_md.write_all("\n")?;
