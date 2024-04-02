@@ -71,9 +71,9 @@ cd /path/to/course/slides
 # Install dependencies
 npm install
 
-# Build the slides of unit 1
-npm run build-1
+# Build the slides of module 2, unit 1
+npm run build-2_1
 
-# Render the slides of unit 1
-npm run dev-1
+# Render the slides of module 2, unit 1
+npm run dev-2_1
 ```

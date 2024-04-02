@@ -123,12 +123,15 @@ impl<'track> Book<'track> {
 pub struct Chapter<'track> {
     pub title: &'track str,
     pub sections: Vec<Section<'track>>,
+    pub module_index: usize,
 }
 
 #[derive(Debug)]
 pub struct Section<'track> {
     pub title: &'track str,
     pub subsections: Vec<SubSection<'track>>,
+    pub module_index: usize,
+    pub unit_index: usize,
 }
 
 #[derive(Debug)]
@@ -143,11 +146,16 @@ pub struct BookBuilder<'track> {
 }
 
 impl<'track> BookBuilder<'track> {
-    pub fn chapter<'b>(&'b mut self, title: &'track str) -> ChapterBuilder<'track, 'b> {
+    pub fn chapter<'b>(
+        &'b mut self,
+        title: &'track str,
+        module_index: usize,
+    ) -> ChapterBuilder<'track, 'b> {
         ChapterBuilder {
             book_builder: self,
             chapter: Chapter {
                 title,
+                module_index,
                 sections: vec![],
             },
         }
@@ -164,11 +172,18 @@ pub struct ChapterBuilder<'track, 'b> {
 }
 
 impl<'track, 'b> ChapterBuilder<'track, 'b> {
-    pub fn section<'c>(&'c mut self, title: &'track str) -> SectionBuilder<'track, 'b, 'c> {
+    pub fn section<'c>(
+        &'c mut self,
+        module_index: usize,
+        unit_index: usize,
+        title: &'track str,
+    ) -> SectionBuilder<'track, 'b, 'c> {
         SectionBuilder {
             chapter_builder: self,
             section: Section {
                 title,
+                module_index,
+                unit_index,
                 subsections: vec![],
             },
         }

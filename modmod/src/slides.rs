@@ -13,6 +13,7 @@ use crate::{
 };
 
 const PACKAGE_JSON_CONTENT_STUB: &str = include_str!("../include/slides/package.json");
+const SLIDES_TEMPLATE_DEFAULT: &str = include_str!("../include/slides/default.md");
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
@@ -55,9 +56,10 @@ impl<'track> SlidesPackage<'track> {
         let slide_images_dir = slides_output_dir.join("images");
         slide_images_dir.create_dir_all()?;
 
-        for (deck, i) in self.decks.iter().zip(1..) {
+        for deck in self.decks.iter() {
+            let deck_prefix = format!("{}_{}", deck.module_index, deck.unit_index);
             let deck_output = {
-                let mut o = slides_output_dir.join(to_prefixed_tag(deck.name, i));
+                let mut o = slides_output_dir.join(to_prefixed_tag(deck.name, &deck_prefix));
                 o.set_extension("md");
                 o
             };
@@ -71,22 +73,25 @@ impl<'track> SlidesPackage<'track> {
                     .unwrap();
 
                 package_scripts.insert(
-                    format!("dev-{i}"),
+                    format!("dev-{deck_prefix}"),
                     format!("slidev {deck_output_str}").into(),
                 );
 
                 package_scripts.insert(
-                    format!("build-{i}"),
-                    format!("slidev build --out dist-{i} --base /slides/{i}/ {deck_output_str}")
+                    format!("build-{deck_prefix}"),
+                    format!("slidev build --out dist-{deck_prefix} --base /slides/{deck_prefix}/ {deck_output_str}")
                         .into(),
                 );
                 package_scripts.insert(
-                    format!("export-{i}"),
+                    format!("export-{deck_prefix}"),
                     format!("slidev export {deck_output_str}").into(),
                 );
             }
 
-            let template_content = deck.template.read_to_string()?;
+            let template_content = deck
+                .template
+                .map(|t| t.read_to_string())
+                .unwrap_or(Ok(SLIDES_TEMPLATE_DEFAULT.to_string()))?;
             let mut unit_content = String::new();
             let mut unit_objectives = String::new();
             let mut unit_summary = String::new();
@@ -119,6 +124,10 @@ impl<'track> SlidesPackage<'track> {
             }
 
             let slides_content = template_content
+                .replace("#[modmod:mod_title]", deck.module_name)
+                .replace("#[modmod:mod_index]", &deck.module_index.to_string())
+                .replace("#[modmod:unit_index]", &deck.unit_index.to_string())
+                .replace("#[modmod:unit_title]", deck.name)
                 .replace("#[modmod:content]", &unit_content)
                 .replace("#[modmod:objectives]", &unit_objectives)
                 .replace("#[modmod:summary]", &unit_summary);
@@ -140,7 +149,10 @@ impl<'track> SlidesPackage<'track> {
 pub struct SlideDeck<'track> {
     /// Name of the slide deck, corresponds to the name of the unit in the module
     name: &'track str,
-    template: &'track Path,
+    module_name: &'track str,
+    module_index: usize,
+    unit_index: usize,
+    template: Option<&'track Path>,
     sections: Vec<Section<'track>>,
 }
 
@@ -161,12 +173,18 @@ impl<'track> SlidesPackageBuilder<'track> {
     pub fn deck(
         &mut self,
         name: &'track str,
-        template: &'track Path,
+        module_name: &'track str,
+        module_index: usize,
+        unit_index: usize,
+        template: Option<&'track Path>,
     ) -> SlideDeckBuilder<'track, '_> {
         SlideDeckBuilder {
             package_builder: self,
             slide_deck: SlideDeck {
                 name,
+                module_name,
+                module_index,
+                unit_index,
                 template,
                 sections: vec![],
             },

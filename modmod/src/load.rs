@@ -30,11 +30,11 @@ impl PathTo<TrackDef> {
 
         let mut modules = Vec::with_capacity(module_paths.len());
         let base_path = track_path.parent().unwrap();
-        for module_path in module_paths.into_iter() {
+        for (module_path, module_index) in module_paths.into_iter().zip(1..) {
             modules.push(
                 ModuleDef::load(&module_path, Some(base_path))
                     .change_context(HydrateTrackError)?
-                    .resolve()?,
+                    .resolve(module_index)?,
             );
         }
 
@@ -50,7 +50,7 @@ pub struct ModuleDef {
 }
 
 impl PathTo<ModuleDef> {
-    fn resolve(self) -> Result<Module, HydrateTrackError> {
+    fn resolve(self, module_index: usize) -> Result<Indexed<Module>, HydrateTrackError> {
         let PathTo {
             data: def,
             path: module_path,
@@ -63,28 +63,32 @@ impl PathTo<ModuleDef> {
 
         let mut units = Vec::with_capacity(unit_defs.len());
         let base_path = module_path.parent().unwrap();
-        for unit_def in unit_defs {
-            units.push(unit_def.resolve(base_path)?);
+        for (unit_def, unit_index) in unit_defs.into_iter().zip(1..) {
+            units.push(unit_def.resolve(unit_index, base_path)?);
         }
 
         Ok(Module {
             name,
             description,
             units,
-        })
+        }
+        .with_index(module_index))
     }
 }
 
 #[derive(Debug, Deserialize)]
 pub struct UnitDef {
     pub name: String,
-    #[serde(default = "crate::load::serde_defaults::unit_template_md")]
-    pub template: PathBuf,
+    pub template: Option<PathBuf>,
     pub topics: Vec<PathBuf>,
 }
 
 impl UnitDef {
-    fn resolve(self, base_path: &Path) -> Result<Unit, HydrateTrackError> {
+    fn resolve(
+        self,
+        unit_index: usize,
+        base_path: &Path,
+    ) -> Result<Indexed<Unit>, HydrateTrackError> {
         let UnitDef {
             name,
             template,
@@ -92,23 +96,31 @@ impl UnitDef {
         } = self;
 
         let mut topics = Vec::with_capacity(topic_paths.len());
-        for topic_path in topic_paths {
+        for (topic_path, topic_index) in topic_paths.into_iter().zip(1..) {
             topics.push(
                 TopicDef::load(&topic_path, Some(base_path))
                     .change_context(HydrateTrackError)?
-                    .resolve()?,
+                    .resolve(topic_index)?,
             );
         }
-        let template = base_path
-            .join(template)
-            .canonicalize()
-            .into_report()
-            .change_context(HydrateTrackError)?;
+
+        let template = match template {
+            Some(t) => Some(
+                base_path
+                    .join(t)
+                    .canonicalize()
+                    .into_report()
+                    .change_context(HydrateTrackError)?,
+            ),
+            None => None,
+        };
+
         Ok(Unit {
             name,
             template,
             topics,
-        })
+        }
+        .with_index(unit_index))
     }
 }
 
@@ -128,7 +140,7 @@ pub struct TopicDef {
 }
 
 impl PathTo<TopicDef> {
-    fn resolve(self) -> Result<Topic, HydrateTrackError> {
+    fn resolve(self, topic_index: usize) -> Result<Indexed<Topic>, HydrateTrackError> {
         let PathTo {
             data: def,
             path: topic_path,
@@ -145,8 +157,8 @@ impl PathTo<TopicDef> {
 
         let mut exercises = Vec::new();
         let base_path = topic_path.parent().unwrap();
-        for exercise_def in exercise_defs {
-            exercises.push(exercise_def.resolve(base_path)?)
+        for (exercise_def, exercise_index) in exercise_defs.into_iter().zip(1..) {
+            exercises.push(exercise_def.resolve(exercise_index, base_path)?)
         }
 
         let content = base_path
@@ -176,7 +188,8 @@ impl PathTo<TopicDef> {
             content,
             further_reading,
             images,
-        })
+        }
+        .with_index(topic_index))
     }
 }
 
@@ -191,7 +204,11 @@ pub struct ExerciseDef {
 }
 
 impl ExerciseDef {
-    fn resolve(self, base_path: &Path) -> Result<Exercise, HydrateTrackError> {
+    fn resolve(
+        self,
+        exercise_index: usize,
+        base_path: &Path,
+    ) -> Result<Indexed<Exercise>, HydrateTrackError> {
         let ExerciseDef {
             name,
             path: exercise_path,
@@ -213,7 +230,8 @@ impl ExerciseDef {
             path,
             description,
             includes,
-        })
+        }
+        .with_index(exercise_index))
     }
 }
 
@@ -255,13 +273,13 @@ pub trait Load: DeserializeOwned + Sized + 'static {
                 )
             })
             .change_context_lazy(|| LoadError(type_name::<Self>(), path.clone()))?;
-        let data = toml::from_str(&content)
+        let data: Self = toml::from_str(&content)
             .into_report()
             .attach_printable_lazy(|| {
                 format!("Unable to parse TOML file with contents '{content}'")
             })
             .change_context_lazy(|| LoadError(type_name::<Self>(), path.clone()))?;
-        Ok(PathTo { path, data })
+        Ok(data.with_path(path))
     }
 }
 
@@ -274,6 +292,28 @@ pub struct PathTo<T> {
     pub data: T,
     pub path: PathBuf,
 }
+
+trait WithPath: Sized {
+    fn with_path(self, path: PathBuf) -> PathTo<Self> {
+        PathTo { data: self, path }
+    }
+}
+
+impl<T> WithPath for T {}
+
+#[derive(Debug)]
+pub struct Indexed<T> {
+    pub data: T,
+    pub index: usize,
+}
+
+trait WithIndex: Sized {
+    fn with_index(self, index: usize) -> Indexed<Self> {
+        Indexed { data: self, index }
+    }
+}
+
+impl<T> WithIndex for T {}
 
 #[derive(Debug, Default)]
 pub struct HydrateTrackError;
@@ -302,9 +342,5 @@ pub mod serde_defaults {
 
     pub fn topic_slides_md() -> PathBuf {
         PathBuf::from("slides.md")
-    }
-
-    pub fn unit_template_md() -> PathBuf {
-        PathBuf::from("template.md")
     }
 }
