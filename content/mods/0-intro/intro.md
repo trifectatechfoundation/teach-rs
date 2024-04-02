@@ -3,20 +3,22 @@ theme: 101-rs
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust -0: Course introduction"
+info: "Rust - #[modmod:mod_index]: #[modmod:unit_title]"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust -0: Course introduction"
+title: "Rust - #[modmod:mod_index]: #[modmod:unit_title]"
 ---
 
 # Rust programming
 
-Module 0: Course introduction
+Module #[modmod:mod_index]: Course introduction
 
-## Unit 1
+## Unit #[modmod:unit_index]
+
+#[modmod:unit_title]
 
 ---
 

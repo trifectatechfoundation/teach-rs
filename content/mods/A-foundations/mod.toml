@@ -3,7 +3,6 @@ description = "Get to learn the Rust programming language"
 
 [[units]]
 name = "Basic Syntax"
-template = "foundations.md"
 topics = [
     "topics/first-project/topic.toml",
     "topics/basic-syntax/topic.toml",
@@ -11,7 +10,6 @@ topics = [
 
 [[units]]
 name = "Ownership and References"
-template = "foundations.md"
 topics = [
     "topics/move-semantics/topic.toml",
     "topics/ownership-borrowing/topic.toml",
@@ -19,7 +17,6 @@ topics = [
 
 [[units]]
 name = "Advanced Syntax"
-template = "foundations.md"
 topics = [
     "topics/composite-types/topic.toml",
     "topics/pattern-matching/topic.toml",
@@ -33,7 +30,6 @@ topics = [
 
 [[units]]
 name = "Traits and Generics"
-template = "foundations.md"
 topics = [
     "topics/traits-generics/topic.toml",
     "topics/std-traits/topic.toml",
@@ -42,7 +38,6 @@ topics = [
 
 [[units]]
 name = "Closures and Dynamic dispatch"
-template = "foundations.md"
 topics = [
     "topics/closures/topic.toml",
     "topics/trait-objects/topic.toml",
@@ -50,7 +45,6 @@ topics = [
 
 [[units]]
 name = "Interior mutability"
-template = "foundations.md"
 topics = [
     "topics/interior-mutability/topic.toml",
 ]
