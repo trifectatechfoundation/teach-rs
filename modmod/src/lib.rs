@@ -13,6 +13,7 @@ use exercises::{
     ExerciseCollection, ExerciseCollectionBuilder, ModuleExercisesBuilder, UnitExercisesBuilder,
 };
 use io::PathExt;
+use load::Indexed;
 use slides::{SlideDeckBuilder, SlidesPackage, SlidesPackageBuilder};
 use std::{
     fmt::{self, Display},
@@ -23,7 +24,7 @@ use std::{
 #[derive(Debug)]
 pub struct Track {
     pub name: String,
-    pub modules: Vec<Module>,
+    pub modules: Vec<Indexed<Module>>,
 }
 
 impl Track {
@@ -70,12 +71,11 @@ impl Track {
         let mut slides_builder = SlidesPackage::builder(&self.name);
         let mut exercises_builder = ExerciseCollection::builder();
 
-        self.modules.iter().zip(1..).try_for_each(|(module, i)| {
+        self.modules.iter().try_for_each(|module| {
             module.render(
                 &mut book_builder,
                 &mut slides_builder,
                 &mut exercises_builder,
-                i,
             )
         })?;
 
@@ -103,23 +103,33 @@ impl Track {
 pub struct Module {
     pub name: String,
     pub description: String,
-    pub units: Vec<Unit>,
+    pub units: Vec<Indexed<Unit>>,
 }
 
-impl Module {
+impl Indexed<Module> {
     fn render<'me>(
         &'me self,
         book_builder: &mut BookBuilder<'me>,
         slides: &mut SlidesPackageBuilder<'me>,
         exercises: &mut ExerciseCollectionBuilder<'me>,
-        index: usize,
     ) -> Result<(), LoadTrackError> {
-        let mut chapter = book_builder.chapter(&self.name);
-        let mut module_exercises = exercises.module(&self.name, index);
+        let Indexed {
+            data,
+            index: module_index,
+        } = self;
+
+        let mut chapter = book_builder.chapter(&data.name, *module_index);
+        let mut module_exercises = exercises.module(&data.name, *module_index);
 
         // Render all units in this module
-        self.units.iter().zip(1..).try_for_each(|(unit, i)| {
-            unit.render(&mut chapter, slides, &mut module_exercises, i)
+        data.units.iter().try_for_each(|unit| {
+            unit.render(
+                &data.name,
+                *module_index,
+                &mut chapter,
+                slides,
+                &mut module_exercises,
+            )
         })?;
 
         chapter.add();
@@ -131,23 +141,35 @@ impl Module {
 #[derive(Debug)]
 pub struct Unit {
     pub name: String,
-    pub template: PathBuf,
-    pub topics: Vec<Topic>,
+    pub template: Option<PathBuf>,
+    pub topics: Vec<Indexed<Topic>>,
 }
 
-impl Unit {
+impl Indexed<Unit> {
     fn render<'me>(
         &'me self,
+        module_name: &'me str,
+        module_index: usize,
         chapter: &mut ChapterBuilder<'me, '_>,
         slides: &mut SlidesPackageBuilder<'me>,
         module_exercises: &mut ModuleExercisesBuilder<'me, '_>,
-        index: usize,
     ) -> Result<(), LoadTrackError> {
-        let mut section = chapter.section(&self.name);
-        let mut deck = slides.deck(&self.name, &self.template);
-        let mut unit_exercises = module_exercises.unit(&self.name, index);
+        let Indexed {
+            data,
+            index: unit_index,
+        } = self;
 
-        self.topics
+        let mut section = chapter.section(module_index, *unit_index, &data.name);
+        let mut deck = slides.deck(
+            &data.name,
+            module_name,
+            module_index,
+            *unit_index,
+            data.template.as_deref(),
+        );
+        let mut unit_exercises = module_exercises.unit(&data.name, *unit_index);
+
+        data.topics
             .iter()
             .try_for_each(|topic| topic.render(&mut section, &mut deck, &mut unit_exercises))?;
 
@@ -162,7 +184,7 @@ impl Unit {
 #[derive(Debug)]
 pub struct Topic {
     pub name: String,
-    pub exercises: Vec<Exercise>,
+    pub exercises: Vec<Indexed<Exercise>>,
     pub summary: Vec<String>,
     pub objectives: Vec<String>,
     pub content: PathBuf,
@@ -170,32 +192,34 @@ pub struct Topic {
     pub images: Vec<PathBuf>,
 }
 
-impl Topic {
+impl Indexed<Topic> {
     fn render<'me>(
         &'me self,
         section: &mut SectionBuilder<'me, '_, '_>,
         deck: &mut SlideDeckBuilder<'me, '_>,
         unit_exercises: &mut UnitExercisesBuilder<'me, '_, '_>,
     ) -> Result<(), LoadTrackError> {
-        let mut slides_section = deck.section(&self.content);
+        let Indexed { data, .. } = self;
 
-        self.summary
+        let mut slides_section = deck.section(&data.content);
+
+        data.summary
             .iter()
             .for_each(|item| slides_section.summary(item));
 
-        self.objectives
+        data.objectives
             .iter()
             .for_each(|obj| slides_section.objective(obj));
 
-        self.further_reading
+        data.further_reading
             .iter()
             .for_each(|item| slides_section.further_reading(item));
 
-        self.images
+        data.images
             .iter()
             .for_each(|image| slides_section.image(image));
 
-        self.exercises
+        data.exercises
             .iter()
             .try_for_each(|exercise| exercise.render(section, unit_exercises))?;
 
@@ -213,15 +237,17 @@ pub struct Exercise {
     pub includes: Vec<String>,
 }
 
-impl Exercise {
+impl Indexed<Exercise> {
     fn render<'me>(
         &'me self,
         section: &mut SectionBuilder<'me, '_, '_>,
         unit_exercises: &mut UnitExercisesBuilder<'me, '_, '_>,
     ) -> Result<(), LoadTrackError> {
-        section.subsection(&self.name, &self.description, &self.path);
+        let Indexed { data, .. } = self;
 
-        unit_exercises.package(&self.name, &self.path, &self.includes);
+        section.subsection(&data.name, &data.description, &data.path);
+
+        unit_exercises.package(&data.name, &data.path, &data.includes);
 
         Ok(())
     }

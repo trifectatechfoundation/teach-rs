@@ -3,20 +3,22 @@ theme: 101-rs
 class: text-center
 highlighter: shiki
 lineNumbers: true
-info: "Rust - A: Foundations of Rust"
+info: "Rust - #[modmod:mod_index].#[modmod:unit_index]: #[modmod:unit_title]"
 drawings:
     persist: false
 fonts:
     mono: Fira Mono
 layout: cover
-title: "Rust - A: Foundations of Rust"
+title: "Rust - #[modmod:mod_index].#[modmod:unit_index]: #[modmod:unit_title]"
 ---
 
 # Rust programming
 
-Module A: Foundations of Rust
+Module #[modmod:mod_index]: #[modmod:mod_title]
 
-## Unit 1
+## Unit #[modmod:unit_index]
+
+#[modmod:unit_title]
 
 ---
 
@@ -24,9 +26,6 @@ Module A: Foundations of Rust
 
 #[modmod:objectives]
 
----
-
-# Actual content
 #[modmod:content]
 
 ---

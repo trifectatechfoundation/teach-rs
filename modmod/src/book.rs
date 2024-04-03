@@ -85,27 +85,31 @@ impl<'track> Book<'track> {
                     section.title
                 ))?;
 
-                for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
-                    section_file.write_fmt(format_args!(
-                        "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
-                        subsection.title
-                    ))?;
-                    let exercise_out_dir = &exercise_paths[subsection.exercise_path];
-                    let content = subsection.content.read_to_string()?;
-                    let content = content
-                        // Insert exercise directory paths
-                        .replace(
-                            "#[modmod:exercise_dir]",
-                            &exercise_out_dir.to_string_lossy(),
-                        )
-                        // Insert exercise references
-                        .replace(
-                            "#[modmod:exercise_ref]",
-                            &format!("{chapter_i}.{section_i}.{subsection_i}"),
-                        )
-                        // Convert exercise sections into subsubsections
-                        .replace("\n# ", "\n### ");
-                    section_file.write_fmt(format_args!("{}\n", content.trim()))?;
+                if !section.subsections.is_empty() {
+                    for (subsection, subsection_i) in section.subsections.iter().zip(1..) {
+                        section_file.write_fmt(format_args!(
+                            "## Exercise {chapter_i}.{section_i}.{subsection_i}: {}\n\n",
+                            subsection.title
+                        ))?;
+                        let exercise_out_dir = &exercise_paths[subsection.exercise_path];
+                        let content = subsection.content.read_to_string()?;
+                        let content = content
+                            // Insert exercise directory paths
+                            .replace(
+                                "#[modmod:exercise_dir]",
+                                &exercise_out_dir.to_string_lossy(),
+                            )
+                            // Insert exercise references
+                            .replace(
+                                "#[modmod:exercise_ref]",
+                                &format!("{chapter_i}.{section_i}.{subsection_i}"),
+                            )
+                            // Convert exercise sections into subsubsections
+                            .replace("\n# ", "\n### ");
+                        section_file.write_fmt(format_args!("{}\n", content.trim()))?;
+                    }
+                } else {
+                    section_file.write_all("*There are no exercises for this unit*")?;
                 }
             }
             summary_md.write_all("\n")?;
@@ -119,12 +123,15 @@ impl<'track> Book<'track> {
 pub struct Chapter<'track> {
     pub title: &'track str,
     pub sections: Vec<Section<'track>>,
+    pub module_index: usize,
 }
 
 #[derive(Debug)]
 pub struct Section<'track> {
     pub title: &'track str,
     pub subsections: Vec<SubSection<'track>>,
+    pub module_index: usize,
+    pub unit_index: usize,
 }
 
 #[derive(Debug)]
@@ -139,11 +146,16 @@ pub struct BookBuilder<'track> {
 }
 
 impl<'track> BookBuilder<'track> {
-    pub fn chapter<'b>(&'b mut self, title: &'track str) -> ChapterBuilder<'track, 'b> {
+    pub fn chapter<'b>(
+        &'b mut self,
+        title: &'track str,
+        module_index: usize,
+    ) -> ChapterBuilder<'track, 'b> {
         ChapterBuilder {
             book_builder: self,
             chapter: Chapter {
                 title,
+                module_index,
                 sections: vec![],
             },
         }
@@ -160,11 +172,18 @@ pub struct ChapterBuilder<'track, 'b> {
 }
 
 impl<'track, 'b> ChapterBuilder<'track, 'b> {
-    pub fn section<'c>(&'c mut self, title: &'track str) -> SectionBuilder<'track, 'b, 'c> {
+    pub fn section<'c>(
+        &'c mut self,
+        module_index: usize,
+        unit_index: usize,
+        title: &'track str,
+    ) -> SectionBuilder<'track, 'b, 'c> {
         SectionBuilder {
             chapter_builder: self,
             section: Section {
                 title,
+                module_index,
+                unit_index,
                 subsections: vec![],
             },
         }

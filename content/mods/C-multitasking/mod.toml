@@ -2,16 +2,25 @@ name = "Multitasking"
 description = "Use Rusts mechanics for concurrency and paralellism"
 
 [[units]]
-name = "Multitasking"
-template = "multitasking.md"
+name = "Introduction to Multitasking"
 topics = [
     "topics/intro/topic.toml",
+]
+
+[[units]]
+name = "Parallel Multitasking"
+topics = [
     "topics/rayon/topic.toml",
     "topics/multithreading/topic.toml",
     "topics/synchronization/topic.toml",
     "topics/ordering/topic.toml",
     "topics/send-sync/topic.toml",
     "topics/channels/topic.toml",
+]
+
+[[units]]
+name = "Asynchronous Multitasking"
+topics = [
     "topics/async-overview/topic.toml",
     "topics/future/topic.toml",
     "topics/async-await/topic.toml",

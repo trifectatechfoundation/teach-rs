@@ -1,6 +1,6 @@
-Open `exercises/A/1-basic-syntax` in your editor. This folder contains a number of exercises with which you can practise basic Rust syntax.
+Open `#[modmod:exercise_dir]` in your editor. This folder contains a number of exercises with which you can practise basic Rust syntax.
 
-While inside the `exercises/A/1-basic-syntax` folder, to get started, run:
+While inside the `#[modmod:exercise_dir]` folder, to get started, run:
 ```bash
 cargo run --bin 01
 ```

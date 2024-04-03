@@ -3,7 +3,6 @@ description = "Use Rust to write web applications"
 
 [[units]]
 name = "Rust for Web"
-template = "rust-for-web.md"
 topics = [
     "topics/arewewebyet/topic.toml",
     "topics/axum/topic.toml",

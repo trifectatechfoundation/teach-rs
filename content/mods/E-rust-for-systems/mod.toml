@@ -2,8 +2,7 @@ name = "Rust for Systems Programming"
 description = "Use Rust to program system software"
 
 [[units]]
-name = "Rust for Systems Programming"
-template = "rust-for-systems.md"
+name = "Foreign Function Interface"
 topics = [
     "topics/unsafe/topic.toml",
     "topics/ffi/topic.toml",

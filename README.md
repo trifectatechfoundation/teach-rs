@@ -30,6 +30,7 @@ Tracks, Modules, Units, and Topics and the files they refer to are described in 
 - [Rust for the Web](./content/rust-for-web.track.toml) covers content that is needed to use Rust in web applications.
 - [Rust for Systems Programming](./content/rust-for-systems.track.toml) contains more low-level topics, to teach systems programming using Rust.
 - [Scientific Rust](./content/scientific-rust.track.toml) is about using Rust in scientific programming.
+- [Full](./content/full.track.toml) contains all available teach-rs content.
 
 *Note: although the outline of the tracks is mostly complete, the tracks may still contain TODOs. You're invited to contribute your own content to fix these!*
 
