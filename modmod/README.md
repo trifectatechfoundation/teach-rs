@@ -32,16 +32,21 @@ ModMod outputs a file structure that looks like this:
 $ tree -L 2
 .
 ├── book
-│   ├── book.toml
-│   └── src
+│   ├── book.toml
+│   └── src
 ├── exercises
-│   ├── 1-course-introduction
-│   ├── 2-foundations-of-rust
-│   └── 3-crate-engineering
+│   ├── 1-course-introduction
+│   ├── 2-foundations-of-rust
+│   └── 3-crate-engineering
 └── slides
-    ├── 1-introduction.md
-    ├── 2-foundations-of-rust.md
-    ├── 3-crate-engineering.md
+    ├── 1_1-introduction.md
+    ├── 2_1-basic-syntax.md
+    ├── 2_2-ownership-and-references.md
+    ├── 2_3-advanced-syntax.md
+    ├── 2_4-traits-and-generics.md
+    ├── 2_5-closures-and-dynamic-dispatch.md
+    ├── 2_6-interior-mutability.md
+    ├── 3_1-crate-engineering.md
     ├── images
     └── package.json
 ````
