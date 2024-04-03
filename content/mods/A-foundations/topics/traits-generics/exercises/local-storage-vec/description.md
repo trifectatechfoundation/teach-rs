@@ -61,7 +61,7 @@ impl<T, const N: usize> From<Vec<T>> for LocalStorageVec<T, N> {
 
 Run `cargo test` to validate your implementation.
 
-### #[modmod:exercise_ref].C `impl LocalStorageVec` ⭐⭐
+# #[modmod:exercise_ref].C `impl LocalStorageVec` ⭐⭐
 To make the `LocalStorageVec` more useful, we'll add more methods to it.
 Create an `impl`-block for `LocalStorageVec`.
 Don't forget to declare and provide the generic parameters.
@@ -113,7 +113,7 @@ Each of these implementations can be implemented in terms of the `as_ref` implem
 When we implemented the borrowing `Iterator`, we saw that it's possible to define methods in separate `impl` blocks with different type bounds. Some of the functionality you wrote used the assumption that `T` is both `Copy` and `Default`. However, this means that each of those methods are only defined for `LocalStorageVec`s containing items of type `T` that in fact do implement `Copy` and `Default`, which is not ideal. How many methods can you rewrite having one or both of these bounds removed?
 
 
-## #[modmod:exercise_ref].H Borrowing `Iterator` ⭐⭐⭐
+# #[modmod:exercise_ref].H Borrowing `Iterator` ⭐⭐⭐
 We've already got an iterator for `LocalStorageVec`, though it has the limitation that in order to construct it, the `LocalStorageVec` needs to be consumed. What if we only want to iterate over the items, and not consume them? We will need another iterator type, one that contains an immutable reference to the `LocalStorageVec` and that will thus need a lifetime annotation. Add a method called `iter` to `LocalStorageVec` that takes a shared `&self` reference, and instantiates the borrowing iterator. Implement the `Iterator` trait with the appropriate `Item` reference type for your borrowing iterator. To validate your code, uncomment and run the `it_borrowing_iters` test case.
 
 Note that this time, the test won't compile if you require the items of `LocalStorageVec` be `Copy`! That means you'll have to define `LocalStorageVec::iter` in a new `impl` block that does not put this bound on `T`:
@@ -148,7 +148,7 @@ Next, replace the multiple implementations of `Index` with a single implementati
 
 If you've done this correctly, `it_indexes` should again compile and pass.
 
-### #[modmod:exercise_ref].J `Deref` and `DerefMut` ⭐⭐⭐⭐
+# #[modmod:exercise_ref].J `Deref` and `DerefMut` ⭐⭐⭐⭐
 The next trait that makes our `LocalStorageVec` more flexible in use are [`Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html) and [`DerefMut`](https://doc.rust-lang.org/std/ops/trait.DerefMut.html) that utilize the 'deref coercion' feature of Rust to allow types to be treated as if they were some type they look like.
 That would allow us to use any [method that is defined on `[T]`](https://doc.rust-lang.org/std/primitive.slice.html) by calling them on a `LocalStorageVec`.
 Before continuing, read the section ['Treating a Type Like a Reference by Implementing the Deref Trait'](https://doc.rust-lang.org/book/ch15-02-deref.html#treating-a-type-like-a-reference-by-implementing-the-deref-trait) from The Rust Programming Language (TRPL).
