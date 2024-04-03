@@ -20,7 +20,7 @@ For instance, you can run the following to render the Rust intro track into `./t
 
 ```bash
 cargo run -- -o target/course -c ../content/rust-intro.track.toml
-````
+```
 
 Have a look at file the structure and the TOML files in [content](../content) to get an idea of how the input is structured.
 
@@ -49,7 +49,7 @@ $ tree -L 2
     ├── 3_1-crate-engineering.md
     ├── images
     └── package.json
-````
+```
 Note that many subfolders were excluded in previous example. You can run `tree` yourself in the course output folder to see the structure deeper down.
 
 The `book` folder contains definition of the MdBook containing the exercise descriptions. You can build it using [MdBook](https://github.com/rust-lang/mdBook):
@@ -65,7 +65,7 @@ mdbook build
 
 # serve the book
 mdbook serve
-````
+```
 
 The `exercises` folder contains the scaffolding of the included exercises as referred to by the exercise description book.
 The `slides` folder contains a package of the unit slides, which you can render using [Slidev](https://sli.dev).
