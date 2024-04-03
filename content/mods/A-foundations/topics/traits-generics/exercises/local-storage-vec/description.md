@@ -131,7 +131,7 @@ impl<T: const N: usize> LocalStorageVec<T, N> {
 Defining methods in separate `impl` blocks means some methods are not available for certain instances of the generic type. In our case, the `new` method is only available for `LocalStorageVec`s containing items of type `T` that implement both `Copy` and `Default`, but `iter` is available for all `LocalStorageVec`s.
 
 # #[modmod:exercise_ref].I Generic `Index` ⭐⭐⭐⭐
-You've probably duplicated a lot of code in the last exercise. We can reduce the boilerplate by defining an empty trait:
+You've probably duplicated a lot of code in exercise #[modmod:exercise_ref].F. We can reduce the boilerplate by defining an empty trait:
 
 ```rust
 trait LocalStorageVecIndex {}
@@ -139,7 +139,7 @@ trait LocalStorageVecIndex {}
 
 First, implement this trait for `usize`, `RangeTo<usize>`, `RangeFrom<usize>`, and `Range<usize>`.
 
-Next, replace the implementations from the previous exercise with a blanket implementation of `Index`. In English:
+Next, replace the multiple implementations of `Index` with a single implementation. In English:
 
 *"For each type `T`, `I` and constant `N` of type `usize`,*
 *implement `Index<I>` for `LocalStorageVec<T, N>`,*
