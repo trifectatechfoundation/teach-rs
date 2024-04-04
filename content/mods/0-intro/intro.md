@@ -1,5 +1,5 @@
 ---
-theme: 101-rs
+theme: teach-rs
 class: text-center
 highlighter: shiki
 lineNumbers: true
@@ -16,24 +16,4 @@ title: "Rust - #[modmod:mod_index]: #[modmod:unit_title]"
 
 Module #[modmod:mod_index]: Course introduction
 
-## Unit #[modmod:unit_index]
-
-#[modmod:unit_title]
-
----
-
-# Learning objectives
-
-#[modmod:objectives]
-
----
-
-# Actual content
-
 #[modmod:content]
-
----
-
-# Summary
-
-#[modmod:summary]
