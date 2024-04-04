@@ -79,7 +79,7 @@ impl<'track> SlidesPackage<'track> {
 
                 package_scripts.insert(
                     format!("build-{deck_prefix}"),
-                    format!("slidev build --out dist-{deck_prefix} --base /slides/{deck_prefix}/ {deck_output_str}")
+                    format!("slidev build --out dist/{deck_prefix} --base /slides/{deck_prefix}/ {deck_output_str}")
                         .into(),
                 );
                 package_scripts.insert(
