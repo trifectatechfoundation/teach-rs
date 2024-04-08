@@ -42,6 +42,6 @@ In printing state, it keeps on printing the product until either it is ready or 
 If the printer is out of filament, the printer goes into Error state, which it can only come out of upon device reset.
 If the product is ready, the printer goes to Product Ready state, and once the user retrieves the product, the printer goes back to Idle.
 
-The printer can be represented in Rust using the typestate pattern as described during the lecture. This allows you to write a simple 3D printer driver. In `#[modmod:exercise_dir]/src/lib.rs`, a `Printer3D` struct is instantiated. Add methods corresponding to each of the traits, that simulate the state transitions by printing the state. A method simulating checking if the printer is out of filament is provided.
+The printer can be represented in Rust using the typestate pattern as described during the lecture. This allows you to write a simple 3D printer driver. In `#[modmod:exercise_dir]/src/lib.rs`, a `Printer3D` struct is instantiated. Add methods corresponding to each of the types, that simulate the state transitions by printing the state. A method simulating checking if the printer is out of filament is provided.
 
 Of course, to make the printer more realistic, you can add more states and transitions.
