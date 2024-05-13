@@ -16,8 +16,8 @@ layout: default
 
 ```rust
 fn foo() -> impl Fn(i64, i64) -> i64 {
-    z = 42;
-    |x, y| x + y + z
+    let z = 42;
+    move |x, y| x + y + z
 }
 
 fn bar() -> i64 {
