@@ -23,6 +23,13 @@ use std::{
 
 pub use slides::SlidesRenderOptions;
 
+pub struct TrackRenderOptions<'t, 'u, O: AsRef<Path>, P: AsRef<Path>> {
+    pub out_dir: O,
+    pub slide_opts: SlidesRenderOptions<'t, 'u, P>,
+    pub clear_output_dir: bool,
+    pub gen_patch: bool,
+}
+
 #[derive(Debug)]
 pub struct Track {
     pub name: String,
@@ -35,28 +42,31 @@ impl Track {
         def.resolve().change_context(LoadTrackError)
     }
 
-    pub fn render<P: AsRef<Path>>(
+    pub fn render<O: AsRef<Path>, P: AsRef<Path>>(
         &self,
-        output_dir: impl AsRef<Path>,
-        slide_opts: SlidesRenderOptions<'_, '_, P>,
-        clear_output: bool,
+        TrackRenderOptions {
+            out_dir,
+            slide_opts,
+            clear_output_dir,
+            gen_patch,
+        }: TrackRenderOptions<'_, '_, O, P>,
     ) -> Result<(), LoadTrackError> {
-        let output_dir = output_dir.as_ref();
-        output_dir.create_dir_all()?;
-        let output_dir = &output_dir
+        let out_dir = out_dir.as_ref();
+        out_dir.create_dir_all()?;
+        let out_dir = &out_dir
             .canonicalize()
             .into_report()
             .change_context(LoadTrackError)?;
 
-        if output_dir.exists() {
-            if clear_output {
+        if out_dir.exists() {
+            if clear_output_dir {
                 // remove output dir and contents
-                fs::remove_dir_all(output_dir)
+                fs::remove_dir_all(out_dir)
                     .into_report()
                     .change_context(LoadTrackError)?;
             } else {
                 // Return error if output dir is not empty
-                let None = fs::read_dir(output_dir)
+                let None = fs::read_dir(out_dir)
                     .into_report()
                     .change_context(LoadTrackError)?
                     .next()
@@ -67,7 +77,7 @@ impl Track {
             }
         }
         // Ensure output dir exists
-        output_dir.create_dir_all()?;
+        out_dir.create_dir_all()?;
 
         // Render the modules in the track
         let mut book_builder = Book::builder(&self.name);
@@ -84,18 +94,16 @@ impl Track {
 
         // Build and render exercise packages
         let exercises = exercises_builder.build();
-        let exercise_paths = exercises
-            .render(output_dir)
-            .change_context(LoadTrackError)?;
+        let exercise_paths = exercises.render(out_dir).change_context(LoadTrackError)?;
         // Build and render the exercise book
         let book = book_builder.build();
-        book.render(&exercise_paths, output_dir)
+        book.render(&exercise_paths, out_dir)
             .change_context(LoadTrackError)?;
 
         // Build and render the slides package
         let slides_package = slides_builder.build();
         slides_package
-            .render(output_dir, slide_opts)
+            .render(out_dir, slide_opts)
             .change_context(LoadTrackError)?;
 
         Ok(())
