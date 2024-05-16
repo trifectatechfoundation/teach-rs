@@ -10,7 +10,7 @@ use crate::{io::PathExt, to_prefixed_tag};
 
 #[non_exhaustive]
 #[derive(Debug, Default)]
-pub struct RenderExercisesError;
+pub struct RenderExercisesError {}
 
 impl fmt::Display for RenderExercisesError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -78,7 +78,7 @@ impl<'track> ExerciseCollection<'track> {
                                 .attach_printable_lazy(|| {
                                     format!("Error parsing include glob '{include}'")
                                 })
-                                .change_context(RenderExercisesError)?,
+                                .change_context(RenderExercisesError::default())?,
                         );
                     }
                     let globset = globset.build().unwrap();

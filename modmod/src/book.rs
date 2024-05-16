@@ -14,7 +14,7 @@ use crate::{
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
-pub struct RenderBookError;
+pub struct RenderBookError {}
 
 impl fmt::Display for RenderBookError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
