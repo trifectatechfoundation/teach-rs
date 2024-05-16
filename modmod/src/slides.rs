@@ -17,7 +17,7 @@ const SLIDES_TEMPLATE_DEFAULT: &str = include_str!("../include/slides/default.md
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
-pub struct RenderSlidesError;
+pub struct RenderSlidesError {}
 
 impl fmt::Display for RenderSlidesError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -53,18 +53,16 @@ impl<'track> SlidesPackage<'track> {
     pub fn render<P: AsRef<Path>>(
         &self,
         out_dir: impl AsRef<Path>,
-        options: SlidesRenderOptions<'_, '_, P>,
-    ) -> Result<(), RenderSlidesError> {
-        let SlidesRenderOptions {
+        SlidesRenderOptions {
             theme,
             package_json,
             url_base,
-        } = options;
-
+        }: SlidesRenderOptions<'_, '_, P>,
+    ) -> Result<(), RenderSlidesError> {
         let mut package_json: JsonObject = match package_json {
             Some(p) => serde_json::from_str(&p.read_to_string()?)
                 .into_report()
-                .change_context(RenderSlidesError)?,
+                .change_context(RenderSlidesError::default())?,
             None => serde_json::from_str(PACKAGE_JSON_CONTENT_STUB).unwrap(),
         };
 

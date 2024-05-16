@@ -1,6 +1,6 @@
 use clap::Parser;
 use error_stack::Result;
-use modmod::{LoadTrackError, SlidesRenderOptions};
+use modmod::{LoadTrackError, SlidesRenderOptions, TrackRenderOptions};
 use std::{path::PathBuf, process::exit};
 
 #[derive(Parser)]
@@ -10,9 +10,15 @@ struct Args {
         long = "output",
         help = "The folder the output will be written to"
     )]
-    output_dir: PathBuf,
+    out_dir: PathBuf,
     #[arg(short = 'c', long = "clear", help = "Clear the output folder")]
     clear_output_dir: bool,
+    #[arg(
+        short = 'p',
+        long = "patch",
+        help = "Generate patch file to update output dir"
+    )]
+    gen_patch: bool,
     track_toml_path: PathBuf,
     #[arg(
         long,
@@ -38,13 +44,15 @@ fn main() {
 
     fn run(args: Args) -> Result<(), LoadTrackError> {
         let Args {
-            output_dir,
+            out_dir,
             clear_output_dir,
             track_toml_path,
             slide_url_base,
             slide_theme,
             package_json,
+            gen_patch,
         } = args;
+
         let track = modmod::Track::load_toml_def(track_toml_path)?;
 
         let slide_opts = SlidesRenderOptions {
@@ -52,8 +60,13 @@ fn main() {
             package_json,
             url_base: slide_url_base.as_str(),
         };
-
-        track.render(output_dir, slide_opts, clear_output_dir)?;
+        let track_opts = TrackRenderOptions {
+            out_dir,
+            slide_opts,
+            clear_output_dir,
+            gen_patch,
+        };
+        track.render(track_opts)?;
         Ok(())
     }
 
