@@ -21,6 +21,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+pub use slides::SlidesRenderOptions;
+
 #[derive(Debug)]
 pub struct Track {
     pub name: String,
@@ -33,10 +35,10 @@ impl Track {
         def.resolve().change_context(LoadTrackError)
     }
 
-    pub fn render(
+    pub fn render<P: AsRef<Path>>(
         &self,
         output_dir: impl AsRef<Path>,
-        slide_url_base: &str,
+        slide_opts: SlidesRenderOptions<'_, '_, P>,
         clear_output: bool,
     ) -> Result<(), LoadTrackError> {
         let output_dir = output_dir.as_ref();
@@ -93,7 +95,7 @@ impl Track {
         // Build and render the slides package
         let slides_package = slides_builder.build();
         slides_package
-            .render(output_dir, slide_url_base)
+            .render(output_dir, slide_opts)
             .change_context(LoadTrackError)?;
 
         Ok(())
