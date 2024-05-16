@@ -1,5 +1,5 @@
 ---
-theme: teach-rs
+theme: "#[modmod:theme]"
 class: text-center
 highlighter: shiki
 lineNumbers: true
