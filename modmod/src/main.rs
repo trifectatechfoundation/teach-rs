@@ -1,7 +1,7 @@
 use clap::Parser;
 use error_stack::Result;
-use modmod::{LoadTrackError, SlidesRenderOptions, TrackRenderOptions};
-use std::{path::PathBuf, process::exit};
+use modmod::{patch::GenPatchOptions, LoadTrackError, SlidesRenderOptions, TrackRenderOptions};
+use std::{fs, path::PathBuf, process::exit};
 
 #[derive(Parser)]
 struct Args {
@@ -16,9 +16,9 @@ struct Args {
     #[arg(
         short = 'p',
         long = "patch",
-        help = "Generate patch file to update output dir"
+        help = "Generate patch file to update output dir at given path"
     )]
-    gen_patch: bool,
+    patch_file: Option<PathBuf>,
     track_toml_path: PathBuf,
     #[arg(
         long,
@@ -50,7 +50,7 @@ fn main() {
             slide_url_base,
             slide_theme,
             package_json,
-            gen_patch,
+            patch_file,
         } = args;
 
         let track = modmod::Track::load_toml_def(track_toml_path)?;
@@ -60,13 +60,32 @@ fn main() {
             package_json,
             url_base: slide_url_base.as_str(),
         };
+
+        let (out_dir, patch_opts) = if let Some(patch_file) = patch_file {
+            let tmp_dir = std::env::temp_dir().join("modmod_tmp");
+            let patch_opts = GenPatchOptions {
+                new_dir: tmp_dir.clone(),
+                old_dir: out_dir,
+                patch_file,
+            };
+            (tmp_dir, Some(patch_opts))
+        } else {
+            (out_dir, None)
+        };
+
         let track_opts = TrackRenderOptions {
             out_dir,
             slide_opts,
             clear_output_dir,
-            gen_patch,
         };
         track.render(track_opts)?;
+
+        if let Some(patch_opts) = patch_opts {
+            let tmp_dir = patch_opts.new_dir.clone();
+            modmod::patch::Patch::render(patch_opts).unwrap();
+            fs::remove_dir_all(tmp_dir).unwrap();
+        }
+
         Ok(())
     }
 

@@ -2,6 +2,7 @@ mod book;
 mod exercises;
 mod io;
 mod load;
+pub mod patch;
 mod slides;
 
 use self::{
@@ -27,7 +28,6 @@ pub struct TrackRenderOptions<'t, 'u, O: AsRef<Path>, P: AsRef<Path>> {
     pub out_dir: O,
     pub slide_opts: SlidesRenderOptions<'t, 'u, P>,
     pub clear_output_dir: bool,
-    pub gen_patch: bool,
 }
 
 #[derive(Debug)]
@@ -48,7 +48,6 @@ impl Track {
             out_dir,
             slide_opts,
             clear_output_dir,
-            gen_patch,
         }: TrackRenderOptions<'_, '_, O, P>,
     ) -> Result<(), LoadTrackError> {
         let out_dir = out_dir.as_ref();
