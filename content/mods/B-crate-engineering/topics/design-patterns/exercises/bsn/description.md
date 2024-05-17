@@ -16,7 +16,7 @@ For example: for BSN `123456789`, `A = 1`, `B = 2`, `C = 3`, and so forth until 
 
 Then, `(9 × A) + (8 × B) + (7 × C) + (6 × D) + (5 × E) + (4 × F) + (3 × G) + (2 × H) + (-1 × I)` must be a multiple of 11
 
-Open `exercises/B/4-bsn` in your editor. You'll find the scaffolding code there, along with two files:
+Open `#[modmod:exercise_dir]` in your editor. You'll find the scaffolding code there, along with two files:
 - `valid_bsns.in` containing a list of valid BSNs
 - `invalid_bsns.in` containing a list of invalid BSNs.
 

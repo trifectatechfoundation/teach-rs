@@ -1,5 +1,5 @@
 ---
-layout: section
+layout: cover
 ---
 
 # Why learn Rust?

@@ -1,7 +1,7 @@
 
 
 ---
-layout: section
+layout: cover
 ---
 
 # `async` and `await`
@@ -11,7 +11,7 @@ layout: three-slots
 ---
 
 # Expanding `async`
-&nbsp;  
+&nbsp;
 
 *" `Futures` are cool, but why didn't I see them in the web scraper example?"*
 
@@ -114,7 +114,7 @@ impl Future for AsyncFuture {
             }
         }
     }
-}   
+}
 ```
 
 Kind of looks like `AndThenFut`!
@@ -122,7 +122,7 @@ Kind of looks like `AndThenFut`!
 *Adapted from [Asynchronous programming in Rust](https://rust-lang.github.io/async-book/03_async_await/01_chapter.html)*
 
 ---
-layout: default
+layout: cover
 ---
 
 # `async`/`await` expansion takeaways

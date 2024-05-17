@@ -188,10 +188,11 @@ pub trait Drop {
 
 
 ---
-layout: two-cols
+layout: three::slots
 ---
 # Destruction:`std::ops::Drop`
 
+::left::
 ```rust{all|1-7|9-17|19-22}
 struct Inner;
 
@@ -218,7 +219,6 @@ fn main() {
 ```
 ::right::
 
-# &nbsp;
 <v-click>
 
 <div class="no-line-numbers">

@@ -1,6 +1,6 @@
 
 ---
-layout: section
+layout: cover
 ---
 
 # Design patterns in Rust
@@ -41,7 +41,7 @@ fn main() {
 ```
 
 ---
-layout: statement
+layout: cover
 ---
 
 # 1. The Newtype pattern
@@ -105,7 +105,7 @@ Newtype solves some problems:
 - Enforce input validation
 
 ---
-layout: statement
+layout: cover
 ---
 
 # 2. The RAII guard pattern
@@ -187,7 +187,7 @@ layout: default
 - Ensure invariants hold while guard lives
 
 ---
-layout: statement
+layout: cover
 ---
 
 # 3. The Typestate pattern
@@ -212,10 +212,12 @@ pub enum Ready {} // No variants, cannot be initialized
 *👻 `PhantomData<T>` makes types act like they own a `T`, and takes no space*
 </v-click>
 ---
-layout: two-cols
+layout: three-slots
 ---
 
 # Typestate: example
+
+::left::
 
 ```rust
 pub enum Idle {} // Nothing to do
@@ -225,7 +227,6 @@ pub enum MoneyInserted {} // Money was inserted
 pub struct CoffeeMachine<S> {
     _state: PhantomData<S>,
 }
-
 impl<CS> CoffeeMachine<CS> {
     /// Just update the state
     fn into_state<NS>(self) -> CoffeeMachine<NS> {
@@ -234,7 +235,6 @@ impl<CS> CoffeeMachine<CS> {
         }
     }
 }
-
 impl CoffeeMachine<Idle> {
     pub fn new() -> Self {
         Self {
@@ -281,7 +281,7 @@ layout: default
 - Ensure *at compile time* that no invalid operation is done
 
 ---
-layout: statement
+layout: cover
 ---
 
 # 4. The Strategy pattern
@@ -355,17 +355,17 @@ layout: default
 - Switch algorithms based on some run-time parameter (input, config, ...)
 
 ---
-layout: section
+layout: cover
 ---
 
 # Anti-patterns
 What *not* to do
 
 ---
-layout: section
+layout: cover
 ---
 
-# The Deref polymorphism anti-pattern
+# Deref polymorphism
 
 A common pitfall you'll want to avoid
 
@@ -408,7 +408,6 @@ impl Dog {
         println!("Woof woof!");
     }
 }
-
 impl Deref for Dog {
     type Target = Animal;
 
@@ -416,7 +415,6 @@ impl Deref for Dog {
         &self.animal
     }
 }
-
 fn main (){ 
     let dog: Dog = todo!("Instantiate Dog");
     dog.bark();
