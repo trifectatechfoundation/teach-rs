@@ -1,6 +1,6 @@
 
 ---
-layout: section
+layout: cover
 ---
 # The `Future` trait
 Foundation of async
@@ -14,7 +14,7 @@ layout: two-cols
 trait VerySimpleFuture {
     type Output;
     /// Do work and check if task is completed.
-    /// Returns [Poll::Ready], containing the 
+    /// Returns [Poll::Ready], containing the
     /// `Output` if task is ready,
     /// [Poll::Pending] if not
     fn poll(&mut self) -> Poll<Self::Output>;
@@ -55,11 +55,11 @@ layout: two-cols
  ```rust
 fn main() {
     let mut first_alarm = VerySimpleAlarm {
-        alarm_time: Instant::now() 
+        alarm_time: Instant::now()
             + Duration::from_secs(3)
     };
     let mut snooze_alarm = VerySimpleAlarm {
-        alarm_time: Instant::now() 
+        alarm_time: Instant::now()
             + Duration::from_secs(5)
     };
 
@@ -110,7 +110,7 @@ layout: default
 
 ## ⏰ Introduce a Waker
 
-General idea: 
+General idea:
 - Run some callback to notify executor
 - Have executor implement some job queue
 </div>
@@ -161,7 +161,7 @@ pub struct Join<FutureA, FutureB> {
     b: Option<FutureB>,
 }
 
-impl<FutureA, FutureB> SimpleFuture 
+impl<FutureA, FutureB> SimpleFuture
     for Join<FutureA, FutureB>
 where
     FutureA: SimpleFuture<Output = ()>,
@@ -174,8 +174,8 @@ where
 *Adapted from [Asynchronous programming in Rust](https://rust-lang.github.io/async-book/02_execution/02_future.html)*
 ::right::
 ```rust
-    fn poll(&mut self, wake: fn()) 
-        -> Poll<Self::Output> 
+    fn poll(&mut self, wake: fn())
+        -> Poll<Self::Output>
     {
         if let Some(a) = &mut self.a {
             if let Poll::Ready(()) = a.poll(wake) {

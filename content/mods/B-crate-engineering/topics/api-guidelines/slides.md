@@ -1,6 +1,6 @@
 
 ---
-layout: section
+layout: cover
 ---
 # Creating a nice API
 
@@ -47,7 +47,7 @@ In general, you want to make your API unsurprising, flexible and obvious.
 -->
 
 ---
-layout: section
+layout: cover
 ---
 Make your API
 # Unsurprising
@@ -122,7 +122,7 @@ Here's a list of common traits to implement or derive automatically, making your
 -->
 
 ---
-layout: section
+layout: cover
 ---
 Make your API
 # Flexible
@@ -188,7 +188,7 @@ An even neater way to make your API flexible is by allowing the user to decide w
 -->
 
 ---
-layout: section
+layout: cover
 ---
 Make your API
 # Obvious
@@ -321,11 +321,9 @@ impl<'u> Url<'u> {
 fn load_page(remote: Url) -> String {
     todo!("load it");
 }
-
 fn main() {
     let content = load_page(Url::new("🦀")); // Not good
 }
-
 fn valid(url: &str) -> bool {
     url != "🦀" // Far from complete
 }

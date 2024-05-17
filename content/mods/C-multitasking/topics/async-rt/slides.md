@@ -65,7 +65,7 @@ async fn handle_connection(socket: TcpStream) -> anyhow::Result<()> {
     let mut stream = BufReader::new(socket);
     let mut name = String::new();
     stream.read_line(&mut name).await?;
-    
+
     stream.write_all(format!("Hello, {name}!").as_bytes()).await?;
     Ok(())
 }

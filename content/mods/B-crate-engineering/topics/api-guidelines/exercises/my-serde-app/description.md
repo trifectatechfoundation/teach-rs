@@ -1,6 +1,6 @@
 *This exercise is adapted from the [serde_lifetimes exercise](https://github.com/ferrous-systems/teaching-material/blob/main/assignments/serde-lifetimes.adoc) by Ferrous Systems*
 
-Open `exercises/B/1-my-serde-app/src/main.rs`. In there, you'll find some Rust code we will do this exercise with.
+Open `#[modmod:exercise_dir]/src/main.rs`. In there, you'll find some Rust code we will do this exercise with.
 
 We used `todo!()` macros to mark places where you should put code to make the program run. Look at the [`serde_json`](https://docs.rs/serde_json/latest/serde_json/#functions) api for help.
 

@@ -1,6 +1,6 @@
 
 ---
-layout: section
+layout: cover
 ---
 # Meeting Rust
 

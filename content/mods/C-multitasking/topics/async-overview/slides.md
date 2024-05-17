@@ -25,7 +25,7 @@ layout: default
 # What's async?
 
 - Concurrent programming model
-- Very suitable for running large number of I/O bound tasks
+- Very suitable for running a large number of I/O bound tasks
   - like web servers!
 - Look and feel* of synchronous code through `async`/`await` syntax
 
@@ -50,29 +50,51 @@ layout: default
 layout: default
 ---
 
-# What `async` looks like in Rust
-To get an idea
+# From sync to async
 
 ```rust
-/// An async function
-async fn run() -> anyhow::Result<()> {
-    /// Await loading and parsing config file
-    let config = load_config(CONFIG_PATH).await?;
-    /// Await scraping job
-    let data = scrape(&config.urls).await?;
-    data.report();
-    Ok(())
-}
+use std::net::UdpSocket;
 
-fn main() {
-    // Set up a `tokio` runtime with default configurations
-    let runtime = tokio::runtime::Runtime::new().unwrap();
-    // Run a Future to completion
-    runtime.block_on(run());
+// <nothing>
+fn main() -> std::io::Result<()> {
+    let socket = UdpSocket::bind("127.0.0.1:34254")?;
+
+    let mut buf = [0; 10];
+    let (bytes_read, src) = socket.recv_from(&mut buf)?;
+
+    let buf = &mut buf[..bytes_read];
+    buf.reverse();
+    socket.send_to(buf, &src)?;
+
+    Ok(())
 }
 ```
 
-*Question: What stands out to you? What strikes you as odd?*
+---
+layout: default
+---
+
+# From sync to async
+
+```rust
+use tokio::net::UdpSocket;
+
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
+    let socket = UdpSocket::bind("127.0.0.1:34254").await?;
+
+    let mut buf = [0; 10];
+    let (bytes_read, src) = socket.recv_from(&mut buf).await?;
+
+    let buf = &mut buf[..bytes_read];
+    buf.reverse();
+    socket.send_to(buf, &src).await?;
+
+    Ok(())
+}
+```
+
+*Question: What stands out to you?*
 
 ---
 layout: default

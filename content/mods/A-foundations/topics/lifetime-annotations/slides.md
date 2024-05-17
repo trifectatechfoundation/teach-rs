@@ -1,5 +1,5 @@
 ---
-layout: section
+layout: cover
 ---
 
 # Lifetime annotations

@@ -35,8 +35,8 @@ enum IpAddress {
 impl IpAddress {
   fn as_u32(&self) -> Option<u32> {
     match self {
-      IpAddress::Ipv4(a, b, c, d) => a << 24 + b << 16 + c << 8 + d
-      _ => None,_
+      IpAddress::Ipv4(a, b, c, d) => Some(a << 24 + b << 16 + c << 8 + d)
+      _ => None,
     }
   }
 }
