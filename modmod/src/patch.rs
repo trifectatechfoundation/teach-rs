@@ -2,7 +2,8 @@ use error_stack::{IntoReport, Result, ResultExt};
 use similar::TextDiff;
 
 use std::{
-    fmt, fs,
+    fmt,
+    fs::{self},
     io::{self, Read, Seek},
     path::Path,
 };
@@ -26,6 +27,7 @@ pub struct GenPatchOptions<N: AsRef<Path>, O: AsRef<Path>, P: AsRef<Path>> {
     pub patch_file: P,
 }
 
+#[non_exhaustive]
 pub struct Patch {}
 
 impl Patch {
@@ -44,8 +46,9 @@ impl Patch {
                 .strip_prefix(new_dir.as_ref())
                 .unwrap();
 
-            let mut new_file = fs::File::open(&new_file_path).unwrap();
+            let mut new_file = new_file_path.open_file()?;
             let old_file_path = old_dir.as_ref().join(&relative_file_path);
+
             let mut old_file = match fs::File::open(&old_file_path) {
                 Ok(f) => f,
                 Err(e) if e.kind() == io::ErrorKind::NotFound => {
