@@ -1,7 +1,7 @@
 use clap::Parser;
-use error_stack::Result;
-use modmod::{patch::GenPatchOptions, LoadTrackError, SlidesRenderOptions, TrackRenderOptions};
-use std::{fs, path::PathBuf, process::exit};
+use error_stack::{IntoReport, Result, ResultExt};
+use modmod::{patch::GenPatchOptions, SlidesRenderOptions, TrackRenderOptions};
+use std::{fmt, fs, path::PathBuf, process::exit};
 
 #[derive(Parser)]
 struct Args {
@@ -39,10 +39,22 @@ struct Args {
     package_json: Option<PathBuf>,
 }
 
+#[non_exhaustive]
+#[derive(Debug, Default)]
+struct ModModError {}
+
+impl error_stack::Context for ModModError {}
+
+impl fmt::Display for ModModError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "ModMod error")
+    }
+}
+
 fn main() {
     let args = Args::parse();
 
-    fn run(args: Args) -> Result<(), LoadTrackError> {
+    fn run(args: Args) -> Result<(), ModModError> {
         let Args {
             out_dir,
             clear_output_dir,
@@ -52,8 +64,6 @@ fn main() {
             package_json,
             patch_file,
         } = args;
-
-        let track = modmod::Track::load_toml_def(track_toml_path)?;
 
         let slide_opts = SlidesRenderOptions {
             theme: &slide_theme,
@@ -78,12 +88,19 @@ fn main() {
             slide_opts,
             clear_output_dir,
         };
-        track.render(track_opts)?;
+
+        let track =
+            modmod::Track::load_toml_def(track_toml_path).change_context(ModModError::default())?;
+        track
+            .render(track_opts)
+            .change_context(ModModError::default())?;
 
         if let Some(patch_opts) = patch_opts {
             let tmp_dir = patch_opts.new_dir.clone();
-            modmod::patch::Patch::render(patch_opts).unwrap();
-            fs::remove_dir_all(tmp_dir).unwrap();
+            modmod::patch::Patch::render(patch_opts).change_context(ModModError::default())?;
+            fs::remove_dir_all(tmp_dir)
+                .into_report()
+                .change_context(ModModError::default())?;
         }
 
         Ok(())
