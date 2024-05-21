@@ -12,6 +12,7 @@ pub trait PathExt {
     fn create_dir_all<C: Context + Default>(&self) -> Result<(), C>;
     fn read_to_string<C: Context + Default>(&self) -> Result<String, C>;
     fn create_file<C: Context + Default>(&self) -> Result<File, C>;
+    fn open_file<C: Context + Default>(&self) -> Result<File, C>;
     fn get_dir_content<C: Context + Default>(&self) -> Result<DirContent, C>;
     fn copy<C: Context + Default>(&self, to: impl AsRef<Path>) -> Result<(), C>;
 }
@@ -52,6 +53,20 @@ impl<T: AsRef<Path>> PathExt for T {
             .attach_printable_lazy(|| {
                 format!(
                     "Error creating file at path {path}",
+                    path = path.to_string_lossy()
+                )
+            })
+            .change_context(C::default())
+    }
+
+    fn open_file<C: Context + Default>(&self) -> Result<File, C> {
+        let path = self.as_ref();
+
+        File::open(path)
+            .into_report()
+            .attach_printable_lazy(|| {
+                format!(
+                    "Error opening file at path {path}",
                     path = path.to_string_lossy()
                 )
             })
