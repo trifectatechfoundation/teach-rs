@@ -11,7 +11,10 @@ use fs_extra::dir::DirContent;
 pub trait PathExt {
     fn create_dir_all<C: Context + Default>(&self) -> Result<(), C>;
     fn read_to_string<C: Context + Default>(&self) -> Result<String, C>;
-    fn create_file<C: Context + Default>(&self) -> Result<File, C>;
+    fn try_create_file<C: Context + Default>(&self, force: bool) -> Result<File, C>;
+    fn create_file<C: Context + Default>(&self) -> Result<File, C> {
+        self.try_create_file(true)
+    }
     fn open_file<C: Context + Default>(&self) -> Result<File, C>;
     fn get_dir_content<C: Context + Default>(&self) -> Result<DirContent, C>;
     fn copy<C: Context + Default>(&self, to: impl AsRef<Path>) -> Result<(), C>;
@@ -45,8 +48,20 @@ impl<T: AsRef<Path>> PathExt for T {
             .change_context(C::default())
     }
 
-    fn create_file<C: Context + Default>(&self) -> Result<File, C> {
+    fn try_create_file<C: Context + Default>(&self, force: bool) -> Result<File, C> {
         let path = self.as_ref();
+
+        if path.exists() && !force {
+            return Err(io::Error::new(
+                io::ErrorKind::AlreadyExists,
+                format!(
+                    "Path at {path} already exists",
+                    path = path.to_string_lossy()
+                ),
+            ))
+            .into_report()
+            .change_context(C::default());
+        }
 
         File::create(path)
             .into_report()
