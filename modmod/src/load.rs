@@ -5,15 +5,16 @@ use std::{
 };
 
 use error_stack::{IntoReport, Result, ResultExt};
-use serde::{de::DeserializeOwned, Deserialize};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::io::PathExt;
 
 use super::{Exercise, Module, Topic, Track, Unit};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TrackDef {
     pub name: String,
+    #[serde(default)]
     pub modules: Vec<PathBuf>,
 }
 
@@ -42,10 +43,11 @@ impl PathTo<TrackDef> {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ModuleDef {
     pub name: String,
     pub description: String,
+    #[serde(default)]
     pub units: Vec<UnitDef>,
 }
 
@@ -76,10 +78,11 @@ impl PathTo<ModuleDef> {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UnitDef {
     pub name: String,
     pub template: Option<PathBuf>,
+    #[serde(default)]
     pub topics: Vec<PathBuf>,
 }
 
@@ -124,19 +127,35 @@ impl UnitDef {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TopicDef {
     pub name: String,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub exercises: Vec<ExerciseDef>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub summary: Vec<String>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub objectives: Vec<String>,
-    #[serde(default = "crate::load::serde_defaults::topic_slides_md")]
+    #[serde(
+        default = "crate::load::serde_defaults::topic_slides_md",
+        skip_serializing_if = "crate::load::serde_defaults::is_topic_slides_md"
+    )]
     pub content: PathBuf,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub further_reading: Vec<String>,
+}
+
+impl Default for TopicDef {
+    fn default() -> Self {
+        Self {
+            name: Default::default(),
+            exercises: Default::default(),
+            summary: Default::default(),
+            objectives: Default::default(),
+            content: serde_defaults::topic_slides_md(),
+            further_reading: Default::default(),
+        }
+    }
 }
 
 impl PathTo<TopicDef> {
@@ -195,14 +214,31 @@ pub fn dir_content(path: &Path) -> Result<Vec<PathBuf>, HydrateTrackError> {
         .collect())
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ExerciseDef {
     pub name: String,
     pub path: PathBuf,
-    #[serde(default = "crate::load::serde_defaults::exercise_description_md")]
+    #[serde(
+        default = "crate::load::serde_defaults::exercise_description_md",
+        skip_serializing_if = "crate::load::serde_defaults::is_exercise_description_md"
+    )]
     pub description: PathBuf,
-    #[serde(default = "crate::load::serde_defaults::exercise_includes")]
+    #[serde(
+        default = "crate::load::serde_defaults::exercise_includes",
+        skip_serializing_if = "crate::load::serde_defaults::is_exercise_includes"
+    )]
     pub includes: Vec<String>,
+}
+
+impl Default for ExerciseDef {
+    fn default() -> Self {
+        Self {
+            name: Default::default(),
+            path: Default::default(),
+            description: serde_defaults::exercise_description_md(),
+            includes: serde_defaults::exercise_includes(),
+        }
+    }
 }
 
 impl ExerciseDef {
@@ -330,12 +366,15 @@ impl fmt::Display for HydrateTrackError {
 
 impl error_stack::Context for HydrateTrackError {}
 
-#[doc(hidden)]
 pub mod serde_defaults {
     use std::path::PathBuf;
 
     pub fn exercise_description_md() -> PathBuf {
         PathBuf::from("description.md")
+    }
+
+    pub fn is_exercise_description_md(path: &PathBuf) -> bool {
+        path == &exercise_description_md()
     }
 
     pub fn exercise_includes() -> Vec<String> {
@@ -344,7 +383,15 @@ pub mod serde_defaults {
             .to_vec()
     }
 
+    pub fn is_exercise_includes(includes: &Vec<String>) -> bool {
+        includes == &exercise_includes()
+    }
+
     pub fn topic_slides_md() -> PathBuf {
         PathBuf::from("slides.md")
+    }
+
+    pub fn is_topic_slides_md(path: &PathBuf) -> bool {
+        path == &topic_slides_md()
     }
 }
