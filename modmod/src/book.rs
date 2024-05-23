@@ -51,14 +51,15 @@ impl<'track> Book<'track> {
 
         let book_toml_path = book_out_dir.join("book.toml");
         let mut book_toml = book_toml_path.create_file()?;
-        book_toml.write_all(indoc! {r#"
+        book_toml.write_all(format!(indoc! {r#"
                 [book]
+                title = "{}"
                 language = "en"
                 multilingual = false
                 
                 [build]
                 build-dir = "./target"
-            "#})?;
+            "#}, self.title))?;
 
         let summary_md_path = book_src_dir.join("SUMMARY.md");
 
