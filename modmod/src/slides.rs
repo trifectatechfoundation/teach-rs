@@ -44,7 +44,11 @@ impl<'track> SlidesPackage<'track> {
         }
     }
 
-    pub fn render(&self, out_dir: impl AsRef<Path>) -> Result<(), RenderSlidesError> {
+    pub fn render(
+        &self,
+        out_dir: impl AsRef<Path>,
+        url_base: &str,
+    ) -> Result<(), RenderSlidesError> {
         let mut package_json: JsonObject = serde_json::from_str(PACKAGE_JSON_CONTENT_STUB).unwrap();
         package_json.insert("name".into(), to_tag(self.name).into());
         let mut package_scripts = JsonObject::new();
@@ -55,6 +59,8 @@ impl<'track> SlidesPackage<'track> {
 
         let slide_images_dir = slides_output_dir.join("images");
         slide_images_dir.create_dir_all()?;
+        let url_base = url_base.trim_matches('/');
+        let url_base_separator = if url_base.is_empty() { "" } else { "/" };
 
         for deck in self.decks.iter() {
             let deck_prefix = format!("{}_{}", deck.module_index, deck.unit_index);
@@ -79,7 +85,7 @@ impl<'track> SlidesPackage<'track> {
 
                 package_scripts.insert(
                     format!("build-{deck_prefix}"),
-                    format!("slidev build --out dist/{deck_prefix} --base /slides/{deck_prefix}/ {deck_output_str}")
+                    format!("slidev build --out dist/{deck_prefix} --base /{url_base}{url_base_separator}slides/{deck_prefix}/ {deck_output_str}")
                         .into(),
                 );
                 package_scripts.insert(

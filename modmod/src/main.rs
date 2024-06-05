@@ -14,6 +14,11 @@ struct Args {
     #[arg(short = 'c', long = "clear", help = "Clear the output folder")]
     clear_output_dir: bool,
     track_toml_path: PathBuf,
+    #[arg(
+        long,
+        help = "Use this as a base when deploying the slides to a web server"
+    )]
+    slide_url_base: Option<String>,
 }
 
 fn main() {
@@ -24,9 +29,14 @@ fn main() {
             output_dir,
             clear_output_dir,
             track_toml_path,
+            slide_url_base,
         } = args;
         let track = modmod::Track::load_toml_def(track_toml_path)?;
-        track.render(output_dir, clear_output_dir)?;
+        track.render(
+            output_dir,
+            slide_url_base.as_deref().unwrap_or("/"),
+            clear_output_dir,
+        )?;
         Ok(())
     }
 
