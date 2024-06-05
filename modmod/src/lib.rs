@@ -36,6 +36,7 @@ impl Track {
     pub fn render(
         &self,
         output_dir: impl AsRef<Path>,
+        slide_url_base: &str,
         clear_output: bool,
     ) -> Result<(), LoadTrackError> {
         let output_dir = output_dir.as_ref();
@@ -92,7 +93,7 @@ impl Track {
         // Build and render the slides package
         let slides_package = slides_builder.build();
         slides_package
-            .render(output_dir)
+            .render(output_dir, slide_url_base)
             .change_context(LoadTrackError)?;
 
         Ok(())
