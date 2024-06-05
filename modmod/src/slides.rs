@@ -66,6 +66,35 @@ impl<'track> SlidesPackage<'track> {
             let deck_prefix = format!("{}_{}", deck.module_index, deck.unit_index);
             let deck_slug = to_prefixed_tag(deck.name, &deck_prefix);
             let deck_output = slides_output_dir.join(&deck_slug).with_extension("md");
+            let mut unit_content = String::new();
+            let mut unit_objectives = String::new();
+            let mut unit_summary = String::new();
+
+            for section in deck.sections.iter() {
+                let topic_content = section.content.read_to_string()?;
+                let topic_content = topic_content.trim();
+
+                if !topic_content.is_empty() {
+                    if !topic_content.starts_with("---") {
+                        unit_content.write_str("---\n\n").unwrap();
+                    }
+                    unit_content.write_str(topic_content).unwrap();
+                    unit_content.write_str("\n").unwrap();
+                }
+
+                for objective in section.objectives.iter() {
+                    unit_objectives += &format!("- {}\n", objective.trim());
+                }
+
+                for item in section.summary.iter() {
+                    unit_summary += &format!("- {}\n", item.trim());
+                }
+            }
+
+            if unit_content.is_empty() && unit_objectives.is_empty() && unit_summary.is_empty() {
+                continue;
+            }
+
             let mut deck_file = deck_output.create_file()?;
 
             {
@@ -91,34 +120,7 @@ impl<'track> SlidesPackage<'track> {
                 );
             }
 
-            let template_content = deck
-                .template
-                .map(|t| t.read_to_string())
-                .unwrap_or(Ok(SLIDES_TEMPLATE_DEFAULT.to_string()))?;
-            let mut unit_content = String::new();
-            let mut unit_objectives = String::new();
-            let mut unit_summary = String::new();
-
             for section in deck.sections.iter() {
-                let topic_content = section.content.read_to_string()?;
-                let topic_content = topic_content.trim();
-
-                if !topic_content.is_empty() {
-                    if !topic_content.starts_with("---") {
-                        unit_content.write_str("---\n\n").unwrap();
-                    }
-                    unit_content.write_str(topic_content).unwrap();
-                    unit_content.write_str("\n").unwrap();
-                }
-
-                for objective in section.objectives.iter() {
-                    unit_objectives += &format!("- {}\n", objective.trim());
-                }
-
-                for item in section.summary.iter() {
-                    unit_summary += &format!("- {}\n", item.trim());
-                }
-
                 section
                     .images
                     .iter()
@@ -126,6 +128,10 @@ impl<'track> SlidesPackage<'track> {
                     .try_for_each(|(path, name)| path.copy(slide_images_dir.join(name)))?;
             }
 
+            let template_content = deck
+                .template
+                .map(|t| t.read_to_string())
+                .unwrap_or(Ok(SLIDES_TEMPLATE_DEFAULT.to_string()))?;
             let slides_content = template_content
                 .replace("#[modmod:mod_title]", deck.module_name)
                 .replace("#[modmod:mod_index]", &deck.module_index.to_string())
