@@ -64,11 +64,8 @@ impl<'track> SlidesPackage<'track> {
 
         for deck in self.decks.iter() {
             let deck_prefix = format!("{}_{}", deck.module_index, deck.unit_index);
-            let deck_output = {
-                let mut o = slides_output_dir.join(to_prefixed_tag(deck.name, &deck_prefix));
-                o.set_extension("md");
-                o
-            };
+            let deck_slug = to_prefixed_tag(deck.name, &deck_prefix);
+            let deck_output = slides_output_dir.join(&deck_slug).with_extension("md");
             let mut deck_file = deck_output.create_file()?;
 
             {
@@ -85,7 +82,7 @@ impl<'track> SlidesPackage<'track> {
 
                 package_scripts.insert(
                     format!("build-{deck_prefix}"),
-                    format!("slidev build --out dist/{deck_prefix} --base /{url_base}{url_base_separator}slides/{deck_prefix}/ {deck_output_str}")
+                    format!("slidev build --out dist/{deck_slug} --base /{url_base}{url_base_separator}slides/{deck_slug}/ {deck_output_str}")
                         .into(),
                 );
                 package_scripts.insert(
