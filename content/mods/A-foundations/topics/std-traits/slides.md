@@ -188,7 +188,7 @@ pub trait Drop {
 
 
 ---
-layout: three::slots
+layout: three-slots
 ---
 # Destruction:`std::ops::Drop`
 
