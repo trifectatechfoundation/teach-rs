@@ -24,6 +24,11 @@ impl fmt::Display for RenderBookError {
 
 impl error_stack::Context for RenderBookError {}
 
+pub struct BookRenderOptions<'e, 'u> {
+    pub exercise_paths: &'e HashMap<PathBuf, PathBuf>,
+    pub slides_url_base: &'u str,
+}
+
 #[derive(Debug)]
 pub struct Book<'track> {
     pub title: &'track str,
@@ -42,9 +47,14 @@ impl<'track> Book<'track> {
 
     pub fn render(
         &self,
-        exercise_paths: &HashMap<PathBuf, PathBuf>,
+        BookRenderOptions {
+            exercise_paths,
+            slides_url_base,
+        }: BookRenderOptions,
         out_dir: impl AsRef<Path>,
     ) -> Result<(), RenderBookError> {
+        let slides_url_base = slides_url_base.trim_matches('/');
+        let slides_url_base_separator = if slides_url_base.is_empty() { "" } else { "/" };
         let book_out_dir = out_dir.as_ref().join("book");
         let book_src_dir = book_out_dir.join("src");
         book_src_dir.create_dir_all()?;
@@ -88,13 +98,15 @@ impl<'track> Book<'track> {
                     indoc! {r#"
                         # Unit {chapter_i}.{section_i} - {}
 
-                        <a href="/slides/{chapter_i}_{section_i}/" target="_blank">Slides</a>
-                        
-                        
+                        <a href="/{url_base}{url_base_separator}slides/{chapter_i}_{section_i}/" target="_blank">Slides</a>
+
+
                         "#},
                     section.title,
                     chapter_i = chapter_i,
-                    section_i = section_i
+                    section_i = section_i,
+                    url_base = slides_url_base,
+                    url_base_separator = slides_url_base_separator,
                 ))?;
 
                 if !section.subsections.is_empty() {

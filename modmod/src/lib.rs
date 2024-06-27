@@ -9,6 +9,7 @@ use self::{
     book::{Book, BookBuilder, ChapterBuilder, SectionBuilder},
     load::{Load, TrackDef},
 };
+use book::BookRenderOptions;
 use error_stack::{IntoReport, Report, Result, ResultExt};
 use exercises::{
     ExerciseCollection, ExerciseCollectionBuilder, ModuleExercisesBuilder, UnitExercisesBuilder,
@@ -96,7 +97,11 @@ impl Track {
         let exercise_paths = exercises.render(out_dir).change_context(LoadTrackError)?;
         // Build and render the exercise book
         let book = book_builder.build();
-        book.render(&exercise_paths, out_dir)
+        let book_opts = BookRenderOptions {
+            exercise_paths: &exercise_paths,
+            slides_url_base: slide_opts.url_base,
+        };
+        book.render(book_opts, out_dir)
             .change_context(LoadTrackError)?;
 
         // Build and render the slides package
