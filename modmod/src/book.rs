@@ -62,15 +62,18 @@ impl<'track> Book<'track> {
 
         let book_toml_path = book_out_dir.join("book.toml");
         let mut book_toml = book_toml_path.create_file()?;
-        book_toml.write_all(format!(indoc! {r#"
+        book_toml.write_all(format!(
+            indoc! {r#"
                 [book]
                 title = "{}"
                 language = "en"
                 multilingual = false
-                
+
                 [build]
                 build-dir = "./target"
-            "#}, self.title))?;
+            "#},
+            self.title
+        ))?;
 
         let summary_md_path = book_src_dir.join("SUMMARY.md");
 
@@ -93,8 +96,16 @@ impl<'track> Book<'track> {
                 let section_file_path = book_src_dir.join(&section_file_name);
                 let mut section_file = section_file_path.create_file()?;
                 section_file.write_fmt(format_args!(
-                    "# Unit {chapter_i}.{section_i} - {}\n\n",
-                    section.title
+                    indoc! {r#"
+                        # Unit {chapter_i}.{section_i} - {}
+
+                        <a href="/slides/{chapter_i}_{section_i}/" target="_blank">Slides</a>
+                        
+                        
+                        "#},
+                    section.title,
+                    chapter_i = chapter_i,
+                    section_i = section_i
                 ))?;
 
                 if !section.subsections.is_empty() {
