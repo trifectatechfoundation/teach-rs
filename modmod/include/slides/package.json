@@ -1,9 +1,10 @@
 {
   "private": true,
   "dependencies": {
-    "@slidev/cli": "^0.48",
+    "@slidev/cli": "^0.49",
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*",
-    "slidev-theme-teach-rs": "0.0.1"
+    "slidev-theme-teach-rs": "0.0.1",
+    "playwright-chromium": "*"
   }
 }

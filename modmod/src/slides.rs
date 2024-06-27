@@ -127,7 +127,7 @@ impl<'track> SlidesPackage<'track> {
 
                 package_scripts.insert(
                     format!("build-{deck_prefix}"),
-                    format!("slidev build --out dist/{deck_slug} --base /{url_base}{url_base_separator}slides/{deck_slug}/ {deck_output_str}")
+                    format!("slidev build --download --out dist/{deck_slug} --base /{url_base}{url_base_separator}slides/{}_{}/ {deck_output_str}", deck.module_index, deck.unit_index)
                         .into(),
                 );
                 package_scripts.insert(
