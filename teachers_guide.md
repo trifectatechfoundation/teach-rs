@@ -54,4 +54,4 @@ Several online resources exists that can provide valuable background material fo
 
 Exercise solutions
 ------------------
-Teach-rs is provided without answers to exercises. If you have need of those, please [contact us](mailto:henk@tweedegolf.com).
+Teach-rs is provided without answers to exercises. If you have need of those, please [contact us](mailto:hd@oordt.dev).
