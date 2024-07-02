@@ -44,7 +44,7 @@ async fn handle_incoming(
     tx: impl AsRef<broadcast::Sender<Message>>,
 ) -> Result<()> {
     let mut tcp_read = BufReader::new(tcp_read).lines();
-    let Some(inital_message) = tcp_read.next_line().await? else {
+    let Some(initial_message) = tcp_read.next_line().await? else {
         return Ok(());
     };
     todo!(
