@@ -139,7 +139,7 @@ impl<'track> ExerciseCollectionBuilder<'track> {
         index: usize,
     ) -> ModuleExercisesBuilder<'track, '_> {
         ModuleExercisesBuilder {
-            collection_buider: self,
+            collection_builder: self,
             module_exercises: ModuleExercises {
                 index,
                 name,
@@ -154,7 +154,7 @@ impl<'track> ExerciseCollectionBuilder<'track> {
 }
 
 pub struct ModuleExercisesBuilder<'track, 'c> {
-    collection_buider: &'c mut ExerciseCollectionBuilder<'track>,
+    collection_builder: &'c mut ExerciseCollectionBuilder<'track>,
     module_exercises: ModuleExercises<'track>,
 }
 
@@ -175,11 +175,11 @@ impl<'track, 'c> ModuleExercisesBuilder<'track, 'c> {
     }
 
     pub fn add(self) -> &'c mut ExerciseCollectionBuilder<'track> {
-        self.collection_buider
+        self.collection_builder
             .collection
             .module_exercises
             .push(self.module_exercises);
-        self.collection_buider
+        self.collection_builder
     }
 }
 

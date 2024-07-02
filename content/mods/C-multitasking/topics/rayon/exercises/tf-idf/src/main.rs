@@ -32,7 +32,7 @@ fn term_frequency(document: &str) -> HashMap<&str, usize> {
         .fold(HashMap::default(), |mut hash_map, word| todo!())
 }
 
-fn combine_occurences<'a>(
+fn combine_occurrences<'a>(
     a: HashMap<&'a str, usize>,
     b: HashMap<&'a str, usize>,
 ) -> HashMap<&'a str, usize> {
@@ -45,7 +45,7 @@ fn combine_occurences<'a>(
 }
 
 /// Map each word in the document to the value 1
-fn term_occurence(document: &str) -> HashMap<&str, usize> {
+fn term_occurrence(document: &str) -> HashMap<&str, usize> {
     todo!()
 }
 
@@ -53,7 +53,7 @@ fn term_occurence(document: &str) -> HashMap<&str, usize> {
 fn document_frequency<'a>(
     documents: impl rayon::iter::ParallelIterator<Item = &'a str>,
 ) -> HashMap<&'a str, usize> {
-    // map each document to a hashmap that maps words to whether they occur (use `term_occurence`),
+    // map each document to a hashmap that maps words to whether they occur (use `term_occurrence`),
     // then reduce, combining the counts.
     todo!()
 }
