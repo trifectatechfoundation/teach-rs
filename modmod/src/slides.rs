@@ -163,7 +163,20 @@ impl<'track> SlidesPackage<'track> {
 
         // Add underscore key, so that preceding lines can have a trailing comma
         package_scripts.insert("_".into(), "".into());
-        package_json.insert("scripts".into(), package_scripts.into());
+
+        // Append all scripts
+        match package_json.get_mut("scripts") {
+            Some(v) => {
+                match v {
+                    serde_json::Value::Object(m) => m.append(&mut package_scripts),
+                    _ => Err(RenderSlidesError::default())?,
+                };
+            }
+            None => {
+                package_json.insert("scripts".into(), package_scripts.into());
+            }
+        };
+
         let package_json = serde_json::to_string_pretty(&package_json).unwrap();
         let package_json_file = slides_output_dir.join("package.json");
         let mut package_json_file = package_json_file.create_file()?;
