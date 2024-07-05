@@ -8,17 +8,24 @@ use std::{
 use error_stack::Result;
 
 use crate::{
-    io::{PathExt, WriteExt},
+    io::{copy_files, PathExt, WriteExt},
     to_tag,
 };
 
 #[derive(Debug, Default)]
 #[non_exhaustive]
-pub struct RenderBookError {}
+pub struct RenderBookError {
+    reason: Option<String>,
+}
 
 impl fmt::Display for RenderBookError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("unable to render book")
+        f.write_str("unable to render book")?;
+        if let Some(reason) = &self.reason {
+            f.write_str("\n")?;
+            f.write_str(&reason)?;
+        }
+        Ok(())
     }
 }
 
@@ -34,6 +41,10 @@ pub struct Book<'track> {
     pub title: &'track str,
     pub chapters: Vec<Chapter<'track>>,
 }
+
+const IMAGE_PLACEHOLDER: &str = "#[modmod:images]";
+const EXERCISE_DIR_PLACEHOLDER: &str = "#[modmod:exercise_dir]";
+const EXERCISE_REF_PLACEHOLDER: &str = "#[modmod:exercise_ref]";
 
 impl<'track> Book<'track> {
     pub fn builder(title: &'track str) -> BookBuilder {
@@ -116,18 +127,34 @@ impl<'track> Book<'track> {
                             subsection.title
                         ))?;
                         let exercise_out_dir = &exercise_paths[subsection.exercise_path];
+                        let book_images_subdir =
+                            format!("images/{chapter_i}/{section_i}/{subsection_i}");
+                        if !subsection.images.is_empty() {
+                            let book_images_dir = book_src_dir.join(&book_images_subdir);
+                            book_images_dir.create_dir_all()?;
+                            copy_files(&subsection.images, &book_images_dir)?;
+                        }
+
                         let content = subsection.content.read_to_string()?;
+                        check_images(
+                            &subsection.exercise_path,
+                            &content,
+                            &subsection.images,
+                            &subsection.exercise_path.join("images"),
+                        )?;
                         let content = content
                             // Insert exercise directory paths
                             .replace(
-                                "#[modmod:exercise_dir]",
+                                EXERCISE_DIR_PLACEHOLDER,
                                 &exercise_out_dir.to_string_lossy(),
                             )
                             // Insert exercise references
                             .replace(
-                                "#[modmod:exercise_ref]",
+                                EXERCISE_REF_PLACEHOLDER,
                                 &format!("{chapter_i}.{section_i}.{subsection_i}"),
                             )
+                            // Insert exercise image directory paths
+                            .replace(IMAGE_PLACEHOLDER, &book_images_subdir)
                             // Convert exercise sections into subsubsections
                             .replace("\n# ", "\n### ");
                         section_file.write_fmt(format_args!("{}\n", content.trim()))?;
@@ -162,6 +189,7 @@ pub struct Section<'track> {
 pub struct SubSection<'track> {
     pub title: &'track str,
     pub content: &'track Path,
+    pub images: &'track [PathBuf],
     pub exercise_path: &'track Path,
 }
 
@@ -229,11 +257,13 @@ impl<'track, 'b, 'c> SectionBuilder<'track, 'b, 'c> {
         &mut self,
         title: &'track str,
         content: &'track Path,
+        images: &'track [PathBuf],
         exercise_path: &'track Path,
     ) {
         self.section.subsections.push(SubSection {
             title,
             content,
+            images,
             exercise_path,
         })
     }
@@ -241,5 +271,105 @@ impl<'track, 'b, 'c> SectionBuilder<'track, 'b, 'c> {
     pub fn add(self) -> &'c mut ChapterBuilder<'track, 'b> {
         self.chapter_builder.chapter.sections.push(self.section);
         self.chapter_builder
+    }
+}
+
+/// Scan content for #[modmod:images] references.
+fn find_image_placeholders(mut content: &str) -> std::collections::HashSet<&str> {
+    let mut found_images = std::collections::HashSet::new();
+    loop {
+        let Some(pos) = content.find(IMAGE_PLACEHOLDER) else {
+            break;
+        };
+        content = &content[pos + IMAGE_PLACEHOLDER.len()..];
+        let Some(end) = content.find(')') else {
+            break;
+        };
+        found_images.insert((&content[..end]).trim_start_matches('/'));
+        content = &content[end + 1..];
+    }
+    found_images
+}
+
+/// Return an error if there are unreferenced images in the exercise image folder or image references pointing to non existing images.
+fn check_images(
+    exercise_path: &std::path::Path,
+    content: &str,
+    existing_images: &[std::path::PathBuf],
+    base_path: &Path,
+) -> Result<(), RenderBookError> {
+    let mut referenced_images = find_image_placeholders(content);
+    let unused_images = existing_images
+        .iter()
+        .filter_map(|image| {
+            let Ok(relative_path) = image.strip_prefix(base_path) else {
+                return Some(image.to_string_lossy());
+            };
+            (!referenced_images.remove(std::borrow::Borrow::<str>::borrow(
+                &relative_path.to_string_lossy(),
+            )))
+            .then_some(image.to_string_lossy())
+        })
+        .collect::<Vec<_>>();
+    let unused_images_err_msg = (!unused_images.is_empty()).then(|| {
+        format!(
+            "💥 {}: Unused images: {}",
+            exercise_path.to_string_lossy(),
+            unused_images.join(", ")
+        )
+    });
+    let non_existing_images_err_msg = (!referenced_images.is_empty()).then(|| {
+        format!(
+            "💥 {}: Non existing images: {}",
+            exercise_path.to_string_lossy(),
+            referenced_images.into_iter().collect::<Vec<_>>().join(", ")
+        )
+    });
+    if unused_images_err_msg.is_some() || non_existing_images_err_msg.is_some() {
+        Err(RenderBookError {
+            reason: Some(
+                unused_images_err_msg
+                    .into_iter()
+                    .chain(non_existing_images_err_msg.into_iter())
+                    .collect::<Vec<_>>()
+                    .join("\n"),
+            ),
+        }
+        .into())
+    } else {
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn find_image_placeholders_works_for_0_placeholders() {
+        let content = r#"
+...
+"#;
+        let placeholders = find_image_placeholders(content);
+        assert_eq!(placeholders, std::collections::HashSet::new());
+    }
+    #[test]
+    fn find_image_placeholders_works_for_2_placeholders() {
+        let content = r#"
+...
+
+![](#[modmod:images]/image_1.svg)
+
+...
+
+![](#[modmod:images]/image_2.svg)
+
+...
+"#;
+        let placeholders = find_image_placeholders(content);
+        assert_eq!(
+            placeholders,
+            std::collections::HashSet::from(["image_1.svg", "image_2.svg"])
+        );
     }
 }
