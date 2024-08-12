@@ -67,7 +67,7 @@ The project was created by [Tweede golf](https://tweedegolf.nl), and has since m
 
 The project's initial sponsor is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to lay the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of teach-rs.
 
-In addition, one of our maintainers, [@henk](https://github.com/hdoordt), received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+In addition, one of our maintainers, [@hdoordt](https://github.com/hdoordt), received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
 
 #### Silver sponsors
 
