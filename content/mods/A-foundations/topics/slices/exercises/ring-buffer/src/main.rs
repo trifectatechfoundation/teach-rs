@@ -41,7 +41,7 @@ impl RingBuffer {
     }
 
     /// This function tries to put `value` on the queue; and returns true if this succeeds
-    /// It returns false is writing to the queue failed (which can happen if there is not enough room)
+    /// It returns false if writing to the queue failed (which can happen if there is not enough room)
 
     fn write(&mut self, value: u8) -> bool {
         self.data[self.end] = value;
@@ -57,7 +57,7 @@ impl RingBuffer {
     }
 }
 
-/// This function creates an "owned slice" a user-selectable size by allocating it as a vector (filled with zeores) using vec![], and then turning it
+/// This function creates an "owned slice" a user-selectable size by allocating it as a vector (filled with zeros) using vec![], and then turning it
 /// into a Box<[u8]> using the into_boxed_slice() method, see https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice
 
 fn make_box(reqsize: usize) -> Box<[u8]> {
