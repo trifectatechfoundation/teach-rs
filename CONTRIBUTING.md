@@ -1,5 +1,7 @@
 # Contributing
 
+**Need help? Have questions? Say hi in our Matrix channel: [![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#teach-rs:matrix.org)**
+
 Great that you want to contribute to teach-rs! Here's some ways in which you can help improve the project.
 
 ## Improving the material
