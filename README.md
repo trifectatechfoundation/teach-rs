@@ -1,4 +1,5 @@
 # Teach-rs
+[![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#teach-rs:matrix.org)
 
 ![Teach-rs](https://tweedegolf.nl/images/teach-rs-logo.png)
 
@@ -9,6 +10,8 @@ Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/127/want-more-
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
 
 *While all the available material is user-ready, this repo is not yet as exhaustive as we'd like, so feedback and [contributions](./CONTRIBUTING.md) are welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/trifectatechfoundation).*
+
+**Need help? Have questions? Say hi in our Matrix channel: [![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#teach-rs:matrix.org)**
 
 ## Usage
 The teacher's guide can be found [here](./teachers_guide.md).
