@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Is this request? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**What part is this request for? Please describe.**
+A clear and concise description of what area you want to work on.
 
 **Describe what you plan to do**
-A clear and concise description of what you want to happen.
+A clear and concise description of what you plan to do.
 
 **Describe how you would like to be helped or contacted**
 A clear and concise description of any alternative solutions or features you've considered.
