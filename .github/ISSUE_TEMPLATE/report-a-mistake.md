@@ -2,7 +2,7 @@
 name: Report a mistake
 about: Create a report to help us improve teach-rs
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
