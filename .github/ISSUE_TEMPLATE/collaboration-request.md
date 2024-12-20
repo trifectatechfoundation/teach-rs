@@ -2,7 +2,7 @@
 name: Collaboration request
 about: Propose something you want to work on
 title: ''
-labels: ''
+labels: 'collab-offer'
 assignees: ''
 
 ---
