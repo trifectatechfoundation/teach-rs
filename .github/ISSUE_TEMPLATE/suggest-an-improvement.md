@@ -2,7 +2,7 @@
 name: Suggest an improvement
 about: Suggest an idea for teach-rs
 title: ''
-labels: ''
+labels: 'enhancement'
 assignees: ''
 
 ---
