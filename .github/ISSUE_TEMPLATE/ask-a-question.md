@@ -2,7 +2,7 @@
 name: Ask a question
 about: Let someone help you in case things are unclear
 title: ''
-labels: ''
+labels: 'question'
 assignees: ''
 
 ---
