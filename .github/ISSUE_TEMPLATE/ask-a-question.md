@@ -10,4 +10,4 @@ assignees: ''
 **Ask away!**
 A clear and concise description of what you would like to see clarified.
 
-Note: this is not meant to "ask for solutions to exercise X.Y.Z.
+Note: this is not meant to ask for solutions to exercise X.Y.Z.
