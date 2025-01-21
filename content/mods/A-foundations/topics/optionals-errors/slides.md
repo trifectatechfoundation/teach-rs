@@ -178,6 +178,8 @@ enum Result<T, E> {
   Err(E),
 }
 
+use crate::Result::{Ok, Err};
+
 enum DivideError {
   DivisionByZero,
   CannotDivideOne,
