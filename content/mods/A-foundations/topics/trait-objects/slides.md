@@ -306,18 +306,18 @@ layout: default
 - Type erasure
 - Not all traits work:
 
-*Traits need to be 'Object Safe'*
+*Traits need to be 'dyn compatible'*
 
 
 ---
 layout: default
 ---
 
-# Object safety
+# dyn compatible
 
-In order for a trait to be object safe, these conditions need to be met:
+In order for a trait to be 'dyn compatible', these conditions need to be met:
 
-- If `trait T: Y`, then`Y` must be object safe
+- If `trait T: Y`, then`Y` must be dyn compatible
 - trait `T` must not be `Sized`: *Why?*
 - No associated constants allowed*
 - No associated types with generic allowed*
@@ -336,4 +336,4 @@ layout: default
 
 - Trait objects allow for dynamic dispatch and heterogeneous
 - Trait objects introduce pointer indirection
-- Traits need to be object safe to make trait objects out of them
+- Traits need to be dyn compatible to make trait objects out of them
