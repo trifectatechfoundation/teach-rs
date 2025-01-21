@@ -178,8 +178,6 @@ enum Result<T, E> {
   Err(E),
 }
 
-use crate::Result::{Ok, Err};
-
 enum DivideError {
   DivisionByZero,
   CannotDivideOne,
@@ -187,11 +185,11 @@ enum DivideError {
 
 fn divide(x: i64, y: i64) -> Result<i64, DivideError> {
   if x == 1 {
-    Err(DivideError::CannotDivideOne)
+    Result::Err(DivideError::CannotDivideOne)
   } else if y == 0 {
-    Err(DivideError::DivisionByZero)
+    Result::Err(DivideError::DivisionByZero)
   } else {
-    Ok(x / y)
+    Result::Ok(x / y)
   }
 }
 ```
