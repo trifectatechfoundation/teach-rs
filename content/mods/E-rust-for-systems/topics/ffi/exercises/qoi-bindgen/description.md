@@ -8,7 +8,7 @@ In this exercise, we test if the image crate produces the same results when deco
 
 The QOI C library is a header-only library, which means the function implementations are included within the header file instead of in a separate C file. We've added a separate C file which includes the header to make it easier to compile and include the library in our Rust program.
 
-### Generating bindings
+### #[modmod:exercise_ref] Generating bindings
 Prerequisites:
 
 - A C compiler is installed on the system
@@ -33,7 +33,7 @@ Steps:
 3. Create `src/lib.rs` with the contents `pub mod bindings;`. This will make the `bindings` module available in `main.rs`.
 4. Run `cargo check` to verify everything is compiling correctly.
 
-### Inspecting our bindings
+### #[modmod:exercise_ref] Inspecting our bindings
 
 In the generated `bindings.rs` file we find this signature for the `qoi_read` C function from QOI:
 
@@ -70,7 +70,7 @@ Some observations:
 
 We will deal with the last point by writing a nice Rust wrapper *around* the generated bindings.
 
-### Writing our wrapper
+### #[modmod:exercise_ref] Writing our wrapper
 To make the `qoi_read` function easier to use, we would like to write a wrapper that takes a path and returns an image buffer:
 
 ```rust
@@ -123,7 +123,7 @@ running 1 test
 test tests::test_qoi_read ... ok
 ```
 
-### Freeing the pixel data
+### #[modmod:exercise_ref] Freeing the pixel data
 When working with data from C, we are responsible for deallocating the memory once we are done using it. Some C libraries might provide a separate function to clean up data structures. For QOI, we instead have to call `libc::free` to free the memory, as indicated by the documentation of the `qoi_read` function:
 > The returned pixel data should be free()d after use.
 
@@ -149,7 +149,7 @@ To make sure someone using our wrapper does not forget to free the memory, we ca
     ```
 - Now update the `read_qoi_image` function to return an instance of `MyImage`.
 
-### Uninitialized memory
+### #[modmod:exercise_ref] Uninitialized memory
 There is one more trick: our current function initializes the `qoi_desc` struct with zeros (or whatever values you put there while creating an instance of the struct). This is wasteful because the extern function will overwrite these values. Because the extern function is linked in, the compiler likely does not have enough information to optimize this.
 
 For a relatively small struct such as `qoi_desc`, this is not much of a problem. However, for larger structures or big arrays, this can make a serious impact on performance.
