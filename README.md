@@ -16,6 +16,7 @@ This repo will contain everything that's needed to organize the course: slides, 
 ## Usage
 The teacher's guide can be found [here](./teachers_guide.md).
 Have a look at the [ModMod Readme](./modmod/README.md) for instructions on how to render the content of a track.
+To deploy a rendered track to your own webserver, the `deploy.sh` script can be used.
 
 ## Structure
 The actual content can be found in the [`content`](./content) directory.
