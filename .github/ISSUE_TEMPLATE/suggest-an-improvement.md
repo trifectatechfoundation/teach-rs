@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**What is the scope of your suggestion? **
+**What is the scope of your suggestion?**
 A description of what needs improvement (a particular section, something general, ...)
 
 **Describe what should be added/changed**
