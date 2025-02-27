@@ -167,7 +167,7 @@ Using a borrow
 fn sum(data: &[i32]) -> i32 { /* ... */ }
 
 fn main() {
-  let v = vec![1, 2, 3, 4, 5, 6];
+  let v = vec![0, 1, 2, 3, 4, 5];
   let total = sum(&v);
   println!("{}", total);
 }
@@ -182,7 +182,7 @@ Using ranges
 fn sum(data: &[i32]) -> i32 { /* ... */ }
 
 fn main() {
-  let v = vec![0, 1, 2, 3, 4, 5, 6];
+  let v = vec![0, 1, 2, 3, 4, 5];
   let all = sum(&v[..]);
   let except_first = sum(&v[1..]);
   let except_last = sum(&v[..5]);
