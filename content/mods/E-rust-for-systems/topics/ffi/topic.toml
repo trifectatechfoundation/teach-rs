@@ -23,11 +23,23 @@ includes = [
 ]
 
 [[exercises]]
+name = "QOI Bindgen"
+path = "exercises/qoi-bindgen"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "*.qoi",
+    "*.c",
+    "*.h",
+]
+
+[[exercises]]
 name = "TweetNaCl Bindgen"
 path = "exercises/tweetnacl-bindgen"
 includes = [
     "Cargo.toml",
     "Cargo.lock",
     "src/**/*",
-    
+
 ]
