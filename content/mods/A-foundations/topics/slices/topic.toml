@@ -1,9 +1,0 @@
-name = "Slices"
-
-[[exercises]]
-name = "Slices"
-path = "exercises/slices"
-
-[[exercises]]
-name = "Ring Buffer"
-path = "exercises/ring-buffer"

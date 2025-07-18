@@ -1,5 +1,0 @@
-name = "My First Rust project"
-
-dependencies = [
-    "../why-rust/topic.toml"
-]

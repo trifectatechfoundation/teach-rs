@@ -1,0 +1,8 @@
+[book]
+authors = ["Henk Oordt", "Marc Schoolderman", "Folkert de Vries", "Ruben Nijveld"]
+title = "Teach-rs - Exercises"
+language = "en"
+multilingual = false
+
+[build]
+build-dir = "./target"
