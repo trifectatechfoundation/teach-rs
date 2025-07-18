@@ -173,5 +173,15 @@ let desc = unsafe { desc.assume_init() };
 
 The `MaybeUninit` type is an abstraction for uninitialized memory. The `.uninit()` method gives a chunk of uninitialized memory big enough to store a value of the desired type (in our case `qoi_desc` will be inferred).
 
+### #[modmod:exercise_ref] Safety documentation
+
+At the moment, the safety of your program relies on the context you have for the wrapped C library.
+To ensure somebody modifying your library later does not break any of your assumptions you should always document what you assumed when writing the `unsafe code`.
+
+Add the following [clippy lint](https://rust-lang.github.io/rust-clippy/stable/index.html#multiple_unsafe_ops_per_block) to the top of your `lib.rs` and `main.rs`, run `cargo clippy` and document your assumptions:
+```rust
+#![deny(clippy::undocumented_unsafe_blocks)]
+```
+
 ### Conclusion
 In this exercise we saw how we can generate bindings to a C library with bindgen. The generated bindings are a bit difficult to work with, as they are unsafe and rely on C types. We've discussed how we can create nice wrappers around the generated bindings to deal with all these C types and to make them safer to work with.
