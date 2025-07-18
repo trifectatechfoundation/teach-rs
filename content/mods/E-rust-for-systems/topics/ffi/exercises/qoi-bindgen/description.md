@@ -161,7 +161,7 @@ call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 dereferenceable(10) %d
 %pointer.i = call noundef ptr @qoi_read(ptr noundef nonnull %t.0.i.i, ptr noundef nonnull %desc.i, i32 noundef 4) #17, !noalias !142
 ```
 
-(The LLVM IR can be generated using `cargo rustc --bin qoi-bindgen --release -- --emit=llvm-ir`)
+(The LLVM IR can be generated using `cargo rustc --bin qoi-bindgen --release -- --emit=llvm-ir=llvm-ir.ll`, then search for `@qoi_read` in `llvm-ir.ll`)
 
 The solution is to use `std::mem::MaybeUninit`:
 
