@@ -29,7 +29,9 @@ includes = [
     "Cargo.toml",
     "Cargo.lock",
     "src/**/*",
-    
+    "*.qoi",
+    "*.c",
+    "*.h",
 ]
 
 [[exercises]]
