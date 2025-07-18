@@ -128,26 +128,26 @@ When working with data from C, we are responsible for deallocating the memory on
 > The returned pixel data should be free()d after use.
 
 To make sure someone using our wrapper does not forget to free the memory, we can implement the `Drop` trait to automatically call `libc::free` when the variable goes out of scope.
-- First, create a wrapper `struct MyImage<'a>(ImageBuffer<Rgba<u8>, &'a [u8]>);`, which holds the image buffer.
-- Next, implement the `Drop` trait for `MyImage` to free the memory (we should retrieve the pointer from the image buffer and cast it back to a void pointer):
+- First, create a wrapper `struct QoiSlice { ptr: NonNull<u8>, desc: qoi_desc }`, which holds the image buffer.
+- Next, implement the `Drop` trait for `QoiSlice` to free the memory:
     ```rust
-    impl Drop for MyImage<'_> {
+    impl Drop for QoiSlice {
         fn drop(&mut self) {
             todo!(); // call libc::free here using a pointer to the image buffer
         }
     }
     ```
-- To make this `MyImage` wrapper more convenient to use, we can also implement the `Deref` trait to allow us to directly call the methods from the internal image buffer on it:
+- To make this `QoiSlice` usable in an `ImageBuffer`, we have to implement the `Deref` trait:
     ```rust
-    impl<'a> Deref for MyImage<'a> {
-        type Target = ImageBuffer<Rgba<u8>, &'a [u8]>;
-
+    impl Deref for QoiSlice {
+        type Target = [u8];
+    
         fn deref(&self) -> &Self::Target {
-            &self.0
+            todo!() // create a slice from the ptr and lenght using `slice::from_raw_parts()`
         }
     }
     ```
-- Now update the `read_qoi_image` function to return an instance of `MyImage`.
+- Now update the `read_qoi_image` function to return an instance of `ImageBuffer<Rgba<u8>, QoiSlice>`.
 
 ### #[modmod:exercise_ref] Uninitialized memory
 There is one more trick: our current function initializes the `qoi_desc` struct with zeros (or whatever values you put there while creating an instance of the struct). This is wasteful because the extern function will overwrite these values. Because the extern function is linked in, the compiler likely does not have enough information to optimize this.
