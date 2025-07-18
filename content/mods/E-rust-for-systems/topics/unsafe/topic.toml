@@ -1,1 +1,29 @@
 name = "Unsafe Rust"
+
+[[exercises]]
+name = "Linked List"
+path = "exercises/1-linked-list"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+]
+
+[[exercises]]
+name = "execve"
+path = "exercises/2-execve"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+    "README.md",
+]
+
+[[exercises]]
+name = "Tagges union"
+path = "exercises/3-tagged-union"
+includes = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/**/*",
+]

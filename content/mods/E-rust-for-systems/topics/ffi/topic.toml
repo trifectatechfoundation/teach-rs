@@ -32,6 +32,7 @@ includes = [
     "*.qoi",
     "*.c",
     "*.h",
+    ".gitignore",
 ]
 
 [[exercises]]
@@ -41,5 +42,9 @@ includes = [
     "Cargo.toml",
     "Cargo.lock",
     "src/**/*",
-
+    "*.c",
+    "*.h",
+    ".gitignore",
+    "README.md",
+    "build.rs",
 ]
