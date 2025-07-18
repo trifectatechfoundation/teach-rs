@@ -1,7 +1,10 @@
 # Summary
 
-- [Course Introduction](exercises/1-course-introduction/README.md)
+[About teach-rs](README.md)
 
+---
+
+- [Course Introduction](exercises/1-course-introduction/README.md)
 - [Foundations of Rust]()
 	- [Basic Syntax](exercises/2-foundations-of-rust/1-basic-syntax/basic-syntax.md)
 	- [Ownership and References](exercises/2-foundations-of-rust/2-ownership-and-references/README.md)
@@ -23,3 +26,7 @@
 
 - [Scientific Computing with Rust](exercises/7-scientific-computing-with-rust/README.md)
 
+---
+
+[Teachers Guide](teachers_guide.md)
+[Contributing](CONTRIBUTING.md)
