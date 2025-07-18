@@ -1,18 +1,18 @@
-# Unit 6.1 - Foreign Function Interface
+# Unit 6 - Rust for Systems Programming
 
 <a href="/slides/6_1/" target="_blank">Slides</a>
 
 
-## Exercise 6.1.1: Linked List
+## Exercise 6.1: Linked List
 
 Follow the instructions in the comments of `exercises/6-rust-for-systems-programming/1-foreign-function-interface/1-linked-list/src/bin/unsafe.rs`!
-## Exercise 6.1.2: execve
+## Exercise 6.2: execve
 
 Follow the instructions in `exercises/F/2-execve/README.md` and implement in `exercises/F/2-execve/src/main.rs`!
-## Exercise 6.1.3: Tagges union
+## Exercise 6.3: Tagges union
 
 Follow the instructions in the comments of `exercises/6-rust-for-systems-programming/1-foreign-function-interface/3-tagges-union/src/main.rs`!
-## Exercise 6.1.4: CRC in C
+## Exercise 6.4: CRC in C
 
 Use a CRC checksum function written in C in a Rust program
 
@@ -60,7 +60,7 @@ Use a CRC checksum function written in C in a Rust program
     }
     ```
     In the above example, the correct output is `0x9ae0daaf`
-## Exercise 6.1.5: CRC in Rust
+## Exercise 6.5: CRC in Rust
 
 Use a CRC checksum function written in Rust in a C program
 
@@ -135,7 +135,7 @@ Use a CRC checksum function written in Rust in a C program
     $ ./main
     Hash: -1386739207
     ```
-## Exercise 6.1.6: QOI Bindgen
+## Exercise 6.6: QOI Bindgen
 
 In this exercise, we will use `cargo bindgen` to generate the FFI bindings for a C library. Bindgen will look at a C header file, and generate Rust functions, types and constants based on the C definitions.
 
@@ -147,7 +147,7 @@ In this exercise, we test if the image crate produces the same results when deco
 
 The QOI C library is a header-only library, which means the function implementations are included within the header file instead of in a separate C file. We've added a separate C file which includes the header to make it easier to compile and include the library in our Rust program.
 
-### 6.1.6 Generating bindings
+### 6.6 Generating bindings
 Prerequisites:
 
 - A C compiler is installed on the system
@@ -172,7 +172,7 @@ Steps:
 3. Create `src/lib.rs` with the contents `pub mod bindings;`. This will make the `bindings` module available in `main.rs`.
 4. Run `cargo check` to verify everything is compiling correctly.
 
-### 6.1.6 Inspecting our bindings
+### 6.6 Inspecting our bindings
 
 In the generated `bindings.rs` file we find this signature for the `qoi_read` C function from QOI:
 
@@ -209,7 +209,7 @@ Some observations:
 
 We will deal with the last point by writing a nice Rust wrapper *around* the generated bindings.
 
-### 6.1.6 Writing our wrapper
+### 6.6 Writing our wrapper
 To make the `qoi_read` function easier to use, we would like to write a wrapper that takes a path and returns an image buffer:
 
 ```rust
@@ -262,7 +262,7 @@ running 1 test
 test tests::test_qoi_read ... ok
 ```
 
-### 6.1.6 Freeing the pixel data
+### 6.6 Freeing the pixel data
 When working with data from C, we are responsible for deallocating the memory once we are done using it. Some C libraries might provide a separate function to clean up data structures. For QOI, we instead have to call `libc::free` to free the memory, as indicated by the documentation of the `qoi_read` function:
 > The returned pixel data should be free()d after use.
 
@@ -288,7 +288,7 @@ To make sure someone using our wrapper does not forget to free the memory, we ca
     ```
 - Now update the `read_qoi_image` function to return an instance of `ImageBuffer<Rgba<u8>, QoiSlice>`.
 
-### 6.1.6 Uninitialized memory
+### 6.6 Uninitialized memory
 There is one more trick: our current function initializes the `qoi_desc` struct with zeros (or whatever values you put there while creating an instance of the struct). This is wasteful because the extern function will overwrite these values. Because the extern function is linked in, the compiler likely does not have enough information to optimize this.
 
 For a relatively small struct such as `qoi_desc`, this is not much of a problem. However, for larger structures or big arrays, this can make a serious impact on performance.
@@ -312,7 +312,7 @@ let desc = unsafe { desc.assume_init() };
 
 The `MaybeUninit` type is an abstraction for uninitialized memory. The `.uninit()` method gives a chunk of uninitialized memory big enough to store a value of the desired type (in our case `qoi_desc` will be inferred).
 
-### 6.1.6 Safety documentation
+### 6.6 Safety documentation
 
 At the moment, the safety of your program relies on the context you have for the wrapped C library.
 To ensure somebody modifying your library later does not break any of your assumptions you should always document what you assumed when writing the `unsafe code`.
@@ -322,7 +322,7 @@ Add the following [clippy lint](https://rust-lang.github.io/rust-clippy/stable/i
 #![deny(clippy::undocumented_unsafe_blocks)]
 ```
 
-### 6.1.6 Bonus: Idiomatic interface
+### 6.6 Bonus: Idiomatic interface
 
 The current project is quite bare, you could improve that.
 
@@ -342,7 +342,7 @@ Also consider which cases cannot possibly happen because of the guarantees you c
 
 ### Conclusion
 In this exercise we saw how we can generate bindings to a C library with bindgen. The generated bindings are a bit difficult to work with, as they are unsafe and rely on C types. We've discussed how we can create nice wrappers around the generated bindings to deal with all these C types and to make them safer to work with.
-## Exercise 6.1.7: TweetNaCl Bindgen
+## Exercise 6.7: TweetNaCl Bindgen
 
 Use `cargo bindgen` to generate the FFI bindings. Bindgen will look at a C header file, and generate rust functions, types and constants based on the C definitions.
 

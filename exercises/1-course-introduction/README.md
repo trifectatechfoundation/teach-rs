@@ -1,4 +1,4 @@
-# Unit 1.1 - Introduction
+# Unit 1 - Introduction
 
 <a href="/slides/1_1/" target="_blank">Slides</a>
 
