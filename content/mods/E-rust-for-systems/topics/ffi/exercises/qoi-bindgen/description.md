@@ -183,5 +183,23 @@ Add the following [clippy lint](https://rust-lang.github.io/rust-clippy/stable/i
 #![deny(clippy::undocumented_unsafe_blocks)]
 ```
 
+### #[modmod:exercise_ref] Bonus: Idiomatic interface
+
+The current project is quite bare, you could improve that.
+
+#### Structure
+
+Currently, all your logic lives in `main.rs` where it cannot be used as a library.
+Move your types and functions over to `lib.rs` and only expose the necessary functionality to the user.
+Run `cargo doc --open` to inspect what a user would see.
+
+#### Error handling
+
+Currently, we use panicking to handle errors.
+This is problematic since it does not offer the user to handle those errors.
+Change `read_qoi_image()` to return a `Result` instead.
+And change possible error cases to return an `Err()` instead of panicking.
+Also consider which cases cannot possibly happen because of the guarantees you can make, and use `expect()` to panic in that case.
+
 ### Conclusion
 In this exercise we saw how we can generate bindings to a C library with bindgen. The generated bindings are a bit difficult to work with, as they are unsafe and rely on C types. We've discussed how we can create nice wrappers around the generated bindings to deal with all these C types and to make them safer to work with.
