@@ -1,1 +1,0 @@
-Follow the instructions in `exercises/F/2-execve/README.md` and implement in `exercises/F/2-execve/src/main.rs`!

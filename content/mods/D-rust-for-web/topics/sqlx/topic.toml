@@ -1,5 +1,0 @@
-name = "Database Interaction with Sqlx"
-
-[[exercises]]
-name = "Pastebin"
-path = "exercises/pastebin"

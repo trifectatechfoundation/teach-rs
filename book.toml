@@ -2,7 +2,7 @@
 authors = ["Henk Oordt", "Marc Schoolderman", "Folkert de Vries", "Ruben Nijveld"]
 title = "Teach-rs - Exercises"
 
-src = "book"
+src = "."
 language = "en"
 multilingual = false
 
