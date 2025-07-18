@@ -13,6 +13,41 @@ This repo will contain everything that's needed to organize the course: slides, 
 
 **Need help? Have questions? Say hi in our Matrix channel: [![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#teach-rs:matrix.org)**
 
+## Intent
+
+Teach-rs is meant to be a collection of teaching material about the Rust programming language for use in higher
+education (whether that be universities focused on theoretical science, educational institutes of applied science, or
+higher vocational education).
+More broadly, it is intended to be also useful in any form of formal or informal classroom
+education (e.g., community colleges).
+
+It is not a *course in rust*, but rather meant to be used by teachers to *create* a course in Rust tailored to the needs
+of their students.
+Hence, the name: **teach-rs**.
+That means that we expect (and encourage) every course that is taught
+using teach-rs to make different selections of material.
+
+The goal of this project is therefore for teach-r to consist of:
+
+- Exercise material: exercise instructions and templates.
+- A reference slide deck for use in lectures.
+- Tools to help teachers easily make selections of material that make sure that essential parts are not skipped.
+
+What is not in scope of teach-rs:
+
+- The equivalent of a "book", i.e., reading material; good external resources exist both online and in book form.
+  We do want to have a section on collecting all of those.
+- Being usable as self-teaching aid. That is not to say that the material contained in this repository cannot be used
+  to become self-taught in Rust, but that is not the primary mission.
+- Solutions to exercises. Some of our exercises are open-ended and have multiple correct solutions. In line with being
+  meant for use in higher education, students should reflect on their solutions themselves, discuss their work with
+  their peers or receive feedback from their teacher/teaching assistants. The Rust compiler itself also lends itself
+  well as a teaching aid: it will catch many mistakes and suggest improvements; i.e., various exercises may try to steer
+  students into interaction with Rust compiler messages.
+
+The material is free for any purpose (licensed under CC-BY-SA). It is highly appreciated that changes/improvements are
+contributed back to us, even if the license doesn't necessarily demand it.
+
 ## Usage
 The teacher's guide can be found [here](./teachers_guide.md).
 Have a look at the [ModMod Readme](./modmod/README.md) for instructions on how to render the content of a track.
