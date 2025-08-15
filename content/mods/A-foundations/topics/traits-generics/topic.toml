@@ -1,5 +1,0 @@
-name = "Traits and Generics"
-
-[[exercises]]
-name = "Local Storage Vec"
-path = "exercises/local-storage-vec"

@@ -1,7 +1,0 @@
-name = "Composite types"
-
-
-dependencies = [
-    "../basic-syntax/topic.toml"
-]
-
