@@ -1,1 +1,4 @@
-target/
+public/
+slides/index.html
+slides/dist/
+slides/node_modules/
