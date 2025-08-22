@@ -1,5 +1,0 @@
-{
-    "editor.inlayHints.enabled": "offUnlessPressed",
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 500
-}

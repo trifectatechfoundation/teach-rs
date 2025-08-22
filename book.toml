@@ -2,9 +2,9 @@
 authors = ["Henk Oordt", "Marc Schoolderman", "Folkert de Vries", "Ruben Nijveld"]
 title = "Teach-rs - Exercises"
 
-src = "."
+src = "book"
 language = "en"
 multilingual = false
 
 [build]
-build-dir = "./target/book"
+build-dir = "public"
