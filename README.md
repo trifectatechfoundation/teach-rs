@@ -50,7 +50,6 @@ contributed back to us, even if the license doesn't necessarily demand it.
 
 ## Usage
 The teacher's guide can be found [here](./teachers_guide.md).
-Have a look at the [ModMod Readme](./modmod/README.md) for instructions on how to render the content of a track.
 
 ## Structure
 The actual content can be found in the [`content`](./content) directory.
@@ -61,7 +60,6 @@ Topics are packages that cover a single topic, and include a small number of sli
 Topics can define their learning objectives, further reading material, and how they should be summarized in a Unit introduction.
 
 Tracks, Modules, Units, and Topics and the files they refer to are described in the several TOML files in the [`content`](./content) directory.
-[ModMod](./modmod/README.md) combines the content into a structure that can be directly published to your students in a Git repo, for instance.
 
 ## Pre-defined tracks
 - [Rust Language Introduction](./content/rust-intro.track.toml) aims to introduce the basics to the Rust programming language, and to enable students to engineer their own applications and crates.
