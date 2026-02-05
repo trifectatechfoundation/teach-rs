@@ -1,6 +1,6 @@
-/// One way to implement a queue is to use a linked list; however, that requires a lot of dynamic memory manipulation to add/remove individual items.
-/// A more low-level approach is to use a circular buffer: the compromise is that the capacity of the queue is then "fixed". For a background on circular buffers,
-/// you can consult https://en.wikipedia.org/wiki/Circular_buffer
+//! One way to implement a queue is to use a linked list; however, that requires a lot of dynamic memory manipulation to add/remove individual items.
+//! A more low-level approach is to use a circular buffer: the compromise is that the capacity of the queue is then "fixed". For a background on circular buffers,
+//! you can consult https://en.wikipedia.org/wiki/Circular_buffer
 
 // A partial implementation is provided below; please finish it and add some more methods; please remember to run 'cargo fmt' and 'cargo clippy' after
 // every step to get feedback from the rust compiler!
