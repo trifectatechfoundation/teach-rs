@@ -18,8 +18,10 @@
 //  - add a method "has_room" so that "queue.has_room()" is true if and only if writing to the queue will succeed
 //  - add a method "peek" so that "queue.peek()" returns the same thing as "queue.read()", but leaves the element in the queue
 
+const RING_SIZE: usize = 16;
+
 struct RingBuffer {
-    data: [u8; 16],
+    data: [u8; RING_SIZE],
     start: usize,
     end: usize,
 }
@@ -27,7 +29,7 @@ struct RingBuffer {
 impl RingBuffer {
     fn new() -> RingBuffer {
         RingBuffer {
-            data: [0; 16],
+            data: [0; RING_SIZE],
             start: 0,
             end: 0,
         }
