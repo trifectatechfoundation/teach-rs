@@ -15,8 +15,9 @@
 // 4) in a queue that has size N, how many elements can be stored at one time? (test your answer experimentally)
 
 // 5) EXTRA EXERCISES:
-//  - add a method "has_room" so that "queue.has_room()" is true if and only if writing to the queue will succeed
-//  - add a method "peek" so that "queue.peek()" returns the same thing as "queue.read()", but leaves the element in the queue
+//  - implement the method "has_room" so that "queue.has_room()" is true if and only if writing to the queue will succeed
+//  - implement the method "peek" so that "queue.peek()" returns the same thing as "queue.read()", but leaves the element in the queue
+//  - test your implementation by running 'cargo test'
 
 const RING_SIZE: usize = 16;
 
@@ -57,6 +58,15 @@ impl RingBuffer {
             true
         }
     }
+
+    fn has_room(&mut self) -> bool {
+        todo!()
+    }
+
+    fn peek(&mut self) -> Option<u8> {
+        todo!()
+    }
+
 }
 
 /// This function creates an "owned slice" a user-selectable size by allocating it as a vector (filled with zeros) using vec![], and then turning it
@@ -87,3 +97,47 @@ fn main() {
         println!("{elem}");
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let mut queue = RingBuffer::new(0);
+        assert!(!queue.write(1));
+    }
+
+    #[test]
+    fn test_single() {
+        let mut queue = RingBuffer::new(1);
+        assert!(!queue.write(1));
+    }
+
+    #[test]
+    fn test_enough_size() {
+        let mut queue = RingBuffer::new(3);
+        assert!(queue.write(1));
+        assert!(queue.has_room());
+        assert!(queue.write(2));
+        assert!(queue.read()==Some(1));
+        assert!(queue.write(3));
+        assert!(queue.peek()==Some(2));
+        assert!(queue.read()==Some(2));
+        assert!(queue.write(4));
+    }
+
+    #[test]
+    fn test_not_enough_size() {
+        let mut queue = RingBuffer::new(3);
+        assert!(queue.write(1));
+        assert!(queue.read()==Some(1));
+        assert!(queue.write(2));
+        assert!(queue.read()==Some(2));
+        assert!(queue.write(3));
+        assert!(queue.write(4));
+        assert!(!queue.write(5));
+    }
+}
+
