@@ -17,6 +17,7 @@
 // 5) EXTRA EXERCISES:
 //  - implement the method "has_room" so that "queue.has_room()" is true if and only if writing to the queue will succeed
 //  - implement the method "peek" so that "queue.peek()" returns the same thing as "queue.read()", but leaves the element in the queue
+//  - eliminate edge cases of the data structure (HINT: what is the behaviour of (n % 0))
 //  - test your implementation by running 'cargo test'
 
 const RING_SIZE: usize = 16;
@@ -65,7 +66,6 @@ impl RingBuffer {
     fn peek(&mut self) -> Option<u8> {
         todo!()
     }
-
 }
 
 /// This function creates an "owned slice" a user-selectable size by allocating it as a vector (filled with zeros) using vec![], and then turning it
