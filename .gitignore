@@ -2,3 +2,5 @@ public/
 slides/index.html
 slides/dist/
 slides/node_modules/
+**/target/
+**/Cargo.lock

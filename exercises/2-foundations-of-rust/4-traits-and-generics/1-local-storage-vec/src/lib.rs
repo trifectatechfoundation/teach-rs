@@ -82,12 +82,13 @@ mod test {
     // fn it_from_vecs() {
     //     // The `vec!` macro creates a `Vec<T>` in a way that resembles
     //     // array-initialization syntax.
+    //
     //     let vec: LocalStorageVec<usize, 10> = LocalStorageVec::from(vec![1, 2, 3]);
-    //     // Assert that the call to `from` indeed yields a `Heap` variant
-    //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
+    //     // Assert that the call to `from` indeed yields a `Stack` variant
+    //     assert!(matches!(vec, LocalStorageVec::Stack { buf: _, len: _ }));
     //
     //     let vec: LocalStorageVec<usize, 2> = LocalStorageVec::from(vec![1, 2, 3]);
-    //
+    //     // Assert that the call to `from` indeed yields a `Heap` variant
     //     assert!(matches!(vec, LocalStorageVec::Heap(_)));
     // }
 
