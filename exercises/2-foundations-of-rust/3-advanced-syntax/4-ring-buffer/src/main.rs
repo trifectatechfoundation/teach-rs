@@ -46,16 +46,15 @@ impl RingBuffer {
     /// This function tries to put `value` on the queue; and returns true if this succeeds
     /// It returns false if writing to the queue failed (which can happen if there is not enough room)
 
-    fn write(&mut self, value: u8) -> bool {
+    fn write(&mut self, value: u8) -> Result<(),&'static str> {
         self.data[self.end] = value;
         let pos = (self.end + 1) % self.data.len();
         if pos == self.start {
-            // the buffer can hold no more new data
-            false
+            Err("the buffer can hold no more new data")
         } else {
             self.end = pos;
 
-            true
+            Ok(())
         }
     }
 
@@ -86,18 +85,18 @@ impl Iterator for RingBuffer {
     }
 }
 
+
 fn main() {
-    let mut queue = RingBuffer::new();
-    assert!(queue.write(1));
-    assert!(queue.write(2));
-    assert!(queue.write(3));
-    assert!(queue.write(4));
-    assert!(queue.write(5));
+    let mut queue = RingBuffer::new(RING_SIZE);
+    assert!(queue.write(1).is_ok());
+    assert!(queue.write(2).is_ok());
+    assert!(queue.write(3).is_ok());
+    assert!(queue.write(4).is_ok());
+    assert!(queue.write(5).is_ok());
     for elem in queue {
         println!("{elem}");
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -105,39 +104,41 @@ mod tests {
 
     #[test]
     fn test_empty() {
+        // To make this test pass you will need to edit the write function.
         let mut queue = RingBuffer::new(0);
-        assert!(!queue.write(1));
+        assert!(queue.write(1).is_err());
     }
 
     #[test]
     fn test_single() {
         let mut queue = RingBuffer::new(1);
-        assert!(!queue.write(1));
+        assert!(queue.write(1).is_err());
     }
 
     #[test]
     fn test_enough_size() {
         let mut queue = RingBuffer::new(3);
-        assert!(queue.write(1));
+        assert!(queue.write(1).is_ok());
         assert!(queue.has_room());
-        assert!(queue.write(2));
-        assert!(queue.read()==Some(1));
-        assert!(queue.write(3));
-        assert!(queue.peek()==Some(2));
-        assert!(queue.read()==Some(2));
-        assert!(queue.write(4));
+        assert!(queue.write(2).is_ok());
+        assert!(queue.read() == Some(1));
+        assert!(queue.write(3).is_ok());
+        assert!(queue.peek() == Some(2));
+        assert!(queue.read() == Some(2));
+        assert!(queue.write(4).is_ok());
     }
 
     #[test]
     fn test_not_enough_size() {
         let mut queue = RingBuffer::new(3);
-        assert!(queue.write(1));
-        assert!(queue.read()==Some(1));
-        assert!(queue.write(2));
-        assert!(queue.read()==Some(2));
-        assert!(queue.write(3));
-        assert!(queue.write(4));
-        assert!(!queue.write(5));
+        assert!(queue.write(1).is_ok());
+        assert!(queue.read() == Some(1));
+        assert!(queue.write(2).is_ok());
+        assert!(queue.read() == Some(2));
+        assert!(queue.write(3).is_ok());
+        assert!(queue.write(4).is_ok());
+        assert!(queue.write(5).is_err());
     }
 }
+
 
