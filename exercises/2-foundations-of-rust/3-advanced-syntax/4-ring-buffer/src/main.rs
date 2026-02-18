@@ -87,7 +87,7 @@ impl Iterator for RingBuffer {
 
 
 fn main() {
-    let mut queue = RingBuffer::new(RING_SIZE);
+    let mut queue = RingBuffer::new();
     assert!(queue.write(1).is_ok());
     assert!(queue.write(2).is_ok());
     assert!(queue.write(3).is_ok());
