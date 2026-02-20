@@ -47,7 +47,7 @@ impl RingBuffer {
     /// This function tries to put `value` on the queue; and returns true if this succeeds
     /// It returns false if writing to the queue failed (which can happen if there is not enough room)
 
-    fn write(&mut self, value: u8) -> Result<(),&'static str> {
+    fn write(&mut self, value: u8) -> Result<(), &'static str> {
         self.data[self.end] = value;
         let pos = (self.end + 1) % self.data.len();
         if pos == self.start {
@@ -84,7 +84,6 @@ impl Iterator for RingBuffer {
         self.read()
     }
 }
-
 
 fn main() {
     let mut queue = RingBuffer::new();
@@ -140,5 +139,3 @@ mod tests {
         assert!(queue.write(5).is_err());
     }
 }
-
-
