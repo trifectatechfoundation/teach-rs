@@ -1,0 +1,72 @@
+name: Update npm dependencies
+
+on:
+  schedule:
+    - cron: '0 6 1,15 * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'slides/package-lock.json'
+
+      - name: Update dependencies
+        working-directory: slides
+        env:
+          COOLDOWN_DAYS: '7'
+        run: |
+          before="$(date -u -d "${COOLDOWN_DAYS} days ago" +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Updating to the latest versions published before ${before}"
+          for dep in $(jq -r '.dependencies | keys[]' package.json); do
+            npm install --save --before="${before}" "${dep}@latest"
+          done
+          npm update --before="${before}"
+
+      - name: Check for changes
+        id: changes
+        working-directory: slides
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "No dependency changes"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git --no-pager diff -- package.json
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build slides
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: slides
+        run: ./build.sh
+
+      - name: Commit and push to main
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add slides/package.json slides/package-lock.json
+          git commit -m "Update npm dependencies"
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git" HEAD:main
+
+      - name: Trigger build and deploy
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: gh workflow run build-deploy.yml --repo "${REPOSITORY}" --ref main
