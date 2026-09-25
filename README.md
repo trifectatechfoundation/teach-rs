@@ -3,15 +3,13 @@
 
 ![Teach-rs](https://tweedegolf.nl/images/teach-rs-logo.png)
 
-Teach-rs is a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
+Teach-rs is material for building a university course for computer science students, introducing the Rust Programming Language, and is available for anyone who wants to teach Rust.
 
 Why? Have a look at our [blog post](https://tweedegolf.nl/en/blog/127/want-more-rust-break-the-cycle) introducing the course.
 
 This repo will contain everything that's needed to organize the course: slides, exercises, tools, setup instructions and more.
 
-*While all the available material is user-ready, this repo is not yet as exhaustive as we'd like, so feedback and [contributions](./CONTRIBUTING.md) are welcome! So is sponsorship; read more below or on our [Sponsorship page](https://github.com/sponsors/trifectatechfoundation).*
-
-**Need help? Have questions? Say hi in our Matrix channel: [![Matrix](https://img.shields.io/badge/Matrix-000?logo=matrix&logoColor=fff)](https://matrix.to/#/#teach-rs:matrix.org)**
+*While all the available material is user-ready, this repo is not yet as exhaustive as we'd like, so feedback and [contributions](./CONTRIBUTING.md) are welcome!*
 
 ## Intent
 
@@ -49,26 +47,11 @@ The material is free for any purpose (licensed under CC-BY-SA). It is highly app
 contributed back to us, even if the license doesn't necessarily demand it.
 
 ## Usage
-The teacher's guide can be found [here](./teachers_guide.md).
+The teacher's guide can be found [here](./book/teachers_guide.md).
 
 ## Structure
-The actual content can be found in the [`content`](./content) directory.
-The content is structured in a tree of Tracks, Modules, Units, and Topics.
-Tracks define a single course, which consists of one or more Modules, which again combines one or more Units, which again is a set of Topics.
-Units roughly correspond to one lecture+tutorial (or at least that is the idea, but TODO), and consist of several Topics. Related Units are combined in a Module.
-Topics are packages that cover a single topic, and include a small number of slides, some exercises, and an exercise descripion.
-Topics can define their learning objectives, further reading material, and how they should be summarized in a Unit introduction.
-
-Tracks, Modules, Units, and Topics and the files they refer to are described in the several TOML files in the [`content`](./content) directory.
-
-## Pre-defined tracks
-- [Rust Language Introduction](./content/rust-intro.track.toml) aims to introduce the basics to the Rust programming language, and to enable students to engineer their own applications and crates.
-- [Rust for the Web](./content/rust-for-web.track.toml) covers content that is needed to use Rust in web applications.
-- [Rust for Systems Programming](./content/rust-for-systems.track.toml) contains more low-level topics, to teach systems programming using Rust.
-- [Scientific Rust](./content/scientific-rust.track.toml) is about using Rust in scientific programming.
-- [Full](./content/full.track.toml) contains all available teach-rs content.
-
-*Note: although the outline of the tracks is mostly complete, the tracks may still contain TODOs. You're invited to contribute your own content to fix these!*
+The actual content can be found in the [`book`](./book) and [`slides`](./slides) directories. The content is structured in several modules,
+which each consists of one or more units.
 
 ## High-level goals
 Teach-rs aims to provide an open-source course, lectures, tutorials and exercises, that can be used by any higher education institution.
@@ -88,7 +71,7 @@ If you'd like to improve teach-rs, either by doing touchups, restructuring a mod
 
 The project was created by [Tweede golf](https://tweedegolf.nl), and has since moved to the [Trifecta Tech Foundation](https://trifectatech.org).
 
-### Our sponsors
+### Acknowledgements
 
 #### Founding sponsors
 
@@ -103,7 +86,7 @@ The project was created by [Tweede golf](https://tweedegolf.nl), and has since m
 
 The project's initial sponsor is the Faculty of Informatics and Information Technologies (FIIT) of the Slovak University of Technology (STU) in Bratislava, Slovakia. [FIIT](https://www.fiit.stuba.sk/en.html?page_id=749)'s contribution has enabled us to lay the groundwork for the course. [Tweede golf](https://tweedegolf.nl/en) and [Rust Edu](https://rust-edu.org/) have also contributed substantially to the creation of teach-rs.
 
-In addition, one of our maintainers, [@hdoordt](https://github.com/hdoordt), received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
+In addition, the initial maintainer of teach-rs, [@hdoordt](https://github.com/hdoordt), received a grant from the [Rust Foundation](https://foundation.rust-lang.org/).
 
 #### Silver sponsors
 
@@ -112,7 +95,13 @@ And a big thank you to our Silver sponsors:
 - [Gofore](https://gofore.com/en/)
 - [RustJobs.dev](https://rustjobs.dev/)
 
-### Support teach-rs
+### Thanks
+
+Teach-rs grew out of internal course material used at Tweede Golf. It became much more than that, which is in no small part due to the motivation by and time invested by [@hdoordt](https://github.com/hdoordt).
+
+We thank the former students of Slovak University of Technology (STU) in Bratislava who took part in our trial run of this course material in 2023.
+
+### Support the Trifecta Tech Foundation
 
 Contact us if you´re interested in financially supporting the maintenance and further development of the teach-rs resources. See [trifectatech.org/support](https://trifectatech.org/support/).
 You can also sponsor our work through [GitHub sponsors](https://github.com/sponsors/trifectatechfoundation).
