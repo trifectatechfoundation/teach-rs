@@ -95,7 +95,7 @@ And a big thank you to our Silver sponsors:
 - [Gofore](https://gofore.com/en/)
 - [RustJobs.dev](https://rustjobs.dev/)
 
-### Thanks
+#### Thanks
 
 Teach-rs grew out of internal course material used at Tweede Golf. It became much more than that, which is in no small part due to the motivation by and time invested by [@hdoordt](https://github.com/hdoordt).
 
