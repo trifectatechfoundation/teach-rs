@@ -1,11 +1,11 @@
 {
   "private": true,
   "dependencies": {
-    "@slidev/cli": "^52.16.0",
-    "@slidev/theme-default": "*",
-    "@slidev/theme-seriph": "*",
-    "slidev-theme-teach-rs": "0.0.1",
-    "playwright-chromium": "*"
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "@slidev/theme-seriph": "^0.25.0",
+    "playwright-chromium": "^1.63.0",
+    "slidev-theme-teach-rs": "0.0.1"
   },
   "name": "the-full-teach-rs-track",
   "scripts": {
