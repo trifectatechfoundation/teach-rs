@@ -2,7 +2,7 @@ name: Update npm dependencies
 
 on:
   schedule:
-    - cron: '0 6 1,15 * *'
+    - cron: '0 6 1,15 * *' # runs at 6:00 at day 1 and 15 of the month
   workflow_dispatch:
 
 permissions: {}
