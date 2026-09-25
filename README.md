@@ -97,7 +97,7 @@ And a big thank you to our Silver sponsors:
 
 #### Thanks
 
-Teach-rs grew out of internal course material used at Tweede Golf. It became much more than that, which is in no small part due to the motivation by and time invested by [@hdoordt](https://github.com/hdoordt).
+Teach-rs grew out of internal course material used at Tweede Golf. It became much more than that, which is in no small part due to the motivation of and time invested by [@hdoordt](https://github.com/hdoordt).
 
 We thank the former students of Slovak University of Technology (STU) in Bratislava who took part in our trial run of this course material in 2023.
 
