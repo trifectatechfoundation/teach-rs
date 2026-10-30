@@ -393,7 +393,7 @@ In order for a trait to be 'dyn compatible', these conditions need to be met:
 - All associated functions must either be dispatchable from a trait object, or explicitly non-dispatchable
     - e.g. function must have a receiver with a reference to `Self`
 
-Details in [The Rust Reference](https://doc.rust-lang.org/reference/items/traits.html#object-safety). Read them!
+Details in [The Rust Reference](https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility). Read them!
 
 *These seem to be compiler limitations
 
